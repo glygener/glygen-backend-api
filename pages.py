@@ -17,6 +17,8 @@ global path_obj
 
 config_obj = json.loads(open("./conf/config.json", "r").read())
 path_obj  =  config_obj[config_obj["server"]]["pathinfo"]
+db_info = json.loads(open("./conf/dbinfo.json", "r").read())
+config_obj[config_obj["server"]]["dbinfo"] = db_info[config_obj["server"]]
 
 
 @app.route('/pages/home_init/', methods=['GET', 'POST'])

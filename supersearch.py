@@ -21,6 +21,9 @@ global path_obj
 
 config_obj = json.loads(open("./conf/config.json", "r").read())
 path_obj  =  config_obj[config_obj["server"]]["pathinfo"]
+db_info = json.loads(open("./conf/dbinfo.json", "r").read())
+config_obj[config_obj["server"]]["dbinfo"] = db_info[config_obj["server"]]
+
 supersearch_config_obj = json.loads(open("./conf/supersearch.json", "r").read())
 config_obj["ignored_path_list"] = supersearch_config_obj["ignored_path_list"]
 config_obj["path_map"] = supersearch_config_obj["path_map"]

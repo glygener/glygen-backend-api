@@ -978,9 +978,9 @@
         }
         ,"dev":{
                 "dbinfo":{
-                        "mongodbname":"glydb"
-                        ,"mongodbuser":"glydbadmin"
-                        ,"mongodbpassword":"glydbpass"
+                        "mongodbname":"***"
+                        ,"mongodbuser":"***"
+                        ,"mongodbpassword":"***"
                         ,"sessionlife":3600
                         ,"collections":{
                             "bco":"c_bco"
@@ -1018,9 +1018,9 @@
 	}
 	,"tst":{
                 "dbinfo":{
-                        "mongodbname":"glydb"
-                        ,"mongodbuser":"glydbadmin"
-                        ,"mongodbpassword":"glydbpass"
+                        "mongodbname":"***"
+                        ,"mongodbuser":"***"
+                        ,"mongodbpassword":"***"
                         ,"sessionlife":3600
                         ,"collections":{
                             "bco":"c_bco"
@@ -1058,9 +1058,9 @@
         }
         ,"beta":{
                 "dbinfo":{
-                        "mongodbname":"glydb_beta"
-                        ,"mongodbuser":"glydb_betaadmin"
-                        ,"mongodbpassword":"glydb_betapass"
+                        "mongodbname":"***"
+                        ,"mongodbuser":"***"
+                        ,"mongodbpassword":"***"
                         ,"sessionlife":3600
                         ,"collections":{
                             "bco":"c_bco"
@@ -1098,9 +1098,9 @@
         }
         ,"backup":{
                 "dbinfo":{
-                        "mongodbname":"glydb_backup"
-                        ,"mongodbuser":"glydb_backupadmin"
-                        ,"mongodbpassword":"glydb_backuppass"
+                        "mongodbname":"***"
+                        ,"mongodbuser":"***"
+                        ,"mongodbpassword":"***"
                         ,"sessionlife":3600
                         ,"collections":{
                             "bco":"c_bco"
@@ -1137,9 +1137,9 @@
         }       
         ,"prd":{
                 "dbinfo":{
-                        "mongodbname":"glydb"
-                        ,"mongodbuser":"glydbadmin"
-                        ,"mongodbpassword":"glydbpass"
+                        "mongodbname":"***"
+                        ,"mongodbuser":"***"
+                        ,"mongodbpassword":"***"
                         ,"sessionlife":3600
                         ,"collections":{
                             "bco":"c_bco"

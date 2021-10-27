@@ -23,7 +23,7 @@ rm -rf $release_dir/*
 
 
 cd $src_dir
-f_list="seqmapping idmapping newsupersearch supersearch mysite site auth commonquery data globalsearch glycan protein directsearch log misc motif pages typeahead usecases event publication job"
+f_list="seqmapping idmapping supersearch mysite site auth data globalsearch glycan protein directsearch log misc motif pages typeahead usecases event publication job"
 for f in $f_list
 do
    cp $f*.py $release_dir/

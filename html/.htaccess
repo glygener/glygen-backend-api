@@ -11,7 +11,6 @@ RewriteRule ^(seqmapping)/(search)/?$ /cgi-bin/seqmapping.cgi/$1/$2/ [L]
 RewriteRule ^(graph)/(getdata)/?$ /cgi-bin/graph.cgi/$1/$2/ [L]
 
 RewriteRule ^(supersearch)/(search_init|search|reason|list)/?$ /cgi-bin/supersearch.cgi/$1/$2/ [L]
-RewriteRule ^(newsupersearch)/(search_init|search|reason|list)/?$ /cgi-bin/newsupersearch.cgi/$1/$2/ [L]
 
 RewriteRule ^(site)/(detail)/?$ /cgi-bin/site.cgi/$1/$2/empty/ [L]
 RewriteRule ^(site)/(detail)/(.*)/?$ /cgi-bin/site.cgi/$1/$2/$3/ [L]
