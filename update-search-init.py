@@ -29,6 +29,8 @@ def main():
     config_obj = json.loads(open("./conf/config.json", "r").read())
     config_obj["server"] = server
     path_obj  =  config_obj[config_obj["server"]]["pathinfo"]
+    db_info = json.loads(open("./conf/dbinfo.json", "r").read())
+    config_obj[config_obj["server"]]["dbinfo"] = db_info[config_obj["server"]]
     db_obj = config_obj[config_obj["server"]]["dbinfo"]
 
     supersearch_config_obj = json.loads(open("./conf/supersearch.json", "r").read())
