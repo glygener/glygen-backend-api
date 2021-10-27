@@ -1,0 +1,195 @@
+<html>
+<head>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<script language="javascript" src="jquery.min.js"></script>
+<script language="javascript" src="api_test.js"></script>
+
+
+<script>
+var queryList = [
+        {
+            "label": "Protein with GO ID=GO:0008083",
+            "query": {
+                "concept_query_list": [
+                    {
+                        "concept": "protein",
+                        "query": {
+                            "aggregator": "$and",
+                            "unaggregated_list": [
+                                {
+                                    "order": 1,
+                                    "path": "go_annotation.categories.go_terms.id",
+                                    "operator": "$eq",
+                                    "string_value": "GO:0008083"
+                                }
+                            ],
+                            "aggregated_list": []
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "label":"Protein with GO ID=GO:0008083, with mutated and glycosylated site",
+            "query":{ 
+                "concept_query_list": [
+                    {
+                        "concept": "protein",
+                        "query": {
+                            "aggregator": "$and",
+                            "unaggregated_list": [
+                                {
+                                    "order": 1,
+                                    "path": "go_annotation.categories.go_terms.id",
+                                    "operator": "$eq",
+                                    "string_value": "GO:0008083"
+                                }
+                            ],
+                            "aggregated_list": []
+                        }
+                    },
+                    {
+                        "concept": "site",
+                        "query": {
+                            "aggregator": "$and",
+                            "unaggregated_list": [
+                                {
+                                    "order": 1,
+                                    "path": "glycosylation_flag",
+                                    "operator": "$eq",
+                                    "string_value": true
+                                },
+                                {
+                                    "order": 2,
+                                    "path": "snv_flag",
+                                    "operator": "$eq",
+                                    "string_value": true
+                                }
+                            ],
+                            "aggregated_list": []
+                        }
+                    }
+                ]       
+            }
+        },
+        {
+            "label": "Protein with GO ID=GO:0008083, with mutated and glycosylated site, glycosylated by a fully determined glycan",
+            "query": { 
+                "concept_query_list": [
+                    {
+                        "concept": "protein",
+                        "query": {
+                            "aggregator": "$and",
+                            "unaggregated_list": [
+                                {
+                                    "order": 1,
+                                    "path": "go_annotation.categories.go_terms.id",
+                                    "operator": "$eq",
+                                    "string_value": "GO:0008083"
+                                }
+                            ],
+                            "aggregated_list": []
+                        }
+                    },
+                    {
+                        "concept": "site",
+                        "query": {
+                            "aggregator": "$and",
+                            "unaggregated_list": [
+                                {
+                                    "order": 1,
+                                    "path": "glycosylation_flag",
+                                    "operator": "$eq",
+                                    "string_value": true
+                                },
+                                {
+                                    "order": 2,
+                                    "path": "snv_flag",
+                                    "operator": "$eq",
+                                    "string_value": true
+                                }
+                            ],
+                            "aggregated_list": []
+                        }
+                    },
+                    {
+                        "concept": "glycan",
+                        "query": {
+                            "aggregator": "$and",
+                            "aggregated_list": [],
+                            "unaggregated_list": [
+                                {
+                                    "path": "fully_determined",
+                                    "order": 0,
+                                    "operator": "$eq",
+                                    "string_value": "yes"
+                                }
+                            ]
+                        }
+                    } 
+                ]
+            }
+        }
+];
+
+var testInfo = 
+{
+    "search_init": {
+        "string_fields": [],
+        "url": "/newsupersearch/search_init",
+        "required_fields": [],
+        "numeric_fields": [],
+        "query": {}
+    }
+    ,"search": {
+        "string_fields": [], 
+        "url": "/newsupersearch/search", 
+        "required_fields": [], 
+        "numeric_fields": [], 
+        "querylist": queryList
+    }
+    ,"supersearch_list": {
+        "string_fields": [
+            "sort", 
+            "id", 
+            "order"
+        ], 
+        "url": "/newsupersearch/list/", 
+        "required_fields": [
+            "id"
+        ], 
+        "numeric_fields": [
+            "offset", 
+            "limit"
+        ], 
+        "query": {
+            "id": ""
+        }
+    }
+};
+
+
+/////////////////////////////
+$(document ).ready(function() {
+
+    var cnList = [];
+    var apiList = Object.keys(testInfo);
+    cnList.push(getAutomatedCn(testInfo, apiList));
+
+    var cn = '<table align=center width=1000 border=1 style="background:#eee;">';
+    for (var i in cnList){
+        cn += cnList[i];
+    }
+    cn += '</table>';
+    $("body").html(cn);
+
+});
+
+
+</script>
+
+</head>
+<body>
+
+</body>
+<html>

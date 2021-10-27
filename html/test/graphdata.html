@@ -1,0 +1,48 @@
+<html>
+<head>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<script language="javascript" src="jquery.min.js"></script>
+<script language="javascript" src="api_test.js"></script>
+
+<script>
+var testInfo = {
+    "graph_getdata":{
+        "array_fields":["conceptlist"]
+        ,"string_fields":[]
+        ,"numeric_fields":[]
+        ,"required_fields":["conceptlist"]
+        ,"url":"/graph/getdata"
+        ,"querylist":[
+            {
+                "label":"Example query",
+                "query":{ "conceptlist":["protein","glycan"]}
+            }
+        ]
+    }
+};
+
+
+/////////////////////////////
+$(document ).ready(function() {
+
+    var cnList = [];
+    var apiList = Object.keys(testInfo);
+    cnList.push(getAutomatedCn(testInfo, apiList));
+
+    var cn = '<table align=center width=1000 border=1 style="background:#eee;">';
+    for (var i in cnList){
+        cn += cnList[i];
+    }
+    cn += '</table>';
+    $("body").html(cn);
+
+});
+
+
+</script>
+
+</head>
+<body>
+
+</body>
+<html>

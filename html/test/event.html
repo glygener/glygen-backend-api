@@ -1,0 +1,86 @@
+<html>
+<head>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<script language="javascript" src="jquery.min.js"></script>
+<script language="javascript" src="api_test.js"></script>
+
+
+<script>
+var testInfo = {
+    "auth_login":{
+        "string_fields":["email","password"]
+        ,"numeric_fields":[]
+        ,"required_fields":["email","password"]
+        ,"url":"/auth/login"
+        ,"query":{"email":"","password":""}
+    }
+    ,"event_addnew":{
+        "string_fields":["token","title","description","start_date","end_date","venue", "url", "url_name","visibility"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token", "title", "description", "start_date", "end_date","visibility"]
+        ,"url":"/event/addnew"
+        ,"query":{"token":"","title":"some title", "description":"some description", "start_date":"01/20/2021 23:59:59", "end_date":"01/21/2021 07:00:00", "venue":"some venue", "url":"some url", "url_name":"some url name", "visibility":"hidden"}
+    }
+    ,"event_list":{
+        "string_fields":["token", "visibility", "status"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token", "visibility"]
+        ,"url":"/event/list"
+        ,"querylist":[
+            {
+                "label":"Event list with visibility=all, status=all"
+                ,"query":{"token":"xx", "visibility":"all", "status":"all"}
+            },
+            {
+                "label":"Event list with visibility=visible, status=current"
+                ,"query":{"token":"xx", "visibility":"visible", "status":"current"}
+            }
+        ]
+    }
+    ,"event_update":{
+        "string_fields":["token","id","title","description","start_date","end_date","venue", "url", "url_name", "visibility"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token","id"]
+        ,"url":"/event/update"
+        ,"query":{ "token":"xxx", "id":"xxx","visibility":"visible"}
+    }
+    ,"event_detail":{
+        "string_fields":["token", "id"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token","id"]
+        ,"url":"/event/detail"
+        ,"query":{"id": "xxx", "token":"xxx"}
+    } 
+    ,"event_delete":{
+        "string_fields":["token", "id"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token","id"]
+        ,"url":"/event/delete"
+        ,"query":{"id": "xxx", "token":"xxx"}
+    }
+};
+
+/////////////////////////////
+$(document ).ready(function() {
+
+    var cnList = [];
+    var apiList = Object.keys(testInfo);
+    cnList.push(getAutomatedCn(testInfo, apiList));
+
+    var cn = '<table align=center width=1000 border=1 style="background:#eee;">';
+    for (var i in cnList){
+        cn += cnList[i];
+    }
+    cn += '</table>';
+    $("body").html(cn);
+
+});
+
+
+</script>
+
+</head>
+<body>
+
+</body>
+<html>

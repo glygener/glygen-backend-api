@@ -7,7 +7,7 @@
          "type":"object",
          "description":"Object that contains a set of search criteria to simple search of glycans.",
          "minProperties":1,
-         "maxProperties":1,
+         "maxProperties":4,
          "properties":{
             "query_type":{
                "$id":"/properties/query/properties/query_type",
@@ -33,14 +33,23 @@
                   "any"
                ]
             },
-            "required":[
-               "term",
-               "term_category"
-            ]
-         }
-      },
-      "required":[
-         "query"
-      ]
-   }
+            "version": {
+               "$id": "/properties/query/properties/version",
+               "type": "string",
+               "description": "The version of the query.",
+               "examples": [
+                  "1.2"
+               ]
+            }
+         },
+         "required":[
+            "term",
+            "term_category",
+            "version"
+         ]
+      }
+   },
+   "required":[
+      "query"
+   ]
 }

@@ -41,9 +41,11 @@ Note:
 =====
 An example JSON is available separately and the JSON data structure is documented in a JSON schema.
 
-Error code:
-===========
+General error codes:
+====================
 {
-	"open-connection-failed": "Unable to connect to database."
-}	
+    "open-connection-failed": "Unable to connect to database."
+}
+
+
 

@@ -21,15 +21,20 @@ Note:
 An example JSON is available separately and the JSON data structure is documented in a JSON schema.
 
 
-Error code:
-===========
+General error codes:
+====================
 {
-	"invalid-query-json":"Submitted query JSON is not valid"
-	,"open-connection-failed": "Unable to connect to database."
-	,"unexpected-field-in-query":"Unexpected field in query JSON."
-	,"invalid-parameter-value-length":"one of the required parameter value is too long"
-	,"non-existent-record":"no record exist for the submitted ID"
+    "open-connection-failed": "Unable to connect to database."
+}
 
+
+Input error codes:
+==================
+{
+    "missing-parameter":"one of the required parameter."
+    ,"invalid-parameter-value":"one of the required parameter has invalid value."
+    ,"invalid-parameter-value-length":"one of the required parameter value is too long"
+    ,"non-existent-record":"no record exist for the submitted ID"
 }
 
         

@@ -1,6 +1,12 @@
 {
-   "$id":"http://example.com/example.json",
-   "type":"object",
-   "properties":{
-   }
+    "$schema": "http://json-schema.org/schema#", 
+    "required": [], 
+    "type": "object", 
+    "properties": {
+        "list_id": {
+            "type": "string", 
+            "description": "", 
+            "title": ""
+        }
+    }
 }

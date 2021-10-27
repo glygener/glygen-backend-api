@@ -1,103 +1,836 @@
 {
-   "$schema":"http://json-schema.org/draft-07/schema#",
-   "$id":"http://example.com/root.json",
-   "type":"object",
-   "title":"Schema for the GlyGen home page init web service",
-   "required":[
-      "version",
-      "statistics"
-   ],
-   "properties":{
-      "version":{
-         "$id":"#/properties/version",
-         "type":"array",
-         "description":"A list of versions for individual components of the software.",
-         "items":{
-            "$id":"#/properties/version/items",
-            "type":"object",
-            "title":"Object that stores the name, version and release date of a software component",
-            "required":[
-               "component",
-               "version",
-               "release_date"
-            ],
-            "properties":{
-               "component":{
-                  "$id":"#/properties/version/items/properties/component",
-                  "type":"string",
-                  "description":"Name of the component (e.g. software, api, data).",
-                  "examples":[
-                     "software"
-                  ]
-               },
-               "version":{
-                  "$id":"#/properties/version/items/properties/version",
-                  "type":"string",
-                  "description":"Version number of the software component.",
-                  "examples":[
-                     "1.0.0"
-                  ]
-               },
-               "release_date":{
-                  "$id":"#/properties/version/items/properties/release_date",
-                  "type":"string",
-                  "description":"Release data of the software component. Uses ISO8601.",
-                  "examples":[
-                     "2008-09-15T15:53:00+05:00"
-                  ]
-               }
-            }
-         }
-      },
-      "statistics":{
-         "$id":"#/properties/statistics",
-         "type":"array",
-         "description":"A list of statistic values grouped by species.",
-         "items":{
-            "$id":"#/properties/statistics/items",
-            "type":"object",
-            "title":"A list of objects providing species specific statistics.",
-            "required":[
-               "species",
-               "proteins",
-               "glycoproteins",
-               "glycans"
-            ],
-            "properties":{
-               "species":{
-                  "$id":"#/properties/statistics/items/properties/species",
-                  "type":"string",
-                  "description":"Name of the species.",
-                  "examples":[
-                     "Homo sapiens"
-                  ]
-               },
-               "proteins":{
-                  "$id":"#/properties/statistics/items/properties/proteins",
-                  "type":"integer",
-                  "description":"Number of proteins for this species in GlyGen.",
-                  "examples":[
-                     20997
-                  ]
-               },
-               "glycoproteins":{
-                  "$id":"#/properties/statistics/items/properties/glycoproteins",
-                  "type":"integer",
-                  "description":"Number of GlycoProteins for this species in GlyGen.",
-                  "examples":[
-                     4429
-                  ]
-               },
-               "glycans":{
-                  "$id":"#/properties/statistics/items/properties/glycans",
-                  "type":"integer",
-                  "description":"Number of glycans for this species in GlyGen.",
-                  "examples":[
-                     3300
-                  ]
-               }
-            }
-         }
-      }
-   }
+    "$schema": "http://json-schema.org/schema#", 
+    "required": [], 
+    "type": "object", 
+    "properties": {
+        "venn_protein_rat": {
+            "items": {
+                "required": [], 
+                "type": "object", 
+                "properties": {
+                    "size": {
+                        "type": "integer", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "tooltipname": {
+                        "type": "string", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "organism": {
+                        "description": "", 
+                        "required": [], 
+                        "type": "object", 
+                        "properties": {
+                            "id": {
+                                "type": "integer", 
+                                "description": "", 
+                                "title": ""
+                            }, 
+                            "name": {
+                                "type": "string", 
+                                "description": "", 
+                                "title": ""
+                            }
+                        }, 
+                        "title": ""
+                    }, 
+                    "name": {
+                        "type": "string", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "sets": {
+                        "items": {
+                            "type": "integer"
+                        }, 
+                        "type": "array", 
+                        "description": "", 
+                        "title": ""
+                    }
+                }
+            }, 
+            "type": "array", 
+            "description": "", 
+            "title": ""
+        }, 
+        "bar_sugar_ranges": {
+            "description": "", 
+            "required": [], 
+            "type": "object", 
+            "properties": {
+                "stepsize": {
+                    "type": "integer", 
+                    "description": "", 
+                    "title": ""
+                }, 
+                "data": {
+                    "items": {
+                        "type": "integer"
+                    }, 
+                    "type": "array", 
+                    "description": "", 
+                    "title": ""
+                }
+            }, 
+            "title": ""
+        }, 
+        "venn_protein_mus": {
+            "items": {
+                "required": [], 
+                "type": "object", 
+                "properties": {
+                    "size": {
+                        "type": "integer", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "tooltipname": {
+                        "type": "string", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "organism": {
+                        "description": "", 
+                        "required": [], 
+                        "type": "object", 
+                        "properties": {
+                            "id": {
+                                "type": "integer", 
+                                "description": "", 
+                                "title": ""
+                            }, 
+                            "name": {
+                                "type": "string", 
+                                "description": "", 
+                                "title": ""
+                            }
+                        }, 
+                        "title": ""
+                    }, 
+                    "name": {
+                        "type": "string", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "sets": {
+                        "items": {
+                            "type": "integer"
+                        }, 
+                        "type": "array", 
+                        "description": "", 
+                        "title": ""
+                    }
+                }
+            }, 
+            "type": "array", 
+            "description": "", 
+            "title": ""
+        }, 
+        "sunb_canon_isof_prot": {
+            "description": "", 
+            "required": [], 
+            "type": "object", 
+            "properties": {
+                "name": {
+                    "type": "string", 
+                    "description": "", 
+                    "title": ""
+                }, 
+                "children": {
+                    "items": {
+                        "required": [], 
+                        "type": "object", 
+                        "properties": {
+                            "organism": {
+                                "description": "", 
+                                "required": [], 
+                                "type": "object", 
+                                "properties": {
+                                    "id": {
+                                        "type": "integer", 
+                                        "description": "", 
+                                        "title": ""
+                                    }, 
+                                    "name": {
+                                        "type": "string", 
+                                        "description": "", 
+                                        "title": ""
+                                    }
+                                }, 
+                                "title": ""
+                            }, 
+                            "name": {
+                                "type": "string", 
+                                "description": "", 
+                                "title": ""
+                            }, 
+                            "children": {
+                                "items": {
+                                    "required": [], 
+                                    "type": "object", 
+                                    "properties": {
+                                        "organism": {
+                                            "description": "", 
+                                            "required": [], 
+                                            "type": "object", 
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer", 
+                                                    "description": "", 
+                                                    "title": ""
+                                                }, 
+                                                "name": {
+                                                    "type": "string", 
+                                                    "description": "", 
+                                                    "title": ""
+                                                }
+                                            }, 
+                                            "title": ""
+                                        }, 
+                                        "name": {
+                                            "type": "string", 
+                                            "description": "", 
+                                            "title": ""
+                                        }, 
+                                        "size": {
+                                            "type": "integer", 
+                                            "description": "", 
+                                            "title": ""
+                                        }
+                                    }
+                                }, 
+                                "type": "array", 
+                                "description": "", 
+                                "title": ""
+                            }
+                        }
+                    }, 
+                    "type": "array", 
+                    "description": "", 
+                    "title": ""
+                }
+            }, 
+            "title": ""
+        }, 
+        "pie_glycohydrolases_prot": {
+            "items": {
+                "required": [], 
+                "type": "object", 
+                "properties": {
+                    "organism": {
+                        "description": "", 
+                        "required": [], 
+                        "type": "object", 
+                        "properties": {
+                            "id": {
+                                "type": "integer", 
+                                "description": "", 
+                                "title": ""
+                            }, 
+                            "name": {
+                                "type": "string", 
+                                "description": "", 
+                                "title": ""
+                            }
+                        }, 
+                        "title": ""
+                    }, 
+                    "name": {
+                        "type": "string", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "size": {
+                        "type": "integer", 
+                        "description": "", 
+                        "title": ""
+                    }
+                }
+            }, 
+            "type": "array", 
+            "description": "", 
+            "title": ""
+        }, 
+        "venn_protein_homo": {
+            "items": {
+                "required": [], 
+                "type": "object", 
+                "properties": {
+                    "size": {
+                        "type": "integer", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "tooltipname": {
+                        "type": "string", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "organism": {
+                        "description": "", 
+                        "required": [], 
+                        "type": "object", 
+                        "properties": {
+                            "id": {
+                                "type": "integer", 
+                                "description": "", 
+                                "title": ""
+                            }, 
+                            "name": {
+                                "type": "string", 
+                                "description": "", 
+                                "title": ""
+                            }
+                        }, 
+                        "title": ""
+                    }, 
+                    "name": {
+                        "type": "string", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "sets": {
+                        "items": {
+                            "type": "integer"
+                        }, 
+                        "type": "array", 
+                        "description": "", 
+                        "title": ""
+                    }
+                }
+            }, 
+            "type": "array", 
+            "description": "", 
+            "title": ""
+        }, 
+        "sunb_glycan_organism_type": {
+            "description": "", 
+            "required": [], 
+            "type": "object", 
+            "properties": {
+                "name": {
+                    "type": "string", 
+                    "description": "", 
+                    "title": ""
+                }, 
+                "children": {
+                    "items": {
+                        "required": [], 
+                        "type": "object", 
+                        "properties": {
+                            "organism": {
+                                "description": "", 
+                                "required": [], 
+                                "type": "object", 
+                                "properties": {
+                                    "organism_list": {
+                                        "items": {
+                                            "required": [], 
+                                            "type": "object", 
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer", 
+                                                    "description": "", 
+                                                    "title": ""
+                                                }, 
+                                                "name": {
+                                                    "type": "string", 
+                                                    "description": "", 
+                                                    "title": ""
+                                                }
+                                            }
+                                        }, 
+                                        "type": "array", 
+                                        "description": "", 
+                                        "title": ""
+                                    }, 
+                                    "operation": {
+                                        "type": "string", 
+                                        "description": "", 
+                                        "title": ""
+                                    }
+                                }, 
+                                "title": ""
+                            }, 
+                            "name": {
+                                "type": "string", 
+                                "description": "", 
+                                "title": ""
+                            }, 
+                            "children": {
+                                "items": {
+                                    "required": [], 
+                                    "type": "object", 
+                                    "properties": {
+                                        "glycan_type": {
+                                            "type": "string", 
+                                            "description": "", 
+                                            "title": ""
+                                        }, 
+                                        "organism": {
+                                            "description": "", 
+                                            "required": [], 
+                                            "type": "object", 
+                                            "properties": {
+                                                "organism_list": {
+                                                    "items": {
+                                                        "required": [], 
+                                                        "type": "object", 
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer", 
+                                                                "description": "", 
+                                                                "title": ""
+                                                            }, 
+                                                            "name": {
+                                                                "type": "string", 
+                                                                "description": "", 
+                                                                "title": ""
+                                                            }
+                                                        }
+                                                    }, 
+                                                    "type": "array", 
+                                                    "description": "", 
+                                                    "title": ""
+                                                }, 
+                                                "operation": {
+                                                    "type": "string", 
+                                                    "description": "", 
+                                                    "title": ""
+                                                }
+                                            }, 
+                                            "title": ""
+                                        }, 
+                                        "name": {
+                                            "type": "string", 
+                                            "description": "", 
+                                            "title": ""
+                                        }, 
+                                        "size": {
+                                            "type": "integer", 
+                                            "description": "", 
+                                            "title": ""
+                                        }
+                                    }
+                                }, 
+                                "type": "array", 
+                                "description": "", 
+                                "title": ""
+                            }
+                        }
+                    }, 
+                    "type": "array", 
+                    "description": "", 
+                    "title": ""
+                }
+            }, 
+            "title": ""
+        }, 
+        "venn_glycan_species": {
+            "items": {
+                "required": [], 
+                "type": "object", 
+                "properties": {
+                    "size": {
+                        "type": "integer", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "tooltipname": {
+                        "type": "string", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "organism": {
+                        "description": "", 
+                        "required": [], 
+                        "type": "object", 
+                        "properties": {
+                            "organism_list": {
+                                "items": {
+                                    "required": [], 
+                                    "type": "object", 
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer", 
+                                            "description": "", 
+                                            "title": ""
+                                        }, 
+                                        "name": {
+                                            "type": "string", 
+                                            "description": "", 
+                                            "title": ""
+                                        }
+                                    }
+                                }, 
+                                "type": "array", 
+                                "description": "", 
+                                "title": ""
+                            }, 
+                            "operation": {
+                                "type": "string", 
+                                "description": "", 
+                                "title": ""
+                            }
+                        }, 
+                        "title": ""
+                    }, 
+                    "name": {
+                        "type": "string", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "sets": {
+                        "items": {
+                            "type": "integer"
+                        }, 
+                        "type": "array", 
+                        "description": "", 
+                        "title": ""
+                    }
+                }
+            }, 
+            "type": "array", 
+            "description": "", 
+            "title": ""
+        }, 
+        "donut_motif": {
+            "items": {
+                "required": [], 
+                "type": "object", 
+                "properties": {
+                    "name": {
+                        "type": "string", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "size": {
+                        "type": "integer", 
+                        "description": "", 
+                        "title": ""
+                    }
+                }
+            }, 
+            "type": "array", 
+            "description": "", 
+            "title": ""
+        }, 
+        "sunb_glycan_type_subtype": {
+            "description": "", 
+            "required": [], 
+            "type": "object", 
+            "properties": {
+                "name": {
+                    "type": "string", 
+                    "description": "", 
+                    "title": ""
+                }, 
+                "children": {
+                    "items": {
+                        "required": [], 
+                        "type": "object", 
+                        "properties": {
+                            "name": {
+                                "type": "string", 
+                                "description": "", 
+                                "title": ""
+                            }, 
+                            "children": {
+                                "items": {
+                                    "required": [], 
+                                    "type": "object", 
+                                    "properties": {
+                                        "name": {
+                                            "type": "string", 
+                                            "description": "", 
+                                            "title": ""
+                                        }, 
+                                        "size": {
+                                            "type": "integer", 
+                                            "description": "", 
+                                            "title": ""
+                                        }
+                                    }
+                                }, 
+                                "type": "array", 
+                                "description": "", 
+                                "title": ""
+                            }
+                        }
+                    }, 
+                    "type": "array", 
+                    "description": "", 
+                    "title": ""
+                }
+            }, 
+            "title": ""
+        }, 
+        "sunb_bio_molecules": {
+            "description": "", 
+            "required": [], 
+            "type": "object", 
+            "properties": {
+                "name": {
+                    "type": "string", 
+                    "description": "", 
+                    "title": ""
+                }, 
+                "children": {
+                    "items": {
+                        "required": [], 
+                        "type": "object", 
+                        "properties": {
+                            "children": {
+                                "items": {
+                                    "required": [], 
+                                    "type": "object", 
+                                    "properties": {
+                                        "glycan_type": {
+                                            "type": "string", 
+                                            "description": "", 
+                                            "title": ""
+                                        }, 
+                                        "organism": {
+                                            "description": "", 
+                                            "required": [], 
+                                            "type": "object", 
+                                            "properties": {
+                                                "organism_list": {
+                                                    "items": {
+                                                        "required": [], 
+                                                        "type": "object", 
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer", 
+                                                                "description": "", 
+                                                                "title": ""
+                                                            }, 
+                                                            "name": {
+                                                                "type": "string", 
+                                                                "description": "", 
+                                                                "title": ""
+                                                            }
+                                                        }
+                                                    }, 
+                                                    "type": "array", 
+                                                    "description": "", 
+                                                    "title": ""
+                                                }, 
+                                                "operation": {
+                                                    "type": "string", 
+                                                    "description": "", 
+                                                    "title": ""
+                                                }
+                                            }, 
+                                            "title": ""
+                                        }, 
+                                        "name": {
+                                            "type": "string", 
+                                            "description": "", 
+                                            "title": ""
+                                        }, 
+                                        "size": {
+                                            "type": "integer", 
+                                            "description": "", 
+                                            "title": ""
+                                        }
+                                    }
+                                }, 
+                                "type": "array", 
+                                "description": "", 
+                                "title": ""
+                            }, 
+                            "organism": {
+                                "description": "", 
+                                "type": "object", 
+                                "properties": {
+                                    "id": {
+                                        "type": "integer", 
+                                        "description": "", 
+                                        "title": ""
+                                    }, 
+                                    "organism_list": {
+                                        "items": {
+                                            "required": [], 
+                                            "type": "object", 
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer", 
+                                                    "description": "", 
+                                                    "title": ""
+                                                }, 
+                                                "name": {
+                                                    "type": "string", 
+                                                    "description": "", 
+                                                    "title": ""
+                                                }
+                                            }
+                                        }, 
+                                        "type": "array", 
+                                        "description": "", 
+                                        "title": ""
+                                    }, 
+                                    "operation": {
+                                        "type": "string", 
+                                        "description": "", 
+                                        "title": ""
+                                    }, 
+                                    "name": {
+                                        "type": "string", 
+                                        "description": "", 
+                                        "title": ""
+                                    }
+                                }, 
+                                "title": ""
+                            }, 
+                            "name": {
+                                "type": "string", 
+                                "description": "", 
+                                "title": ""
+                            }, 
+                            "size": {
+                                "type": "integer", 
+                                "description": "", 
+                                "title": ""
+                            }
+                        }
+                    }, 
+                    "type": "array", 
+                    "description": "", 
+                    "title": ""
+                }
+            }, 
+            "title": ""
+        }, 
+        "bar_mass_ranges": {
+            "description": "", 
+            "required": [], 
+            "type": "object", 
+            "properties": {
+                "stepsize": {
+                    "type": "integer", 
+                    "description": "", 
+                    "title": ""
+                }, 
+                "data": {
+                    "items": {
+                        "type": "integer"
+                    }, 
+                    "type": "array", 
+                    "description": "", 
+                    "title": ""
+                }
+            }, 
+            "title": ""
+        }, 
+        "sunb_glycoprot_rep_pred_glyc": {
+            "description": "", 
+            "required": [], 
+            "type": "object", 
+            "properties": {
+                "name": {
+                    "type": "string", 
+                    "description": "", 
+                    "title": ""
+                }, 
+                "children": {
+                    "items": {
+                        "required": [], 
+                        "type": "object", 
+                        "properties": {
+                            "name": {
+                                "type": "string", 
+                                "description": "", 
+                                "title": ""
+                            }, 
+                            "children": {
+                                "items": {
+                                    "required": [], 
+                                    "type": "object", 
+                                    "properties": {
+                                        "organism": {
+                                            "description": "", 
+                                            "required": [], 
+                                            "type": "object", 
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer", 
+                                                    "description": "", 
+                                                    "title": ""
+                                                }, 
+                                                "name": {
+                                                    "type": "string", 
+                                                    "description": "", 
+                                                    "title": ""
+                                                }
+                                            }, 
+                                            "title": ""
+                                        }, 
+                                        "name": {
+                                            "type": "string", 
+                                            "description": "", 
+                                            "title": ""
+                                        }, 
+                                        "size": {
+                                            "type": "integer", 
+                                            "description": "", 
+                                            "title": ""
+                                        }
+                                    }
+                                }, 
+                                "type": "array", 
+                                "description": "", 
+                                "title": ""
+                            }
+                        }
+                    }, 
+                    "type": "array", 
+                    "description": "", 
+                    "title": ""
+                }
+            }, 
+            "title": ""
+        }, 
+        "pie_glycosyltransferases_prot": {
+            "items": {
+                "required": [], 
+                "type": "object", 
+                "properties": {
+                    "organism": {
+                        "description": "", 
+                        "required": [], 
+                        "type": "object", 
+                        "properties": {
+                            "id": {
+                                "type": "integer", 
+                                "description": "", 
+                                "title": ""
+                            }, 
+                            "name": {
+                                "type": "string", 
+                                "description": "", 
+                                "title": ""
+                            }
+                        }, 
+                        "title": ""
+                    }, 
+                    "name": {
+                        "type": "string", 
+                        "description": "", 
+                        "title": ""
+                    }, 
+                    "size": {
+                        "type": "integer", 
+                        "description": "", 
+                        "title": ""
+                    }
+                }
+            }, 
+            "type": "array", 
+            "description": "", 
+            "title": ""
+        }
+    }
 }

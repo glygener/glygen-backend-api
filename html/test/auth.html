@@ -1,0 +1,107 @@
+<html>
+<head>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<script language="javascript" src="jquery.min.js"></script>
+<script language="javascript" src="api_test.js"></script>
+
+
+<script>
+var testInfo = {
+    "auth_userid":{
+        "string_fields":[]
+        ,"numeric_fields":[]
+        ,"required_fields":[]
+        ,"url":"/auth/userid"
+        ,"query":{}
+    }
+    ,"auth_contact":{
+        "string_fields":["fname","lname","email", "subject", "message","page"]
+        ,"numeric_fields":[]
+        ,"required_fields":["fname", "lname", "email", "subject", "message"]
+        ,"url":"/auth/contact"
+        ,"query":{"fname":"dfafa", "lname":"dfafa", "email":"dfafa", "subject":"dfafa", "message":"dfaa"}
+    }
+    ,"auth_register":{
+        "string_fields":["email","password"]
+        ,"numeric_fields":[]
+        ,"required_fields":["email", "password"]
+        ,"url":"/auth/register"
+        ,"query":{"email":"jim.smith@abcxyz.com","password":"pass4smith"}
+    }
+    ,"auth_userinfo":{
+        "string_fields":["token","email"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token", "email"]
+        ,"url":"/auth/userinfo"
+        ,"query":{"token":"", "email":""}
+    }
+    ,"auth_userupdate":{
+        "string_fields":["token","email","password", "access", "role"]
+        ,"numeric_fields":["status"]
+        ,"required_fields":["token","email"]
+        ,"url":"/auth/userupdate"
+        ,"query":{"token":"xxx","email":"jim.smith@abcxyz.com","access":"read", "status":1}
+    } 
+    ,"auth_login":{
+        "string_fields":["email","password"]
+        ,"numeric_fields":[]
+        ,"required_fields":["email","password"]
+        ,"url":"/auth/login"
+        ,"query":{"email":"jim.smith@abcxyz.com","password":"pass4smith"}
+    }
+    ,"auth_tokenstatus":{
+        "string_fields":["token"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token"]
+        ,"url":"/auth/tokenstatus"
+        ,"query":{"token":""}
+    }
+    ,"auth_contactlist":{
+        "string_fields":["token", "visibility"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token","visibility"]
+        ,"url":"/auth/contactlist"
+        ,"query":{"token":"xxx","visibility":"all"}
+    }
+    ,"auth_contactupdate":{
+        "string_fields":["token","id", "comment","status", "agent", "visibility"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token","id"]
+        ,"url":"/auth/contactupdate"
+        ,"query":{"token":"xxx", "id":"xxx"}
+    }
+    ,"auth_contactdelete":{
+        "string_fields":["token", "id"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token", "id"]
+        ,"url":"/auth/contactdelete"
+        ,"query":{"token":"", "id":""}
+    }
+       
+};
+
+/////////////////////////////
+$(document ).ready(function() {
+
+    var cnList = [];
+    var apiList = Object.keys(testInfo);
+    cnList.push(getAutomatedCn(testInfo, apiList));
+
+    var cn = '<table align=center width=1000 border=1 style="background:#eee;">';
+    for (var i in cnList){
+        cn += cnList[i];
+    }
+    cn += '</table>';
+    $("body").html(cn);
+
+});
+
+
+
+</script>
+
+</head>
+<body>
+
+</body>
+<html>

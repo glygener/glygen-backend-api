@@ -13,11 +13,15 @@ to our glygen mail ID.
 
 Web Service call:
 HTTP Request method:    POST
-Variable:               name        First name of the user
-                        surname     Last name of the user
-                        subject     Subject selected from dropdown
-                        email       email ID of the user
-                        message     The textual feedback from the user.
+Variable:               * fname        First name of the user
+                        lname       Last name of the user
+                        * subject     Subject selected from dropdown
+                        * email       email ID of the user
+                        * message     The textual feedback from the user.
+                        page		  Current webpage that calls the logging service
+
+ Note: all this data is sent to WS in the “query” object variable as a json string.
+	* = required parameter
 
 Function:
 The web service on receiving a call will process it and returns
@@ -39,3 +43,24 @@ To all Cross-Origin Resource Sharing (CORS) the web service has to allow all dom
 
 Note
 An example JSON is available separately and the JSON data structure is documented in a JSON schema.
+
+
+General error codes:
+====================
+{
+    "open-connection-failed": "Unable to connect to database."
+}
+
+
+Input error codes:
+==================
+{
+    "invalid-query-json":"Submitted query JSON is not valid"
+    ,"missing-query-key-in-query-json":"query property is missing in query JSON"
+    ,"unexpected-field-in-query":"Unexpected field in query JSON."
+    ,"missing-parameter":"one of the required parameter."
+    ,"invalid-parameter-value":"one of the required parameter has invalid value."
+    ,"invalid-parameter-value-length":"one of the required parameter value is too long"
+}
+
+

@@ -9,289 +9,353 @@ import pytz
 from collections import OrderedDict
 from bson import json_util, ObjectId
 
-from pymongo import MongoClient
-from pymongo.errors import ConnectionFailure
+
+import errorlib
+import util
 
 
-def glycan_search_init(db_obj):
-    
+def glycan_search_init(config_obj):
+   
+    db_obj = config_obj[config_obj["server"]]["dbinfo"]
+    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    if error_obj != {}:
+        return error_obj
 
-    client = MongoClient('mongodb://localhost:27017')
-    dbh = client[db_obj["dbname"]]
+    error_list = errorlib.get_errors_in_query("glycan_searchinit",{}, config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+
+
     collection = "c_searchinit"
-    if collection not in dbh.collection_names():
-        return {"error_code": "open-connection-failed"}
-
     res_obj =  dbh[collection].find_one({})
 
     return res_obj["glycan"]
 
 
 
+def glycan_search_simple(query_obj, config_obj):
+
+    db_obj = config_obj[config_obj["server"]]["dbinfo"]
+    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    if error_obj != {}:
+        return error_obj
+
+
+    #Collect errors 
+    error_list = errorlib.get_errors_in_query("glycan_search_simple", query_obj, config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+
+
+    mongo_query = get_simple_mongo_query(query_obj)
+    #return mongo_query
+    #mongo_query = {"byonic": {"$options": "i", "$regex": "Hex\(5\)"}}
+    
+    collection = "c_glycan"
+    record_list = []
+    record_type = "glycan"
+    prj_obj = {"glytoucan_ac":1}
+    for doc in dbh[collection].find(mongo_query,prj_obj):
+        record_list.append(doc["glytoucan_ac"])
+
+
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
+    cache_coll = "c_cache"
+    list_id = ""
+    if len(record_list) != 0:
+        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        list_id = hash_obj.hexdigest()
+        cache_info = {
+            "query":query_obj,
+            "ts":ts,
+            "record_type":record_type,
+            "search_type":"search_simple"
+        }
+        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+    res_obj = {"list_id":list_id}
+
+    return res_obj
 
 
 
-def glycan_search(query_obj, db_obj):
+
+def glycan_search(query_obj, config_obj):
+
+    db_obj = config_obj[config_obj["server"]]["dbinfo"]
+    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    if error_obj != {}:
+        return error_obj
 
 
+    #Clean query object
+    key_list = query_obj.keys()
+    for key in key_list:
+        flag_list = []
+        #flag_list.append(key in ["query_type", "operation"])
+        flag_list.append(str(query_obj[key]).strip() == "")
+        flag_list.append(query_obj[key] == [])
+        flag_list.append(query_obj[key] == {})
+        if True in flag_list:
+            query_obj.pop(key)
+
+    #Collect errors 
+    error_list = errorlib.get_errors_in_query("glycan_search", query_obj, config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+
+    if "organism" in query_obj:
+        if "operation" not in query_obj["organism"]:
+            return {"error_list":[{"error_code":"missing-parameter", 
+                "field":"organism.operation"}]}
 
 
-    client = MongoClient('mongodb://localhost:27017')    
-    dbh = client[db_obj["dbname"]]
-    collection = "c_glycan"    
-    cache_collection = "c_glycancache"
-
-    if collection not in dbh.collection_names():
-        return {"error_code": "open-connection-failed"}
-    if cache_collection not in dbh.collection_names():
-        return {"error_code": "open-connection-failed"}
+    residue_list = []
+    for o in dbh["c_searchinit"].find_one({})["glycan"]["composition"]:
+        residue_list.append(o["residue"])
 
 
+    #If residue is not in query, add it with default range in query
+    seen = {}
+    default_min, default_max = 0, 0
+    if "composition" in query_obj:
+        for o in query_obj["composition"]:
+            res = o["residue"]
+            seen[res] = True
+            if res == "default":
+                default_min, default_max = o["min"], o["max"]
+                query_obj["composition"].remove(o)
 
-    field_grp1 = ["query_type", "operation", "glytoucan_ac", "glycan_motif", 
-                    "uniprot_canonical_ac","glycan_type", "glycan_subtype"]
-    field_grp2 = ["mass", "number_monosaccharides"]
-    field_grp3 = ["enzyme"]
-    field_grp4 = ["tax_id"]
-    #check if submitted fields are allowed and contain valid values
-    field_list = field_grp1 + field_grp2 + field_grp3 + field_grp4
-    max_query_value_len = 1000
-    for field in query_obj:
-        if field not in field_list:
-            return {"error_code":"unexpected-field-in-query"}
-        if len(str(query_obj[field])) > max_query_value_len:
-            return {"error_code":"invalid-parameter-value-length"}
-
-    flag_list = []
-    for field in query_obj:
-        if field in ["query_type", "operation"]:
-            continue
-        if field in field_grp1:
-            flag_list.append(query_obj[field] != "")
-        elif field in field_grp2 + field_grp3:
-            flag_list.append(query_obj[field] != {})
-        elif field in field_grp4:
-            if type(query_obj[field]) is not int:
-                return {"error_code":"invalid-parameter-value"}
-
-
-    for field1 in query_obj:
-        if field1 in field_grp2:
-            for field2  in query_obj[field1]:
-                if field2 not in ["min", "max"]:
-                    return {"error_code":"unexpected-field-in-query"}
-                if type(query_obj[field1][field2]) is not float and type(query_obj[field1][field2]) is not int:
-                    return {"error_code":"invalid-parameter-value"}
-        if field1 in field_grp3:
-           for field2  in query_obj[field1]:
-                if field2 not in ["type", "id"]:
-                    return {"error_code":"unexpected-field-in-query"}
-                if len(str(query_obj[field1][field2])) > max_query_value_len:
-                    return {"error_code":"invalid-parameter-value-length"}
-
-    for field1 in field_grp1:
-        if field1 not in query_obj:
-		continue
-	if field1 in ["query_type", "operation"]:
-            query_obj.pop(field1)
-        elif str(query_obj[field1]).strip() == "":
-            query_obj.pop(field1)
-
-    for field1 in field_grp2 + field_grp3:
-        if field1 not in query_obj:
-                continue
-	if query_obj[field1] == {}:
-            query_obj.pop(field1)
+        for res in residue_list:
+            if res not in seen:
+                o = {"residue":res, "min":default_min, "max":default_max}
+                query_obj["composition"].append(o)
+        
 
     mongo_query = get_mongo_query(query_obj)
+    #return mongo_query
 
-
-    results = []
-    for obj in dbh[collection].find(mongo_query):
-        obj = json.loads(json_util.dumps(obj))
-        glytoucan_ac = obj["glytoucan_ac"]
-        
-        fobj = {}
-	for key in obj:
-            if type(obj[key]) is list and len(obj[key]) > 0:
-                fobj[key] = obj[key]
-            elif isinstance(obj[key], basestring) and obj[key].strip() != "":
-                fobj[key] = obj[key]
-        #results[glytoucan_ac] = fobj
-        seen = {"uniprot_canonical_ac":{}, "enzyme":{}}
-        if "glycoprotein" in obj:
-            for xobj in obj["glycoprotein"]:
-                seen["uniprot_canonical_ac"][xobj["uniprot_canonical_ac"].lower()] = True
-        
-        if "enzyme" in obj:
-            for xobj in obj["enzyme"]:
-                seen["enzyme"][xobj["gene"].lower()] = True
-
-        mass = obj["mass"] if "mass" in obj else -1
-
-
-        number_monosaccharides = obj["number_monosaccharides"] if "number_monosaccharides" in obj else -1
-        iupac = obj["iupac"] if "iupac" in obj else ""
-        glycoct = obj["glycoct"] if "glycoct" in obj else ""
-
-        results.append({
-            "glytoucan_ac":glytoucan_ac
-            ,"mass": mass 
-            ,"number_monosaccharides": number_monosaccharides
-            ,"number_proteins": len(seen["uniprot_canonical_ac"].keys()) 
-            ,"number_enzymes": len(seen["enzyme"].keys()) 
-            ,"iupac": iupac
-            ,"glycoct": glycoct
-        })
-
-    res_obj = {}
-    if len(results) == 0:
-        res_obj = {"list_id":""}
-    else:
-        ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
-
-        hash_obj = hashlib.md5(json.dumps(query_obj))
-        list_id = hash_obj.hexdigest()
-        search_results_obj = {}
-        search_results_obj["list_id"] = list_id
-        search_results_obj["query"] = query_obj
-        search_results_obj["query"]["execution_time"] = ts
-        search_results_obj["results"] = results
-        result = dbh[cache_collection].delete_many({"list_id":list_id})
-        result = dbh[cache_collection].insert_one(search_results_obj)
-        res_obj["list_id"] = list_id
-
-    return res_obj
-
-
-def glycan_list(query_obj, db_obj):
-
-
-    client = MongoClient('mongodb://localhost:27017')
-    dbh = client[db_obj["dbname"]]
-    cache_collection = "c_glycancache"
-    if cache_collection not in dbh.collection_names():
-        return {"error_code": "open-connection-failed"}
-
-
-    res_obj = {}
-    #check if submitted fields are allowed and contain valid values
-    field_list = ["id", "offset", "limit", "sort", "order"]
-    max_query_value_len = 1000
-    for field in query_obj:
-        if field not in field_list:
-            return {"error_code":"unexpected-field-in-query"}
-        if len(str(query_obj[field])) > max_query_value_len:
-            return {"error_code":"invalid-parameter-value-length"}
-
-    #Check for required parameters
-    key_list = ["id"]
-    for key in key_list:
-        if key not in query_obj:
-            return {"error_code":"missing-parameter"}
-        if str(query_obj[key]).strip() == "":
-            return {"error_code":"invalid-parameter-value"}
-
-    cached_obj = dbh[cache_collection].find_one({"list_id":query_obj["id"]})
-    if cached_obj == None:
-        return {"error_code":"non-existent-search-results"}
-
-
-    default_hash = {"offset":1, "limit":20, "sort":"glytoucan_ac", "order":"asc"}
-    for key in default_hash:
-        if key not in query_obj:
-            query_obj[key] = default_hash[key]
-        else:
-            #check type for submitted int fields
-            if key in ["offset", "limit"]:
-                if type(query_obj[key]) is not int:
-                    return {"error_code":"invalid-parameter-value"}
-            #check type for submitted selection fields
-            if key in ["order"]:
-                if query_obj[key] not in ["asc", "desc"]:
-                    return {"error_code":"invalid-parameter-value"}
-
-
-    sorted_id_list = sort_objects(cached_obj["results"], query_obj["sort"], query_obj["order"])
-    res_obj = {"query":cached_obj["query"]}
-
-    if len(cached_obj["results"]) == 0:
-        return {}
-    if int(query_obj["offset"]) < 1 or int(query_obj["offset"]) > len(cached_obj["results"]):
-	return {"error_code":"invalid-parameter-value"}
-
-    start_index = int(query_obj["offset"]) - 1
-    stop_index = start_index + int(query_obj["limit"])
-    res_obj["results"] = []
-
-
-    for obj_id in sorted_id_list[start_index:stop_index]:
-        obj = cached_obj["results"][obj_id]
-        res_obj["results"].append(order_obj(obj))
-
-    res_obj["pagination"] = {"offset":query_obj["offset"], "limit":query_obj["limit"],
-        "total_length":len(cached_obj["results"]), "sort":query_obj["sort"], "order":query_obj["order"]}
-    return res_obj
-
-
-def glycan_detail(query_obj, db_obj):
-
-
-    client = MongoClient('mongodb://localhost:27017')
-    dbh = client[db_obj["dbname"]]
     collection = "c_glycan"
-    if collection not in dbh.collection_names():
-        return {"error_code": "open-connection-failed"}
+    cache_collection = "c_cache"
+
+    i = 0
+    results = []
+    prj_obj = {"glytoucan_ac":1, "subsumption":1, "composition":1, "glycan_identifier":1,"crossref.id":1}
+    doc_list = []
+    for doc in dbh[collection].find(mongo_query,prj_obj):
+        if "composition" in query_obj:
+            if query_obj["composition"] != []:
+                if passes_composition_filter(doc["composition"], query_obj) == False:
+                    continue
+        doc_list.append(doc)
 
 
-    #check if submitted fields are allowed and contain valid values
-    field_list = ["glytoucan_ac"]
-    max_query_value_len = 1000
-    for field in query_obj:
-        if field not in field_list:
-            return {"error_code":"unexpected-field-in-query"}
-        if len(str(query_obj[field])) > max_query_value_len:
-            return {"error_code":"invalid-parameter-value-length"}
+    #Add additional glycan objects related to hits by subsumption
+    if "glycan_identifier" in query_obj:
+        if "subsumption" in query_obj["glycan_identifier"]:
+            rel_type = query_obj["glycan_identifier"]["subsumption"].lower()
+            if rel_type != "none": 
+                hit_list = []
+                for doc in doc_list:
+                    hit_list.append(doc["glytoucan_ac"])
+                seen_id = {}
+                extra_doc_list = []
+                for doc in doc_list:
+                    for o in doc["subsumption"]:
+                        rel = o["relationship"].lower()
+                        tv = rel == rel_type
+                        tv = True if rel_type == "any" else tv
+                        if tv and o["id"] not in hit_list:
+                            seen_id[o["id"]] = True
+                for glytoucan_ac in seen_id.keys():
+                    doc = dbh[collection].find_one({"glytoucan_ac":glytoucan_ac},prj_obj)
+                    extra_doc_list.append(doc)
+                doc_list += extra_doc_list
 
-    mongo_query = {"glytoucan_ac":{'$regex': query_obj["glytoucan_ac"], '$options': 'i'}}
+
+    record_list = []
+    record_type = "glycan"
+    seen_id = {}
+    for doc in doc_list:
+        record_list.append(doc["glytoucan_ac"])
+        seen_id[doc["glytoucan_ac"]] = True
+        for obj in doc["crossref"]:
+            seen_id[obj["id"]] = True
+
+
+    unmapped_obj_list = []
+    if "glycan_identifier" in query_obj:
+        if "glycan_id" in query_obj["glycan_identifier"]:
+            qid_list = get_qid_list(query_obj["glycan_identifier"]["glycan_id"])
+            for qid in qid_list:
+                if qid not in seen_id:
+                    unmapped_obj_list.append({"input_id":qid, "reason":"ID not found"})
+
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
+    cache_coll = "c_cache"
+    list_id = ""
+    if len(record_list) != 0:
+        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        list_id = hash_obj.hexdigest()
+        cache_info = {
+            "query":query_obj,
+            "ts":ts, 
+            "record_type":record_type, 
+            "search_type":"search",
+        }
+        if unmapped_obj_list != []:
+            cache_info["batch_info"] = {"unmapped":unmapped_obj_list}
+        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+    res_obj = {"list_id":list_id}
+
+    return res_obj
+    
+
+
+
+
+
+
+def glycan_detail(query_obj, config_obj):
+
+    db_obj = config_obj[config_obj["server"]]["dbinfo"]
+    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    if error_obj != {}:
+        return error_obj
+
+
+    #Collect errors 
+    error_list = errorlib.get_errors_in_query("glycan_detail", query_obj, config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+    collection = "c_glycan"
+
+
+    q = {"record_id":{'$eq': query_obj["glytoucan_ac"].upper()}}
+    history_obj = dbh["c_idtrack"].find_one(q)
+
+    mongo_query = {"glytoucan_ac":{'$eq': query_obj["glytoucan_ac"].upper()}}
     obj = dbh[collection].find_one(mongo_query)
+    
+    #check for post-access error, error_list should be empty upto this line
+    post_error_list = []
     if obj == None:
-        return {"error_code":"non-existent-record"}
+        post_error_list.append({"error_code":"non-existent-record"})
+        res_obj = {"error_list":post_error_list}
+        if history_obj != None:
+            res_obj["reason"] = history_obj["history"]
+        return res_obj
 
-    keys_to_remove = ["_id", "number_monosaccharides"]
-    for key in keys_to_remove:
-        if key in obj:
-            obj.pop(key)
-
-    return order_obj(obj) 
+    url = config_obj["urltemplate"]["glytoucan"] % (obj["glytoucan_ac"])
+    obj["glytoucan"] = {"glytoucan_ac":obj["glytoucan_ac"], "glytoucan_url":url}
+    obj["history"] = history_obj["history"] if history_obj != None else []
 
 
-def glycan_image(query_obj, path_obj):
 
-        img_file = path_obj["glycanimagespath"] +   query_obj["glytoucan_ac"].upper() +".png"
+    #Remove 0 count residues
+    tmp_list = []
+    for o in obj["composition"]:
+        if o["count"] > 0:
+            tmp_list.append(o)
+    obj["composition"] = tmp_list
+
+    util.clean_obj(obj, config_obj["removelist"]["c_glycan"], "c_glycan")
+
+    if "enzyme" in obj:
+        for o in obj["enzyme"]:
+            if "gene_url" in o:
+                o["gene_link"] = o["gene_url"]
+
+    return util.order_obj(obj, config_obj["objectorder"]["glycan"])
+
+
+def glycan_image(query_obj, config_obj):
+
+        path_obj  =  config_obj[config_obj["server"]]["pathinfo"]
+        img_path = path_obj["glycanimagespath"] % (config_obj["datarelease"])
+        img_file = img_path +   query_obj["glytoucan_ac"].upper() + ".png"
         if os.path.isfile(img_file) == False:
-            img_file = path_obj["glycanimagespath"] +  "G0000000.png"
+            img_file = img_path +  "G0000000.png"
         return img_file
 
-        #data_uri = open(img_file, 'rb').read().encode('base64').replace('\n', '')
-        #img_tag = '<img src="data:image/png;base64,{0}">'.format(data_uri)
-        #return img_tag
 
+
+
+def get_simple_mongo_query(query_obj):
+
+
+    query_term = "\"%s\"" % (query_obj["term"])
+
+    cond_objs = []
+    if query_obj["term_category"] == "any":
+        return {'$text': { '$search': query_term}}
+    elif query_obj["term_category"] == "glycan":
+        cond_objs.append({"glytoucan_ac":{'$regex': query_obj["term"], '$options': 'i'}})
+        cond_objs.append({"iupac":{'$regex': query_obj["term"], '$options': 'i'}})
+        cond_objs.append({"wurcs":{'$regex': query_obj["term"], '$options': 'i'}})
+        cond_objs.append({"glycoct":{'$regex': query_obj["term"], '$options': 'i'}})
+        qval = query_obj["term"].replace("(", "\\(").replace(")", "\\)")
+        cond_objs.append({"byonic":{'$regex': qval, '$options': 'i'}})
+        cond_objs.append({"names.name": {'$regex': qval,'$options': 'i'}})
+    elif query_obj["term_category"] == "protein":
+        cond_objs.append({"glycoprotein.uniprot_canonical_ac":{'$regex': query_obj["term"], '$options': 'i'}})
+        cond_objs.append({"glycoprotein.protein_name":{'$regex': query_obj["term"], '$options': 'i'}})
+    elif query_obj["term_category"] == "enzyme":
+        cond_objs.append({"enzyme.uniprot_canonical_ac":{'$regex': query_obj["term"], '$options': 'i'}})
+        cond_objs.append({"enzyme.protein_name":{'$regex': query_obj["term"], '$options': 'i'}})
+        cond_objs.append({"enzyme.gene":{'$regex': query_obj["term"], '$options': 'i'}})
+    elif query_obj["term_category"] == "organism":
+        cond_objs.append({"species.name":{'$regex': query_obj["term"], '$options': 'i'}})
+    
+    
+    mongo_query = {} if cond_objs == [] else { "$or": cond_objs }
+    return mongo_query
+
+
+def get_qid_list(q):
+    q = q.replace("[", "\\[")
+    q = q.replace("[", "\\[")
+    q = q.replace("]", "\\]")
+    q = q.replace("(", "\\(")
+    q = q.replace(")", "\\)")
+    q = q.replace("[", "\\[")
+    qid_list = q.replace(" ", "").split(",")
+    return qid_list
 
 
 def get_mongo_query(query_obj):
 
     cond_objs = []
     #glytoucan_ac
-    if "glytoucan_ac" in query_obj:
-        cond_objs.append({"glytoucan_ac":{'$regex': query_obj["glytoucan_ac"], '$options': 'i'}})
+    if "glycan_identifier" in query_obj:
+        if "glycan_id" in query_obj["glycan_identifier"]:
+            qid_list = get_qid_list(query_obj["glycan_identifier"]["glycan_id"])
+            #qval = "^%s$" % (q)
+            cond_objs.append(
+                {
+                "$or":[
+                    {"glytoucan_ac":{"$in": qid_list}},
+                    {"crossref.id":{"$in": qid_list}}
+                ]
+                }
+            )
 
+
+    #glycan_name
+    if "glycan_name" in query_obj:
+        qval = query_obj["glycan_name"].replace("(", "\\(").replace(")", "\\)")
+        q = {"names.name": {'$regex': qval, '$options': 'i'}}
+        cond_objs.append(q)
+
+    
     #mass
     if "mass" in query_obj:
+        mass_field = "mass_pme" if query_obj["mass_type"].lower() != "native" else "mass"
         if "min" in query_obj["mass"]:
-            cond_objs.append({"mass":{'$gte': query_obj["mass"]["min"]}})
+            cond_objs.append({mass_field:{'$gte': query_obj["mass"]["min"]}})
         if "max" in query_obj["mass"]:
-            cond_objs.append({"mass":{'$lte': query_obj["mass"]["max"]}})
+            cond_objs.append({mass_field:{'$lte': query_obj["mass"]["max"]}})
     
     #number_monosaccharides
     if "number_monosaccharides" in query_obj:
@@ -300,22 +364,99 @@ def get_mongo_query(query_obj):
         if "max" in query_obj["number_monosaccharides"]:
             cond_objs.append({"number_monosaccharides":{'$lte': query_obj["number_monosaccharides"]["max"]}})
 
+    #subsumption
+    if "subsumption" in query_obj:
+        rel, rel_ac = "any", ""
+        if "relationship" in query_obj["subsumption"]:
+            rel = query_obj["subsumption"]["relationship"]
+        if "related_ac" in query_obj["subsumption"]:
+            rel_ac = query_obj["subsumption"]["related_ac"]
+        if rel_ac != "":
+            q_one = {
+                "$and":[
+                    {"subsumption.relationship":{'$regex':rel, '$options': 'i'}},
+                    {"subsumption.id":{'$regex':rel_ac, '$options': 'i'}}
+                ]
+            }
+            q_two = {"subsumption.id":{'$regex':rel_ac, '$options': 'i'}}
+            q = q_two if rel == "any" else q_one
+            cond_objs.append(q)
+
+
+    
     #organism
-    if "tax_id" in query_obj:
-        if query_obj["tax_id"] > 0:
-            cond_objs.append({"species.taxid": {'$eq': query_obj["tax_id"]}})
+    if "organism" in query_obj:
+        cat_q = ""
+        if "annotation_category" in query_obj["organism"]:
+            cat_q = {'$regex': query_obj["organism"]["annotation_category"], '$options': 'i'}
+        if "organism_list" in query_obj["organism"]:
+            obj_list = []
+            for o in query_obj["organism"]["organism_list"]:
+                or_list = []
+                if "id" in o:
+                    if o["id"] > 0:
+                        tmp_q = {
+                            "species":
+                            { "$elemMatch": { "taxid": {"$eq":o["id"]}}}
+                        }
+                        if cat_q != "":
+                            tmp_q["species"]["$elemMatch"]["annotation_category"] = cat_q
+                        or_list.append(tmp_q)
+                if "name" in o:
+                    if o["name"].strip() != "":
+                        tmp_q = {
+                            "species":
+                            { "$elemMatch": { "name": {"$regex":o["name"], '$options':'i'}}}
+                        }
+                        if cat_q != "":
+                            tmp_q["species"]["$elemMatch"]["annotation_category"] = cat_q
+                        or_list.append(tmp_q)
+                if or_list != []:
+                    or_query = {"$or":or_list}
+                    obj_list.append(or_query)
 
-    #uniprot_canonical_ac
-    if "uniprot_canonical_ac" in query_obj:
-        cond_objs.append({"glycoprotein.uniprot_canonical_ac": {'$regex': query_obj["uniprot_canonical_ac"], '$options': 'i'}})
+            if obj_list != []:
+                operation = query_obj["organism"]["operation"]
+                q_one = {"$"+operation+"":obj_list}
+                cond_objs.append(q_one)
 
+
+
+    #protein_identifier
+    if "protein_identifier" in query_obj:
+        cond_objs.append(
+            {"$or":[
+                {"glycoprotein.uniprot_canonical_ac": {'$regex': query_obj["protein_identifier"], '$options': 'i'}},
+                {"glycoprotein.gene_name": {'$regex': query_obj["protein_identifier"], '$options': 'i'}}
+                ]
+            }
+        )
     #glycan_motif
     if "glycan_motif" in query_obj:
-        cond_objs.append({"motifs.name": {'$regex': query_obj["glycan_motif"], '$options': 'i'}}) 
-
+        cond_objs.append(
+            {
+                "$or":[
+                    {"motifs.name": {'$regex': query_obj["glycan_motif"], '$options': 'i'}}
+                    ,{"motifs.synonym": {'$regex': query_obj["glycan_motif"], '$options': 'i'}}
+                ]
+            }
+        )
     #glycan_type 
     if "glycan_type" in query_obj:
         cond_objs.append({"classification.type.name": {'$regex': query_obj["glycan_type"], '$options': 'i'}})
+     
+    #pmid
+    if "pmid" in query_obj:
+        cond_objs.append({"publication.reference.id" : {'$regex': query_obj["pmid"], '$options': 'i'}})
+
+    #id_namespace
+    if "id_namespace" in query_obj:
+        cond_objs.append({"crossref.database" : {'$regex': query_obj["id_namespace"], '$options': 'i'}})
+
+    #binding_protein_id
+    if "binding_protein_id" in query_obj:
+        q = {"interactions.interactor_id":{'$regex': query_obj["binding_protein_id"], '$options': 'i'}}
+        cond_objs.append(q)
 
     #glycan_subtype
     if "glycan_subtype" in query_obj:
@@ -324,77 +465,30 @@ def get_mongo_query(query_obj):
     #enzyme
     if "enzyme" in query_obj:
         if "id" in query_obj["enzyme"]:
-            cond_objs.append({"enzyme.gene": {'$regex': query_obj["enzyme"]["id"], '$options': 'i'}})
+            cond_objs.append(
+                {"$or":[
+                        {"enzyme.gene": {'$regex': query_obj["enzyme"]["id"], '$options': 'i'}},
+                        {"enzyme.uniprot_canonical_ac": {'$regex': query_obj["enzyme"]["id"], '$options': 'i'}}
+                    ]
+                })
 
 
-    mongo_query = {} if cond_objs == [] else { "$and": cond_objs }
+
+    if "composition" in query_obj:
+        for o in query_obj["composition"]:
+            cond_objs.append({"composition.residue": {'$eq': o["residue"]}})
+            #if o["max"] > 0:
+            #    cond_objs.append({"composition.residue": {'$eq': o["residue"]}})
+            #else:
+            #    cond_objs.append({"composition.residue": {'$ne': o["residue"]}})
+
+    operation = query_obj["operation"].lower() if "operation" in query_obj else "and"
+    mongo_query = {} if cond_objs == [] else { "$"+operation+"": cond_objs }
+
     return mongo_query
 
 
 
-def dump_debug_log(out_string):
-
-    debug_log_file = path_obj["debuglogfile"]
-    with open(debug_log_file, "a") as FA:
-        FA.write("\n\n%s\n" % (out_string))
-    return
-
-
-def sort_objects(obj_list, field_name, order_type):
-
-    seen = {"glytoucan_ac":{}, "mass":{}, "number_proteins":{}, "number_monosaccharides":{}, 
-            "number_enzymes":{}, "iupac":{}, "glycoct":{}, "wurcs":{}}
-    grid_obj = {"glytoucan_ac":[], "mass":[], "number_proteins":[], "number_monosaccharides":[], 
-            "number_enzymes":[], "iupac":[], "glycoct":[], "wurcs":[]}
-  
-
-    for i in xrange(0, len(obj_list)):
-        obj = obj_list[i]
-        glytoucan_ac = obj["glytoucan_ac"]
-        if field_name in ["mass"] and field_name in obj:
-            grid_obj[field_name].append({"index":i, field_name:float(obj[field_name])})
-        elif field_name in ["glytoucan_ac"]:
-            grid_obj[field_name].append({"index":i, field_name:obj["glytoucan_ac"]})
-        elif field_name in ["iupac", "glycoct", "wurcs"]:
-            grid_obj[field_name].append({"glytoucan_ac":i, field_name:obj[field_name]})
-        elif field_name in ["number_proteins", "number_monosaccharides", "number_enzymes"] and field_name in obj:
-            grid_obj[field_name].append({"index":i, field_name:int(obj[field_name])})
-
-    reverse_flag = True if order_type == "desc" else False
-    key_list = []
-    sorted_obj_list = sorted(grid_obj[field_name], key=lambda x: x[field_name], reverse=reverse_flag)
-    for o in sorted_obj_list:
-            key_list.append(o["index"])
-    return key_list
-
-
-
-def order_obj(jsonObj):
-
-    ordrHash = {"glytoucan_ac":1, "mass":2, "iupac":3, "wurcs":4, "glycoct":5,
-                        "species":6, "classification":7,"glycoprotein":8,
-                                    "enzyme":9, "crossref":10}
-    for k1 in jsonObj:
-        ordrHash[k1] = ordrHash[k1] if k1 in ordrHash else 1000
-        if type(jsonObj[k1]) is dict:
-            for k2 in jsonObj[k1]:
-                ordrHash[k2] = ordrHash[k2] if k2 in ordrHash else 1000
-                if type(jsonObj[k1][k2]) is dict:
-                    for k3 in jsonObj[k1][k2]:
-                        ordrHash[k3] = ordrHash[k3] if k3 in ordrHash else 1000
-                    jsonObj[k1][k2] = OrderedDict(sorted(jsonObj[k1][k2].items(),
-                        key=lambda x: float(ordrHash.get(x[0]))))
-                elif type(jsonObj[k1][k2]) is list:
-                    for j in xrange(0, len(jsonObj[k1][k2])):
-                        if type(jsonObj[k1][k2][j]) is dict:
-                            for k3 in jsonObj[k1][k2][j]:
-                                ordrHash[k3] = ordrHash[k3] if k3 in ordrHash else 1000
-                                jsonObj[k1][k2][j] = OrderedDict(sorted(jsonObj[k1][k2][j].items(), 
-                                    key=lambda x: float(ordrHash.get(x[0]))))
-            jsonObj[k1] = OrderedDict(sorted(jsonObj[k1].items(),
-                key=lambda x: float(ordrHash.get(x[0]))))
-
-    return OrderedDict(sorted(jsonObj.items(), key=lambda x: float(ordrHash.get(x[0]))))
 
 
 
@@ -402,33 +496,21 @@ def order_obj(jsonObj):
 
 
 
-def get_random_string(size=6, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
+def passes_composition_filter(comp_obj, query_obj):
 
 
-def get_error_obj(error_code, error_log, path_obj):
-        
-    error_id = get_random_string(6) 
-    log_file = path_obj["apierrorlogpath"] + "/" + error_code + "-" + error_id + ".log"
-    with open(log_file, "w") as FW:
-        FW.write("%s" % (error_log))
-    return {"error_code": "exception-error-" + error_id}
+    tv = []
+    n_cond = 0
+    for q in query_obj["composition"]:
+        q_res, q_min, q_max = q["residue"], q["min"], q["max"]
+        if q_max >= 0:
+            n_cond += 1
+            for o in comp_obj:
+                o_res, o_count = o["residue"], o["count"]
+                if o_res == q_res and o_count >= q_min and o_count <= q_max:
+                    tv.append(True)
+                    break
+    
+    return len(tv) == n_cond and list(set(tv)) == [True]
 
 
-def is_valid_json(myjson):
-    try:
-        json_object = json.loads(myjson)
-    except ValueError, e:
-        return False
-    return True
-
-
-
-
-                  
-def is_int(input):
-    try:
-        num = int(input)
-    except ValueError:
-        return False
-    return True

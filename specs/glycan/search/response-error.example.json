@@ -1,4 +1,8 @@
 {
-   "error_code": "AB45NM",
-   "message": "The search could not be performed since all the blue squares clogged the substructure search engine"
-}
+   "error_list": [
+     {
+       "field": "operatio", 
+       "error_code": "unexpected-field-in-query"
+     }
+   ]
+ }
