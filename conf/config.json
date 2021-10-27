@@ -1,9 +1,10 @@
 {
 	"server":"dev"
 	,"moduleversion":"0.0.0"
-        ,"datarelease":"1.8.6"
+        ,"datarelease":"1.10.3"
         ,"session_life":24.0
         ,"max_batch_size":10000
+        ,"supersearch_batch_size":300000
         ,"max_global_search_results":1000000
         ,"max_query_value_len":10000
         ,"max_sequence_len":3000
@@ -12,6 +13,59 @@
 		  "glycan":100000
 		,"protein":100000
 	}
+        ,"jobinfo":{
+            "tspath":"/usr/local/bin/ts",
+            "maxjobs":5,
+            "test":{
+                "informat":"fasta",
+                "outformat":"csv",
+                "incmdflag":"-i",
+                "outcmdflag":"-o",
+                "max_input_records":10,
+                "path":"/usr/bin/python /data/shared/glygen/test/test.py",
+                "output_files":[
+                    {"name":"output.csv", "format":"csv"}
+                ],
+                "paramlist":[
+                    {"id":"token", "label":"Auth Token", "type":"string", "value":""},
+                    {"id":"email", "label":"User Email", "type":"string", "value":"rykahsay@gwu.edu"}
+                ]
+            },
+            "blastp":{
+                "informat":"fasta",
+                "outformat":"csv",
+                "incmdflag":"-query",
+                "outcmdflag":"-out",
+                "max_input_records":10,
+                "path":"/software/ncbi-blast-2.6.0+/bin/blastp",
+                "output_files":[
+                    {"name":"output.csv", "format":"csv"}
+                ],
+                "paramlist":[
+                    {"id":"token", "label":"Auth Token", "type":"string", "value":""},
+                    {"id":"email", "label":"User Email", "type":"string", "value":"rykahsay@gwu.edu"},
+                    {
+                        "id":"targetdb", "label":"Target DB", "type":"array",
+                        "cmdflag":"-db",
+                        "optlist":[
+                            {"value":"canonicalsequences", "label":"Canonical Sequences"},
+                            {"value":"allsequences", "label":"All Isoform Sequences"}
+                        ]
+                    },
+                    {
+                        "id":"evalue", "label":"E-value", "type":"float", "value":1e-3,
+                        "cmdflag":"-evalue"
+                    },
+                    {
+                        "id":"outfmt", "label":"Output Format", "type":"array",
+                        "cmdflag":"-outfmt",
+                        "optlist":[
+                            {"value":"6", "label":"Tabular"}
+                        ]
+                    }
+                ]
+            }
+        }
         ,"record_type_info":{
             "protein":{"field":"uniprot_canonical_ac", "label":"UniProtKB Canonical Ac", "concept_label":"Protein"}
             ,"enzyme":{"field":"uniprot_canonical_ac", "label":"UniProtKB Canonical Ac", "concept_label":"Enzyme"}
@@ -37,6 +91,7 @@
                 ,"wurcs":1
                 ,"inchi":1
                 ,"inchi_key":1
+                ,"byonic":1
                 ,"motifs":1
                 ,"composition":1
                 ,"publication":1
@@ -92,6 +147,7 @@
                 ,"names":1
                 ,"glycam":1
                 ,"wurcs":1
+                ,"byonic":1
                 ,"inchi":1
                 ,"inchi_key":1
                 ,"glycans":1
@@ -102,7 +158,8 @@
             "c_protein":["_id","uniprot_canonical_ac", "uniprot_ac", "uniprot_id",
                 "synonyms"],
             "c_alignment":["_id"],
-            "c_glycan":["_id", "number_monosaccharides", "glytoucan_ac"]
+            "c_publication":["_id"],
+            "c_glycan":["_id", "glytoucan_ac"]
         }
         ,"taxid2name":{
             "0":"All"
@@ -136,9 +193,34 @@
                 ,"limit":{"type":"number"}
                 ,"offset":{"type":"number"}
                 ,"category":{"type":"string"}
+                ,"filters":{"type":"list"}
             }
             ,"requiredfields":[]
             ,"collectionlist":[]
+        }
+        ,"job_init":{
+            "field_info":{
+            }
+            ,"requiredfields":[]
+            ,"collectionlist":[]
+        }
+        ,"job_addnew":{
+            "field_info":{
+                "email":{"type":"string"}
+                ,"token":{"type":"string"}
+                ,"jobtype":{"type":"string"}
+                ,"line_list":{"type":"string"}
+            }
+            ,"requiredfields":["email", "token", "jobtype", "line_list"]
+            ,"collectionlist":["c_job"]
+        }
+        ,"job_list":{
+            "field_info":{
+                "token":{"type":"string"}
+                ,"visibility":{"type":"string"}
+            }
+            ,"requiredfields":["token", "visibility"]
+            ,"collectionlist":["c_job"]
         }
         ,"globalsearch_search":{
             "field_info":{
@@ -180,6 +262,7 @@
                 ,"pmid":{"type":"string"}
                 ,"binding_protein_id":{"type":"string"}
                 ,"glycan_subtype":{"type":"string"}
+                ,"id_namespace":{"type":"string"}
                 ,"organism":{
                     "organism_list":{"type":"list"},  
                     "operation":{"type":"string"},
@@ -245,6 +328,14 @@
             }
             ,"requiredfields":["glytoucan_ac"]
             ,"collectionlist":["c_glycan"]
+        }
+        ,"publication_detail":{
+            "field_info":{
+                "id":{"type":"string", "maxlen":200},
+                "type":{"type":"string", "maxlen":20}
+            }
+            ,"requiredfields":["id", "type"]
+            ,"collectionlist":["c_publication"]
         }
         ,"motif_detail":{
             "field_info":{
@@ -668,6 +759,7 @@
             "field_info":{
                 "token":{"type":"string"}
                 ,"visibility":{"type":"string"}
+                ,"status":{"type":"string"}
             }
             ,"requiredfields":["token", "visibility"]
             ,"collectionlist":["c_event"]
@@ -707,6 +799,15 @@
             }
             ,"requiredfields":["field", "value", "total_limit", "categorywise_limit"]
             ,"collectionlist":["c_protein"]
+        }
+        ,"global_typeahead":{
+            "field_info":{
+                "value":{"type":"string"}
+                ,"target":{"type":"string"}
+                ,"limit":{"type":"number"}
+            }
+            ,"requiredfields":["value", "limit"]
+            ,"collectionlist":[]
         }
         ,"data_download":{
             "field_info":{
@@ -845,6 +946,8 @@
             ,"fasta":"text/plain"
             ,"iupac":"text/plain"
             ,"wurcs":"text/plain"
+            ,"byonic":"text/plain"
+            ,"grits":"text/xml"
             ,"glycam":"text/plain"
             ,"smiles_isomeric":"text/plain"
             ,"inchi":"text/plain"
@@ -855,14 +958,16 @@
         }
         ,"downloadtypes":{
             "protein_list":{"cache":"c_cache", "formatlist":["csv","json","fasta"]}
-            ,"glycan_list":{"cache":"c_cache", "formatlist":["csv","json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct"]}
-            ,"motif_list":{"cache":"c_motif", "formatlist":["csv","json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct"]}
+            ,"glycan_list":{"cache":"c_cache", "formatlist":["csv","json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic", "grits"]}
+            ,"motif_list":{"cache":"c_motif", "formatlist":["csv","json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic"]}
             ,"genelocus_list":{"cache":"c_cache", "formatlist":["csv","json","fasta"]}
             ,"ortholog_list":{"cache":"c_cache", "formatlist":["csv","json","fasta"]}
+            ,"site_list":{"cache":"c_cache", "formatlist":["csv","json"]}
             ,"protein_detail":{"cache":"c_protein", "formatlist":["json","fasta"]}
-            ,"glycan_detail":{"cache":"c_glycan", "formatlist":["json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct"]}
+            ,"glycan_detail":{"cache":"c_glycan", "formatlist":["json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic"]}
             ,"motif_detail":{"cache":"c_motif", "formatlist":["json", "csv","png"]}
             ,"site_detail":{"cache":"c_site", "formatlist":["json"]}
+            ,"publication_detail":{"cache":"c_publication", "formatlist":["json"]}
             ,"protein_detail_isoformset":{"cache":"c_protein", "formatlist":["fasta"]}
             ,"protein_detail_homologset":{"cache":"c_protein", "formatlist":["fasta"]}
             ,"glycan_image":{"cache":"c_glycan", "formatlist":["png"]}
@@ -874,8 +979,8 @@
         ,"dev":{
                 "dbinfo":{
                         "mongodbname":"glydb"
-                        ,"mongodbuser":"xxxxx"
-                        ,"mongodbpassword":"xxxxx"
+                        ,"mongodbuser":"glydbadmin"
+                        ,"mongodbpassword":"glydbpass"
                         ,"sessionlife":3600
                         ,"collections":{
                             "bco":"c_bco"
@@ -908,13 +1013,14 @@
 		        ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
                         ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
+                        ,"userdata":"/data/shared/glygen/userdata/dev/"
                 }
 	}
 	,"tst":{
                 "dbinfo":{
                         "mongodbname":"glydb"
-                        ,"mongodbuser":"xxxxx"
-                        ,"mongodbpassword":"xxxxx"
+                        ,"mongodbuser":"glydbadmin"
+                        ,"mongodbpassword":"glydbpass"
                         ,"sessionlife":3600
                         ,"collections":{
                             "bco":"c_bco"
@@ -947,13 +1053,14 @@
                         ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
                         ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
+                        ,"userdata":"/data/shared/glygen/userdata/tst/"
                 }
         }
         ,"beta":{
                 "dbinfo":{
                         "mongodbname":"glydb_beta"
                         ,"mongodbuser":"glydb_betaadmin"
-                        ,"mongodbpassword":"xxxx"
+                        ,"mongodbpassword":"glydb_betapass"
                         ,"sessionlife":3600
                         ,"collections":{
                             "bco":"c_bco"
@@ -986,13 +1093,14 @@
                         ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
                         ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
+                        ,"userdata":"/data/shared/glygen/userdata/beta/"
                 }
         }
         ,"backup":{
                 "dbinfo":{
                         "mongodbname":"glydb_backup"
-                        ,"mongodbuser":"xxx"
-                        ,"mongodbpassword":"xxx"
+                        ,"mongodbuser":"glydb_backupadmin"
+                        ,"mongodbpassword":"glydb_backuppass"
                         ,"sessionlife":3600
                         ,"collections":{
                             "bco":"c_bco"
@@ -1030,8 +1138,8 @@
         ,"prd":{
                 "dbinfo":{
                         "mongodbname":"glydb"
-                        ,"mongodbuser":"xxxxx"
-                        ,"mongodbpassword":"xxxxx"
+                        ,"mongodbuser":"glydbadmin"
+                        ,"mongodbpassword":"glydbpass"
                         ,"sessionlife":3600
                         ,"collections":{
                             "bco":"c_bco"
@@ -1064,6 +1172,7 @@
 		        ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
                         ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
+                        ,"userdata":"/data/shared/glygen/userdata/prd/"
                 }
 	}
 	,"objectorder":{

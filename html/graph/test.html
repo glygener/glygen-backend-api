@@ -1,0 +1,84 @@
+<div id="anychart-embed-core-graph-elements--samples-anychart.core.graph.elements.edge.arrows-set-as-obj" class="anychart-embed anychart-embed-core-graph-elements--samples-anychart.core.graph.elements.edge.arrows-set-as-obj">
+<script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-base.min.js"></script>
+<script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-graph.min.js"></script>
+<script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-exports.min.js"></script>
+<script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-ui.min.js"></script>
+<div id="ac_style_core-graph-elements--samples-anychart.core.graph.elements.edge.arrows-set-as-obj" style="display:none;">
+html, body, #container {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+</div>
+<script>(function(){
+function ac_add_to_head(el){
+        var head = document.getElementsByTagName('head')[0];
+        head.insertBefore(el,head.firstChild);
+}
+function ac_add_link(url){
+        var el = document.createElement('link');
+        el.rel='stylesheet';el.type='text/css';el.media='all';el.href=url;
+        ac_add_to_head(el);
+}
+function ac_add_style(css){
+        var ac_style = document.createElement('style');
+        if (ac_style.styleSheet) ac_style.styleSheet.cssText = css;
+        else ac_style.appendChild(document.createTextNode(css));
+        ac_add_to_head(ac_style);
+}
+ac_add_link('https://cdn.anychart.com/releases/8.10.0/css/anychart-ui.min.css');
+ac_add_style(document.getElementById("ac_style_core-graph-elements--samples-anychart.core.graph.elements.edge.arrows-set-as-obj").innerHTML);
+ac_add_style(".anychart-embed-core-graph-elements--samples-anychart.core.graph.elements.edge.arrows-set-as-obj{width:600px;height:450px;}");
+})();</script>
+<div id="container"></div>
+<script>
+anychart.onDocumentLoad(function () {
+  var chart = anychart.graph();
+  chart.data(data);
+  chart.title().enabled(true).text('Setup arrows via config.');
+
+  chart.edges().arrows({
+    enabled: true,
+    size: 15,
+    position: '50%'
+  });
+
+  chart.container('container').draw();
+});
+
+var data = {
+  nodes: [
+    {"id": "a"},
+    {"id": "a1"},
+    {"id": "a2"},
+    {"id": "a3"},
+    {"id": "a4"},
+    {"id": "a5"},
+    {"id": "a6"},
+    {"id": "b"},
+    {"id": "b1"},
+    {"id": "b2"},
+    {"id": "b3"},
+    {"id": "b4"},
+    {"id": "b5"},
+    {"id": "b6"}
+  ],
+  edges: [
+    {from: 'a', to: 'b'},
+    {from: 'a', to: 'a1'},
+    {from: 'a', to: 'a2'},
+    {from: 'a', to: 'a3'},
+    {from: 'a', to: 'a4'},
+    {from: 'a', to: 'a5'},
+    {from: 'a', to: 'a6'},
+    {from: 'b', to: 'b1'},
+    {from: 'b', to: 'b2'},
+    {from: 'b', to: 'b3'},
+    {from: 'b', to: 'b4'},
+    {from: 'b', to: 'b5'},
+    {from: 'b', to: 'b6'},
+  ]
+};
+</script>
+</div>

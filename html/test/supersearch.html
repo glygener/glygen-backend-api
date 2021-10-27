@@ -104,52 +104,15 @@ var queryList = [
         },
 
         {
-            "label":"Sites on human proteins that have both glycosylation and SNV data",
+            "label":"Sites with both glycosylation and SNV data",
             "query":{ "concept_query_list":[
-                {
-                    "concept": "species",
-                    "query": {
-                        "aggregator": "$and",
-                        "unaggregated_list": [
-                            {"order":1,"path":"taxid","operator":"$eq","numeric_value":9606}
-                        ],
-                        "aggregated_list": []
-                    }
-                },
                 {
                     "concept":"site",
                     "query":{
                         "aggregator":"$and",
                         "unaggregated_list":[
-                            {"order":1,"path":"glycosylation","operator":"$gt","string_value":[]},
-                            {"order":2,"path":"snv","operator":"$gt","string_value":[]}
-                        ],
-                        "aggregated_list":[]
-                    }
-                }
-            ]
-            }
-        },
-        {
-            "label":"Sites on P14210 with both glycosylation and SNV data",
-            "query":{ "concept_query_list":[
-                {
-                    "concept": "protein",
-                    "query": {
-                        "aggregator": "$and",
-                        "unaggregated_list": [
-                            {"order":1,"path": "uniprot_ac","operator": "$eq","string_value": "P14210"}
-                        ],
-                        "aggregated_list": []
-                    }
-                },
-                {
-                    "concept":"site",
-                    "query":{
-                        "aggregator":"$and",
-                        "unaggregated_list":[
-                            {"order":1,"path":"glycosylation","operator":"$gt","string_value":[]},
-                            {"order":2,"path":"snv","operator":"$gt","string_value":[]}
+                            {"order":1,"path":"glycosylation_flag","operator":"$eq","string_value":true},
+                            {"order":2,"path":"snv_flag","operator":"$eq","string_value":true}
                         ],
                         "aggregated_list":[]
                     }
@@ -158,6 +121,102 @@ var queryList = [
             }
         },
         
+        {
+            "label":"Sites with SNV within 3 aa of Asn",
+            "query":{ "concept_query_list":[
+                {
+                    "concept":"site",
+                    "query":{
+                        "aggregator":"$and",
+                        "unaggregated_list":[
+                            {"order":1,"path":"site_seq","operator":"$eq","string_value":"N"},
+
+                            {"order":2,"path":"neighbors.distance","operator":"$lte","numeric_value":3},
+                            {"order":3,"path":"neighbors.categories","operator":"$eq", "string_value":"snv"}
+                        ],
+                        "aggregated_list":[]
+                    }
+                }
+            ]
+            }
+        },
+
+        {   
+            "label":"Sites: 4|TR in down_seq (reads TR at 4th position downstream of site)",
+            "query":{ 
+                "concept_query_list":[
+                    {   
+                        "concept":"site",
+                        "query":{
+                            "aggregator":"$and",
+                            "unaggregated_list":[
+                                {"order":1,"path":"glycosylation_flag","operator":"$eq","string_value":"true"},
+                                {"order":2,"path":"down_seq","operator":"$regex","string_value":"4|TR"}
+                            ],
+                            "aggregated_list":[]
+                        }
+                    }
+                ]
+            }
+        },
+        
+        {   
+            "label":"Sites: 4|TXXR in down_seq (reads TXXR at 4th position downstream of site)",
+            "query":{
+                "concept_query_list":[
+                    {
+                        "concept":"site",
+                        "query":{
+                            "aggregator":"$and",
+                            "unaggregated_list":[
+                                {"order":1,"path":"glycosylation_flag","operator":"$eq","string_value":"true"},
+                                {"order":2,"path":"down_seq","operator":"$regex","string_value":"4|TXXR"}
+                            ],
+                            "aggregated_list":[]
+                        }
+                    }
+                ]
+            }
+        },
+
+        {
+            "label":"Sites: 4|TR in up_seq (reads TR at 4th position upstream of site)",
+            "query":{ 
+                "concept_query_list":[
+                    {
+                        "concept":"site",
+                        "query":{
+                            "aggregator":"$and",
+                            "unaggregated_list":[
+                                {"order":1,"path":"glycosylation_flag","operator":"$eq","string_value":"true"},
+                                {"order":2,"path":"up_seq","operator":"$regex","string_value":"4|TR"}
+                            ],
+                            "aggregated_list":[]
+                        }
+                    }
+                ]
+            }
+        },
+
+        {
+            "label":"Sites: 4|TXXR in up_seq (reads TXXR at 4th position upstream of site)",
+            "query":{
+                "concept_query_list":[
+                    {
+                        "concept":"site",
+                        "query":{
+                            "aggregator":"$and",
+                            "unaggregated_list":[
+                                {"order":1,"path":"glycosylation_flag","operator":"$eq","string_value":"true"},
+                                {"order":2,"path":"up_seq","operator":"$regex","string_value":"4|TXXR"}
+                            ],
+                            "aggregated_list":[]
+                        }
+                    }
+                ]
+            }
+        },
+
         {
         "label": "human protein AND go_term has nucleus and nuclear membrane AND has o-glyco site AND has phosphorylated site AND associated with any disease",
         "query": { "concept_query_list":[
@@ -629,6 +688,23 @@ var testInfo =
         }
     }
 };
+
+
+/////////////////////////////
+$(document ).ready(function() {
+
+    var cnList = [];
+    var apiList = Object.keys(testInfo);
+    cnList.push(getAutomatedCn(testInfo, apiList));
+
+    var cn = '<table align=center width=1000 border=1 style="background:#eee;">';
+    for (var i in cnList){
+        cn += cnList[i];
+    }
+    cn += '</table>';
+    $("body").html(cn);
+
+});
 
 
 </script>

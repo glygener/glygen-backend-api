@@ -9,7 +9,7 @@
 var testInfo = {
     "data_download": {
         "string_fields": [
-            "type [protein_list|glycan_list|genelocus_list|ortholog_list|protein_detail|site_detail|protein_detail_isoformset|protein_detail_homologset|protein_detail|glycan_detail|motif_detail|glycan_image]",
+            "type [protein_list|glycan_list|genelocus_list|ortholog_list|protein_detail|site_detail|publication_detail|protein_detail_isoformset|protein_detail_homologset|protein_detail|glycan_detail|motif_detail|glycan_image]",
             "id",
             "format [csv|json|fasta|png]"
         ],
@@ -30,6 +30,21 @@ var testInfo = {
     }
 };
 
+/////////////////////////////
+$(document ).ready(function() {
+
+    var cnList = [];
+    var apiList = Object.keys(testInfo);
+    cnList.push(getAutomatedCn(testInfo, apiList));
+
+    var cn = '<table align=center width=1000 border=1 style="background:#eee;">';
+    for (var i in cnList){
+        cn += cnList[i];
+    }
+    cn += '</table>';
+    $("body").html(cn);
+
+});
 
 
 </script>

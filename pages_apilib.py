@@ -64,11 +64,17 @@ def home_init(config_obj):
         #res_obj["statistics"] = doc["newstat"]
 
     res_obj["events"] = []
-    doc_list = dbh["c_event"].find({"visibility":"visible"}).sort('createdts', pymongo.DESCENDING)
+    cond_list = []
+    cond_list.append({"visibility":{"$eq":"visible"}})
+    now = datetime.datetime.now()
+    cond_list.append({"start_date":{"$lte":now}})
+    cond_list.append({"end_date":{"$gte":now}})
+    q_obj = {"$and":cond_list}
+    doc_list = dbh["c_event"].find(q_obj).sort('createdts', pymongo.DESCENDING)
     for doc in doc_list:
         doc["id"] = str(doc["_id"])
         doc.pop("_id")
-        for k in ["createdts", "updatedts"]:
+        for k in ["createdts", "updatedts", "start_date", "end_date"]:
             if k not in doc:
                 continue
             doc[k] = doc[k].strftime('%Y-%m-%d %H:%M:%S %Z%z')

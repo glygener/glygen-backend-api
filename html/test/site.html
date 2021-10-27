@@ -26,6 +26,23 @@ var testInfo = {
 
 
 
+/////////////////////////////
+$(document ).ready(function() {
+
+    var cnList = [];
+    var apiList = Object.keys(testInfo);
+    cnList.push(getAutomatedCn(testInfo, apiList));
+
+    var cn = '<table align=center width=1000 border=1 style="background:#eee;">';
+    for (var i in cnList){
+        cn += cnList[i];
+    }
+    cn += '</table>';
+    $("body").html(cn);
+
+});
+
+
 
 
 </script>

@@ -49,8 +49,53 @@ var testInfo = {
             "total_limit":15,
             "categorywise_limit":5
         }
+    },
+    "global_typeahead": {
+        "string_fields": [
+            "value"
+        ],
+        "url": "/global_typeahead/",
+        "required_fields": [
+            "value",
+            "limit"
+        ],
+        "numeric_fields": [
+            "limit"
+        ],
+        "querylist":[
+            {
+                "label":"Query without target",
+                "query":{ "value": "GH", "limit": 10}
+            },
+            {
+                "label":"Query targeting protein objects",
+                "query":{ "value": "GH", "limit": 10, "target":"protein"}
+            },
+            {
+                "label":"Query targeting glycan objects",
+                "query":{ "value": "GH", "limit": 10, "target":"glycan"}
+            }
+        ]
+
     }
 };
+
+
+/////////////////////////////
+$(document ).ready(function() {
+
+    var cnList = [];
+    var apiList = Object.keys(testInfo);
+    cnList.push(getAutomatedCn(testInfo, apiList));
+
+    var cn = '<table align=center width=1000 border=1 style="background:#eee;">';
+    for (var i in cnList){
+        cn += cnList[i];
+    }
+    cn += '</table>';
+    $("body").html(cn);
+
+});
 
 
 

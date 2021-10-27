@@ -32,11 +32,23 @@ def search_init(config_obj):
     typeahead_dict = json.loads(open("./conf/typeahead.json", "r").read())
 
     enum_dict = {}
+    default_dict = {}
     load_enum(dbh,enum_dict, "glycan_classification")
-    for f in ["glycosylation_flag", "snv_flag", "phosphorylation_flag", "mutagenesis_flag"]:
-        enum_dict[f] = ["true", "false"] 
+    site_type_list = [
+        "glycosylation_flag", "snv_flag", "phosphorylation_flag", "glycation_flag", 
+        "mutagenesis_flag"
+    ]
+
+    for f in site_type_list:
+        enum_dict[f] = ["true", "false"]
+        default_dict[f] = "true"
     for f in ["fully_determined"]:
         enum_dict[f] = ["yes", "no"]
+        default_dict[f] = "yes"
+    for f in ["neighbors.direction"]:
+        enum_dict[f] = ["upstream", "downstream"]
+    for f in ["neighbors.categories"]:
+        enum_dict[f] = site_type_list
 
     path_dict = {}
     for doc in dbh["c_path"].find({}):
@@ -45,8 +57,7 @@ def search_init(config_obj):
             path_dict[record_type] = []
         path_dict[record_type].append(doc)
 
-
-
+    
     init_dict = {}
     for record_type in config_obj["record_type_info"]:
         label = config_obj["record_type_info"][record_type]["concept_label"]
@@ -128,6 +139,9 @@ def search_init(config_obj):
             op_list = ["$eq","$regex", "$ne"]
             if f_type == "number":
                 op_list = ["$eq","$ne", "$gt","$lt","$gte","$lte"]
+            if f_name in ["neighbors.direction", "neighbors.categories"]:
+                op_list = ["$eq"]
+
             enum = enum_dict[f_name] if f_name in enum_dict else []
             url = config_obj["urltemplate"]["glygenwiki"] % (f_name)
             typeahead = ""
@@ -145,6 +159,8 @@ def search_init(config_obj):
                 "enum":enum,
                 "order":int(f_order)
             }
+            if f_name in default_dict:
+                f_obj["default_value"] = default_dict[f_name] 
 
             if record_type not in seen_field:
                 seen_field[record_type] = {}
@@ -197,7 +213,6 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
     if doc != None:
         if "supersearch_init" in doc:
             results_summary_default = doc["supersearch_init"]
-    
 
 
     if empty_search_flag == False and query_obj["concept_query_list"] == []:
@@ -261,6 +276,7 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
 
     dump_debug_timer("flag-1 running concept queries", DEBUG_FLAG)
 
+
     initial_hit_count = 0
     reason_dict = {}
     initial_hit_dict = {}
@@ -278,18 +294,20 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
         if coll not in config_obj["projectedfields"]:
             continue
         record_id_field = config_obj["record_type_info"][record_type]["field"]
-        prj_obj = {record_id_field:1}
+        #prj_obj = {record_id_field:1}
+        prj_obj = {record_id_field:1, "down_seq":1, "up_seq":1, "site_seq":1,}
         doc_list = list(dbh[coll].find(q_obj["query"],prj_obj))
         #agg_query = [{"$project":{record_id_field:1, "result":{ "$not": [ q_obj["query"] ] }}}]
         #doc_list = list(dbh[coll].aggregate(agg_query))
         #print  record_type, len(doc_list)
         #print q_obj["query"]
-
         initial_hit_count += len(doc_list)
         for doc in doc_list:
             if record_id_field not in doc:
                 continue
             record_id = doc[record_id_field]
+            #print "Robel", doc["up_seq"], doc["site_seq"], doc["down_seq"], record_id
+            #print "Robel", record_id
             if record_type in ["enzyme", "gene"]:
                 record_id = "%s.%s" % (record_type, record_id)
             initial_hit_dict[record_type][record_id] = True
@@ -324,6 +342,8 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
     #Now, set concept_query_list to be empty list
     if empty_search_flag == True:
         query_obj["concept_query_list"] = []
+
+    
 
     res_obj = {"query":query_obj, "results_summary":{}}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
@@ -848,6 +868,7 @@ def load_enum(dbh, enum_dict, case):
 
 def transform_query(in_obj, concept, seen_path, path_map):
     q_list = []
+    em_match_obj = {}
     error_list = []
     if "unaggregated_list" in in_obj:
         for obj in in_obj["unaggregated_list"]:
@@ -863,7 +884,30 @@ def transform_query(in_obj, concept, seen_path, path_map):
                     if obj["string_value"] in [True, False]:
                         obj["string_value"] = str(obj["string_value"]).lower()
 
-                val = obj["string_value"] if "string_value" in obj else obj["numeric_value"]
+                val = ""
+                val = obj["string_value"] if "string_value" in obj else val
+                val = obj["numeric_value"] if "numeric_value" in obj else val
+                
+                if concept == "site" and "string_value" in obj and obj["string_value"].find("|") != -1:
+                    d, s = obj["string_value"].split("|")
+                    if obj["path"] == "up_seq":
+                        l = int(d) - len(s)  
+                        if l < 0:
+                            error_obj = {"error_code": "bad-regex-pattern"}
+                            error_list.append(error_obj)
+                        s = s.upper().replace("X", "{1}[A-Z]")
+                        val = "%s{%s}[A-Z]$" % (s,l)
+                        if l == 0:
+                            val = "%s$" % (s)
+                    elif obj["path"] == "down_seq":
+                        l = int(d) - 1
+                        if l < 1:
+                            error_obj = {"error_code": "bad-regex-pattern"}
+                            error_list.append(error_obj)
+                        s = s.upper().replace("X", "{1}[A-Z]")
+                        val = "^[A-Z]{%s}%s" % (l,s)
+                        #"^[A-Z]{8}C"
+
                 val_obj = {obj["operator"]:val}
                 if obj["operator"] == "$eq" and "string_value" in obj:
                     val = "^%s$" % (val)
@@ -885,13 +929,23 @@ def transform_query(in_obj, concept, seen_path, path_map):
                         if new_path in path_map["list_fields"]:
                             val_obj = {"$gt":[]} if obj["string_value"] == "true" else {"$eq":[]} 
                             o = {new_path:val_obj}
-                q_list.append(o)
+                path_parts = obj["path"].split(".")
+                if path_parts[0] in ["neighbors"]:
+                    if path_parts[0] not in em_match_obj:
+                        em_match_obj[path_parts[0]] = {"$elemMatch":{}}
+                    em_match_obj[path_parts[0]]["$elemMatch"][path_parts[1]] = val_obj
+                else:
+                    q_list.append(o)
         
     if "aggregated_list" in in_obj:
         for i in xrange(0, len(in_obj["aggregated_list"])):
             child_obj = in_obj["aggregated_list"][i]
-            o = transform_query(child_obj, concept, seen_path, path_map)
+            o, err_list = transform_query(child_obj, concept, seen_path, path_map)
             q_list.append(o)
+
+
+    if em_match_obj != {}:
+        q_list.append(em_match_obj)
 
     in_obj = {in_obj["aggregator"]:q_list} if q_list != [] else {}
 

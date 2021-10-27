@@ -33,6 +33,44 @@ def event_addnew(query_obj, config_obj):
     if error_list != []:
         return {"error_list":error_list}
 
+    error_list = []
+    for k in ["start_date", "end_date"]:
+        date_parts = query_obj[k].strip().split(" ")[0].strip().split("/")
+        time_parts = query_obj[k].strip().split(" ")[1].strip().split(":")
+        if len(date_parts) != 3:
+            error_list.append({"error_code":"invalid-date-format for %s" % (k)})
+        elif len(time_parts) != 3:
+            error_list.append({"error_code":"invalid-time-format for %s" % (k)})
+        else:
+            for j in xrange(0, len(date_parts)):
+                if date_parts[j].isdigit() == False:
+                    error_list.append({"error_code":"invalid-date-format for %s" % (k)})
+                elif time_parts[j].isdigit() == False:
+                    error_list.append({"error_code":"invalid-time-format for %s" % (k)})
+                else:
+                    date_parts[j] = int(date_parts[j])
+                    time_parts[j] = int(time_parts[j])
+
+            if error_list == []:
+                if date_parts[0] < 1 or date_parts[0] > 12:
+                    error_list.append({"error_code":"invalid-month-value in %s" % (k)})
+                if date_parts[1] < 1 or date_parts[1] > 31:
+                    error_list.append({"error_code":"invalid-day-value in %s" % (k)})
+                if date_parts[2] < 2021:
+                    error_list.append({"error_code":"invalid-year-value in %s" % (k)})
+                if time_parts[0] < 0 or time_parts[0] > 23:
+                    error_list.append({"error_code":"invalid-hour-value in %s" % (k)})
+                if time_parts[1] < 0 or time_parts[1] > 59:
+                    error_list.append({"error_code":"invalid-minute-value in %s" % (k)})
+                if time_parts[2] < 0 or time_parts[2] > 59:
+                    error_list.append({"error_code":"invalid-second-value in %s" % (k)})
+        if error_list == []:
+            query_obj[k] = datetime.datetime.strptime(query_obj[k],"%m/%d/%Y %H:%M:%S")
+
+
+    if error_list != []:
+        return {"error_list":error_list}
+
     res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
     
     #check validity of token
@@ -128,11 +166,20 @@ def event_list(query_obj, config_obj):
     import pymongo
     res_obj = []
     try:
-        doc_list = dbh["c_event"].find({}).sort('createdts', pymongo.DESCENDING)
+        cond_list = []
+        if query_obj["visibility"] != "all":
+            cond_list.append({"visibility":{"$eq":query_obj["visibility"]}})
+        if "status" in query_obj:
+            if query_obj["status"] == "current":
+                now = datetime.datetime.now()
+                cond_list.append({"start_date":{"$lte":now}})
+                cond_list.append({"end_date":{"$gte":now}})
+        q_obj = {} if cond_list == [] else  {"$and":cond_list}
+        doc_list = dbh["c_event"].find(q_obj).sort('createdts', pymongo.DESCENDING)
         for doc in doc_list:
             doc["id"] = str(doc["_id"])
             doc.pop("_id")
-            for k in ["createdts", "updatedts"]:
+            for k in ["createdts", "updatedts", "start_date", "end_date"]:
                 if k not in doc:
                     continue
                 doc[k] = doc[k].strftime('%Y-%m-%d %H:%M:%S %Z%z')

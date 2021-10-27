@@ -3,7 +3,7 @@
 # This should be done only from dev server
 #
 ###############################################
-ver="v-1.8.44"
+ver="v-1.10.16"
 
 if [ ${HOSTNAME} != 'glygen-vm-dev' ]
 then
@@ -23,13 +23,13 @@ rm -rf $release_dir/*
 
 
 cd $src_dir
-f_list="idmapping supersearch mysite site auth commonquery data globalsearch glycan protein directsearch log misc motif pages typeahead usecases event"
+f_list="seqmapping idmapping newsupersearch supersearch mysite site auth commonquery data globalsearch glycan protein directsearch log misc motif pages typeahead usecases event publication job"
 for f in $f_list
 do
    cp $f*.py $release_dir/
 done
 
-f_list="daemon-glycan daemon-protein errorlib util init libgly"
+f_list="daemon-glycan daemon-protein daemon-archive-caches daemon-clear-caches errorlib util init libgly"
 for f in $f_list
 do
     cp $f.py $release_dir/

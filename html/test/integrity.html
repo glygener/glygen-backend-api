@@ -151,10 +151,19 @@ function getQueryForm(){
     cn += '<td width=300>Record ID<br>';
     cn += '<input class=misc_testrecords type=text id=recordid name=recordid value="P14210-1"></td>';
     cn += '<td width=150>Data Release<br>';
-    cn += '<input class=misc_testrecords type=text name=datarelease value="1.5.33"></td>';
+    cn += '<input class=misc_testrecords type=text name=datarelease value="1.10.6"></td>';
     cn += '<td width=150>&nbsp;<br>';
     cn += '<input class=misc_testrecords id=testrecords type=submit value="Submit Test">';
     cn += '</td><td></td>';
+    cn += '</tr>';
+    cn += '<tr><td colspan=5 style="font-style:italic;">';
+    cn += '<b>Protein examples</b>: P14210-1 (glycosylation), Q9NYM9-1 (phosphorylation), ';
+    cn += 'P68871-1 (glycation), P16403-1 (mutagenesis), P98160-1 (pro_annotation), P40429-1 (ptm_annotation), P26572-1 (reactions, reaction_enzymes)';
+    cn += '</td>';
+    cn += '</tr>';
+    cn += '<tr><td colspan=5 style="font-style:italic;">';
+    cn += '<b>Glycan examples</b>: G17689DH (glycosylation), G16235VG (interactions), G00194GV (names) , G44215PV (expression)';
+    cn += '</td>';
     cn += '</tr>';
     cn += '</table>';
 

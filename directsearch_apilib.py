@@ -161,7 +161,6 @@ def glycan(query_obj, config_obj):
 
 
     mongo_query = glycan_apilib.get_mongo_query(query_obj)
-
     #return mongo_query
    
     collection = "c_glycan"

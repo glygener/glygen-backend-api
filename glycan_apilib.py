@@ -49,7 +49,8 @@ def glycan_search_simple(query_obj, config_obj):
 
     mongo_query = get_simple_mongo_query(query_obj)
     #return mongo_query
-
+    #mongo_query = {"byonic": {"$options": "i", "$regex": "Hex\(5\)"}}
+    
     collection = "c_glycan"
     record_list = []
     record_type = "glycan"
@@ -139,7 +140,7 @@ def glycan_search(query_obj, config_obj):
 
     i = 0
     results = []
-    prj_obj = {"glytoucan_ac":1, "subsumption":1, "composition":1, "glycan_identifier":1}
+    prj_obj = {"glytoucan_ac":1, "subsumption":1, "composition":1, "glycan_identifier":1,"crossref.id":1}
     doc_list = []
     for doc in dbh[collection].find(mongo_query,prj_obj):
         if "composition" in query_obj:
@@ -174,9 +175,22 @@ def glycan_search(query_obj, config_obj):
 
     record_list = []
     record_type = "glycan"
+    seen_id = {}
     for doc in doc_list:
         record_list.append(doc["glytoucan_ac"])
-    
+        seen_id[doc["glytoucan_ac"]] = True
+        for obj in doc["crossref"]:
+            seen_id[obj["id"]] = True
+
+
+    unmapped_obj_list = []
+    if "glycan_identifier" in query_obj:
+        if "glycan_id" in query_obj["glycan_identifier"]:
+            qid_list = get_qid_list(query_obj["glycan_identifier"]["glycan_id"])
+            for qid in qid_list:
+                if qid not in seen_id:
+                    unmapped_obj_list.append({"input_id":qid, "reason":"ID not found"})
+
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     cache_coll = "c_cache"
@@ -188,8 +202,10 @@ def glycan_search(query_obj, config_obj):
             "query":query_obj,
             "ts":ts, 
             "record_type":record_type, 
-            "search_type":"search"
+            "search_type":"search",
         }
+        if unmapped_obj_list != []:
+            cache_info["batch_info"] = {"unmapped":unmapped_obj_list}
         util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
@@ -280,6 +296,7 @@ def get_simple_mongo_query(query_obj):
         cond_objs.append({"wurcs":{'$regex': query_obj["term"], '$options': 'i'}})
         cond_objs.append({"glycoct":{'$regex': query_obj["term"], '$options': 'i'}})
         qval = query_obj["term"].replace("(", "\\(").replace(")", "\\)")
+        cond_objs.append({"byonic":{'$regex': qval, '$options': 'i'}})
         cond_objs.append({"names.name": {'$regex': qval,'$options': 'i'}})
     elif query_obj["term_category"] == "protein":
         cond_objs.append({"glycoprotein.uniprot_canonical_ac":{'$regex': query_obj["term"], '$options': 'i'}})
@@ -296,7 +313,15 @@ def get_simple_mongo_query(query_obj):
     return mongo_query
 
 
-
+def get_qid_list(q):
+    q = q.replace("[", "\\[")
+    q = q.replace("[", "\\[")
+    q = q.replace("]", "\\]")
+    q = q.replace("(", "\\(")
+    q = q.replace(")", "\\)")
+    q = q.replace("[", "\\[")
+    qid_list = q.replace(" ", "").split(",")
+    return qid_list
 
 
 def get_mongo_query(query_obj):
@@ -305,13 +330,7 @@ def get_mongo_query(query_obj):
     #glytoucan_ac
     if "glycan_identifier" in query_obj:
         if "glycan_id" in query_obj["glycan_identifier"]:
-            q = query_obj["glycan_identifier"]["glycan_id"]
-            q = q.replace("[", "\\[")
-            q = q.replace("]", "\\]")
-            q = q.replace("(", "\\(")
-            q = q.replace(")", "\\)")
-            q = q.replace("[", "\\[")
-            qid_list = q.replace(" ", "").split(",")
+            qid_list = get_qid_list(query_obj["glycan_identifier"]["glycan_id"])
             #qval = "^%s$" % (q)
             cond_objs.append(
                 {
@@ -429,6 +448,10 @@ def get_mongo_query(query_obj):
     #pmid
     if "pmid" in query_obj:
         cond_objs.append({"publication.reference.id" : {'$regex': query_obj["pmid"], '$options': 'i'}})
+
+    #id_namespace
+    if "id_namespace" in query_obj:
+        cond_objs.append({"crossref.database" : {'$regex': query_obj["id_namespace"], '$options': 'i'}})
 
     #binding_protein_id
     if "binding_protein_id" in query_obj:

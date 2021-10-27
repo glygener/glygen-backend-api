@@ -64,6 +64,12 @@
             "mongoquery":{"function.annotation":{"$regex":"query_term", "$options": "i"}}
         },
         {
+            "searchname":"protein.interactions",
+            "targetcollection":"c_protein",
+            "cachecollection":"c_proteincache",
+            "mongoquery":{"interactions.interactor_id":{"$regex":"query_term", "$options": "i"}}
+        },
+        {
             "searchname":"protein.disease",
             "targetcollection":"c_protein",
             "cachecollection":"c_proteincache",
@@ -177,6 +183,23 @@
             }
         },
         {
+            "searchname":"glycoprotein.glycosylation",
+            "targetcollection":"c_protein",
+            "cachecollection":"c_proteincache",
+            "mongoquery":{"glycosylation.glytoucan_ac":{"$regex":"query_term", "$options": "i"}}
+        },
+        {
+            "searchname":"glycoprotein.interactions",
+            "targetcollection":"c_protein",
+            "cachecollection":"c_proteincache",
+            "mongoquery":{
+                "$and":[
+                    {"interactions.interactor_id":{"$regex":"query_term", "$options": "i"}},
+                    {"glycosylation": {"$gt":[]}}
+                ]
+            }
+        },
+        {
             "searchname":"glycoprotein.disease",
             "targetcollection":"c_protein",
             "cachecollection":"c_proteincache",
@@ -209,7 +232,9 @@
             "mongoquery":{
                     "$or":[
                         {"motifs.id":{"$regex":"query_term", "$options": "i"}},
-                        {"motifs.name":{"$regex":"query_term", "$options": "i"}}
+                        {"motifs.name":{"$regex":"query_term", "$options": "i"}},
+                        {"motifs.synonym":{"$regex":"query_term", "$options": "i"}},
+                        {"motifs.keywords":{"$regex":"query_term", "$options": "i"}}
                     ]
             }
         },
@@ -257,6 +282,7 @@
                     "$or":[
                         {"iupac":{"$regex":"query_term", "$options": "i"}},
                         {"wurcs":{"$regex":"query_term", "$options": "i"}},
+                        {"byonic":{"$regex":"query_term", "$options": "i"}},
                         {"glycoct":{"$regex":"query_term", "$options": "i"}}
                     ]
             }

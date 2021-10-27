@@ -4,7 +4,7 @@ var serverDomain = "https://api.glygen.org"
 var fullUrl = '';
 
 ////////////////////////////////////
-$(document ).ready(function() {
+function getAutomatedCn(testInfo, apiList){
    
     if (window.location.href.indexOf("dev") != -1){
         titleClass = "dev_api_title";    
@@ -19,8 +19,9 @@ $(document ).ready(function() {
         serverDomain = "https://beta-api.glygen.org"
     }
 
-    var cn = '<table align=center width=1000 border=1 style="background:#eee;">';
-    for (var k in testInfo){
+    var cn = '';
+    for (var j in apiList){
+        var k = apiList[j];
         var obj = testInfo[k];
         var tdCls = k + ' regular';
 
@@ -70,11 +71,9 @@ $(document ).ready(function() {
         var resBox = '<div id='+k+'_res_cn style="'+s+'"></div>';
         cn += '<tr height=100><td valign=top>'+btn+'</td><td>'+resBox+'</td></tr>';
     }
-    cn += '</table>';
 
-    $('body').html(cn);
-
-});
+    return cn;
+}
 
 
 ////////////////////////////////////
@@ -101,6 +100,9 @@ $(document).on('click', '.submitbtn', function (event) {
             if (reqObj.readyState == 4 && [200, 500].indexOf(reqObj.status) != -1) {
                 $(this.resCnJqId).html('<pre>' + reqObj.responseText + '</pre>' );
             }
+            else{
+                console.log(reqObj.responseText);
+            }
         };
         reqObj.send();
         fullUrl = serverDomain + '/' + url;
@@ -123,7 +125,10 @@ $(document).on('click', '.submitbtn', function (event) {
             if (reqObj.readyState == 4 && [200, 500].indexOf(reqObj.status) != -1) {
                 console.log(reqObj.responseText);
                 $(this.resCnJqId).html('<pre>' + reqObj.responseText + '</pre>' );
-            }                       
+            }
+            else{
+                console.log(reqObj.responseText);
+            }
         };
         reqObj.send(postData);
         fullUrl = serverDomain + '/' + url + '?query=' + JSON.stringify(JSON.parse(q));

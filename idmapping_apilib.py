@@ -56,14 +56,20 @@ def search(query_obj, config_obj):
     record_id_field = config_obj["record_type_info"][query_obj["recordtype"]]["field"]
     record_id_label = config_obj["record_type_info"][query_obj["recordtype"]]["label"]
 
+
+    
     coll = "c_" + query_obj["recordtype"]
     prj_obj = {"crossref":1, record_id_field:1}
+
+
 
     mapping_dict = {}
     for doc in dbh[coll].find(mongo_query,prj_obj):
         in_list, out_list = [], []
         for obj in doc["crossref"]:
-            if obj["database"] == query_obj["input_namespace"]:
+            if obj["id"].strip() == "":
+                continue
+            if obj["database"] == query_obj["input_namespace"] and obj["id"] in q_list:
                 in_list.append(obj["id"])
             if obj["database"] == query_obj["output_namespace"]:
                 out_list.append(obj["id"])
@@ -73,10 +79,19 @@ def search(query_obj, config_obj):
 
             for out_id in out_list:
                 if out_id not in mapping_dict[in_id]:
-                    o = {"anchor":doc[record_id_field], "from":in_id, "to":out_id,"category":"mapped"}
+                    i_id = int(in_id) if in_id.isdigit() == True else in_id
+                    o_id = int(out_id) if out_id.isdigit() == True else out_id
+                    o = {"anchor":doc[record_id_field], "from":i_id, "to":o_id,"category":"mapped"}
                     mapping_dict[in_id].append(o)
    
 
+
+    all_glytoucan_dict = {}
+    #If input_namespace is GlyToucan, check all glytoucan_idlist
+    if query_obj["input_namespace"].lower() == "glytoucan":
+        for doc in dbh["c_glytoucan"].find({}):
+            for ac in doc["aclist"]:
+                all_glytoucan_dict[ac] = True
 
     record_list = []
     for in_id in mapping_dict:
@@ -86,6 +101,8 @@ def search(query_obj, config_obj):
     for in_id in q_list:
         if in_id not in mapping_dict:
             reason = "Invalid ID"
+            if in_id in all_glytoucan_dict:
+                reason = "Valid GlyTouCan accession but not in GlyGen"
             record_list.append({"input_id":in_id, "reason": reason, "category":"unmapped"})
         elif mapping_dict[in_id] == []:
             reason = "Valid ID, no mapping found"

@@ -1,0 +1,277 @@
+<html>
+<head>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<script language="javascript" src="jquery.min.js"></script>
+<script language="javascript" src="api_test.js"></script>
+
+<script>
+var htmlRoot = ""
+var bgColor = "MediumSeaGreen";
+
+var testInfo = {
+    "auth_login":{
+        "string_fields":["email","password"]
+        ,"numeric_fields":[]
+        ,"required_fields":["email","password"]
+        ,"url":"/auth/login"
+        ,"query":{"email":"rykahsay@gwu.edu","password":"pass12"}
+    }
+    ,"job_init":{
+        "string_fields":[]
+        ,"numeric_fields":[]
+        ,"required_fields":[]
+        ,"url":"/job/init"
+        ,"query":{}
+    }
+    ,"job_queue":{
+        "string_fields":["token"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token"]
+        ,"url":"/job/queue"
+        ,"query":{"token":""}
+    }
+    ,"job_status":{
+        "string_fields":["token", "jobid"]
+        ,"numeric_fields":["jobid"]
+        ,"required_fields":["token"]
+        ,"url":"/job/status"
+        ,"query":{"jobid": 1, "token":""}
+    }
+    ,"job_detail":{
+        "string_fields":["token", "jobid"]
+        ,"numeric_fields":["jobid"]
+        ,"required_fields":["token"]
+        ,"url":"/job/detail"
+        ,"query":{"jobid": 1, "token":""}
+    }
+    ,"job_list":{
+        "string_fields":["token", "visibility"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token", "visibility"]
+        ,"url":"/job/list"
+        ,"query":{"token":"xx", "visibility":"all"}
+    }
+    ,"job_update":{
+        "string_fields":["token","id","title","description","start_date","end_date","venue", "url", "url_name", "visibility"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token","id"]
+        ,"url":"/job/update"
+        ,"query":{ "token":"xxx", "id":"xxx","visibility":"visible"}
+    }
+    ,"job_delete":{
+        "string_fields":["token", "id"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token","id"]
+        ,"url":"/job/delete"
+        ,"query":{"id": "xxx", "token":"xxx"}
+    }
+};
+
+var initObj = {};
+var jobType = "blastp";
+
+
+////////////////////////////////////
+$(document ).ready(function() {
+
+
+    var svcUrl = "/job/init";
+    var reqObj = new XMLHttpRequest();
+    reqObj.open("POST", svcUrl, true);
+    reqObj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    reqObj.onreadystatechange = function() {
+        if (reqObj.readyState == 4 && [200, 500].indexOf(reqObj.status) != -1) {
+            initObj = JSON.parse(reqObj.responseText);
+            renderPage();
+        }
+    };
+    reqObj.send(); 
+
+});
+
+
+///////////////////////
+function renderPage(){
+
+    var cnList = [];
+    var apiList = ["auth_login", "job_init", "job_queue"]
+    cnList.push(getAutomatedCn(testInfo, apiList));
+    cnList.push(getLocalCn());
+    
+    var apiList = ["job_status", "job_detail", "job_list"];
+    cnList.push(getAutomatedCn(testInfo, apiList));
+
+    var cn = '<table align=center width=1000 border=1 style="background:#eee;">';
+    for (var i in cnList){
+        cn += cnList[i];
+    }
+    cn += '</table>';
+    $("body").html(cn);
+    return;
+}
+
+
+
+///////////////////////////////////
+$(document).on('click', '#login', function (event) {
+    event.preventDefault();
+    
+    var reqCnJqId = "#login_url";
+    var resCnJqId = "#login_cn";
+    
+    var gifImage = '<img src=loading.gif style="width:20%;margin-left:40%;margin-top:2%;">';
+    $(resCnJqId).html(gifImage);
+
+    var reqJson = {};
+    var inputFieldList = ["email", "password"];
+    for (var i in inputFieldList){
+        var f = inputFieldList[i];
+        reqJson[f] = $("#"+f).val();
+    }
+
+    var svcUrl = "/auth/login";
+    var postData = "query=" + JSON.stringify(reqJson);
+    var reqObj = new XMLHttpRequest();
+    reqObj.open("POST", svcUrl, true);
+    reqObj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    reqObj.resCnJqId = resCnJqId;
+    reqObj.onreadystatechange = function() {
+        if (reqObj.readyState == 4 && [200, 500].indexOf(reqObj.status) != -1) {
+            console.log(reqObj.responseText);
+            $(this.resCnJqId).html('<pre>' + reqObj.responseText + '</pre>' );
+        }
+    };
+    reqObj.send(postData); 
+    fullUrl = svcUrl + '?query=' + JSON.stringify(reqJson);
+    var urlCn = '<a class=fullurl href="'+fullUrl+'" target=_>' + fullUrl + '</a>';
+    $(reqCnJqId).html(urlCn);
+    console.log(svcUrl + '?' + postData);
+
+});
+
+
+//////////////////
+$(document).on('change', '#jobtype', function (event) {
+    event.preventDefault();
+    jobType = $("#jobtype option:selected").val();
+    renderPage();
+
+});
+
+
+///////////////////////////////////
+$(document).on('click', '#jobsubmit', function (event) {
+    event.preventDefault();
+
+    var gifImage = '<img src=loading.gif style="width:20%;margin-left:40%;margin-top:2%;">';
+    $("#search_cn").html(gifImage);
+
+    var formData = new FormData();
+    for (var i in initObj[jobType]["paramlist"]){
+        var pObj = initObj[jobType]["paramlist"][i];
+        var f = pObj.id;
+        var val = $("#"+f).val();
+        if (pObj.type == "int"){
+            val = parseInt(val);
+        }
+        else if (pObj.type == "float"){
+            val = parseFloat(val);
+        }
+        formData.append(f, val);
+    }
+    formData.append("jobtype",$("#jobtype option:selected").val());
+
+
+    var file = $('#userfile')[0].files[0];
+    if (file != undefined){
+        formData.append("userfile", file);
+        var sizeLimit = 1000000000;
+        if (file.size > sizeLimit){ 
+            var msg = 'Your submitted file is ' + file.size + ' Bytes big. ';
+            msg += 'This exceeds maximum allowed file size of ' + sizeLimit + ' Bytes.';
+            alert(msg);
+            return;
+        }
+    }
+    else{
+        var pastedText = $('#pasted_text').val();
+        formData.append("pasted_text", pastedText);
+    }
+    var url = '/job/addnew';
+
+
+    $("#search_url").html(url);
+
+    let xhr = new XMLHttpRequest();
+    xhr.onloadend = function() {
+        if (xhr.status == 200) {
+            console.log(xhr.responseText);
+            //resJson = JSON.parse(xhr.responseText);
+            $("#search_cn").html('<pre>'+xhr.responseText+'</pre>');
+        } else {
+            console.log(xhr.responseText);
+        }
+    };
+    xhr.open("POST", url);
+    xhr.send(formData);
+    
+});
+
+
+///////////////////
+function getLocalCn(){
+
+    var cn = '';
+    cn += '<tr><th colspan=2 align=left class='+titleClass+'>Test for job submit API</th></tr>';
+    cn += '<tr><td>Job Type</td>';
+    cn += '<td class="regular">';
+    cn += '<select id=jobtype style="width:100%;margin-bottom:3px;height:30px;background:#D6EAF8;">';
+    for (var k in initObj){
+        var s = (k == jobType ? "selected" : "");
+        cn += '<option value="'+k+'" '+ s+ '>'+k+'</option>';
+    }
+    cn += '</select>';
+    cn += '</td>';
+    cn += '</tr>';
+    
+    for (var i in initObj[jobType]["paramlist"]){
+        var pObj = initObj[jobType]["paramlist"][i];
+        cn += '<tr><td>'+pObj.label+'</td><td>';
+        if (["string", "int", "float"].indexOf(pObj.type) != -1){
+            var t = (["int", "float"].indexOf(pObj.type) != -1 ? "number" : "text"); 
+            cn += '<input id="'+pObj.id+'" type="'+t+'" name="'+pObj.id+'" class="regular" value="'+pObj.value +'">';
+        }
+        else if ("optlist" in pObj){
+            cn += '<select id="'+pObj.id+'" style="width:100%;margin-bottom:3px;height:30px;background:#D6EAF8;">';       
+            for (var j in pObj["optlist"]){
+                var optObj = pObj["optlist"][j];
+                cn += '<option value="'+optObj.value+'">'+optObj.label+'</option>';
+            }
+            cn += '</select>';
+        }
+        cn += '</td></tr>';
+    }
+
+    cn += '<tr>';
+    cn += '<td valign=top>User Input</td>';
+    cn += '<td style="padding:10;">Upload from file<br>';
+    cn += '<input id=userfile type="file" name="userfile">';
+    cn += '<br><br>--- OR ----<br><br>Paste Input';
+    cn += '<textarea id=pasted_text rows=10 style="width:100%;"></textarea></td>';
+    cn += '</tr>';
+    cn += '<tr><td>Post Data</td><td id=submit_url style="background:#fff;"></td></tr>';
+    cn += '<tr><td valign=top>';
+    cn += '<input type=submit id=jobsubmit name=btn value="Submit API request">';
+    cn += '</td>';
+    cn += '<td style="background:#fff;">';
+    cn += '<div style="width:700px;height:200px;overflow:auto;" id=search_cn></div></td>';
+    cn += '</tr>';
+    return cn;
+}
+</script>
+
+</head>
+
+<body>
+</body>
+<html>

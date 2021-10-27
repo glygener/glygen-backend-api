@@ -1,8 +1,14 @@
 var configJson = {
     "protein":{
         "glycosylation":{
-        }   
-        ,"disease":{
+        },   
+        "phosphorylation":{
+        },
+        "glycation":{
+        }
+        ,"mutagenesis":{
+        },
+        "disease":{
         },
         "publication":{
         },
@@ -14,9 +20,17 @@ var configJson = {
         },
         "site_annotation":{
         },
+        "pro_annotation":{
+        },
+        "ptm_annotation":{
+        },
         "function":{
         },
         "pathway":{
+        },
+        "reactions":{
+        },
+        "reaction_enzymes":{
         },
         "refseq":{
         },
@@ -63,6 +77,26 @@ var configJson = {
         ,"smiles_isomeric":{
         } 
         ,"inchi_key":{
+        }
+        ,"byonic":{
+        }
+        ,"gwb":{
+        }
+        ,"glycan_type":{
+        }
+        ,"missing_score":{
+        }
+        ,"number_monosaccharides":{
+        }
+        ,"fully_determined":{
+        }
+        ,"interactions":{
+        }
+        ,"expression":{
+        }
+        ,"subsumption":{
+        }
+        ,"names":{
         }
         ,"species":{
         }

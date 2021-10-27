@@ -5,9 +5,9 @@
 ###############################################
 
 
-ver="1.8.43"
+ver="1.10.16"
+datarelease="1.10.6"
 
-datarelease="1.8.24"
 
 html_root=/var/www/
 wrk_dir="/home/rykahsay/glygen-backend-api/"
