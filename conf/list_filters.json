@@ -187,6 +187,135 @@
         }
     },
     "site":{
+        "by_glycosylation_type":{
+            "group_order":1,
+            "group_label":"By Glycosylation Type",
+            "record_key":"glycosylation_type",
+            "order_dict":{
+                "n-linked|":1,
+                "n-linked|complex":2,
+                "n-linked|high mannose":3,
+                "n-linked|hybrid":4,
+                "o-linked|":5,
+                "o-linked|o-fucosylation":6,
+                "o-linked|o-galactosylation":7,
+                "o-linked|o-galnacylation":8,
+                "o-linked|o-glcnacylation":9,
+                "o-linked|o-glucosylation":10,
+                "o-linked|o-mannosylation":11,
+                "o-linked|other":12,
+                "c-linked|":13,
+                "c-linked|c-mannosylation":14,
+                "s-linked|":15
+            },
+            "label_dict":{
+                "n-linked|":"N-linked",
+                "o-linked|":"O-linked",
+                "c-linked|":"C-linked",
+                "s-linked|":"S-linked",
+                "n-linked|complex":"N-linked, complex",
+                "n-linked|high mannose":"N-linked, high mannose",
+                "n-linked|hybrid":"N-linked, hybrid",
+                "o-linked|o-fucosylation":"O-Fucosylation",
+                "o-linked|o-galactosylation":"O-Galactosylation",
+                "o-linked|o-galnacylation":"O-Galnacylation",
+                "o-linked|o-glcnacylation":"O-Glcnacylation",
+                "o-linked|o-glucosylation":"O-Glucosylation",
+                "o-linked|o-mannosylation":"O-Mannosylation",
+                "o-linked|other":"Other O-linked",
+                "c-linked|c-mannosylation":"C-Mannosylation" 
+            }
+        },
+        "by_amino_acid":{
+            "group_order":2,
+            "group_label":"By Amino Acid",
+            "record_key":"site_seq",
+            "order_dict":{
+                "A":1,
+                "R":2, 
+                "N":3,
+                "D":4,
+                "C":5,
+                "E":6,
+                "Q":7,
+                "G":8,
+                "H":9,
+                "I":10,
+                "L":11,
+                "K":12,
+                "M":13,
+                "F":14,
+                "P":15,
+                "S":16,
+                "T":17,
+                "W":18,
+                "Y":19,
+                "V":20
+            },
+            "label_dict":{
+                "A":"Ala",
+                "R":"Arg",
+                "N":"Asn",
+                "D":"Asp",
+                "C":"Cys",
+                "E":"Gln",
+                "Q":"Glu",
+                "G":"Gly",
+                "H":"His",
+                "I":"Ile",
+                "L":"Leu",
+                "K":"Lys",
+                "M":"Met",
+                "F":"Phe",
+                "P":"Pro",
+                "S":"Ser",
+                "T":"Thr",
+                "W":"Trp",
+                "Y":"Tyr",
+                "V":"Val"
+            }
+        },
+        "by_snv_type":{
+            "group_order":2,
+            "group_label":"By SNV Type",
+            "record_key":"snv_type",
+            "order_dict":{
+                "somatic":"1",
+                "germline":"2"
+            },
+            "label_dict":{
+                "somatic":"Somatic",
+                "germline":"Germline"
+            }
+        },
+        "by_organism":{
+            "group_order":2,
+            "group_label":"By Organism",
+            "record_key":"organism",
+            "order_dict":{
+                "Homo sapiens":1,
+                "Mus musculus":2,
+                "Rattus norvegicus":3,
+                "Rattus":4,
+                "Hepatitis C virus (isolate H)":5,
+                "Hepatitis C virus (isolate Japanese)":6,
+                "Hepacivirus C":7,
+                "Severe acute respiratory syndrome-related coronavirus":8,
+                "Severe acute respiratory syndrome coronavirus 2":9
+            },
+            "label_dict":{
+                "Homo sapiens":"Human",
+                "Mus musculus":"Mouse",
+                "Rattus norvegicus":"Rat",
+                "Hepatitis C virus (isolate H)":"HCV-H",
+                "Hepatitis C virus (isolate Japanese)":"HCV-Japanese",
+                "Hepacivirus C":"HCV",
+                "Severe acute respiratory syndrome-related coronavirus":"HCoV-SARS",
+                "Severe acute respiratory syndrome coronavirus 2":"SARS-CoV-2"
+            }
+        }
+
+
     },
     "motif":{
     }

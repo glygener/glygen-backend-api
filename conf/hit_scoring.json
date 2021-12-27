@@ -1,26 +1,120 @@
 {
     "glycan":{
-        "glycan_exact_match": 50.0,
-        "glycan_has_glycoprotein": 5.0,
-        "glycan_has_enzyme": 5.0,
-        "glycan_has_species": 5.0,
-        "glycan_has_publication": 5.0,
-        "glycan_fully_determined": 5.0
+        "misc":{
+            "glycan_exact_match": {"weight":50.0},
+            "glycan_definition_score": {
+                "weight":1.0,
+                "fieldlist":["missing_score"]
+            }
+        },
+        "direct_string":{       
+        },
+        "direct_boolean":{
+        },
+        "direct_numeric":{
+            "glycan_has_glycoprotein": {
+                "weight":5.0,
+                "fieldlist":["number_proteins"]
+            },
+            "glycan_has_enzyme": {
+                "weight":5.0,
+                "fieldlist":["number_enzymes"]
+            },
+            "glycan_has_species": {
+                "weight":5.0,
+                "fieldlist":["number_species"]
+            },
+            "glycan_has_publication": {
+                "weight":5.0,
+                "fieldlist":["publication"]
+            }
+        }
     },
     "protein":{
-        "protein_exact_match": 50.0,
-        "protein_reported_n_glycosites_with_glycan":5.0,
-        "protein_reported_o_glycosites_with_glycan":5.0,
-        "protein_reported_n_glycosites":4.0,
-        "protein_reported_o_glycosites":4.0,
-        "protein_predicted_glycosites":3.0,
-        "protein_publication_count":2.0
+        "misc":{
+            "protein_exact_match": {
+                "weight":50.0,
+                "fieldlist":[
+                    "uniprot_canonical_ac","protein_names_refseq",
+                    "refseq_name", "protein_names_uniprotkb","protein_name",
+                    "gene_names_refseq","gene_names_uniprotkb","gene_name"
+                ]
+            },
+            "protein_top_glycan_definition_score":{
+                "weight":1.0,
+                "fieldlist":[
+                    "missing_score"    
+                ]
+            }
+        },
+        "direct_boolean":{
+        },
+        "direct_string":{
+        },
+        "direct_numeric":{
+            "protein_reported_fully_resolved_glycans":{
+                "weight":10.0,
+                "fieldlist":["reported_fully_resolved_glycans"]
+            },
+            "protein_reported_n_glycosites_with_glycan":{
+                "weight":5.0,
+                "fieldlist":["reported_n_glycosites_with_glycan"]
+            },
+            "protein_reported_o_glycosites_with_glycan":{
+                "weight":5.0,
+                "fieldlist":["reported_o_glycosites_with_glycan"]
+            },
+            "protein_reported_n_glycosites":{
+                "weight":4.0,
+                "fieldlist":["reported_n_glycosites"]
+            },
+            "protein_reported_o_glycosites":{
+                "weight":4.0,
+                "fieldlist":["reported_o_glycosites"]
+            },
+            "protein_predicted_glycosites":{
+                "weight":3.0,
+                "fieldlist":["predicted_glycosites"]
+            },
+            "protein_publication_count":{
+                "weight":2.0,
+                "fieldlist":["publication_count"]
+            }
+        }
     },
     "site":{
-        "site_has_glycosylation":5.0,
-        "site_has_mutagenesis":3.0,
-        "site_has_phosphorylation":3.0,
-        "site_has_snv":3.0,
-        "site_has_glycation":3.0
+        "misc":{
+            "site_top_glycan_definition_score":{
+                "weight":1.0,
+                "fieldlist":["missing_score"]
+            }
+        },
+        "direct_boolean":{
+
+        },
+        "direct_string":{
+        },
+        "direct_numeric":{
+            "site_has_glycosylation":{
+                "weight":5.0,
+                "fieldlist":["glycosylation_count"]
+            },
+            "site_has_mutagenesis":{
+                "weight":3.0,
+                "fieldlist":["mutagenesis_count"]
+            },
+            "site_has_phosphorylation":{
+                "weight":3.0,
+                "fieldlist":["phosphorylation_count"]
+            },
+            "site_has_snv":{
+                "weight":3.0,
+                "fieldlist":["snv_count"]
+            },
+            "site_has_glycation":{
+                "weight":3.0,
+                "fieldlist":["glycation_count"]
+            }
+        }
     }
 }

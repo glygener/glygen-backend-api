@@ -42,6 +42,8 @@ var testInfo = {
             "disease_name",
             "operation",
             "glycosylation_evidence",
+            "glycosylation_type",
+            "glycosylation_subtype",
             "pmid",
             "gene_name",
             "organism.name",
@@ -56,7 +58,23 @@ var testInfo = {
         "numeric_fields": [
             "organism.id"
         ],
-        "query": {"uniprot_canonical_ac":"P14210"}
+        "querylist":[
+            {
+                "label":"Query by protein accession",
+                "query": {"uniprot_canonical_ac":"P14210"}
+            },
+            {
+                "label":"Query by glycosylation type and subtype",
+                "query": {
+                    "glycosylation_type":"O-linked",
+                    "glycosylation_subtype":"O-Fuc"
+                }
+            },
+            {
+                "label":"Query by glycosylation subtype",
+                "query": {"glycosylation_subtype":"O-Fuc"}
+            }
+        ]
     }
     ,"protein_list": {
         "string_fields": [

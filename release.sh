@@ -3,7 +3,8 @@
 # This should be done only from dev server
 #
 ###############################################
-ver="v-1.11.1"
+ver="v-1.11.4"
+
 
 if [ ${HOSTNAME} != 'glygen-vm-dev' ]
 then
@@ -23,7 +24,7 @@ rm -rf $release_dir/*
 
 
 cd $src_dir
-f_list="seqmapping idmapping supersearch mysite site auth data globalsearch glycan protein directsearch log misc motif pages typeahead usecases event publication job"
+f_list="seqmapping idmapping supersearch mysite site auth data globalsearch glycan protein directsearch log misc motif pages typeahead usecases event video publication job"
 for f in $f_list
 do
    cp $f*.py $release_dir/

@@ -165,8 +165,8 @@ def glycan_search(query_obj, config_obj):
                         rel = o["relationship"].lower()
                         tv = rel == rel_type
                         tv = True if rel_type == "any" else tv
-                        if tv and o["id"] not in hit_list:
-                            seen_id[o["id"]] = True
+                        if tv and o["related_accession"] not in hit_list:
+                            seen_id[o["related_accession"]] = True
                 for glytoucan_ac in seen_id.keys():
                     doc = dbh[collection].find_one({"glytoucan_ac":glytoucan_ac},prj_obj)
                     extra_doc_list.append(doc)

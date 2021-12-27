@@ -277,6 +277,10 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
     dump_debug_timer("flag-1 running concept queries", DEBUG_FLAG)
 
 
+    #return mongo_query
+
+
+
     initial_hit_count = 0
     reason_dict = {}
     initial_hit_dict = {}
@@ -308,6 +312,7 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
             record_id = doc[record_id_field]
             #print "Robel", doc["up_seq"], doc["site_seq"], doc["down_seq"], record_id
             #print "Robel", record_id
+            #print "Robel", record_id,doc["site_seq"]
             if record_type in ["enzyme", "gene"]:
                 record_id = "%s.%s" % (record_type, record_id)
             initial_hit_dict[record_type][record_id] = True

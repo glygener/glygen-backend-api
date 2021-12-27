@@ -54,6 +54,11 @@ def isint(value):
 
 def get_hit_score(doc, cache_info):
 
+
+    score_dict = json.loads(open("./conf/hit_scoring.json", "r").read())
+
+    ms_max, scale = 10000, 400.0
+
     search_query = cache_info["query"]
     if "concept_query_list" in cache_info["query"]:
         search_query = cache_info["query"]["concept_query_list"]
@@ -63,41 +68,44 @@ def get_hit_score(doc, cache_info):
     cond_match_freq = {}
     if record_type == "glycan":
         glytoucan_ac = doc["glytoucan_ac"]
-        cond = "glycan_exact_match"
+        cond_group, cond = "misc", "glycan_exact_match"
+        val_list, qval_list = [glytoucan_ac.lower()], []
         if search_type == "search_simple":
-            if glytoucan_ac.lower() == search_query["term"].lower():
-                cond_match_freq[cond] = 1
+            qval_list.append(search_query["term"].lower())
         elif search_type == "search":
             if "glycan_identifier" in search_query:
-                val_list = []
                 for k in ["glytoucan_ac","iupac", "glycoct"]:
                     if k in doc:
                         if doc[k] != "":
                             val_list.append(doc[k].lower())
-                q_val_list = search_query["glycan_identifier"]["glycan_id"].lower().split(",")
-                if len(list(set(q_val_list).intersection(val_list))) > 0:
-                    cond_match_freq[cond] = 1
+                qval_list += search_query["glycan_identifier"]["glycan_id"].lower().split(",")
         
-        if doc["number_proteins"] > 0:
-            cond_match_freq["glycan_has_glycoprotein"] = doc["number_proteins"]
-        if doc["number_enzymes"] > 0:
-            cond_match_freq["glycan_has_enzyme"] = doc["number_enzymes"]
-        if doc["number_species"] > 0:
-            cond_match_freq["glycan_has_species"] = doc["number_species"]
-        if len(doc["publication"].split(";")) > 0:
-            cond_match_freq["glycan_has_publication"] = len(doc["publication"].split(";"))
-        if doc["keywords"].find("fully_determined") != -1:
-            cond_match_freq["glycan_fully_determined"] = 1
-        #Disease association (5 points) 
+        if len(list(set(qval_list).intersection(val_list))) > 0:
+            cond_match_freq[cond] = 1
+       
+        cond_group, cond = "misc", "glycan_definition_score"
+        p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
+        for p in p_list:
+            ms = doc[p]
+            if ms != ms_max:
+                cond_match_freq[cond] = scale*float(ms_max - ms)/float(ms_max)
+
+        cond_group, cond = "direct_numeric", ""
+        for cond in score_dict[record_type][cond_group]:
+            p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
+            for p in p_list:
+                n = len(doc["publication"].split(";")) if p == "publication" else doc[p]
+                if n > 0:
+                    cond_match_freq[cond] = n
+    
     elif record_type == "protein":
-        val_list = []
-        p_list = ["uniprot_canonical_ac","protein_names_refseq","refseq_name",
-                "protein_names_uniprotkb","protein_name","gene_names_refseq",
-                "gene_names_uniprotkb","gene_name"]
+        val_list, qval_list = [], []
+        cond_group, cond = "misc", "protein_exact_match"
+        p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
         for p in p_list:
             val_list.append(doc[p].lower())
-        
-        qval_list = []
+            if p == "uniprot_canonical_ac":
+                val_list.append(doc[p].lower().split("-")[0])
         if search_type == "supersearch":
             for q_obj in search_query:
                 if "unaggregated_list" in q_obj["query"]:
@@ -110,44 +118,67 @@ def get_hit_score(doc, cache_info):
             for f in search_query:
                 if type(search_query[f]) is unicode:
                     qval_list.append(search_query[f].lower())
-        
-        cond = "protein_exact_match"
         for qval in qval_list:
             if qval in val_list:
                 if cond not in cond_match_freq:
                     cond_match_freq[cond] = 0
                 cond_match_freq[cond] += 1
-        p_list = ["reported_n_glycosites_with_glycan", "reported_o_glycosites_with_glycan",
-            "reported_n_glycosites", "reported_o_glycosites", "predicted_glycosites",
-            "publication_count"
-        ]
+      
+        cond_group, cond = "misc", "protein_top_glycan_definition_score"
+        p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
         for p in p_list:
-            n = doc[p]
-            if n > 0:
-                cond = "protein_" + p
-                cond_match_freq[cond] = n
-        #Has reported glycosite+ fully-determined glycan structure (4 points)
-    elif record_type == "site":
-        for p in ["glycosylation", "mutagenesis", "snv", "phosphorylation", "glycation"]:
-            if p in doc:
-                if doc[p] == "yes":
-                    cond = "site_has_" + p
-                    cond_match_freq[cond] = 1
+            ms = doc[p]
+            if ms != ms_max:
+                cond_match_freq[cond] = scale*float(ms_max - ms)/float(ms_max)
 
-    score_dict = json.loads(open("./conf/hit_scoring.json", "r").read())
+        cond_group, cond = "direct_numeric", ""
+        for cond in score_dict[record_type][cond_group]:
+            p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
+            for p in p_list:
+                n = doc[p]
+                if n > 0:
+                    cond_match_freq[cond] = n
+    elif record_type == "site":
+        cond_group, cond = "misc", "site_top_glycan_definition_score"
+        p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
+        for p in p_list:
+            ms = doc[p]
+            if ms != ms_max: 
+                cond_match_freq[cond] = scale*float(ms_max - ms)/float(ms_max)
+
+        cond_group, cond = "direct_boolean", ""
+        for cond in score_dict[record_type][cond_group]:
+            p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
+            for p in p_list:
+                if doc[p] == "yes":
+                    cond_match_freq[cond] = 1
+       
+        cond_group, cond = "direct_numeric", ""
+        for cond in score_dict[record_type][cond_group]:
+            p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
+            for p in p_list:
+                n = doc[p]
+                if n > 0:
+                    cond_match_freq[cond] = n
+
+        #print "Robel", cond_match_freq
+
     score = 0.1
     score_info = {"contributions":[], "formula":"sum(w + 0.01*f)", 
             "variables":{"c":"condition name", "w":"condition weight",
                 "f":"condition match frequency"}}
-    for cond in score_dict[record_type]:
-        freq = cond_match_freq[cond] if cond in cond_match_freq else 0
-        weight = score_dict[record_type][cond] if cond in cond_match_freq else 0.0
-        score += weight + round(float(freq)/100.00,3)
-        o = {"c":cond, "w":weight, "f":float(freq)}
-        score_info["contributions"].append(o)
+    for cond_group in score_dict[record_type]:
+        for cond in score_dict[record_type][cond_group]:
+            freq = cond_match_freq[cond] if cond in cond_match_freq else 0
+            weight = 0.0
+            if cond in cond_match_freq:
+                weight = score_dict[record_type][cond_group][cond]["weight"]
+            score += weight + round(float(freq)/100.00,3)
+            o = {"c":cond, "w":weight, "f":float(freq)}
+            score_info["contributions"].append(o)
 
 
-    return round(float(score), 3), score_info
+    return round(float(score), 2), score_info
 
 
 
@@ -178,6 +209,7 @@ def trim_object(obj):
 
 def order_obj(json_obj, ordr_dict):
 
+
     for k1 in json_obj:
         ordr_dict[k1] = ordr_dict[k1] if k1 in ordr_dict else 1000
         if type(json_obj[k1]) is dict:
@@ -193,8 +225,8 @@ def order_obj(json_obj, ordr_dict):
                         if type(json_obj[k1][k2][j]) is dict:
                             for k3 in json_obj[k1][k2][j]:
                                 ordr_dict[k3] = ordr_dict[k3] if k3 in ordr_dict else 1000
-                                json_obj[k1][k2][j] = OrderedDict(sorted(json_obj[k1][k2][j].items(),
-                                    key=lambda x: float(ordr_dict.get(x[0]))))
+                                #json_obj[k1][k2][j] = OrderedDict(sorted(json_obj[k1][k2][j].items(),
+                                #key=lambda x: float(ordr_dict.get(x[0]))))
             json_obj[k1] = OrderedDict(sorted(json_obj[k1].items(),
                 key=lambda x: float(ordr_dict.get(x[0]))))
 
@@ -652,6 +684,7 @@ def filter_list(res_obj, query_obj):
     record_type = res_obj["cache_info"]["record_type"]
     filter_conf = json.loads(open("./conf/list_filters.json", "r").read())
 
+
     if "filters" not in res_obj:
         res_obj["filters"] = {"available":[], "applied":[]}
     if "filters" in query_obj:
@@ -660,6 +693,7 @@ def filter_list(res_obj, query_obj):
             return 
     else:
         return 
+
 
     tmp_record_list = []
     for record_obj in res_obj["results"]:
@@ -802,7 +836,7 @@ def update_filters(res_obj):
                                     tmp_list.append(opt)
                 elif k in record_obj:
                     tmp_list = record_obj[k].split(";")
-                
+
                 for option_id in tmp_list:
                     if option_id.strip() != "":
                         if filter_group_id == "by_glycan_type":
@@ -836,18 +870,6 @@ def update_filters(res_obj):
         grp_obj.pop("tmp_options")
 
 
-
-    #add filters not seen in hit records
-    #for filter_group_id in filter_conf[record_type]:
-    #    group_idx = group_id_list.index(filter_group_id)
-    #    for option_id in filter_conf[record_type][filter_group_id]["order"]:
-    #        if option_id not in seen[filter_group_id]:
-    #            ordr = filter_conf[record_type][filter_group_id]["order"][option_id]
-    #            label = option_id
-    #            if option_id in filter_conf[record_type][filter_group_id]["label_dict"]:
-    #                label = filter_conf[record_type][filter_group_id]["label_dict"][option_id]
-    #            o = { "id": option_id, "count": 0, "order":ordr, "label":label}
-    #            res_obj["filters"]["available"][group_idx]["options"].append(o)
 
 
     return

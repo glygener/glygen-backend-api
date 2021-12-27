@@ -430,9 +430,21 @@ def get_mongo_query(query_obj):
     if "pmid" in query_obj:
         cond_objs.append({"publication.reference.id" : {'$regex': query_obj["pmid"], '$options': 'i'}})
 
-    #glycosylation_type
+    #glycosylation_type and glycosylation_subtype
     if "glycosylation_type" in query_obj:
-        cond_objs.append({"glycosylation.type" : {'$regex': query_obj["glycosylation_type"], '$options': 'i'}})
+        if "glycosylation_subtype" in query_obj:
+            cond_objs.append({
+                "glycosylation": {            
+                    "$elemMatch": {             
+                        "type": {'$regex': query_obj["glycosylation_type"], '$options': 'i'},
+                        "subtype": {'$regex': query_obj["glycosylation_subtype"], '$options': 'i'}
+                    }
+                }
+            })
+        else:
+            cond_objs.append({"glycosylation.type" : {'$regex': query_obj["glycosylation_type"], '$options': 'i'}})
+    elif "glycosylation_subtype" in query_obj:
+        cond_objs.append({"glycosylation.subtype" : {'$regex': query_obj["glycosylation_subtype"], '$options': 'i'}})
 
     #attached_glycan_id
     if "attached_glycan_id" in query_obj:

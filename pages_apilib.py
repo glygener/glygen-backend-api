@@ -58,7 +58,8 @@ def home_init(config_obj):
     for doc in dbh["c_stat"].find({}):
         doc.pop("_id")
         for tax_id in list(set(tax_id_list)):
-            res_obj["statistics"].append(doc["oldstat"][tax_id])
+            if tax_id in doc["oldstat"]:
+                res_obj["statistics"].append(doc["oldstat"][tax_id])
 
         #uncomment this when the frontend is ready to consume new stat format
         #res_obj["statistics"] = doc["newstat"]
@@ -79,6 +80,20 @@ def home_init(config_obj):
                 continue
             doc[k] = doc[k].strftime('%Y-%m-%d %H:%M:%S %Z%z')
         res_obj["events"].append(doc)
+
+
+    res_obj["video"] = {}
+    doc = dbh["c_video"].find_one({})
+    if doc != None:
+        doc.pop("_id")
+        for k in ["createdts"]:
+            if k not in doc:
+                continue
+            doc[k] = doc[k].strftime('%Y-%m-%d %H:%M:%S %Z%z').strip()
+        res_obj["video"] = doc
+
+
+
 
     return res_obj 
 

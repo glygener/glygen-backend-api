@@ -1,0 +1,70 @@
+<html>
+<head>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<script language="javascript" src="jquery.min.js"></script>
+<script language="javascript" src="api_test.js"></script>
+
+
+<script>
+var testInfo = {
+    "auth_login":{
+        "string_fields":["email","password"]
+        ,"numeric_fields":[]
+        ,"required_fields":["email","password"]
+        ,"url":"/auth/login"
+        ,"query":{"email":"","password":""}
+    }
+    ,"video_addnew":{
+        "string_fields":["token","url"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token", "url"]
+        ,"url":"/video/addnew"
+        ,"query":{"token":"","url":"https://www.youtube.com/embed/xyV5v5nRm6A?rel=0"}
+    }
+    ,"video_detail":{
+        "string_fields":["token"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token"]
+        ,"url":"/video/detail"
+        ,"query":{"token":""}
+    }
+    ,"video_list":{
+        "string_fields":["token"]
+        ,"required_fields":["token"]
+        ,"url":"/video/list"
+        ,"query":{"token":""}
+    }
+    ,"video_delete":{
+        "string_fields":["token", "id"]
+        ,"numeric_fields":[]
+        ,"required_fields":["token","id"]
+        ,"url":"/video/delete"
+        ,"query":{"id": "", "token":""}
+    }
+
+};
+
+/////////////////////////////
+$(document ).ready(function() {
+
+    var cnList = [];
+    var apiList = Object.keys(testInfo);
+    cnList.push(getAutomatedCn(testInfo, apiList));
+
+    var cn = '<table align=center width=1000 border=1 style="background:#eee;">';
+    for (var i in cnList){
+        cn += cnList[i];
+    }
+    cn += '</table>';
+    $("body").html(cn);
+
+});
+
+
+</script>
+
+</head>
+<body>
+
+</body>
+<html>

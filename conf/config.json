@@ -401,6 +401,7 @@
                 ,"sequence":{"aa_sequence":{"type":"string"}, "type":{"type":"string"}}
                 ,"glycosylated_aa":{"aa_list":{"type":"list"}, "operation":{"type":"string"}}
                 ,"glycosylation_type":{"type":"string"}
+                ,"glycosylation_subtype":{"type":"string"}
                 ,"disease_name":{"type":"string"}
                 ,"disease_id":{"type":"string"}
             }
@@ -771,6 +772,37 @@
             }
             ,"requiredfields":["token", "id"]
             ,"collectionlist":["c_event"]
+        }
+        ,"video_addnew":{
+            "field_info":{
+                "token":{"type":"string"}
+                ,"url":{"type":"string"}
+            }
+            ,"requiredfields":["token", "url"]
+            ,"collectionlist":["c_video"]
+        }
+        ,"video_detail":{
+            "field_info":{
+                "token":{"type":"string"}
+                ,"id":{"type":"string"}
+            }
+            ,"requiredfields":["token", "id"]
+            ,"collectionlist":["c_video"]
+        }
+        ,"video_list":{
+            "field_info":{
+                "token":{"type":"string"}
+            }
+            ,"requiredfields":["token"]
+            ,"collectionlist":["c_video"]
+        }
+        ,"video_delete":{
+            "field_info":{
+                "token":{"type":"string"}
+                ,"id":{"type":"string"}
+            }
+            ,"requiredfields":["token", "id"]
+            ,"collectionlist":["c_video"]
         }
         ,"typeahead_glycan":{
             "field_info":{
