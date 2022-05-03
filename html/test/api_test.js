@@ -25,9 +25,16 @@ function getAutomatedCn(testInfo, apiList){
         var obj = testInfo[k];
         var tdCls = k + ' regular';
 
-        var strFields = JSON.stringify(obj["string_fields"]);
-        var numFields = JSON.stringify(obj["numeric_fields"]);
-        var reqFields = JSON.stringify(obj["required_fields"]);
+        var fTypeDict = {"string_fields":"", "numeric_fields":"", "object_fields":"", 
+            "required_fields":""};
+        var st = "width:100%;height:50px;background:#eee;";
+        for (var fType in fTypeDict){
+            if (fType in obj){
+                var val = JSON.stringify(obj[fType]);
+                fTypeDict[fType] = '<textarea style="'+st+'">'+ val + '</textarea>';
+            }
+        }
+        
         var qJsonList = [];
         var qLabelList = [];
         if ("query" in obj){
@@ -42,17 +49,15 @@ function getAutomatedCn(testInfo, apiList){
         }
         var title = 'Test for ' + k + ' API';
         
-        strFields = '<textarea style="width:100%;height:50px;background:#eee;">'+strFields+ '</textarea>';
-        numFields = '<textarea style="width:100%;height:50px;background:#eee;">'+numFields+ '</textarea>';
-        reqFields = '<textarea style="width:100%;height:50px;background:#eee;">'+reqFields+ '</textarea>';
         
         cn += '<tr><th colspan=2 align=left class='+titleClass+'>'+title+'</th></tr>';
         
-        //cn += '<tr><td valign=top>File </td><td width=80% class="'+tdCls+'"><input id=userfile type="file" name="userfile"/></td></tr>';
-
-        cn += '<tr><td valign=top>String Fields</td><td width=80% class="'+tdCls+'">'+strFields+'</td></tr>';
-        cn += '<tr><td valign=top>Numeric Fields</td><td width=80% class="'+tdCls+'">'+numFields+'</td></tr>'; 
-        cn += '<tr><td valign=top>Required Fields</td><td width=80% class="'+tdCls+'">'+reqFields+'</td></tr>';
+        for (var fType in fTypeDict){
+            if (fType in obj){
+                var val = fTypeDict[fType];
+                cn += '<tr><td valign=top>'+fType+'</td><td width=80% class="'+tdCls+'">'+val+'</td></tr>';
+            }
+        }
         
         var qId = k + '_queryselector';
         var qSelector = '<select class=qselector id="'+qId+'" style="width:100%;margin-bottom:3px;height:30px;background:#D6EAF8;">';
@@ -110,16 +115,16 @@ $(document).on('click', '.submitbtn', function (event) {
         $(reqCnJqId).html(urlCn);
     }
     else{
-        //var file = $('#userfile')[0].files[0];
-        //var postData = new FormData();
-        //postData.append("userfile", file);
-        //postData.append("query",JSON.stringify(JSON.parse(q)));
-        //postData.append("query","Robel");
-        //console.log(postData);
-        var postData = "query=" + JSON.stringify(JSON.parse(q));
         var reqObj = new XMLHttpRequest();
         reqObj.open("POST", url, true);
-        reqObj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        var postData = "query=" + JSON.stringify(JSON.parse(q));
+        if (url == "/job/addnew"){
+            postData = {"query":JSON.parse(q)};
+            reqObj.setRequestHeader('Content-Type', 'application/json');
+        }
+        else{
+            reqObj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        }
         reqObj.resCnJqId = resCnJqId;
         reqObj.onreadystatechange = function() {
             if (reqObj.readyState == 4 && [200, 500].indexOf(reqObj.status) != -1) {
@@ -130,8 +135,14 @@ $(document).on('click', '.submitbtn', function (event) {
                 console.log(reqObj.responseText);
             }
         };
-        reqObj.send(postData);
-        fullUrl = serverDomain + '/' + url + '?query=' + JSON.stringify(JSON.parse(q));
+        if (url == "/job/addnew"){
+            reqObj.send(JSON.stringify(postData));
+            fullUrl = serverDomain + '/' + url;
+        }
+        else{
+            reqObj.send(postData);
+            fullUrl = serverDomain + '/' + url + '?query=' + JSON.stringify(JSON.parse(q));
+        }
         var urlCn = '<a class=fullurl href="'+fullUrl+'" target=_>' + fullUrl + '</a>';
         $(reqCnJqId).html(urlCn);
         console.log(url + '?' + postData);

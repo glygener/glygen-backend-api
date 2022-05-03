@@ -1,9 +1,9 @@
 {
 	"server":"dev"
 	,"moduleversion":"0.0.0"
-        ,"datarelease":"1.10.3"
+        ,"datarelease":"1.12.2"
         ,"session_life":24.0
-        ,"max_batch_size":10000
+        ,"max_batch_size":100
         ,"supersearch_batch_size":300000
         ,"max_global_search_results":1000000
         ,"max_query_value_len":10000
@@ -16,40 +16,38 @@
         ,"jobinfo":{
             "tspath":"/usr/local/bin/ts",
             "maxjobs":5,
-            "test":{
-                "informat":"fasta",
-                "outformat":"csv",
+	    "structure_search":{
                 "incmdflag":"-i",
                 "outcmdflag":"-o",
-                "max_input_records":10,
-                "path":"/usr/bin/python /data/shared/glygen/test/test.py",
+                "path":"/usr/bin/python3 /software/job_submitters/structure_search.py",
+                "input_files":[
+                    {"name":"input.json", "format":"json"}
+                ],
                 "output_files":[
-                    {"name":"output.csv", "format":"csv"}
+                    {"name":"output.json", "format":"json"}
                 ],
                 "paramlist":[
-                    {"id":"token", "label":"Auth Token", "type":"string", "value":""},
-                    {"id":"email", "label":"User Email", "type":"string", "value":"rykahsay@gwu.edu"}
+                    {"id":"seq", "label":"Sequence", "type":"unicode", "value":"xxx"},
+                    {"id":"align","label":"Align", "type":"unicode", "value":"core"}
                 ]
-            },
+            },            
             "blastp":{
-                "informat":"fasta",
-                "outformat":"csv",
                 "incmdflag":"-query",
                 "outcmdflag":"-out",
                 "max_input_records":10,
-                "path":"/software/ncbi-blast-2.6.0+/bin/blastp",
+                "path":"/usr/bin/python3 /software/job_submitters/blastp.py",
+                "input_files":[
+                    {"name":"input.fasta", "format":"fasta"}
+                ],
                 "output_files":[
-                    {"name":"output.csv", "format":"csv"}
+                    {"name":"output.blastout", "format":"blastout"}
                 ],
                 "paramlist":[
-                    {"id":"token", "label":"Auth Token", "type":"string", "value":""},
-                    {"id":"email", "label":"User Email", "type":"string", "value":"rykahsay@gwu.edu"},
+                    {"id":"seq", "label":"Sequence", "type":"unicode", "value":"xxx"},
                     {
-                        "id":"targetdb", "label":"Target DB", "type":"array",
+                        "id":"targetdb", "label":"Target DB", "type":"unicode",
                         "cmdflag":"-db",
                         "optlist":[
-                            {"value":"canonicalsequences", "label":"Canonical Sequences"},
-                            {"value":"allsequences", "label":"All Isoform Sequences"}
                         ]
                     },
                     {
@@ -57,11 +55,7 @@
                         "cmdflag":"-evalue"
                     },
                     {
-                        "id":"outfmt", "label":"Output Format", "type":"array",
-                        "cmdflag":"-outfmt",
-                        "optlist":[
-                            {"value":"6", "label":"Tabular"}
-                        ]
+                        "id":"num_alignments", "label":"Max number of hits", "type":"int", "value":250, "cmdflag":"-num_alignments"
                     }
                 ]
             }
@@ -206,20 +200,16 @@
         }
         ,"job_addnew":{
             "field_info":{
-                "email":{"type":"string"}
-                ,"token":{"type":"string"}
-                ,"jobtype":{"type":"string"}
-                ,"line_list":{"type":"string"}
+                "jobtype":{"type":"string"}
             }
-            ,"requiredfields":["email", "token", "jobtype", "line_list"]
+            ,"requiredfields":["jobtype"]
             ,"collectionlist":["c_job"]
         }
         ,"job_list":{
             "field_info":{
-                "token":{"type":"string"}
-                ,"visibility":{"type":"string"}
+                "visibility":{"type":"string"}
             }
-            ,"requiredfields":["token", "visibility"]
+            ,"requiredfields":["visibility"]
             ,"collectionlist":["c_job"]
         }
         ,"globalsearch_search":{
@@ -272,6 +262,11 @@
                 ,"composition":{
                     "residue":{"type":"string"}, 
                     "min":{"type":"number"}, 
+                    "max":{"type":"number"}
+                }
+                ,"composition_expanded":{
+                    "residue":{"type":"string"},
+                    "min":{"type":"number"},
                     "max":{"type":"number"}
                 }
                 ,"number_monosaccharides":{"min":{"type":"number"}, "max":{"type":"number"}}
@@ -1010,9 +1005,9 @@
         }
         ,"dev":{
                 "dbinfo":{
-                        "mongodbname":"***"
-                        ,"mongodbuser":"***"
-                        ,"mongodbpassword":"***"
+                        "mongodbname":"glydb"
+                        ,"mongodbuser":"glydbadmin"
+                        ,"mongodbpassword":"glydbpass"
                         ,"sessionlife":3600
                         ,"collections":{
                             "bco":"c_bco"
@@ -1045,7 +1040,8 @@
 		        ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
                         ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
-                        ,"userdata":"/data/shared/glygen/userdata/dev/"
+                        ,"userdata":"/data/shared/glygen/userdata/dev/jobs/"
+                        ,"cgipath":"/var/www/cgi-bin/api/"
                 }
 	}
 	,"tst":{
@@ -1085,7 +1081,7 @@
                         ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
                         ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
-                        ,"userdata":"/data/shared/glygen/userdata/tst/"
+                        ,"userdata":"/data/shared/glygen/userdata/tst/jobs/"
                 }
         }
         ,"beta":{
@@ -1104,7 +1100,7 @@
                             ,"alignment":"c_alignment"
                         }
                 }
-                ,"contactemailreceivers":[ "myGlyGen@gmail.com", "mazumder@gwu.edu", "will@ccrc.uga.edu", "rene@ccrc.uga.edu", "jeetvora@gwu.edu", "rykahsay@gwu.edu", "tvwillia@gmail.com", "rsn13@gwu.edu", "rupali.mahadik88@gmail.com","mtiemeyer@ccrc.uga.edu","tylerjstewart@email.gwu.edu"]
+                ,"contactemailreceivers":[ "myGlyGen@gmail.com", "mazumder@gwu.edu", "will@ccrc.uga.edu", "rene@ccrc.uga.edu", "jeetvora@gwu.edu", "rykahsay@gwu.edu", "tvwillia@gmail.com", "karinamartinez@gwu.edu", "mtiemeyer@ccrc.uga.edu","tylerjstewart@email.gwu.edu"]
                 ,"rootinfo":{
                         "baseurl":"/datasetviewer"
                         ,"ghtmlroot":"/datasetviewer"
@@ -1125,7 +1121,7 @@
                         ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
                         ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
-                        ,"userdata":"/data/shared/glygen/userdata/beta/"
+                        ,"userdata":"/data/shared/glygen/userdata/beta/jobs/"
                 }
         }
         ,"backup":{
@@ -1144,7 +1140,7 @@
                             ,"alignment":"c_alignment"
                         }
                 }
-                ,"contactemailreceivers":[ "myGlyGen@gmail.com", "mazumder@gwu.edu", "will@ccrc.uga.edu", "rene@ccrc.uga.edu", "jeetvora@gwu.edu", "rykahsay@gwu.edu", "tvwillia@gmail.com", "rsn13@gwu.edu", "rupali.mahadik88@gmail.com","mtiemeyer@ccrc.uga.edu","tylerjstewart@email.gwu.edu"]
+                ,"contactemailreceivers":[ "myGlyGen@gmail.com", "mazumder@gwu.edu", "will@ccrc.uga.edu", "rene@ccrc.uga.edu", "jeetvora@gwu.edu", "rykahsay@gwu.edu", "tvwillia@gmail.com", "karinamartinez@gwu.edu", "mtiemeyer@ccrc.uga.edu","tylerjstewart@email.gwu.edu"]
                 ,"rootinfo":{
                         "baseurl":"/datasetviewer"
                         ,"ghtmlroot":"/datasetviewer"
@@ -1183,7 +1179,7 @@
                             ,"alignment":"c_alignment"
                         }
                 }
-                ,"contactemailreceivers":[ "myGlyGen@gmail.com", "mazumder@gwu.edu", "will@ccrc.uga.edu", "rene@ccrc.uga.edu", "jeetvora@gwu.edu", "rykahsay@gwu.edu", "tvwillia@gmail.com", "rsn13@gwu.edu", "rupali.mahadik88@gmail.com","mtiemeyer@ccrc.uga.edu","tylerjstewart@email.gwu.edu"]
+                ,"contactemailreceivers":[ "myGlyGen@gmail.com", "mazumder@gwu.edu", "will@ccrc.uga.edu", "rene@ccrc.uga.edu", "jeetvora@gwu.edu", "rykahsay@gwu.edu", "tvwillia@gmail.com", "karinamartinez@gwu.edu", "mtiemeyer@ccrc.uga.edu","tylerjstewart@email.gwu.edu"]
 		,"rootinfo":{
 			"baseurl":"/datasetviewer"
                 	,"ghtmlroot":"/datasetviewer"
@@ -1204,7 +1200,7 @@
 		        ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
                         ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
-                        ,"userdata":"/data/shared/glygen/userdata/prd/"
+                        ,"userdata":"/data/shared/glygen/userdata/prd/jobs/"
                 }
 	}
 	,"objectorder":{

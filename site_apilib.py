@@ -62,6 +62,8 @@ def site_detail(query_obj, config_obj):
     if site_doc == None:
         post_error_list.append({"error_code":"non-existent-record"})
         return {"error_list":post_error_list}
+    if "_id" in site_doc:
+        site_doc.pop("_id")
 
 
     url = config_obj["urltemplate"]["uniprot"] % (canon_doc["uniprot_canonical_ac"])

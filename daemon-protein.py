@@ -63,6 +63,10 @@ def main():
     script_path = os.path.dirname(os.path.realpath(__file__))
     config_file = script_path + "/conf/config.json" 
     config_obj = json.loads(open(config_file, "r").read())
+    
+    db_info = json.loads(open(script_path + "/conf/dbinfo.json", "r").read())
+    config_obj[config_obj["server"]]["dbinfo"] = db_info[config_obj["server"]]
+
 
     path_obj  =  config_obj[config_obj["server"]]["pathinfo"]
     root_obj  =  config_obj[config_obj["server"]]["rootinfo"]

@@ -131,7 +131,6 @@ def glycan_search(query_obj, config_obj):
                 o = {"residue":res, "min":default_min, "max":default_max}
                 query_obj["composition"].append(o)
         
-
     mongo_query = get_mongo_query(query_obj)
     #return mongo_query
 
@@ -140,13 +139,17 @@ def glycan_search(query_obj, config_obj):
 
     i = 0
     results = []
-    prj_obj = {"glytoucan_ac":1, "subsumption":1, "composition":1, "glycan_identifier":1,"crossref.id":1}
+    prj_obj = {"glytoucan_ac":1, "subsumption":1, "composition":1,"composition_expanded":1, "glycan_identifier":1,"crossref.id":1}
     doc_list = []
     for doc in dbh[collection].find(mongo_query,prj_obj):
-        if "composition" in query_obj:
-            if query_obj["composition"] != []:
-                if passes_composition_filter(doc["composition"], query_obj) == False:
-                    continue
+        comp_flag_list = []
+        for k in ["composition", "composition_expanded"]:
+            if k in query_obj:
+                if query_obj[k] != []:
+                    flag = passes_composition_filter(doc["glytoucan_ac"], doc[k],k, query_obj)
+                    comp_flag_list.append(flag)
+        if False in comp_flag_list:
+            continue
         doc_list.append(doc)
 
 
@@ -184,12 +187,22 @@ def glycan_search(query_obj, config_obj):
 
 
     unmapped_obj_list = []
+    redundancy_dict = {}
     if "glycan_identifier" in query_obj:
         if "glycan_id" in query_obj["glycan_identifier"]:
             qid_list = get_qid_list(query_obj["glycan_identifier"]["glycan_id"])
             for qid in qid_list:
                 if qid not in seen_id:
                     unmapped_obj_list.append({"input_id":qid, "reason":"ID not found"})
+                if qid_list.count(qid) > 1:
+                    redundancy_dict[qid] = qid_list.count(qid)
+
+    for qid in redundancy_dict:
+        for i in range(redundancy_dict[qid] - 1):
+            unmapped_obj_list.append({"input_id":qid, "reason":"Duplicate ID"})
+
+
+
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
@@ -496,12 +509,11 @@ def get_mongo_query(query_obj):
 
 
 
-def passes_composition_filter(comp_obj, query_obj):
-
+def passes_composition_filter(glytoucan_ac, comp_obj, comp_field, query_obj):
 
     tv = []
     n_cond = 0
-    for q in query_obj["composition"]:
+    for q in query_obj[comp_field]:
         q_res, q_min, q_max = q["residue"], q["min"], q["max"]
         if q_max >= 0:
             n_cond += 1
@@ -510,7 +522,9 @@ def passes_composition_filter(comp_obj, query_obj):
                 if o_res == q_res and o_count >= q_min and o_count <= q_max:
                     tv.append(True)
                     break
-    
-    return len(tv) == n_cond and list(set(tv)) == [True]
+   
+    r_value = len(tv) == n_cond and list(set(tv)) == [True]
+
+    return r_value
 
 

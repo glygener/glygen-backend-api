@@ -3,8 +3,7 @@
 # This should be done only from dev server
 #
 ###############################################
-ver="v-1.11.4"
-
+ver="v-1.12.15"
 
 if [ ${HOSTNAME} != 'glygen-vm-dev' ]
 then

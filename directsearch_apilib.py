@@ -16,6 +16,17 @@ import protein_apilib
 import glycan_apilib
 import usecases_apilib
 
+def get_paging_info(query_obj, config_obj):
+
+    max_batch_size = config_obj["max_batch_size"]
+    batch_size = query_obj["limit"] if "limit" in query_obj else max_batch_size
+    batch_size = max_batch_size if batch_size > max_batch_size else batch_size
+    offset = query_obj["offset"] - 1 if "offset" in query_obj else 0
+    skips = batch_size * offset
+
+    return batch_size, skips
+
+
 def protein(query_obj, config_obj):
 
     db_obj = config_obj[config_obj["server"]]["dbinfo"]
@@ -41,7 +52,8 @@ def protein(query_obj, config_obj):
     main_id = "uniprot_canonical_ac"
     results_dict = {}
     i = 0
-    for obj in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         i += 1
         if i > config_obj["max_results_count"]["protein"]:
             break
@@ -73,7 +85,8 @@ def gene(query_obj, config_obj):
     main_id = "uniprot_canonical_ac"
     results_dict = {}
     i = 0
-    for obj in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         i += 1
         if i > config_obj["max_results_count"]["protein"]:
             break
@@ -138,7 +151,7 @@ def glycan(query_obj, config_obj):
 
 
     residue_list = []
-    for o in dbh["c_searchinit"].find_one({})["glycan"]["composition"]:
+    for o in dbh["c_searchinit"].find_one({}, {"_id":0})["glycan"]["composition"]:
         residue_list.append(o["residue"])
 
 
@@ -167,7 +180,8 @@ def glycan(query_obj, config_obj):
     main_id = "glytoucan_ac"
     results_dict = {}
     i = 0
-    for obj in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         i += 1
         if i > config_obj["max_results_count"]["glycan"]:
             break
@@ -197,7 +211,7 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
     results = []
     
     mongo_query = usecases_apilib.get_mongo_query("glycan_to_biosynthesis_enzymes",  query_obj)
-    obj_one = dbh[collection].find_one(mongo_query)
+    obj_one = dbh[collection].find_one(mongo_query, {"_id":0})
     if obj_one == None:
         error_list.append({"error_code":"non-existent-record"})
         return {"error_list":error_list}
@@ -211,7 +225,7 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
     for o in obj_one["enzyme"]:
         canon = o[main_id]
         if canon not in seen:
-            obj_two = dbh[collection].find_one({main_id:canon})
+            obj_two = dbh[collection].find_one({main_id:canon}, {"_id":0})
             seen[canon] = True
             i += 1
             if i > config_obj["max_results_count"]["protein"]:
@@ -237,7 +251,7 @@ def glycan_to_glycoproteins(query_obj, config_obj):
     collection = "c_glycan"
     results = []
     mongo_query = usecases_apilib.get_mongo_query("glycan_to_glycoproteins",  query_obj)
-    obj_one = dbh[collection].find_one(mongo_query)
+    obj_one = dbh[collection].find_one(mongo_query, {"_id":0})
     if obj_one == None:
         error_list.append({"error_code":"non-existent-record"})
         return {"error_list":error_list}
@@ -251,7 +265,7 @@ def glycan_to_glycoproteins(query_obj, config_obj):
     for o in obj_one["glycoprotein"]:
         canon = o[main_id]
         if canon not in seen:
-            obj_two = dbh[collection].find_one({main_id:canon})
+            obj_two = dbh[collection].find_one({main_id:canon}, {"_id":0})
             seen[canon] = True
             i += 1
             if i > config_obj["max_results_count"]["protein"]:
@@ -283,7 +297,8 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
     i = 0
     collection = "c_glycan"
     main_id = "glytoucan_ac"
-    for obj_two in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj_two in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         if main_id not in obj_two:
             continue
         glytoucan_ac = obj_two[main_id]
@@ -320,10 +335,11 @@ def protein_to_homologs(query_obj, config_obj):
     i = 0
     collection = "c_protein"
     main_id = "uniprot_canonical_ac"
-    for obj_one in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj_one in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         for o in obj_one["orthologs"]:
             canon = o[main_id]
-            obj_two = dbh[collection].find_one({"uniprot_canonical_ac":canon})
+            obj_two = dbh[collection].find_one({"uniprot_canonical_ac":canon}, {"_id":0})
             i += 1
             if i > config_obj["max_results_count"]["protein"]:
                 break
@@ -353,7 +369,8 @@ def species_to_glycosyltransferases(query_obj, config_obj):
     i = 0
     collection = "c_protein"
     main_id = "uniprot_canonical_ac"
-    for obj_one in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj_one in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         canon = obj_one[main_id]
         i += 1
         if i > config_obj["max_results_count"]["protein"]:
@@ -386,7 +403,8 @@ def species_to_glycohydrolases(query_obj, config_obj):
     i = 0
     collection = "c_protein"
     main_id = "uniprot_canonical_ac"
-    for obj_one in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj_one in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         canon = obj_one[main_id]
         i += 1
         if i > config_obj["max_results_count"]["protein"]:
@@ -418,7 +436,10 @@ def species_to_glycoproteins(query_obj, config_obj):
     i = 0
     collection = "c_protein"
     main_id = "uniprot_canonical_ac"
-    for obj_one in dbh[collection].find(mongo_query):
+
+
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj_one in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         canon = obj_one[main_id]
         i += 1
         if i > config_obj["max_results_count"]["protein"]:
@@ -449,7 +470,9 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
     i = 0
     collection = "c_protein"
     main_id = "uniprot_canonical_ac"
-    for obj_one in dbh[collection].find(mongo_query):
+
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj_one in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         canon = obj_one[main_id]
         i += 1
         if i > config_obj["max_results_count"]["protein"]:

@@ -42,6 +42,44 @@ def job_init():
 @app.route('/job/addnew/', methods=['GET', 'POST'])
 def job_addnew():
 
+    res_obj = {}
+    try:
+        req_obj = request.json
+        query_obj = req_obj["query"]
+        res_obj = apilib.job_addnew(query_obj, config_obj)
+    except Exception, e:
+        res_obj = errorlib.get_error_obj("job_addnew", traceback.format_exc(), path_obj)
+
+    http_code = 500 if "error_list" in res_obj else 200
+    return jsonify(res_obj), http_code
+
+
+@app.route('/job/results/', methods=['GET', 'POST'])
+def job_results():
+
+    res_obj = {}
+    try:
+        query_value = util.get_arg_value("query", request.method)
+        if query_value == "":
+            res_obj = {"error_list":[{"error_code": "missing-query-key-in-query-json"}]}
+        elif util.is_valid_json(query_value) == False:
+            res_obj = {"error_list":[{"error_code": "invalid-query-json"}]}
+        else:
+            query_obj = json.loads(query_value)
+            util.trim_object(query_obj)
+            res_obj = apilib.job_results(query_obj, config_obj)
+    except Exception, e:
+        res_obj = errorlib.get_error_obj("job_results", traceback.format_exc(), path_obj)
+
+    http_code = 500 if "error_list" in res_obj else 200
+    return jsonify(res_obj), http_code
+
+
+
+
+@app.route('/job/addnew_old/', methods=['GET', 'POST'])
+def job_addnew_old():
+
     query_obj = {}
     query_obj["line_list"] = []
     form_dict = cgi.FieldStorage()

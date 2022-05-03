@@ -64,9 +64,14 @@ def main():
     config_file = script_path + "/conf/config.json"
     config_obj = json.loads(open(config_file, "r").read())
     
+    db_info = json.loads(open(script_path + "/conf/dbinfo.json", "r").read())
+    config_obj[config_obj["server"]]["dbinfo"] = db_info[config_obj["server"]]
+
+
     path_obj  =  config_obj[config_obj["server"]]["pathinfo"]
     root_obj  =  config_obj[config_obj["server"]]["rootinfo"]
     db_obj = config_obj[config_obj["server"]]["dbinfo"]
+
 
     api_domain = "https://api.glygen.org"
     log_file = path_obj["apierrorlogpath"] + "/api_test.log"

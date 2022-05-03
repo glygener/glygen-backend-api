@@ -47,7 +47,7 @@ def protein_search_simple(query_obj, config_obj):
         return {"error_list":error_list}
 
     mongo_query = get_simple_mongo_query(query_obj)
-    #print mongo_query
+    #return mongo_query
 
 
     collection = "c_protein"
@@ -116,12 +116,22 @@ def protein_search(query_obj, config_obj):
 
 
     unmapped_obj_list = []
+    redundancy_dict = {}
     if "uniprot_canonical_ac" in query_obj:
         qid_list = query_obj["uniprot_canonical_ac"].replace(" ", "").split(",")
+        qid_list = [qid.split("-")[0] for qid in qid_list]
         for qid in qid_list:
             if qid not in seen_id:
                 unmapped_obj_list.append({"input_id":qid, "reason":"ID not found"})
-    
+            if qid_list.count(qid) > 1:
+                redundancy_dict[qid] = qid_list.count(qid)
+
+    for qid in redundancy_dict:
+        for i in range(redundancy_dict[qid] - 1):
+            unmapped_obj_list.append({"input_id":qid, "reason":"Duplicate ID"})
+
+
+
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     cache_coll = "c_cache"

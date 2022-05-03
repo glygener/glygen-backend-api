@@ -209,7 +209,7 @@ def data_download(query_obj, config_obj):
                 desc = util.extract_name(protein_obj["protein_names"],"recommended","UniProtKB")
                 seq_obj = SeqRecord(
                     Seq(protein_obj["sequence"]["sequence"], IUPAC.protein),
-                    id=obj["uniprot_canonical_ac"], 
+                    id=protein_obj["uniprot_canonical_ac"], 
                     description=desc
                 )
                 seq_list.append(seq_obj.format("fasta") + "\n\n")

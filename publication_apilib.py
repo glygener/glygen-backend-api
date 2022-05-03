@@ -48,9 +48,9 @@ def publication_detail(query_obj, config_obj):
         post_error_list.append({"error_code":"non-existent-record"})
         return {"error_list":post_error_list}
 
-    q_obj = {"uniprot_canonical_ac":{"$in":publication_doc["referenced_proteins"]}}
-    for protein_doc in dbh["c_protein"].find(q_obj):
-        get_section_objects(protein_doc, publication_doc)
+    #q_obj = {"uniprot_canonical_ac":{"$in":publication_doc["referenced_proteins"]}}
+    #for protein_doc in dbh["c_protein"].find(q_obj):
+    #    get_section_objects(protein_doc, publication_doc)
 
     util.clean_obj(publication_doc, config_obj["removelist"]["c_publication"], "c_publication")
 

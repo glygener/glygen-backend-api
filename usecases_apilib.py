@@ -499,7 +499,6 @@ def species_to_glycoproteins(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query, config_obj["projectedfields"][collection]):
         record_list.append(obj["uniprot_canonical_ac"])
 
-
     query_obj["organism"] = {"id":query_obj["tax_id"], "name":config_obj["taxid2name"][str(query_obj["tax_id"])]}
     query_obj.pop("tax_id")
 
@@ -917,8 +916,10 @@ def get_mongo_query(svc_name, query_obj):
                 #cond_objs.append({"species.taxid": {'$eq': query_obj["tax_id"]}})
             if query_obj["evidence_type"] == "predicted":
                 cond_objs.append({"glycosylation": {'$gt':[]}})
-                cond_objs.append({"glycosylation.site_category": {'$ne':"reported"}})
-                cond_objs.append({"glycosylation.site_category": {'$ne':"reported_with_glycan"}})
+                cond_objs.append({"glycosylation.site_category":{"$regex":"predicted","$options":"i"}})
+                #cond_objs.append({"glycosylation": {'$gt':[]}})
+                #cond_objs.append({"glycosylation.site_category": {'$ne':"reported"}})
+                #cond_objs.append({"glycosylation.site_category": {'$ne':"reported_with_glycan"}})
             elif query_obj["evidence_type"] == "reported":
                 cond_objs.append({"glycosylation": {'$gt': []}})
                 cond_objs.append({"glycosylation.site_category":{"$regex":"reported","$options":"i"}})

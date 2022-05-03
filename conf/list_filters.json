@@ -157,12 +157,20 @@
             "group_label":"By PTM",
             "record_key":"",
             "numeric_field_map":{
-                "N-Glycosylation":["reported_n_glycosites"],
-                "O-Glycosylation":["reported_o_glycosites"],
-                "Phosphorylation":["reported_phosphosites"]
+                "N-Glycosylation reported":["total_reported_n_glycosites"],
+                "N-Glycosylation predicted":["predicted_n_glycosites"],
+                "O-Glycosylation reported":["total_reported_o_glycosites"],
+                "O-Glycosylation predicted":["predicted_o_glycosites"],
+                "Phosphorylation reported":["reported_phosphosites"]
             },
             "label_dict":{},
-            "order_dict":{"N-Glycosylation":1, "O-Glycosylation":2, "Phosphorylation":3}
+            "order_dict":{
+                "N-Glycosylation reported":1, 
+                "O-Glycosylation reported":2,
+                "N-Glycosylation predicted":3,
+                "O-Glycosylation predicted":4, 
+                "Phosphorylation reported":5
+            }
         },
         "by_data":{
             "group_order":3,

@@ -52,13 +52,10 @@ def isint(value):
   except ValueError:
     return False
 
-def get_hit_score(doc, cache_info):
+def get_hit_score(doc, cache_info, score_dict):
 
-
-    score_dict = json.loads(open("./conf/hit_scoring.json", "r").read())
 
     ms_max, scale = 10000, 400.0
-
     search_query = cache_info["query"]
     if "concept_query_list" in cache_info["query"]:
         search_query = cache_info["query"]["concept_query_list"]
@@ -161,7 +158,6 @@ def get_hit_score(doc, cache_info):
                 if n > 0:
                     cond_match_freq[cond] = n
 
-        #print "Robel", cond_match_freq
 
     score = 0.1
     score_info = {"contributions":[], "formula":"sum(w + 0.01*f)", 
@@ -546,6 +542,8 @@ def get_cached_records_indirect(query_obj, config_obj):
         return {"error_list":post_error_list}
    
 
+    score_dict = json.loads(open("./conf/hit_scoring.json", "r").read())
+
     cached_obj.pop("_id")
     cached_obj["results"] = []
     id_list = []
@@ -559,7 +557,7 @@ def get_cached_records_indirect(query_obj, config_obj):
         end = len(id_list) if end > len(id_list) else end
         mongo_query = {"record_id":{"$in": id_list[start:end]}}
         for obj in dbh["c_list"].find(mongo_query):
-            hit_score, score_info = get_hit_score(obj, cached_obj["cache_info"])
+            hit_score, score_info = get_hit_score(obj, cached_obj["cache_info"], score_dict)
             obj["hit_score"] = hit_score
             obj["score_info"] = score_info
             cached_obj["results"].append(obj)

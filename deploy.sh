@@ -5,10 +5,9 @@
 ###############################################
 
 
-ver="1.11.4"
+ver="1.12.15"
 
-
-datarelease="1.11.2"
+datarelease="1.12.3"
 
 
 html_root=/var/www/
@@ -105,6 +104,9 @@ ln -s $server-watermark.png watermark.png
 #python validate-responses-step1.py -s $server | grep STATUS
 
 
-cd $wrk_dir
-python update-search-init.py -s $server
+if [ $server != "dev" ]
+then
+    cd $wrk_dir
+    python update-search-init.py -s $server
+fi
 

@@ -66,13 +66,20 @@ def motif_detail(query_obj, config_obj):
 
     prop_list = ["motif", "glytoucan","name",  "mass", "publication"]
     prop_list += ["synonym", "crossref","keywords", "reducing_end","aglycon","reducing_end",
-        "alignment_method", "dictionary"
+        "alignment_method", "dictionary", 
+        "iupac","wurcs","glycoct","inchi","smiles_isomeric", "glycam", "byonic", "gwb"
     ]
+
 
     res_obj = {}
     for k in motif_doc:
         if k in prop_list:
             res_obj[k] = motif_doc[k]
+
+    q = {"record_id":{'$eq': motif_doc["glytoucan_ac"].upper()}}
+    history_obj = dbh["c_idtrack"].find_one(q)
+    res_obj["history"] = history_obj["history"] if history_obj != None else []
+
 
     mongo_query = {"motifs.id": {'$eq': motif_doc["motif_ac"]}}
     doc_list = dbh["c_glycan"].find(mongo_query)

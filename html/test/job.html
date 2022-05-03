@@ -4,101 +4,186 @@
 <script language="javascript" src="jquery.min.js"></script>
 <script language="javascript" src="api_test.js"></script>
 
-<script>
-var htmlRoot = ""
-var bgColor = "MediumSeaGreen";
 
+<script>
 var testInfo = {
-    "auth_login":{
-        "string_fields":["email","password"]
-        ,"numeric_fields":[]
-        ,"required_fields":["email","password"]
-        ,"url":"/auth/login"
-        ,"query":{"email":"rykahsay@gwu.edu","password":"pass12"}
-    }
-    ,"job_init":{
+    "job_init":{
         "string_fields":[]
         ,"numeric_fields":[]
         ,"required_fields":[]
         ,"url":"/job/init"
         ,"query":{}
+    },
+    "job_addnew":{
+        "string_fields":["jobtype"]
+        ,"object_fields":["parameters"]
+        ,"required_fields":["jobtype", "parameters"]
+        ,"url":"/job/addnew"
+        ,"querylist":[
+            {
+                "label":"Successful blastp example",
+                "query":{
+                    "jobtype":"blastp",
+                    "parameters":{
+                        "seq":"MSIQENISSLQLRSWVSKSQRDLAKSILIGAPGGPAGYLRRASVAQLTQELGTAFFQQQQLPAAMADTFLEHLCLLDIDSEPVAARSTSIIATIGPASRSVERLKEMIKAGMNIARLNFSQHAIAREAEAAVYHRQLFEELRRAAPLSRDPTEVTAIGAVEAAFKCCAAAIIVLTTTGRS",
+                        "targetdb":"canonicalsequences_all",
+                        "num_alignments":3,
+                        "evalue":1e-3
+                    }
+                }
+            },
+            {
+                "label":"Failing blastp example",
+                "query":{
+                    "jobtype":"blastp",
+                    "parameters":{
+                        "seq":"000000111100000",
+                        "targetdb":"canonicalsequences_all",
+                        "num_alignments":3,
+                        "evalue":1e-3
+                    }
+                }
+            },
+            {
+                "label":"Successful substructure search + None (align = substructure) glycoct format",
+                "query":{
+                    "jobtype":"structure_search",
+                    "parameters":{
+                        "seq": "RES\n1b:x-dglc-HEX-1:5\n2b:x-dgal-HEX-1:5\n3b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n4s:n-glycolyl\n5b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n6s:n-glycolyl\nLIN\n1:1o(-1+1)2d\n2:2o(-1+2)3d\n3:3d(5+1)4n\n4:3o(-1+2)5d\n5:5d(5+1)6n",
+                        "align":"substructure"
+                    }
+                }
+            },
+            {
+                "label":"Successful substructure search + None (align = substructure) wurcs format",
+                "query":{
+                    "jobtype":"structure_search",
+                    "parameters":{
+                        "seq": "WURCS=2.0/3,4,3/[a2122h-1x_1-5][a2112h-1x_1-5][Aad21122h-2x_2-6_5*NCCO/3=O]/1-2-3-3/a?-b1_b?-c2_c?-d2",
+                        "align":"substructure"
+                    }
+                }
+            },
+            {
+                "label":"Successful structure search (align = wholeglycan) glycoct format",
+                "query":{ 
+                    "jobtype":"structure_search",
+                    "parameters":{
+                        "seq": "RES\n1b:x-dglc-HEX-1:5\n2b:x-dgal-HEX-1:5\n3b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n4s:n-glycolyl\n5b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n6s:n-glycolyl\nLIN\n1:1o(-1+1)2d\n2:2o(-1+2)3d\n3:3d(5+1)4n\n4:3o(-1+2)5d\n5:5d(5+1)6n",
+                        "align":"wholeglycan"
+                    }
+                }
+            },
+            {
+                "label":"Failing structure search (align = wholeglycan) glycoct format",
+                "query":{ 
+                    "jobtype":"structure_search",
+                    "parameters":{
+                            "align": "wholeglycan", 
+                            "seq": "RES\n1b:b-dglc-HEX-1:5\n2s:n-acetyl\n3b:b-dgal-HEX-1:5\nLIN\n1:1d(2+1)2n\nd2:1o(3+1)3d"
+                    }
+                }
+            },
+            {
+                "label":"Successful substructure search + reducing end (align = core) glycoct format",
+                "query":{ 
+                    "jobtype":"structure_search",
+                    "parameters":{
+                        "seq": "RES\n1b:x-dglc-HEX-1:5\n2b:x-dgal-HEX-1:5\n3b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n4s:n-glycolyl\n5b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n6s:n-glycolyl\nLIN\n1:1o(-1+1)2d\n2:2o(-1+2)3d\n3:3d(5+1)4n\n4:3o(-1+2)5d\n5:5d(5+1)6n",
+                        "align":"core"
+                    }
+                }
+            },
+	    {
+                "label":"Successful substructure search + terminal (align = nonreducingend) glycoct format",
+                "query":{ 
+                    "jobtype":"structure_search",
+                    "parameters":{
+                        "seq": "RES\n1b:x-dglc-HEX-1:5\n2b:x-dgal-HEX-1:5\n3b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n4s:n-glycolyl\n5b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n6s:n-glycolyl\nLIN\n1:1o(-1+1)2d\n2:2o(-1+2)3d\n3:3d(5+1)4n\n4:3o(-1+2)5d\n5:5d(5+1)6n",
+                        "align":"nonreducingend"
+                    }
+                }
+            }
+        ]
+    }
+    ,"job_results":{
+        "string_fields":["jobid"]
+        ,"numeric_fields":[]
+        ,"required_fields":["jobid"]
+        ,"url":"/job/results"
+        ,"query":{"jobid":1}
+    }
+    ,"glycan_list": {
+        "string_fields": [
+            "sort", 
+            "id", 
+            "order"
+        ], 
+        "url": "/glycan/list/", 
+        "required_fields": [
+            "id"
+        ], 
+        "numeric_fields": [
+            "offset", 
+            "limit"
+        ] 
+        ,"querylist":[
+            {
+                "label":"Simple listing",
+                "query":{
+                    "id":""
+                }
+            }
+            ,{
+                "label":"Listing with filters",
+                "query":{
+                    "id":"",
+                    "filters":[
+                        {   
+                            "id":"by_mass",
+                            "selected":["2k_3k", "3k_4k"],
+                            "operator":"OR"
+                        }
+                    ]
+                }
+            }
+        ]
     }
     ,"job_queue":{
-        "string_fields":["token"]
+        "string_fields":[]
         ,"numeric_fields":[]
-        ,"required_fields":["token"]
+        ,"required_fields":[]
         ,"url":"/job/queue"
-        ,"query":{"token":""}
+        ,"query":{}
     }
     ,"job_status":{
-        "string_fields":["token", "jobid"]
+        "string_fields":[]
         ,"numeric_fields":["jobid"]
-        ,"required_fields":["token"]
+        ,"required_fields":["jobid"]
         ,"url":"/job/status"
-        ,"query":{"jobid": 1, "token":""}
+        ,"query":{"jobid": 1}
     }
     ,"job_detail":{
-        "string_fields":["token", "jobid"]
+        "string_fields":[]
         ,"numeric_fields":["jobid"]
-        ,"required_fields":["token"]
+        ,"required_fields":["jobid"]
         ,"url":"/job/detail"
-        ,"query":{"jobid": 1, "token":""}
+        ,"query":{"jobid": 1}
     }
     ,"job_list":{
-        "string_fields":["token", "visibility"]
+        "string_fields":["visibility"]
         ,"numeric_fields":[]
-        ,"required_fields":["token", "visibility"]
+        ,"required_fields":["visibility"]
         ,"url":"/job/list"
-        ,"query":{"token":"xx", "visibility":"all"}
-    }
-    ,"job_update":{
-        "string_fields":["token","id","title","description","start_date","end_date","venue", "url", "url_name", "visibility"]
-        ,"numeric_fields":[]
-        ,"required_fields":["token","id"]
-        ,"url":"/job/update"
-        ,"query":{ "token":"xxx", "id":"xxx","visibility":"visible"}
-    }
-    ,"job_delete":{
-        "string_fields":["token", "id"]
-        ,"numeric_fields":[]
-        ,"required_fields":["token","id"]
-        ,"url":"/job/delete"
-        ,"query":{"id": "xxx", "token":"xxx"}
+        ,"query":{"visibility":"all"}
     }
 };
 
-var initObj = {};
-var jobType = "blastp";
-
-
-////////////////////////////////////
+/////////////////////////////
 $(document ).ready(function() {
 
-
-    var svcUrl = "/job/init";
-    var reqObj = new XMLHttpRequest();
-    reqObj.open("POST", svcUrl, true);
-    reqObj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    reqObj.onreadystatechange = function() {
-        if (reqObj.readyState == 4 && [200, 500].indexOf(reqObj.status) != -1) {
-            initObj = JSON.parse(reqObj.responseText);
-            renderPage();
-        }
-    };
-    reqObj.send(); 
-
-});
-
-
-///////////////////////
-function renderPage(){
-
     var cnList = [];
-    var apiList = ["auth_login", "job_init", "job_queue"]
-    cnList.push(getAutomatedCn(testInfo, apiList));
-    cnList.push(getLocalCn());
-    
-    var apiList = ["job_status", "job_detail", "job_list"];
+    var apiList = Object.keys(testInfo);
     cnList.push(getAutomatedCn(testInfo, apiList));
 
     var cn = '<table align=center width=1000 border=1 style="background:#eee;">';
@@ -107,171 +192,14 @@ function renderPage(){
     }
     cn += '</table>';
     $("body").html(cn);
-    return;
-}
-
-
-
-///////////////////////////////////
-$(document).on('click', '#login', function (event) {
-    event.preventDefault();
-    
-    var reqCnJqId = "#login_url";
-    var resCnJqId = "#login_cn";
-    
-    var gifImage = '<img src=loading.gif style="width:20%;margin-left:40%;margin-top:2%;">';
-    $(resCnJqId).html(gifImage);
-
-    var reqJson = {};
-    var inputFieldList = ["email", "password"];
-    for (var i in inputFieldList){
-        var f = inputFieldList[i];
-        reqJson[f] = $("#"+f).val();
-    }
-
-    var svcUrl = "/auth/login";
-    var postData = "query=" + JSON.stringify(reqJson);
-    var reqObj = new XMLHttpRequest();
-    reqObj.open("POST", svcUrl, true);
-    reqObj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    reqObj.resCnJqId = resCnJqId;
-    reqObj.onreadystatechange = function() {
-        if (reqObj.readyState == 4 && [200, 500].indexOf(reqObj.status) != -1) {
-            console.log(reqObj.responseText);
-            $(this.resCnJqId).html('<pre>' + reqObj.responseText + '</pre>' );
-        }
-    };
-    reqObj.send(postData); 
-    fullUrl = svcUrl + '?query=' + JSON.stringify(reqJson);
-    var urlCn = '<a class=fullurl href="'+fullUrl+'" target=_>' + fullUrl + '</a>';
-    $(reqCnJqId).html(urlCn);
-    console.log(svcUrl + '?' + postData);
 
 });
 
 
-//////////////////
-$(document).on('change', '#jobtype', function (event) {
-    event.preventDefault();
-    jobType = $("#jobtype option:selected").val();
-    renderPage();
-
-});
-
-
-///////////////////////////////////
-$(document).on('click', '#jobsubmit', function (event) {
-    event.preventDefault();
-
-    var gifImage = '<img src=loading.gif style="width:20%;margin-left:40%;margin-top:2%;">';
-    $("#search_cn").html(gifImage);
-
-    var formData = new FormData();
-    for (var i in initObj[jobType]["paramlist"]){
-        var pObj = initObj[jobType]["paramlist"][i];
-        var f = pObj.id;
-        var val = $("#"+f).val();
-        if (pObj.type == "int"){
-            val = parseInt(val);
-        }
-        else if (pObj.type == "float"){
-            val = parseFloat(val);
-        }
-        formData.append(f, val);
-    }
-    formData.append("jobtype",$("#jobtype option:selected").val());
-
-
-    var file = $('#userfile')[0].files[0];
-    if (file != undefined){
-        formData.append("userfile", file);
-        var sizeLimit = 1000000000;
-        if (file.size > sizeLimit){ 
-            var msg = 'Your submitted file is ' + file.size + ' Bytes big. ';
-            msg += 'This exceeds maximum allowed file size of ' + sizeLimit + ' Bytes.';
-            alert(msg);
-            return;
-        }
-    }
-    else{
-        var pastedText = $('#pasted_text').val();
-        formData.append("pasted_text", pastedText);
-    }
-    var url = '/job/addnew';
-
-
-    $("#search_url").html(url);
-
-    let xhr = new XMLHttpRequest();
-    xhr.onloadend = function() {
-        if (xhr.status == 200) {
-            console.log(xhr.responseText);
-            //resJson = JSON.parse(xhr.responseText);
-            $("#search_cn").html('<pre>'+xhr.responseText+'</pre>');
-        } else {
-            console.log(xhr.responseText);
-        }
-    };
-    xhr.open("POST", url);
-    xhr.send(formData);
-    
-});
-
-
-///////////////////
-function getLocalCn(){
-
-    var cn = '';
-    cn += '<tr><th colspan=2 align=left class='+titleClass+'>Test for job submit API</th></tr>';
-    cn += '<tr><td>Job Type</td>';
-    cn += '<td class="regular">';
-    cn += '<select id=jobtype style="width:100%;margin-bottom:3px;height:30px;background:#D6EAF8;">';
-    for (var k in initObj){
-        var s = (k == jobType ? "selected" : "");
-        cn += '<option value="'+k+'" '+ s+ '>'+k+'</option>';
-    }
-    cn += '</select>';
-    cn += '</td>';
-    cn += '</tr>';
-    
-    for (var i in initObj[jobType]["paramlist"]){
-        var pObj = initObj[jobType]["paramlist"][i];
-        cn += '<tr><td>'+pObj.label+'</td><td>';
-        if (["string", "int", "float"].indexOf(pObj.type) != -1){
-            var t = (["int", "float"].indexOf(pObj.type) != -1 ? "number" : "text"); 
-            cn += '<input id="'+pObj.id+'" type="'+t+'" name="'+pObj.id+'" class="regular" value="'+pObj.value +'">';
-        }
-        else if ("optlist" in pObj){
-            cn += '<select id="'+pObj.id+'" style="width:100%;margin-bottom:3px;height:30px;background:#D6EAF8;">';       
-            for (var j in pObj["optlist"]){
-                var optObj = pObj["optlist"][j];
-                cn += '<option value="'+optObj.value+'">'+optObj.label+'</option>';
-            }
-            cn += '</select>';
-        }
-        cn += '</td></tr>';
-    }
-
-    cn += '<tr>';
-    cn += '<td valign=top>User Input</td>';
-    cn += '<td style="padding:10;">Upload from file<br>';
-    cn += '<input id=userfile type="file" name="userfile">';
-    cn += '<br><br>--- OR ----<br><br>Paste Input';
-    cn += '<textarea id=pasted_text rows=10 style="width:100%;"></textarea></td>';
-    cn += '</tr>';
-    cn += '<tr><td>Post Data</td><td id=submit_url style="background:#fff;"></td></tr>';
-    cn += '<tr><td valign=top>';
-    cn += '<input type=submit id=jobsubmit name=btn value="Submit API request">';
-    cn += '</td>';
-    cn += '<td style="background:#fff;">';
-    cn += '<div style="width:700px;height:200px;overflow:auto;" id=search_cn></div></td>';
-    cn += '</tr>';
-    return cn;
-}
 </script>
 
 </head>
-
 <body>
+
 </body>
 <html>
