@@ -1,0 +1,4 @@
+graft gsa/conf
+global-exclude *.pyc
+
+
