@@ -12,13 +12,12 @@ from collections import OrderedDict
 from bson.objectid import ObjectId
 
 
-import auth_apilib 
+from libgly import load_species_info
+from glygen.db import get_mongodb
+from glygen.util import get_errors_in_query, sort_objects, cache_record_list
 
-import smtplib
-from email.mime.text import MIMEText
-import errorlib
-import util
-import libgly
+
+
 
 def job_init(config_obj):
 
@@ -46,7 +45,7 @@ def job_init(config_obj):
     in_file = path_obj["datareleasespath"]
     in_file += "data/v-%s/misc/species_info.csv" % (config_obj["datarelease"])
             
-    libgly.load_species_info(species_obj, in_file)
+    load_species_info(species_obj, in_file)
     opt_list = [
         {"value":"canonicalsequences_all", "label":"All species"}        
     ]
@@ -69,30 +68,9 @@ def job_init(config_obj):
 def job_addnew(query_obj, config_obj):
 
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
-
-    #res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    #check validity of token
-    #if "error_list" in res_obj:
-    #    return res_obj
-    #if "status" not in res_obj:
-    #    return {"error_list":[{"error_code":"invalid-token"}]}
-    #if res_obj["status"] != 1:
-    #    return {"error_list":[{"error_code":"invalid-token"}]}
-
-
-    #check write-access
-
-    #user_info = dbh["c_users"].find_one({'email' : query_obj["email"].lower()})
-    #if "access" not in user_info:
-    #    return {"error_list":[{"error_code":"no-write-access"}]}
-    #if user_info["access"] != "write":
-    #    return {"error_list":[{"error_code":"no-write-access"}]}
-
-
 
 
     validation_obj, error_list = validate_input(query_obj, config_obj)
@@ -170,23 +148,10 @@ def job_addnew(query_obj, config_obj):
 
 def job_queue(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
-    #res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    #check validity of token
-    #if "error_list" in res_obj:
-    #    return res_obj
-    #if "status" not in res_obj:
-    #    return {"error_list":[{"error_code":"invalid-token"}]}
-    #if res_obj["status"] != 1:
-    #    return {"error_list":[{"error_code":"invalid-token"}]}
-
-    #Let's clear queue by removing finished jobs
-    #cmd = "%s -C" % (config_obj["jobinfo"]["tspath"])
-    #x = commands.getoutput(cmd)
 
     res_obj = {
         "header":["ID","State","Output","E-Level","Times(r/u/s)", "Command [run=3/3]"], 
@@ -248,8 +213,7 @@ def job_results(query_obj, config_obj):
 def parse_structure_search_ouput(out_file, config_obj, job_info):
 
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -284,7 +248,7 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
             "record_type":record_type,
             "search_type":job_info["jobtype"]
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj["list_id"] = list_id
     return res_obj
 
@@ -293,8 +257,7 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
 def parse_blastp_ouput(out_file, config_obj):
    
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -425,19 +388,10 @@ def parse_blastp_ouput(out_file, config_obj):
 
 def job_status(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
-    #res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    #check validity of token
-    #if "error_list" in res_obj:
-    #    return res_obj
-    #if "status" not in res_obj:
-    #    return {"error_list":[{"error_code":"invalid-token"}]}
-    #if res_obj["status"] != 1:
-    #    return {"error_list":[{"error_code":"invalid-token"}]}
 
     res_obj = {}
     try:
@@ -490,19 +444,10 @@ def get_result_count(job_type, out_file):
  
 def job_detail(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
-    #res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    #check validity of token
-    #if "error_list" in res_obj:
-    #    return res_obj
-    #if "status" not in res_obj:
-    #    return {"error_list":[{"error_code":"invalid-token"}]}
-    #if res_obj["status"] != 1:
-    #    return {"error_list":[{"error_code":"invalid-token"}]}
 
     res_obj = {}
     try:
@@ -531,23 +476,14 @@ def job_detail(query_obj, config_obj):
 
 def job_list(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
 
     #Collect errors 
     error_list = errorlib.get_errors_in_query("job_list",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
-
-    #res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    #if "error_list" in res_obj:
-    #    return res_obj
-    #if "status" not in res_obj:
-    #    return {"error_list":[{"error_code":"invalid-token"}]}
-    #if res_obj["status"] != 1:
-    #    return {"error_list":[{"error_code":"invalid-token"}]}
-    
 
 
     import pymongo
@@ -571,32 +507,15 @@ def job_list(query_obj, config_obj):
 
 def job_update(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
 
 
     #Collect errors 
     error_list = errorlib.get_errors_in_query("job_update",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
-
-    res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    #check validity of token
-    if "error_list" in res_obj:
-        return res_obj
-    if "status" not in res_obj:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    if res_obj["status"] != 1:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-
-
-    #check write-access
-    #user_info = dbh["c_users"].find_one({'email' : res_obj["email"].lower()})
-    #if "access" not in user_info:
-    #    return {"error_list":[{"error_code":"no-write-access"}]}
-    #if user_info["access"] != "write":
-    #    return {"error_list":[{"error_code":"no-write-access"}]}
 
     res_obj = {}
     try: 
@@ -617,33 +536,15 @@ def job_update(query_obj, config_obj):
 
 def job_delete(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
 
     #Collect errors 
     error_list = errorlib.get_errors_in_query("job_delete",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
-    res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-
-    #check validity of token
-    if "error_list" in res_obj:
-        return res_obj
-    if "status" not in res_obj:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    if res_obj["status"] != 1:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-
-
-    #check write-access
-
-    #user_info = dbh["c_users"].find_one({'email' : res_obj["email"].lower()})
-    #if "access" not in user_info:
-    #    return {"error_list":[{"error_code":"no-write-access"}]}
-    #if user_info["access"] != "write":
-    #    return {"error_list":[{"error_code":"no-write-access"}]}
 
 
     res_obj = {}

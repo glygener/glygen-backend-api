@@ -3,7 +3,6 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import bcrypt
 import base64
@@ -12,24 +11,21 @@ from collections import OrderedDict
 from bson.objectid import ObjectId
 
 
-import auth_apilib 
 
-import smtplib
-from email.mime.text import MIMEText
-import errorlib
-import util
+from glygen.db import get_mongodb
+from glygen.util import get_errors_in_query, sort_objects, cache_record_list
+
 
 
 
 def event_addnew(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("event_addnew",query_obj, config_obj)
+    error_list = get_errors_in_query("event_addnew",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -71,15 +67,6 @@ def event_addnew(query_obj, config_obj):
     if error_list != []:
         return {"error_list":error_list}
 
-    res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    
-    #check validity of token
-    if "error_list" in res_obj:
-        return res_obj
-    if "status" not in res_obj:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    if res_obj["status"] != 1:
-        return {"error_list":[{"error_code":"invalid-token"}]}
 
     #check write-access
     user_info = dbh["c_users"].find_one({'email' : res_obj["email"].lower()})
@@ -104,25 +91,15 @@ def event_addnew(query_obj, config_obj):
     
 def event_detail(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("event_detail",query_obj, config_obj)
+    error_list = get_errors_in_query("event_detail",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
    
-    res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    
-    #check validity of token
-    if "error_list" in res_obj:
-        return res_obj
-    if "status" not in res_obj:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    if res_obj["status"] != 1:
-        return {"error_list":[{"error_code":"invalid-token"}]}
 
     res_obj = {}
     try:
@@ -144,23 +121,14 @@ def event_detail(query_obj, config_obj):
 
 def event_list(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("event_list",query_obj, config_obj)
+    error_list = get_errors_in_query("event_list",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
-
-    res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    if "error_list" in res_obj:
-        return res_obj
-    if "status" not in res_obj:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    if res_obj["status"] != 1:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    
 
 
     import pymongo
@@ -193,25 +161,15 @@ def event_list(query_obj, config_obj):
 
 def event_update(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
-
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("event_update",query_obj, config_obj)
+    error_list = get_errors_in_query("event_update",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
-    res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    
-    #check validity of token
-    if "error_list" in res_obj:
-        return res_obj
-    if "status" not in res_obj:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    if res_obj["status"] != 1:
-        return {"error_list":[{"error_code":"invalid-token"}]}
 
     #check write-access
     user_info = dbh["c_users"].find_one({'email' : res_obj["email"].lower()})
@@ -239,24 +197,15 @@ def event_update(query_obj, config_obj):
 
 def event_delete(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("event_delete",query_obj, config_obj)
+    error_list = get_errors_in_query("event_delete",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
-    res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-
-    #check validity of token
-    if "error_list" in res_obj:
-        return res_obj
-    if "status" not in res_obj:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    if res_obj["status"] != 1:
-        return {"error_list":[{"error_code":"invalid-token"}]}
 
     #check write-access
     user_info = dbh["c_users"].find_one({'email' : res_obj["email"].lower()})

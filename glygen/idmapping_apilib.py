@@ -3,21 +3,20 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 from collections import OrderedDict
 from bson import json_util, ObjectId
 import collections
 
-import errorlib
-import util
+
+from glygen.db import get_mongodb
+from glygen.util import cache_record_list, get_errors_in_query
 
 
 def search_init(config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -41,9 +40,8 @@ def search_init(config_obj):
 
 
 def search(query_obj, config_obj):
-     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -131,9 +129,10 @@ def search(query_obj, config_obj):
     }
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + ",".join(query_obj["input_idlist"]).strip())
+        hash_str = record_type + "_" + ",".join(query_obj["input_idlist"]).strip()
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj

@@ -3,26 +3,25 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 from collections import OrderedDict
 
 
+from glygen.db import get_mongodb
+from glygen.util import get_errors_in_query
 
-import errorlib
-import util
+
 
 
 def global_typeahead(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("global_typeahead",query_obj, config_obj)
+    error_list = get_errors_in_query("global_typeahead",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -152,13 +151,12 @@ def global_typeahead(query_obj, config_obj):
 
 def glycan_typeahead(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("typeahead_glycan",query_obj, config_obj)
+    error_list = get_errors_in_query("typeahead_glycan",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -239,13 +237,12 @@ def glycan_typeahead(query_obj, config_obj):
 
 def protein_typeahead(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("typeahead_protein",query_obj, config_obj)
+    error_list = get_errors_in_query("typeahead_protein",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
   
@@ -420,13 +417,12 @@ def protein_typeahead(query_obj, config_obj):
 
 def categorized_typeahead(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("categorized_typeahead",query_obj, config_obj)
+    error_list = get_errors_in_query("categorized_typeahead",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
   

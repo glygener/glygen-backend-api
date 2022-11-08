@@ -3,7 +3,6 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import bcrypt
 import base64
@@ -12,39 +11,25 @@ from collections import OrderedDict
 from bson.objectid import ObjectId
 
 
-import auth_apilib 
-
-import smtplib
-from email.mime.text import MIMEText
-import errorlib
-import util
+from glygen.db import get_mongodb
+from glygen.util import get_errors_in_query, sort_objects
 
 
 
-def video_addnew(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+def video_addnew(logged_user, query_obj, config_obj):
+
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("video_addnew",query_obj, config_obj)
+    error_list = get_errors_in_query("video_addnew",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
-    res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    
-    #check validity of token
-    if "error_list" in res_obj:
-        return res_obj
-    if "status" not in res_obj:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    if res_obj["status"] != 1:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-
     #check write-access
-    user_info = dbh["c_users"].find_one({'email' : res_obj["email"].lower()})
+    user_info = dbh["c_users"].find_one({'email' : logged_user})
     if "access" not in user_info:
         return {"error_list":[{"error_code":"no-write-access"}]}
     if user_info["access"] != "write":
@@ -54,8 +39,8 @@ def video_addnew(query_obj, config_obj):
     try:
         #Always keep only one document
         res = dbh["c_video"].delete_many({})
-        query_obj.pop("token")
         query_obj["createdts"] = datetime.datetime.now()
+        query_obj["visibility"] = "visible"
         res = dbh["c_video"].insert_one(query_obj)
         res_obj = {"type":"success"}
     except Exception as e:
@@ -68,25 +53,15 @@ def video_addnew(query_obj, config_obj):
 
 def video_detail(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("video_detail",query_obj, config_obj)
+    error_list = get_errors_in_query("video_detail",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
    
-    res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    
-    #check validity of token
-    if "error_list" in res_obj:
-        return res_obj
-    if "status" not in res_obj:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    if res_obj["status"] != 1:
-        return {"error_list":[{"error_code":"invalid-token"}]}
 
     res_obj = {}
     try:
@@ -113,23 +88,14 @@ def video_detail(query_obj, config_obj):
 
 def video_list(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("video_list",query_obj, config_obj)
+    error_list = get_errors_in_query("video_list",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
-
-    res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-    if "error_list" in res_obj:
-        return res_obj
-    if "status" not in res_obj:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    if res_obj["status"] != 1:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    
 
 
     import pymongo
@@ -155,29 +121,20 @@ def video_list(query_obj, config_obj):
 
 
 
-def video_delete(query_obj, config_obj):
+def video_delete(logged_user, query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("video_delete",query_obj, config_obj)
+    error_list = get_errors_in_query("video_delete",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
-    res_obj = auth_apilib.auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-
-    #check validity of token
-    if "error_list" in res_obj:
-        return res_obj
-    if "status" not in res_obj:
-        return {"error_list":[{"error_code":"invalid-token"}]}
-    if res_obj["status"] != 1:
-        return {"error_list":[{"error_code":"invalid-token"}]}
 
     #check write-access
-    user_info = dbh["c_users"].find_one({'email' : res_obj["email"].lower()})
+    user_info = dbh["c_users"].find_one({'email' : logged_user})
     if "access" not in user_info:
         return {"error_list":[{"error_code":"no-write-access"}]}
     if user_info["access"] != "write":

@@ -12,7 +12,8 @@ from flask_jwt_extended import (
     jwt_required, get_jwt_identity
 )
 
-from glygen.foo_apilib import foo_yyy1, foo_yyy2
+from glygen.foo_apilib import foo_yyy1, foo_yyy2, foo_yyy3, foo_yyy4
+
 from glygen.util import get_error_obj, trim_object
 import traceback
 
@@ -20,12 +21,18 @@ import traceback
 api = Namespace("foo", description="Foo APIs")
 
 yyy1_query_model = api.model(
-    'Yyy1 Query', 
-    { 'query': fields.String(required=True, default="", description='')}
-)
+    'Yyy1 Query', { 'query': fields.String(required=True, default="", description='')})
+yyy2_query_model = api.model(
+    'Yyy2 Query', { 'query': fields.String(required=True, default="", description='')})
+yyy3_query_model = api.model(
+    'Yyy3 Query', { 'query': fields.String(required=True, default="", description='')})
+yyy4_query_model = api.model(
+    'Yyy4 Query', { 'query': fields.String(required=True, default="", description='')})
+
+
 
 @api.route('/yyy1/')
-class Data(Resource):
+class Foo(Resource):
     @api.doc('yyy1')
     @api.expect(yyy1_query_model)
     def post(self):
@@ -38,12 +45,72 @@ class Data(Resource):
             req_obj = request.json
             trim_object(req_obj)
             data_path = current_app.config["DATA_PATH"]
-            res_obj = foo_yyy1(req_obj, config_obj, data_path)
+            res_obj = foo_yyy1(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"] 
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+@api.route('/yyy2/')
+class Foo(Resource):
+    @api.doc('yyy2')
+    @api.expect(yyy2_query_model)
+    def post(self):
+        api_name = "foo_yyy2"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            trim_object(req_obj)
+            data_path = current_app.config["DATA_PATH"]
+            res_obj = foo_yyy2(req_obj, config_obj)
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
+
+
+@api.route('/yyy3/')
+class Foo(Resource):
+    @api.doc('yyy3')
+    @api.expect(yyy3_query_model)
+    def post(self):
+        api_name = "foo_yyy3"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            trim_object(req_obj)
+            data_path = current_app.config["DATA_PATH"]
+            res_obj = foo_yyy3(req_obj, config_obj)
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
+
+@api.route('/yyy4/')
+class Foo(Resource):
+    @api.doc('yyy4')
+    @api.expect(yyy4_query_model)
+    def post(self):
+        api_name = "foo_yyy4"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            trim_object(req_obj)
+            data_path = current_app.config["DATA_PATH"]
+            res_obj = foo_yyy4(req_obj, config_obj)
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
 
 
 

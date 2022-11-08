@@ -3,21 +3,20 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 from collections import OrderedDict
 from bson import json_util, ObjectId
 import collections
 
-import errorlib
-import util
+from glygen.db import get_mongodb
+from glygen.util import get_errors_in_superquery, get_errors_in_query, sort_objects, cache_record_list
+
 
 
 def search_init(config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -28,8 +27,10 @@ def search_init(config_obj):
     if doc != None:
         if "supersearch_init" in doc:
             cache_dict = doc["supersearch_init"]
-    
-    typeahead_dict = json.loads(open("./conf/typeahead.json", "r").read())
+   
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "conf/typeahead.json")
+    typeahead_dict = json.load(open(json_url))
 
     enum_dict = {}
     default_dict = {}
@@ -190,10 +191,9 @@ def search_init(config_obj):
 
 
 
-def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
+def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -202,7 +202,7 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
     if query_obj == {}:
         query_obj["concept_query_list"] = []
     if empty_search_flag == False:
-        error_list = errorlib.get_errors_in_superquery(query_obj["concept_query_list"],config_obj)
+        error_list = get_errors_in_superquery(query_obj["concept_query_list"],config_obj)
         if error_list != []:
             return {"error_list":error_list}
 
@@ -228,7 +228,7 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
         seen_path[record_type][path] = True
         path_parts = path.split(".")
         if len(path_parts) > 1:
-            for i in xrange(1, len(path_parts)):
+            for i in range(1, len(path_parts)):
                 p = ".".join(path_parts[:i])
                 seen_path[record_type][p] = True
 
@@ -241,7 +241,7 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
         if "ignored_edges" in query_obj:
             edge_rules = query_obj["ignored_edges"]
         else:
-            for i in xrange(0, len(query_obj["concept_query_list"])):
+            for i in range(0, len(query_obj["concept_query_list"])):
                 concept = query_obj["concept_query_list"][i]["concept"]
                 edge_rules += config_obj["ignored_edges"][concept]
 
@@ -258,7 +258,7 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
 
 
 
-    for i in xrange(0, len(query_obj["concept_query_list"])):
+    for i in range(0, len(query_obj["concept_query_list"])):
         q_obj = query_obj["concept_query_list"][i]["query"]
         concept = query_obj["concept_query_list"][i]["concept"]
                 
@@ -322,8 +322,7 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
 
     dump_debug_timer("flag-2 loading network", DEBUG_FLAG)
 
-    record_type_list = config_obj["record_type_info"].keys()
-
+    record_type_list = list(config_obj["record_type_info"].keys())
 
     #Load network
     doc_list = list(dbh["c_network"].find({}))
@@ -356,12 +355,13 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
     cache_coll = "c_cache"
     cachable_list = ["protein","glycan","site"]
     for dst_record_type in record_type_list:
-        n = len(final_hit_dict[dst_record_type].keys()) if dst_record_type in final_hit_dict else 0
+        n = len(list(final_hit_dict[dst_record_type].keys())) if dst_record_type in final_hit_dict else 0
         list_id = ""
         if dst_record_type in final_hit_dict and dst_record_type in cachable_list:
-            record_list = final_hit_dict[dst_record_type].keys()
+            record_list = list(final_hit_dict[dst_record_type].keys())
             if len(record_list) != 0:
-                hash_obj = hashlib.md5(dst_record_type + "_" + json.dumps(query_obj))
+                hash_str = dst_record_type + "_" + json.dumps(query_obj)
+                hash_obj = hashlib.md5(hash_str.encode('utf-8'))
                 list_id = hash_obj.hexdigest()
                 cache_info = {
                     "query":query_obj,
@@ -369,7 +369,7 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
                     "record_type":dst_record_type,
                     "search_type":"supersearch"
                 }
-                util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+                cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
         res_obj["results_summary"][dst_record_type] = {"list_id":list_id, "result_count":n}
         stat_obj = {}
         bylinkage_obj = {}
@@ -392,8 +392,10 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
                     continue
             list_id = ""
             if stat_obj[src_record_type] > 0 and dst_record_type in cachable_list:
-                record_list = final_hit_dict_split[dst_record_type][src_record_type].keys()
-                hash_obj = hashlib.md5(dst_record_type + "_" + src_record_type + "_"+json.dumps(query_obj))
+                record_list = list(final_hit_dict_split[dst_record_type][src_record_type].keys())
+                
+                hash_str = dst_record_type + "_" + src_record_type + "_"+json.dumps(query_obj)
+                hash_obj = hashlib.md5(hash_str.encode('utf-8'))
                 list_id = hash_obj.hexdigest()
                 cache_info = {
                     "query":query_obj,
@@ -402,7 +404,7 @@ def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag):
                     "linked_to":src_record_type,
                     "search_type":"supersearch"
                 }
-                util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+                cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
             n_from_src = stat_obj[src_record_type]
             bylinkage_obj[src_record_type] = {"list_id":list_id, "result_count":n_from_src}
         res_obj["results_summary"][dst_record_type]["bylinkage"] = bylinkage_obj
@@ -444,11 +446,11 @@ def impose_edge_constraints_type_I(initial_hit_dict, final_hit_dict, final_hit_d
 
 
     emptied_concepts = []
-    dst_record_type_list = final_hit_dict.keys()
+    dst_record_type_list = list(final_hit_dict.keys())
     for dst_record_type in dst_record_type_list:
         if dst_record_type in initial_hit_dict:
             continue
-        dst_record_id_list = final_hit_dict[dst_record_type].keys()
+        dst_record_id_list = list(final_hit_dict[dst_record_type].keys())
         for dst_record_id in dst_record_id_list:
             if dst_record_type not in traceble_dict:
                 final_hit_dict[dst_record_type].pop(dst_record_id)
@@ -461,9 +463,9 @@ def impose_edge_constraints_type_I(initial_hit_dict, final_hit_dict, final_hit_d
         
     #clean reason_dict by considering ignored edges
     for dst_record_type in reason_dict:
-        dst_record_id_list = reason_dict[dst_record_type].keys()
+        dst_record_id_list = list(reason_dict[dst_record_type].keys())
         for dst_record_id in dst_record_id_list:
-            src_record_type_list = reason_dict[dst_record_type][dst_record_id].keys()
+            src_record_type_list = list(reason_dict[dst_record_type][dst_record_id].keys())
             for src_record_type in src_record_type_list:
                 if src_record_type in ignore_dict:
                     if dst_record_type in ignore_dict[src_record_type]:
@@ -472,7 +474,7 @@ def impose_edge_constraints_type_I(initial_hit_dict, final_hit_dict, final_hit_d
                 reason_dict[dst_record_type].pop(dst_record_id)
             else:
                 #Remove dst_record_id if comes from emptied_concept only
-                src_type_list = sorted(reason_dict[dst_record_type][dst_record_id].keys())
+                src_type_list = sorted(list(reason_dict[dst_record_type][dst_record_id].keys()))
                 if src_type_list == sorted(emptied_concepts):
                     final_hit_dict[dst_record_type].pop(dst_record_id)
                     for emptied_concept in emptied_concepts:
@@ -538,7 +540,7 @@ def load_network_type_II(doc_list, initial_hit_dict, empty_search_flag, config_o
                         edge_dict[src_record_type][src_record_id][dst_record_type][dst_record_id] = True
 
 
-    record_type_list = initial_hit_dict.keys()
+    record_type_list = list(initial_hit_dict.keys())
     for record_type in edge_dict:
         if record_type not in record_type_list:
             record_type_list.append(record_type)
@@ -655,7 +657,7 @@ def load_network_type_III(doc_list, initial_hit_dict, empty_search_flag, ignore_
                         edge_dict[src_record_type][src_record_id][dst_record_type][dst_record_id] = True
 
 
-    record_type_list = initial_hit_dict.keys()
+    record_type_list = list(initial_hit_dict.keys())
     for record_type in edge_dict:
         if record_type not in record_type_list:
             record_type_list.append(record_type)
@@ -671,7 +673,6 @@ def load_network_type_III(doc_list, initial_hit_dict, empty_search_flag, ignore_
             if src_record_type not in node_hit_dict:
                 node_hit_dict[src_record_type] = {}
             node_hit_dict[src_record_type][src_record_id] = True
-
 
 
     for src_record_type in record_type_list:
@@ -812,7 +813,7 @@ def get_network_stat(network_dict):
    
     o = {}
     for record_type in network_dict:
-        o[record_type] = len(network_dict[record_type].keys())
+        o[record_type] = len(list(network_dict[record_type].keys()))
     return o
 
 
@@ -826,7 +827,7 @@ def get_hit_stat(hit_dict):
             seen[record_type][record_id] = True
     o = {}
     for record_type in seen:
-        o[record_type] = len(seen[record_type].keys())
+        o[record_type] = len(list(seen[record_type].keys()))
     return o
 
 
@@ -943,7 +944,7 @@ def transform_query(in_obj, concept, seen_path, path_map):
                     q_list.append(o)
         
     if "aggregated_list" in in_obj:
-        for i in xrange(0, len(in_obj["aggregated_list"])):
+        for i in range(0, len(in_obj["aggregated_list"])):
             child_obj = in_obj["aggregated_list"][i]
             o, err_list = transform_query(child_obj, concept, seen_path, path_map)
             q_list.append(o)
@@ -974,8 +975,7 @@ def add_reason(reason_dict, dst_record_type, dst_record_id, src_record_type, src
 def dump_debug_timer(flag,debug_flag):
 
     if debug_flag == True:
-        print datetime.datetime.now(), flag
-
+        print (datetime.datetime.now(), flag)
     return
 
 

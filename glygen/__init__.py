@@ -17,11 +17,11 @@ from .seqmapping import api as seqmapping_api
 from .motif import api as motif_api
 from .publication import api as publication_api
 from .site import api as site_api
-#from .idmapping import api as idmapping_api
-#from .typeahead import api as typeahead_api
-#from .log import api as log_api
-#from .video import api as video_api
-#from .supersearch import api as supersearch_api
+from .idmapping import api as idmapping_api
+from .typeahead import api as typeahead_api
+from .log import api as log_api
+from .video import api as video_api
+from .supersearch import api as supersearch_api
 #from .event import api as event_api
 #from .misc import api as misc_api
 #from .job import api as job_api
@@ -46,11 +46,11 @@ def create_app():
     api.add_namespace(motif_api)
     api.add_namespace(publication_api)
     api.add_namespace(site_api)
-    #api.add_namespace(idmapping_api)
-    #api.add_namespace(typeahead_api)
-    #api.add_namespace(log_api)
-    #api.add_namespace(video_api)
-    #api.add_namespace(supersearch_api)
+    api.add_namespace(idmapping_api)
+    api.add_namespace(typeahead_api)
+    api.add_namespace(log_api)
+    api.add_namespace(video_api)
+    api.add_namespace(supersearch_api)
     #api.add_namespace(event_api)
     #api.add_namespace(misc_api)
     #api.add_namespace(job_api)
