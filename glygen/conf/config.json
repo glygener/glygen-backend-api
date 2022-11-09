@@ -27,8 +27,8 @@
                     {"name":"output.json", "format":"json"}
                 ],
                 "paramlist":[
-                    {"id":"seq", "label":"Sequence", "type":"unicode", "value":"xxx"},
-                    {"id":"align","label":"Align", "type":"unicode", "value":"core"}
+                    {"id":"seq", "label":"Sequence", "type":"str", "value":"xxx"},
+                    {"id":"align","label":"Align", "type":"str", "value":"core"}
                 ]
             },            
             "blastp":{
@@ -43,9 +43,9 @@
                     {"name":"output.blastout", "format":"blastout"}
                 ],
                 "paramlist":[
-                    {"id":"seq", "label":"Sequence", "type":"unicode", "value":"xxx"},
+                    {"id":"seq", "label":"Sequence", "type":"str", "value":"xxx"},
                     {
-                        "id":"targetdb", "label":"Target DB", "type":"unicode",
+                        "id":"targetdb", "label":"Target DB", "type":"str",
                         "cmdflag":"-db",
                         "optlist":[
                         ]

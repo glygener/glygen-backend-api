@@ -12,31 +12,43 @@ from flask_jwt_extended import (
     jwt_required, get_jwt_identity
 )
 
-from glygen.foo_apilib import foo_yyy1, foo_yyy2, foo_yyy3, foo_yyy4
+from glygen.job_apilib import job_addnew, job_detail, job_update, job_list, job_delete, job_results, job_status, job_queue, job_init
 
 from glygen.util import get_error_obj, trim_object
 import traceback
 
 
-api = Namespace("foo", description="Foo APIs")
-
-yyy1_query_model = api.model(
-    'Yyy1 Query', { 'query': fields.String(required=True, default="", description='')})
-yyy2_query_model = api.model(
-    'Yyy2 Query', { 'query': fields.String(required=True, default="", description='')})
-yyy3_query_model = api.model(
-    'Yyy3 Query', { 'query': fields.String(required=True, default="", description='')})
-yyy4_query_model = api.model(
-    'Yyy4 Query', { 'query': fields.String(required=True, default="", description='')})
 
 
+api = Namespace("job", description="Job APIs")
 
-@api.route('/yyy1/')
-class Foo(Resource):
-    @api.doc('yyy1')
-    @api.expect(yyy1_query_model)
+addnew_query_model = api.model(
+    'Addnew Query', { 'query': fields.String(required=True, default="", description='')})
+detail_query_model = api.model(
+    'Detail Query', { 'query': fields.String(required=True, default="", description='')})
+list_query_model = api.model(
+    'List Query', { 'query': fields.String(required=True, default="", description='')})
+update_query_model = api.model(
+    'Update Query', { 'query': fields.String(required=True, default="", description='')})
+delete_query_model = api.model(
+    'Delete Query', { 'query': fields.String(required=True, default="", description='')})
+results_query_model = api.model(
+    'Results Query', { 'query': fields.String(required=True, default="", description='')})
+status_query_model = api.model(
+    'Status Query', { 'query': fields.String(required=True, default="", description='')})
+queue_query_model = api.model(
+    'Queue Query', { 'query': fields.String(required=True, default="", description='')})
+init_query_model = api.model(
+    'Init Query', { 'query': fields.String(required=True, default="", description='')})
+
+
+
+@api.route('/init/')
+class Job(Resource):
+    @api.doc('init')
+    @api.expect(init_query_model)
     def post(self):
-        api_name = "foo_yyy1"
+        api_name = "job_init"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -44,19 +56,40 @@ class Foo(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-            data_path = current_app.config["DATA_PATH"]
-            res_obj = foo_yyy1(req_obj, config_obj)
+            res_obj = job_init(config_obj, current_app.config["DATA_PATH"])
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
+
+
+
+@api.route('/addnew/')
+class Job(Resource):
+    @api.doc('addnew')
+    @api.expect(addnew_query_model)
+    def post(self):
+        api_name = "job_addnew"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            trim_object(req_obj)
+            data_path, server = current_app.config["DATA_PATH"],current_app.config["SERVER"]
+            res_obj = job_addnew(req_obj, config_obj, data_path, server)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"] 
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
-@api.route('/yyy2/')
-class Foo(Resource):
-    @api.doc('yyy2')
-    @api.expect(yyy2_query_model)
+@api.route('/detail/')
+class Job(Resource):
+    @api.doc('detail')
+    @api.expect(detail_query_model)
     def post(self):
-        api_name = "foo_yyy2"
+        api_name = "job_detail"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -64,20 +97,19 @@ class Foo(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-            data_path = current_app.config["DATA_PATH"]
-            res_obj = foo_yyy2(req_obj, config_obj)
+            res_obj = job_detail(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
 
-@api.route('/yyy3/')
-class Foo(Resource):
-    @api.doc('yyy3')
-    @api.expect(yyy3_query_model)
+@api.route('/list/')
+class Job(Resource):
+    @api.doc('list')
+    @api.expect(list_query_model)
     def post(self):
-        api_name = "foo_yyy3"
+        api_name = "job_list"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -85,19 +117,18 @@ class Foo(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-            data_path = current_app.config["DATA_PATH"]
-            res_obj = foo_yyy3(req_obj, config_obj)
+            res_obj = job_list(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
-@api.route('/yyy4/')
-class Foo(Resource):
-    @api.doc('yyy4')
-    @api.expect(yyy4_query_model)
+@api.route('/update/')
+class Job(Resource):
+    @api.doc('update')
+    @api.expect(update_query_model)
     def post(self):
-        api_name = "foo_yyy4"
+        api_name = "job_update"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -105,14 +136,90 @@ class Foo(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-            data_path = current_app.config["DATA_PATH"]
-            res_obj = foo_yyy4(req_obj, config_obj)
+            res_obj = job_update(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
 
+@api.route('/delete/')
+class Job(Resource):
+    @api.doc('delete')
+    @api.expect(delete_query_model)
+    def post(self):
+        api_name = "job_delete"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            trim_object(req_obj)
+            res_obj = job_delete(req_obj, config_obj)
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
+
+
+
+@api.route('/results/')
+class Job(Resource):
+    @api.doc('results')
+    @api.expect(results_query_model)
+    def post(self):
+        api_name = "job_results"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            trim_object(req_obj)
+            res_obj = job_results(req_obj, config_obj)
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
+
+@api.route('/status/')
+class Job(Resource):
+    @api.doc('status')
+    @api.expect(status_query_model)
+    def post(self):
+        api_name = "job_status"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            trim_object(req_obj)
+            res_obj = job_status(req_obj, config_obj)
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
+
+@api.route('/queue/')
+class Job(Resource):
+    @api.doc('queue')
+    @api.expect(queue_query_model)
+    def post(self):
+        api_name = "job_queue"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            trim_object(req_obj)
+            res_obj = job_queue(req_obj, config_obj)
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
 
 
 

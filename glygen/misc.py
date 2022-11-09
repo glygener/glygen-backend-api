@@ -12,31 +12,59 @@ from flask_jwt_extended import (
     jwt_required, get_jwt_identity
 )
 
-from glygen.foo_apilib import foo_yyy1, foo_yyy2, foo_yyy3, foo_yyy4
+from glygen.db import get_mongodb
 
+from glygen.misc_apilib import validate, propertylist, pathlist, messagelist, verlist, gtclist, bcolist
 from glygen.util import get_error_obj, trim_object
 import traceback
 
 
-api = Namespace("foo", description="Foo APIs")
+api = Namespace("misc", description="Misc APIs")
 
-yyy1_query_model = api.model(
-    'Yyy1 Query', { 'query': fields.String(required=True, default="", description='')})
-yyy2_query_model = api.model(
-    'Yyy2 Query', { 'query': fields.String(required=True, default="", description='')})
-yyy3_query_model = api.model(
-    'Yyy3 Query', { 'query': fields.String(required=True, default="", description='')})
-yyy4_query_model = api.model(
-    'Yyy4 Query', { 'query': fields.String(required=True, default="", description='')})
+validate_query_model = api.model(
+    'Validate Query', { 'query': fields.String(required=True, default="", description='')})
+propertylist_query_model = api.model(
+    'Propertylist Query', { 'query': fields.String(required=True, default="", description='')})
+pathlist_query_model = api.model(
+    'Pathlist Query', { 'query': fields.String(required=True, default="", description='')})
+messagelist_query_model = api.model(
+    'Messagelist Query', { 'query': fields.String(required=True, default="", description='')})
+verlist_query_model = api.model(
+    'Verlist Query', { 'query': fields.String(required=True, default="", description='')})
+gtclist_query_model = api.model(
+    'Gtclist Query', { 'query': fields.String(required=True, default="", description='')})
+bcolist_query_model = api.model(
+    'Bcolist Query', { 'query': fields.String(required=True, default="", description='')})
+
+info_query_model = api.model(
+    'Info Query', { 'query': fields.String(required=True, default="", description='')})
 
 
-
-@api.route('/yyy1/')
-class Foo(Resource):
-    @api.doc('yyy1')
-    @api.expect(yyy1_query_model)
+@api.route('/info/')
+class Misc(Resource):
+    @api.doc('info')
+    @api.expect(info_query_model)
     def post(self):
-        api_name = "foo_yyy1"
+        api_name = "misc_info"
+        res_obj = {"config":{}}
+        try:
+            k_list = ["DB_HOST", "DB_NAME", "DB_USERNAME",  "DATA_PATH", "MAX_CONTENT_LENGTH"]
+            for k in k_list:
+                res_obj["config"][k] = current_app.config[k]
+            mongo_dbh, error_obj = get_mongodb()
+            res_obj["connection_status"] = "success" if error_obj == {} else error_obj
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
+
+
+@api.route('/validate/')
+class Misc(Resource):
+    @api.doc('validate')
+    @api.expect(validate_query_model)
+    def post(self):
+        api_name = "misc_validate"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -45,18 +73,18 @@ class Foo(Resource):
             req_obj = request.json
             trim_object(req_obj)
             data_path = current_app.config["DATA_PATH"]
-            res_obj = foo_yyy1(req_obj, config_obj)
+            res_obj = validate(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"] 
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
-@api.route('/yyy2/')
-class Foo(Resource):
-    @api.doc('yyy2')
-    @api.expect(yyy2_query_model)
+@api.route('/propertylist/')
+class Misc(Resource):
+    @api.doc('propertylist')
+    @api.expect(propertylist_query_model)
     def post(self):
-        api_name = "foo_yyy2"
+        api_name = "misc_propertylist"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -65,19 +93,19 @@ class Foo(Resource):
             req_obj = request.json
             trim_object(req_obj)
             data_path = current_app.config["DATA_PATH"]
-            res_obj = foo_yyy2(req_obj, config_obj)
+            res_obj = propertylist(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
 
-@api.route('/yyy3/')
-class Foo(Resource):
-    @api.doc('yyy3')
-    @api.expect(yyy3_query_model)
+@api.route('/pathlist/')
+class Misc(Resource):
+    @api.doc('pathlist')
+    @api.expect(pathlist_query_model)
     def post(self):
-        api_name = "foo_yyy3"
+        api_name = "misc_pathlist"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -86,18 +114,18 @@ class Foo(Resource):
             req_obj = request.json
             trim_object(req_obj)
             data_path = current_app.config["DATA_PATH"]
-            res_obj = foo_yyy3(req_obj, config_obj)
+            res_obj = pathlist(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
-@api.route('/yyy4/')
-class Foo(Resource):
-    @api.doc('yyy4')
-    @api.expect(yyy4_query_model)
+@api.route('/messagelist/')
+class Misc(Resource):
+    @api.doc('messagelist')
+    @api.expect(messagelist_query_model)
     def post(self):
-        api_name = "foo_yyy4"
+        api_name = "misc_messagelist"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -106,7 +134,69 @@ class Foo(Resource):
             req_obj = request.json
             trim_object(req_obj)
             data_path = current_app.config["DATA_PATH"]
-            res_obj = foo_yyy4(req_obj, config_obj)
+            res_obj = messagelist(config_obj)
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
+
+
+@api.route('/verlist/')
+class Misc(Resource):
+    @api.doc('verlist')
+    @api.expect(verlist_query_model)
+    def post(self):
+        api_name = "misc_verlist"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            trim_object(req_obj)
+            data_path = current_app.config["DATA_PATH"]
+            res_obj = verlist(config_obj)
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
+
+
+@api.route('/gtclist/')
+class Misc(Resource):
+    @api.doc('gtclist')
+    @api.expect(gtclist_query_model)
+    def post(self):
+        api_name = "misc_gtclist"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            trim_object(req_obj)
+            data_path = current_app.config["DATA_PATH"]
+            res_obj = gtclist(config_obj,data_path)
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
+
+@api.route('/bcolist/')
+class Misc(Resource):
+    @api.doc('bcolist')
+    @api.expect(bcolist_query_model)
+    def post(self):
+        api_name = "misc_bcolist"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            trim_object(req_obj)
+            data_path = current_app.config["DATA_PATH"]
+            res_obj = bcolist(config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)

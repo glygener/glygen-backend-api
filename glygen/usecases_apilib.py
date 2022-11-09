@@ -9,7 +9,7 @@ from pytz import timezone
 from bson import json_util, ObjectId
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, order_obj, extract_name
+from glygen.util import get_errors_in_query, sort_objects, order_obj, extract_name, cache_record_list
 
 from glygen.protein_apilib import get_protein_list_object
 
@@ -79,7 +79,8 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -87,7 +88,7 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
     
     
@@ -137,7 +138,8 @@ def glycan_to_glycoproteins(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -145,7 +147,7 @@ def glycan_to_glycoproteins(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
 
@@ -190,7 +192,8 @@ def glycan_to_enzyme_gene_loci(query_obj, config_obj):
         res_obj = {"list_id":""}
     else:
         ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
-        hash_obj = hashlib.md5(json.dumps(query_obj))
+        hash_str = json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         search_results_obj = {}
         search_results_obj["list_id"] = list_id
@@ -244,7 +247,8 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -252,7 +256,7 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -295,7 +299,8 @@ def protein_to_glycosequons(query_obj, config_obj):
         res_obj = {"list_id":""}
     else:
         ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
-        hash_obj = hashlib.md5(json.dumps(query_obj))
+        hash_str = json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         search_results_obj = {}
         search_results_obj["list_id"] = list_id
@@ -349,7 +354,8 @@ def protein_to_orthologs(query_obj, config_obj):
         res_obj = {"list_id":""}
     else:
         ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
-        hash_obj = hashlib.md5(json.dumps(query_obj))
+        hash_str = json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         search_results_obj = {}
         search_results_obj["list_id"] = list_id
@@ -402,7 +408,8 @@ def species_to_glycosyltransferases(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -410,7 +417,7 @@ def species_to_glycosyltransferases(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -449,7 +456,8 @@ def species_to_glycohydrolases(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -457,7 +465,7 @@ def species_to_glycohydrolases(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -497,7 +505,8 @@ def species_to_glycoproteins(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -505,7 +514,7 @@ def species_to_glycoproteins(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -545,7 +554,8 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -805,6 +815,9 @@ def get_genelocus_list_fields(dbh, uniprot_canonical_ac):
 
     collection = "c_protein"
     obj = dbh[collection].find_one({"uniprot_canonical_ac":uniprot_canonical_ac})
+    if obj == None:
+        return {}, -1
+
     protein_name = extract_name(obj["protein_names"], "recommended", "UniProtKB")
     gene_name = obj["gene"][0]["name"] if obj["gene"] != [] else ""
     organism = obj["species"][0]["name"] if obj["species"] != [] else ""
@@ -924,7 +937,7 @@ def get_mongo_query(svc_name, query_obj):
                 }
                 cond_objs.append(tax_id_q_obj)
                 #cond_objs.append({"species.taxid": {'$eq': query_obj["tax_id"]}})
-            if query_obj["do_name"] > 0:
+            if query_obj["do_name"].strip() !=  "":
                 q_one = {"disease.recommended_name.name": {'$regex': query_obj["do_name"], '$options': 'i'}}
                 q_two = {"disease.synonyms.name": {'$regex': query_obj["do_name"], '$options': 'i'}}
                 cond_objs.append({"$or":[q_one, q_two]})
@@ -958,7 +971,7 @@ def sort_objects(obj_list, field_name, order_type):
         ,"organism":[]
         ,"tax_id":[]
     }
-    for i in xrange(0, len(obj_list)):
+    for i in range(0, len(obj_list)):
         obj = obj_list[i]
         grid_obj[field_name].append({"index":i, field_name:obj[field_name]})
 

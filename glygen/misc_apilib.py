@@ -8,11 +8,10 @@ import pytz
 import glob
 from collections import OrderedDict
 import collections
+import subprocess
 
-import jsonref
 from jsonschema import validate, Draft7Validator
 import jsonschema
-import simplejson
 
 
 from flask import Flask, request, jsonify, Response, stream_with_context
@@ -79,8 +78,8 @@ def bcolist(config_obj):
 
     out_obj = {}
     for doc in dbh["c_bco"].find({}):
-        if "bco_id" in doc:
-            bco_id = doc["bco_id"]
+        if "object_id" in doc:
+            bco_id = doc["object_id"].split("/")[3]
             if "io_domain" in doc:
                 if "output_subdomain" in doc["io_domain"]:
                     if doc["io_domain"]["output_subdomain"] != []:
@@ -221,7 +220,7 @@ def testrecords (query_obj, config_obj, data_path):
         flag = [api_flag, ds_flag] == [True, True]
         row = [combo_id, str(api_flag), str(ds_flag), str(flag)]
         if flag == False:
-            for i in xrange(0, len(row)):
+            for i in range(0, len(row)):
                 if row[i] != "True":
                     row[i] = '<font color=red>' + row[i] + '</font>';
             row_list_one.append(row)
@@ -284,7 +283,7 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, data_path):
 
 
     cmd = "grep ^'\"%s\"' " % (record_id) + reviewed_dir + "*_protein_masterlist.csv" 
-    species = commands.getoutput(cmd).split("\n")[0].split(":")[0].split("/")[-1].split("_")[0]
+    species = subprocess.getoutput(cmd).split("\n")[0].split(":")[0].split("/")[-1].split("_")[0]
 
     uniprotkb_ac = record_id.split("-")[0]
     if record_type == "protein" and sec == "species":
@@ -601,7 +600,7 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, data_path):
                         stat_obj["ds"][combo_id] = True
                 elif sec == "gene_names" and len(id_list_one) > 1:
                     resource = "refseq" if in_file.find("refseq") != -1 else "uniprotkb"
-                    for j in xrange(1, len(id_list_one)):
+                    for j in range(1, len(id_list_one)):
                         name_type = "recommended" if j == 1 else "synonym"
                         name = id_list_one[j]
                         if name == "":
@@ -673,7 +672,7 @@ def get_recordinfo_from_api(sec_info, query_obj, stat_obj, config_obj):
     if sec in sec_info:
         obj_list = doc[sec]
         if type(obj_list) is not list:
-            if type(obj_list) in [int, float, unicode]:
+            if type(obj_list) in [int, float, str]:
                 obj_list = [{sec:doc[sec]}]
             else:
                 obj_list = [doc[sec]]
@@ -814,7 +813,7 @@ def pathlist(query_obj, config_obj):
     seen = {}
     load_properity_lineage(api_doc, "", seen)
     out_json = []
-    for k in sorted(seen.keys()):
+    for k in sorted(list(seen.keys())):
         out_json.append(k)
 
     return out_json
@@ -850,7 +849,7 @@ def propertylist(query_obj, config_obj):
 
 
     seen["apinew"] = {}
-    for k in seen["api"].keys():
+    for k in list(seen["api"].keys()):
         k = k.replace("{", "").replace("}", "").replace("[0]", "")
         k = k.replace("enzymes.", "enzyme.")
         if k.find(" dict") != -1 or k.find(" list") != -1:
@@ -860,7 +859,7 @@ def propertylist(query_obj, config_obj):
     out_json = {
         "in_api":[], "in_docstore":[],
         "in_api_only":[], "in_docstore_only":[], "in_api_and_docstore":[]}
-    key_list = list(set(seen["docstore"].keys() + seen["apinew"].keys()))
+    key_list = list(set(list(seen["docstore"].keys()) + list(seen["apinew"].keys())))
     for k in sorted(key_list):
         tv = [k in seen["docstore"].keys(), k in  seen["apinew"].keys()]
         #o = {"path":k.split("{")[0], "type":k.split("{")[1]} 
@@ -897,12 +896,12 @@ def load_properity_lineage(in_obj, in_key, seen):
     elif type(in_obj) is list:
         k = "%s {list}" % (in_key)
         seen[k] = True
-        for idx in xrange(0, len(in_obj)):
+        for idx in range(0, len(in_obj)):
             if idx > 0:
                 continue
             idx_key = in_key + "[%s]" % (idx) 
             load_properity_lineage(in_obj[idx], idx_key, seen)
-    elif type(in_obj) in [unicode, int, float]:
+    elif type(in_obj) in [str, int, float]:
         value_type = str(type(in_obj)).replace("<type ", "").replace("'", "").replace(">", "")
         in_key += " {%s}" % (value_type)
         seen[in_key] = True
@@ -934,18 +933,17 @@ def get_filename_list(masterlist_file):
     return file_name_list
 
 
-def gtclist(config_obj):
-
+def gtclist(config_obj, data_path):
 
     url = "https://api.glygen.org//misc/verlist/"
     cmd = "curl -s -k %s" % (url)
-    res = commands.getoutput(cmd)
+    res = subprocess.getoutput(cmd)
     release_list = sorted(json.loads(res))
 
 
     seen = {}
     for rel in release_list:
-        reviewed_dir = data_path + "releases/data/v-%s/reviewed/" % (rel)
+        reviewed_dir = data_path + "/releases/data/v-%s/reviewed/" % (rel)
         file_list = glob.glob(reviewed_dir + "/glycan_masterlist.csv")
         file_list += glob.glob(reviewed_dir + "/*_glycan_idmapping.csv")
         file_list += glob.glob(reviewed_dir + "/*_glycan_properties.csv")
@@ -956,7 +954,7 @@ def gtclist(config_obj):
             for glytoucan_ac in sheet_obj["data"]:
                 seen[glytoucan_ac] = True
 
-    return seen.keys()
+    return list(seen.keys())
 
 
 

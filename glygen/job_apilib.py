@@ -3,29 +3,32 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import bcrypt
 import base64
+import subprocess
 import pytz
 from collections import OrderedDict
 from bson.objectid import ObjectId
 
 
-from libgly import load_species_info
+from glygen.libgly import load_species_info
 from glygen.db import get_mongodb
 from glygen.util import get_errors_in_query, sort_objects, cache_record_list
 
 
 
 
-def job_init(config_obj):
+def job_init(config_obj, data_path):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+    init_obj = dbh["c_init"].find_one({})
 
     #Set number of jobs allowed
     cmd = "%s -S %s" % (config_obj["jobinfo"]["tspath"], config_obj["jobinfo"]["maxjobs"])
-    x = commands.getoutput(cmd)
-
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
+    x = subprocess.getoutput(cmd)
 
 
     res_obj = {}
@@ -42,9 +45,8 @@ def job_init(config_obj):
 
 
     species_obj = {}
-    in_file = path_obj["datareleasespath"]
-    in_file += "data/v-%s/misc/species_info.csv" % (config_obj["datarelease"])
-            
+    in_file = data_path + "/releases/data/v-%s/misc/species_info.csv" % (init_obj["dataversion"])
+ 
     load_species_info(species_obj, in_file)
     opt_list = [
         {"value":"canonicalsequences_all", "label":"All species"}        
@@ -65,15 +67,16 @@ def job_init(config_obj):
     return res_obj
 
 
-def job_addnew(query_obj, config_obj):
+def job_addnew(query_obj, config_obj, data_path, server):
 
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
+    init_obj = dbh["c_init"].find_one({})
+    release_dir = data_path + "/releases/data/v-%s/" % (init_obj["dataversion"])
 
-
-    validation_obj, error_list = validate_input(query_obj, config_obj)
+    validation_obj, error_list = validate_input(query_obj, config_obj, release_dir)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -100,10 +103,10 @@ def job_addnew(query_obj, config_obj):
                 return status_obj
             res_obj = {"submission":"old", "status":status_obj, "jobid":old_doc["jobid"]}
         else:
-            in_dir = config_obj[config_obj["server"]]["pathinfo"]["userdata"]
+            in_dir = data_path + "/data/shared/glygen/userdata/" + server + "/jobs/"
             in_dir += str(query_obj["jobid"]) + "/"
             cmd = "mkdir -p " + in_dir
-            x = commands.getoutput(cmd)
+            x = subprocess.getoutput(cmd)
             in_filename = config_obj["jobinfo"][query_obj["jobtype"]]["input_files"][0]["name"]
             out_filename = config_obj["jobinfo"][query_obj["jobtype"]]["output_files"][0]["name"]
             in_file = in_dir + in_filename
@@ -127,7 +130,7 @@ def job_addnew(query_obj, config_obj):
             cmd = "%s -E -L %s %s" % (config_obj["jobinfo"]["tspath"],job_lbl, query_obj["cmd"])
             
 
-            cmdout = commands.getoutput(cmd)
+            cmdout = subprocess.getoutput(cmd)
             query_obj["cmdout"] = cmdout
             query_obj["tsid"] = cmdout.split(" ")[0]
             query_obj["status"] = get_job_status(query_obj["tsid"] , config_obj)
@@ -159,7 +162,7 @@ def job_queue(query_obj, config_obj):
     }
     try:
         cmd = "%s" % (config_obj["jobinfo"]["tspath"])
-        for line in commands.getoutput(cmd).split("\n")[1:]:
+        for line in subprocess.getoutput(cmd).split("\n")[1:]:
             row = []
             row.append(line[0:5].strip())
             row.append(line[5:16].strip())
@@ -437,7 +440,7 @@ def get_result_count(job_type, out_file):
         n = len(json.loads(open(out_file, "r").read()))
     elif job_type == "blastp":
         cmd = "grep \"Score =\" %s | wc" % (out_file)
-        n = int(commands.getoutput(cmd).strip().split(" ")[0])
+        n = int(subprocess.getoutput(cmd).strip().split(" ")[0])
     return n
 
 
@@ -545,8 +548,6 @@ def job_delete(query_obj, config_obj):
     if error_list != []:
         return {"error_list":error_list}
 
-
-
     res_obj = {}
     try:
         q_obj = {"_id":ObjectId(query_obj["id"])}
@@ -577,10 +578,7 @@ def validate_protein_seq(seq):
 
 
 
-def validate_input(query_obj, config_obj):
-   
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    release_dir = path_obj["datareleasespath"] + "data/v-%s/" % (config_obj["datarelease"])
+def validate_input(query_obj, config_obj, release_dir):
 
     cmd_parts = []
     error_list = []
@@ -620,11 +618,11 @@ def validate_input(query_obj, config_obj):
             return res_obj, e_list
         res_obj["buffer"] = ">%s\n%s\n" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
         cmd = "echo %s %s | /usr/bin/md5sum" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
-        query_obj["md5sum"] = commands.getoutput(cmd).split(" ")[0]
+        query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
     elif query_obj["jobtype"] in ["structure_search"]:
         res_obj["buffer"] = json.dumps(query_obj["parameters"])
         cmd = "echo \"%s\" | /usr/bin/md5sum" % (query_obj["parameters"]["seq"])
-        query_obj["md5sum"] = commands.getoutput(cmd).split(" ")[0]
+        query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
 
     return res_obj, error_list
 
@@ -635,9 +633,9 @@ def get_job_status(ts_id, config_obj):
 
     obj = {}
     cmd = "%s -s %s" % (config_obj["jobinfo"]["tspath"], ts_id)
-    obj["status"] = commands.getoutput(cmd).split(" ")[0]
+    obj["status"] = subprocess.getoutput(cmd).split(" ")[0]
     cmd = "%s -i %s" % (config_obj["jobinfo"]["tspath"], ts_id)
-    for line in commands.getoutput(cmd).split("\n"):
+    for line in subprocess.getoutput(cmd).split("\n"):
         k = line.split(":")[0].replace(" ", "_").lower()
         obj[k] = ":".join(line.split(":")[1:])
         obj[k] = obj[k].strip()
@@ -646,7 +644,7 @@ def get_job_status(ts_id, config_obj):
         obj["status"] = "died"
         obj.pop("exit_status")
         cmd = "%s -t %s" % (config_obj["jobinfo"]["tspath"], ts_id)
-        obj["error"] = commands.getoutput(cmd)
+        obj["error"] = subprocess.getoutput(cmd)
 
 
     return obj

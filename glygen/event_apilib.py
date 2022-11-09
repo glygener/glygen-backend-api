@@ -18,7 +18,7 @@ from glygen.util import get_errors_in_query, sort_objects, cache_record_list
 
 
 
-def event_addnew(query_obj, config_obj):
+def event_addnew(logged_user, query_obj, config_obj):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -38,7 +38,7 @@ def event_addnew(query_obj, config_obj):
         elif len(time_parts) != 3:
             error_list.append({"error_code":"invalid-time-format for %s" % (k)})
         else:
-            for j in xrange(0, len(date_parts)):
+            for j in range(0, len(date_parts)):
                 if date_parts[j].isdigit() == False:
                     error_list.append({"error_code":"invalid-date-format for %s" % (k)})
                 elif time_parts[j].isdigit() == False:
@@ -69,7 +69,7 @@ def event_addnew(query_obj, config_obj):
 
 
     #check write-access
-    user_info = dbh["c_users"].find_one({'email' : res_obj["email"].lower()})
+    user_info = dbh["c_users"].find_one({'email' : logged_user})
     if "access" not in user_info:
         return {"error_list":[{"error_code":"no-write-access"}]}
     if user_info["access"] != "write":
@@ -77,7 +77,6 @@ def event_addnew(query_obj, config_obj):
 
     res_obj = {}
     try:
-        query_obj.pop("token")
         query_obj["createdts"] = datetime.datetime.now()
         query_obj["updatedts"] = query_obj["createdts"]
         res = dbh["c_event"].insert_one(query_obj)
@@ -109,7 +108,7 @@ def event_detail(query_obj, config_obj):
             return {"error_list":[{"error_code":"record-not-found"}]}
         res_obj["id"] = str(res_obj["_id"])
         res_obj.pop("_id")
-        for k in ["createdts", "updatedts"]:
+        for k in ["createdts", "updatedts", "start_date", "end_date"]:
             if k not in res_obj:
                 continue
             res_obj[k] = res_obj[k].strftime('%Y-%m-%d %H:%M:%S %Z%z')
@@ -159,7 +158,7 @@ def event_list(query_obj, config_obj):
     return res_obj
 
 
-def event_update(query_obj, config_obj):
+def event_update(logged_user, query_obj, config_obj):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -172,7 +171,7 @@ def event_update(query_obj, config_obj):
 
 
     #check write-access
-    user_info = dbh["c_users"].find_one({'email' : res_obj["email"].lower()})
+    user_info = dbh["c_users"].find_one({'email' : logged_user})
     if "access" not in user_info:
         return {"error_list":[{"error_code":"no-write-access"}]}
     if user_info["access"] != "write":
@@ -183,7 +182,7 @@ def event_update(query_obj, config_obj):
         q_obj = {"_id":ObjectId(query_obj["id"])}
         update_obj = {}
         for k in query_obj:
-            if k not in ["token", "id"]:
+            if k not in ["id"]:
                 update_obj[k] = query_obj[k]
         res = dbh["c_event"].update_one(q_obj, {'$set':update_obj}, upsert=True)
         res_obj = {"type":"success"}
@@ -195,7 +194,7 @@ def event_update(query_obj, config_obj):
 
 
 
-def event_delete(query_obj, config_obj):
+def event_delete(logged_user, query_obj, config_obj):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -208,7 +207,7 @@ def event_delete(query_obj, config_obj):
 
 
     #check write-access
-    user_info = dbh["c_users"].find_one({'email' : res_obj["email"].lower()})
+    user_info = dbh["c_users"].find_one({'email' : logged_user})
     if "access" not in user_info:
         return {"error_list":[{"error_code":"no-write-access"}]}
     if user_info["access"] != "write":

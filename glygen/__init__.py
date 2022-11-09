@@ -22,10 +22,10 @@ from .typeahead import api as typeahead_api
 from .log import api as log_api
 from .video import api as video_api
 from .supersearch import api as supersearch_api
-#from .event import api as event_api
-#from .misc import api as misc_api
-#from .job import api as job_api
-
+from .event import api as event_api
+from .misc import api as misc_api
+from .job import api as job_api
+from .usecases import api as usecases_api
 
 
 
@@ -51,9 +51,10 @@ def create_app():
     api.add_namespace(log_api)
     api.add_namespace(video_api)
     api.add_namespace(supersearch_api)
-    #api.add_namespace(event_api)
-    #api.add_namespace(misc_api)
-    #api.add_namespace(job_api)
+    api.add_namespace(event_api)
+    api.add_namespace(misc_api)
+    api.add_namespace(job_api)
+    api.add_namespace(usecases_api)
 
 
     try:
