@@ -1,0 +1,8 @@
+{
+    "globalsearch_search": {
+        "url": "/globalsearch/search/",
+        "query": {
+            "term":"Psoriasis"
+        }
+    }
+}

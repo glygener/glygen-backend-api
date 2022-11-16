@@ -1,0 +1,28 @@
+{
+    "event_addnew":{
+        "url":"/event/addnew"
+        ,"query":{"title":"some title", "description":"some description", "start_date":"01/20/2021 23:59:59", "end_date":"01/21/2021 07:00:00", "venue":"some venue", "url":"some url", "url_name":"some url name", "visibility":"visible"}
+    }
+    ,"event_list":{
+        "url":"/event/list"
+        ,"querylist":[
+            {
+                "label":"Event list with visibility=all, status=all"
+                ,"query":{"visibility":"all", "status":"all"}
+            }
+        ]
+    }
+    ,"event_update":{
+        "url":"/event/update"
+        ,"query":{"id":"xxx","visibility":"visible"}
+    }
+    ,"event_detail":{
+        "url":"/event/detail"
+        ,"query":{"id": "xxx"}
+    } 
+    ,"event_delete":{
+        "url":"/event/delete"
+        ,"query":{"id": "xxx"}
+    }
+}
+

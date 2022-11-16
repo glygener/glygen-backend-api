@@ -1,0 +1,19 @@
+{
+    "search_init": {
+        "url": "/supersearch/search_init",
+        "query": {}
+    }
+    ,"search": {
+        "url": "/supersearch/search", 
+        "querylist": []
+    }
+    ,"reason": {
+        "url": "/supersearch/reason",
+        "querylist": []
+    }
+    ,"supersearch_list": {
+        "url": "/supersearch/list/", 
+        "query": {"id": ""}
+    }
+}
+

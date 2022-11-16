@@ -68,13 +68,14 @@ def auth_contact(query_obj, config_obj):
     if error_obj != {}:
         return error_obj
 
+
     #Collect errors 
     error_list = get_errors_in_query("auth_contact",query_obj, config_obj)
     if error_list != []: 
         return {"error_list":error_list}
+    
 
     collection = "c_message"
-
     sender = config_obj[config_obj["server"]]["contactemailreceivers"][0]
     receivers = [query_obj["email"]] + config_obj[config_obj["server"]]["contactemailreceivers"]
     query_obj["page"] = query_obj["page"] if "page" in query_obj else ""
@@ -118,12 +119,12 @@ def auth_contact(query_obj, config_obj):
         "status":"new",
         "visibility":"visible"
     }
-   
     
     try:
-        s = smtplib.SMTP('localhost')
-        s.sendmail(sender, receivers, msg.as_string())
-        s.quit()
+        if config_obj["server"] != "dev":
+            s = smtplib.SMTP('localhost')
+            s.sendmail(sender, receivers, msg.as_string())
+            s.quit()
         store_json["message_status"] = "success"
     except Exception as e:
         res_json = {"error_list":[{"error_code":str(e)}]}
@@ -132,7 +133,6 @@ def auth_contact(query_obj, config_obj):
     store_json["creation_time"] = datetime.datetime.now()
     store_json["update_time"] = store_json["creation_time"] 
     result = dbh[collection].insert_one(store_json)
-
     
     return res_json
 

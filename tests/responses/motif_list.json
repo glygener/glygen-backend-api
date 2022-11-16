@@ -1,0 +1,247 @@
+{
+    "cache_info": {
+        "query": {}
+    },
+    "results": [
+        {
+            "glytoucan_ac": "G00055MO",
+            "motif_ac": "GGM.000001",
+            "motif_name": "Type 2 LN",
+            "glycan_count": 8990,
+            "protein_count": 151,
+            "synonyms": [
+                "N-acetyllactosamine"
+            ],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G10203DW",
+            "motif_ac": "GGM.000034",
+            "motif_name": "3-Sialyl-LN (type 2)",
+            "glycan_count": 1884,
+            "protein_count": 59,
+            "synonyms": [],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G01187XC",
+            "motif_ac": "GGM.000018",
+            "motif_name": "Lewis x",
+            "glycan_count": 1671,
+            "protein_count": 21,
+            "synonyms": [
+                "Le^x",
+                "Lex",
+                "SSEA-1"
+            ],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G00056MO",
+            "motif_ac": "GGM.000005",
+            "motif_name": "Type 1 LN",
+            "glycan_count": 1452,
+            "protein_count": 13,
+            "synonyms": [],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G00058MO",
+            "motif_ac": "GGM.000002",
+            "motif_name": "Type 2 LN2",
+            "glycan_count": 983,
+            "protein_count": 16,
+            "synonyms": [
+                "i antigen"
+            ],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G24432YB",
+            "motif_ac": "GGM.000015",
+            "motif_name": "a-Gal antigen",
+            "glycan_count": 708,
+            "protein_count": 11,
+            "synonyms": [
+                "alpha-Gal antigen"
+            ],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G31736BK",
+            "motif_ac": "GGM.000016",
+            "motif_name": "LacdiNAc",
+            "glycan_count": 570,
+            "protein_count": 17,
+            "synonyms": [
+                "LDN"
+            ],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G00047MO",
+            "motif_ac": "GGM.000020",
+            "motif_name": "Lewis a",
+            "glycan_count": 332,
+            "protein_count": 1,
+            "synonyms": [
+                "Le^a",
+                "Lea"
+            ],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G70519XK",
+            "motif_ac": "GGM.000036",
+            "motif_name": "Blood group H (type 2)",
+            "glycan_count": 281,
+            "protein_count": 1,
+            "synonyms": [],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G00294TN",
+            "motif_ac": "GGM.000042",
+            "motif_name": "Blood group H (type 1)",
+            "glycan_count": 225,
+            "protein_count": 2,
+            "synonyms": [],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G49963IQ",
+            "motif_ac": "GGM.000019",
+            "motif_name": "Lewis y",
+            "glycan_count": 206,
+            "protein_count": 2,
+            "synonyms": [
+                "Le^y",
+                "Ley"
+            ],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G00052MO",
+            "motif_ac": "GGM.000045",
+            "motif_name": "Blood group H (type 2) - Lewis y",
+            "glycan_count": 199,
+            "protein_count": 2,
+            "synonyms": [
+                "H-Le^y",
+                "H-Ley"
+            ],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G46055MA",
+            "motif_ac": "GGM.000004",
+            "motif_name": "i antigen",
+            "glycan_count": 194,
+            "protein_count": 4,
+            "synonyms": [],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G00054MO",
+            "motif_ac": "GGM.000022",
+            "motif_name": "Sialyl Lewis x",
+            "glycan_count": 187,
+            "protein_count": 5,
+            "synonyms": [
+                "SLe^x",
+                "SLex",
+                "Slex"
+            ],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G74353FF",
+            "motif_ac": "GGM.000038",
+            "motif_name": "Blood group A (type 2)",
+            "glycan_count": 183,
+            "protein_count": 4,
+            "synonyms": [],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G73708UL",
+            "motif_ac": "GGM.000035",
+            "motif_name": "6-Sialyl-GalNAc",
+            "glycan_count": 135,
+            "protein_count": 6,
+            "synonyms": [
+                "6-Sialyl LN (type 1)",
+                "6-Sialyl LN (type 2)"
+            ],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G39211DH",
+            "motif_ac": "GGM.000021",
+            "motif_name": "Lewis b",
+            "glycan_count": 114,
+            "protein_count": 1,
+            "synonyms": [
+                "Le^b",
+                "Leb"
+            ],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G56045WU",
+            "motif_ac": "GGM.000003",
+            "motif_name": "I antigen",
+            "glycan_count": 111,
+            "protein_count": 1,
+            "synonyms": [],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G79535HZ",
+            "motif_ac": "GGM.000031",
+            "motif_name": "Lex-Lex",
+            "glycan_count": 102,
+            "protein_count": 1,
+            "synonyms": [
+                "Le^x-Le^x"
+            ],
+            "pmidlist": [],
+            "record_type": "motif"
+        },
+        {
+            "glytoucan_ac": "G55583HW",
+            "motif_ac": "GGM.000050",
+            "motif_name": "Sialylated LDN",
+            "glycan_count": 93,
+            "protein_count": 6,
+            "synonyms": [],
+            "pmidlist": [],
+            "record_type": "motif"
+        }
+    ],
+    "pagination": {
+        "offset": 1,
+        "limit": 20,
+        "total_length": 120,
+        "sort": "glycan_count",
+        "order": "desc"
+    }
+}

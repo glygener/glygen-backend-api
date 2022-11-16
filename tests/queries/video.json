@@ -1,0 +1,19 @@
+{
+    "video_addnew":{
+        "url":"/video/addnew"
+        ,"query":{"token":"","url":"https://www.youtube.com/embed/xyV5v5nRm6A?rel=0"}
+    }
+    ,"video_detail":{
+        "url":"/video/detail"
+        ,"query":{"token":""}
+    }
+    ,"video_list":{
+        "url":"/video/list"
+        ,"query":{"token":""}
+    }
+    ,"video_delete":{
+        "url":"/video/delete"
+        ,"query":{"id": "", "token":""}
+    }
+}
+

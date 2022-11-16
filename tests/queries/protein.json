@@ -1,0 +1,46 @@
+{
+    "search_init":{
+        "url":"/protein/search_init/",
+        "schemafile":"../specs/protein/search_init/response.schema.json",
+        "query":{
+        }
+    },
+    "protein_search_simple":{
+        "url":"/protein/search_simple/",
+        "schemafile":"../specs/protein/search_simple/response.schema.json",
+        "query":{"term_category":"protein","term":"P14210"}
+    }
+    ,"protein_search": {
+        "url": "/protein/search/",
+        "schemafile":"../specs/protein/search/response.schema.json",
+        "querylist":[
+            {
+                "label":"Query by protein accession",
+                "query": {"uniprot_canonical_ac":"P14210"}
+            }
+        ]
+    }
+    ,"protein_list": {
+        "url": "/protein/list/", 
+        "schemafile":"../specs/protein/list/response.schema.json",
+        "query": {
+            "id": ""
+        }
+    }
+    ,"protein_detail": {
+        "url": "/protein/detail/",
+        "schemafile":"../specs/protein/detail/response.schema.json",
+        "query":"P14210",
+        "semantic":true
+    }
+    ,"protein_alignment": {
+        "url": "/protein/alignment/",
+        "schemafile":"../specs/protein/alignment/response.schema.json",
+        "query": {
+            "uniprot_canonical_ac": "P14210-1",
+            "cluster_type": "homologset.oma"
+        }
+    }
+}
+
+

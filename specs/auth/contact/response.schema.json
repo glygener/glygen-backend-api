@@ -2,11 +2,15 @@
     "$schema": "http://json-schema.org/schema#",
     "type": "object",
     "properties": {
-        "list_id": {
+        "type": {
+            "type": "string"
+        },
+        "message": {
             "type": "string"
         }
     },
     "required": [
-        "list_id"
+        "message",
+        "type"
     ]
 }

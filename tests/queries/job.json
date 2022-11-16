@@ -1,0 +1,140 @@
+{
+    "job_init":{
+        "url":"/job/init"
+        ,"query":{}
+    },
+    "job_addnew":{
+        "url":"/job/addnew"
+        ,"querylist":[
+            {
+                "label":"Successful blastp example",
+                "query":{
+                    "jobtype":"blastp",
+                    "parameters":{
+                        "seq":"MSIQENISSLQLRSWVSKSQRDLAKSILIGAPGGPAGYLRRASVAQLTQELGTAFFQQQQLPAAMADTFLEHLCLLDIDSEPVAARSTSIIATIGPASRSVERLKEMIKAGMNIARLNFSQHAIAREAEAAVYHRQLFEELRRAAPLSRDPTEVTAIGAVEAAFKCCAAAIIVLTTTGRS",
+                        "targetdb":"canonicalsequences_all",
+                        "num_alignments":3,
+                        "evalue":1e-3
+                    }
+                }
+            },
+            {
+                "label":"Failing blastp example",
+                "query":{
+                    "jobtype":"blastp",
+                    "parameters":{
+                        "seq":"000000111100000",
+                        "targetdb":"canonicalsequences_all",
+                        "num_alignments":3,
+                        "evalue":1e-3
+                    }
+                }
+            },
+            {
+                "label":"Successful substructure search + None (align = substructure) glycoct format",
+                "query":{
+                    "jobtype":"structure_search",
+                    "parameters":{
+                        "seq": "RES\n1b:x-dglc-HEX-1:5\n2b:x-dgal-HEX-1:5\n3b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n4s:n-glycolyl\n5b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n6s:n-glycolyl\nLIN\n1:1o(-1+1)2d\n2:2o(-1+2)3d\n3:3d(5+1)4n\n4:3o(-1+2)5d\n5:5d(5+1)6n",
+                        "align":"substructure"
+                    }
+                }
+            },
+            {
+                "label":"Successful substructure search + None (align = substructure) wurcs format",
+                "query":{
+                    "jobtype":"structure_search",
+                    "parameters":{
+                        "seq": "WURCS=2.0/3,4,3/[a2122h-1x_1-5][a2112h-1x_1-5][Aad21122h-2x_2-6_5*NCCO/3=O]/1-2-3-3/a?-b1_b?-c2_c?-d2",
+                        "align":"substructure"
+                    }
+                }
+            },
+            {
+                "label":"Successful structure search (align = wholeglycan) glycoct format",
+                "query":{ 
+                    "jobtype":"structure_search",
+                    "parameters":{
+                        "seq": "RES\n1b:x-dglc-HEX-1:5\n2b:x-dgal-HEX-1:5\n3b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n4s:n-glycolyl\n5b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n6s:n-glycolyl\nLIN\n1:1o(-1+1)2d\n2:2o(-1+2)3d\n3:3d(5+1)4n\n4:3o(-1+2)5d\n5:5d(5+1)6n",
+                        "align":"wholeglycan"
+                    }
+                }
+            },
+            {
+                "label":"Failing structure search (align = wholeglycan) glycoct format",
+                "query":{ 
+                    "jobtype":"structure_search",
+                    "parameters":{
+                            "align": "wholeglycan", 
+                            "seq": "RES\n1b:b-dglc-HEX-1:5\n2s:n-acetyl\n3b:b-dgal-HEX-1:5\nLIN\n1:1d(2+1)2n\nd2:1o(3+1)3d"
+                    }
+                }
+            },
+            {
+                "label":"Successful substructure search + reducing end (align = core) glycoct format",
+                "query":{ 
+                    "jobtype":"structure_search",
+                    "parameters":{
+                        "seq": "RES\n1b:x-dglc-HEX-1:5\n2b:x-dgal-HEX-1:5\n3b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n4s:n-glycolyl\n5b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n6s:n-glycolyl\nLIN\n1:1o(-1+1)2d\n2:2o(-1+2)3d\n3:3d(5+1)4n\n4:3o(-1+2)5d\n5:5d(5+1)6n",
+                        "align":"core"
+                    }
+                }
+            },
+	    {
+                "label":"Successful substructure search + terminal (align = nonreducingend) glycoct format",
+                "query":{ 
+                    "jobtype":"structure_search",
+                    "parameters":{
+                        "seq": "RES\n1b:x-dglc-HEX-1:5\n2b:x-dgal-HEX-1:5\n3b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n4s:n-glycolyl\n5b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n6s:n-glycolyl\nLIN\n1:1o(-1+1)2d\n2:2o(-1+2)3d\n3:3d(5+1)4n\n4:3o(-1+2)5d\n5:5d(5+1)6n",
+                        "align":"nonreducingend"
+                    }
+                }
+            }
+        ]
+    }
+    ,"job_results":{
+        "url":"/job/results"
+        ,"query":{"jobid":1}
+    }
+    ,"glycan_list": {
+        "url": "/glycan/list/", 
+        ,"querylist":[
+            {
+                "label":"Simple listing",
+                "query":{
+                    "id":""
+                }
+            }
+            ,{
+                "label":"Listing with filters",
+                "query":{
+                    "id":"",
+                    "filters":[
+                        {   
+                            "id":"by_mass",
+                            "selected":["2k_3k", "3k_4k"],
+                            "operator":"OR"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+    ,"job_queue":{
+        "url":"/job/queue"
+        ,"query":{}
+    }
+    ,"job_status":{
+        "url":"/job/status"
+        ,"query":{"jobid": 1}
+    }
+    ,"job_detail":{
+        "url":"/job/detail"
+        ,"query":{"jobid": 1}
+    }
+    ,"job_list":{
+        "url":"/job/list"
+        ,"query":{"visibility":"all"}
+    }
+}
+

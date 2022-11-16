@@ -1,176 +1,87 @@
 {
-    "$schema": "http://json-schema.org/schema#", 
-    "required": [], 
-    "type": "object", 
-    "properties": {
-        "glycan_type": {
-            "items": {
-                "required": [], 
-                "type": "object", 
-                "properties": {
-                    "subtype": {
-                        "items": {
+    "$schema": "http://json-schema.org/schema#",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "string"
+            },
+            "label": {
+                "type": "string"
+            },
+            "description": {
+                "type": "string"
+            },
+            "fields": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
                             "type": "string"
-                        }, 
-                        "type": "array", 
-                        "description": "", 
-                        "title": ""
-                    }, 
-                    "name": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }
-                }
-            }, 
-            "type": "array", 
-            "description": "", 
-            "title": ""
-        }, 
-        "number_monosaccharides": {
-            "description": "", 
-            "required": [], 
-            "type": "object", 
-            "properties": {
-                "max": {
-                    "type": "integer", 
-                    "description": "", 
-                    "title": ""
-                }, 
-                "min": {
-                    "type": "integer", 
-                    "description": "", 
-                    "title": ""
-                }
-            }, 
-            "title": ""
-        }, 
-        "glycan_mass": {
-            "description": "", 
-            "required": [], 
-            "type": "object", 
-            "properties": {
-                "permethylated": {
-                    "description": "", 
-                    "required": [], 
-                    "type": "object", 
-                    "properties": {
-                        "max": {
-                            "type": "integer", 
-                            "description": "", 
-                            "title": ""
-                        }, 
-                        "name": {
-                            "type": "string", 
-                            "description": "", 
-                            "title": ""
-                        }, 
-                        "min": {
-                            "type": "integer", 
-                            "description": "", 
-                            "title": ""
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "type": "string"
+                        },
+                        "maxlength": {
+                            "type": "integer"
+                        },
+                        "url": {
+                            "type": "string"
+                        },
+                        "oplist": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "typeahead": {
+                            "type": "string"
+                        },
+                        "enum": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "order": {
+                            "type": "integer"
+                        },
+                        "default_value": {
+                            "type": "string"
                         }
-                    }, 
-                    "title": ""
-                }, 
-                "native": {
-                    "description": "", 
-                    "required": [], 
-                    "type": "object", 
-                    "properties": {
-                        "max": {
-                            "type": "integer", 
-                            "description": "", 
-                            "title": ""
-                        }, 
-                        "name": {
-                            "type": "string", 
-                            "description": "", 
-                            "title": ""
-                        }, 
-                        "min": {
-                            "type": "integer", 
-                            "description": "", 
-                            "title": ""
-                        }
-                    }, 
-                    "title": ""
+                    },
+                    "required": [
+                        "enum",
+                        "id",
+                        "label",
+                        "maxlength",
+                        "oplist",
+                        "order",
+                        "type",
+                        "typeahead",
+                        "url"
+                    ]
                 }
-            }, 
-            "title": ""
-        }, 
-        "organism": {
-            "items": {
-                "required": [], 
-                "type": "object", 
-                "properties": {
-                    "name": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }, 
-                    "id": {
-                        "type": "integer", 
-                        "description": "", 
-                        "title": ""
-                    }
-                }
-            }, 
-            "type": "array", 
-            "description": "", 
-            "title": ""
-        }, 
-        "composition": {
-            "items": {
-                "required": [], 
-                "type": "object", 
-                "properties": {
-                    "residue": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }, 
-                    "max": {
-                        "type": "integer", 
-                        "description": "", 
-                        "title": ""
-                    }, 
-                    "url": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }, 
-                    "min": {
-                        "type": "integer", 
-                        "description": "", 
-                        "title": ""
-                    }
-                }
-            }, 
-            "type": "array", 
-            "description": "", 
-            "title": ""
-        }, 
-        "simple_search_category": {
-            "items": {
-                "required": [], 
-                "type": "object", 
-                "properties": {
-                    "id": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }, 
-                    "display": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }
-                }
-            }, 
-            "type": "array", 
-            "description": "", 
-            "title": ""
-        }
+            },
+            "record_count": {
+                "type": "integer"
+            },
+            "list_id": {
+                "type": "string"
+            }
+        },
+        "required": [
+            "description",
+            "fields",
+            "id",
+            "label",
+            "list_id",
+            "record_count"
+        ]
     }
 }

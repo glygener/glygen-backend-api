@@ -1,0 +1,11 @@
+{
+    "graph_getdata":{
+        "url":"/graph/getdata"
+        ,"querylist":[
+            {
+                "label":"Example query",
+                "query":{ "conceptlist":["protein","glycan"]}
+            }
+        ]
+    }
+}

@@ -1,0 +1,360 @@
+{
+    "title": "An hPer2 phosphorylation site mutation in familial advanced sleep phase syndrome.",
+    "journal": "Science (New York, N.Y.)",
+    "date": "2001",
+    "authors": "Toh KL, Jones CR, He Y, Eide EJ, Hinz WA, Virshup DM, Ptacek LJ, Fu YH",
+    "reference": {
+        "type": "PubMed",
+        "id": "11232563",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/11232563"
+    },
+    "referenced_proteins": [
+        "O15055-1"
+    ],
+    "species": [
+        {
+            "name": "Homo sapiens",
+            "taxid": 9606,
+            "evidence": [
+                {
+                    "database": "UniProtKB",
+                    "id": "O15055",
+                    "url": "https://www.uniprot.org/uniprot/O15055"
+                }
+            ],
+            "common_name": "Human"
+        }
+    ],
+    "mutagenesis": [
+        {
+            "start_pos": 662,
+            "end_pos": 662,
+            "sequence_org": "S",
+            "sequence_mut": "D",
+            "comment": "Restores CSNK1E-dependent phosphorylation of variant G-662.",
+            "evidence": [
+                {
+                    "database": "UniProtKB",
+                    "id": "O15055",
+                    "url": "https://www.uniprot.org/uniprot/O15055"
+                },
+                {
+                    "database": "PubMed",
+                    "id": "11232563",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/11232563"
+                }
+            ],
+            "uniprot_canonical_ac": "O15055-1"
+        }
+    ],
+    "snv": [
+        {
+            "evidence": [
+                {
+                    "id": "rs121908635",
+                    "database": "dbSNP",
+                    "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs121908635"
+                },
+                {
+                    "id": "rs121908635",
+                    "database": "ENSEMBL",
+                    "url": "https://www.ensembl.org/id/rs121908635"
+                },
+                {
+                    "id": "11232563",
+                    "database": "PubMed",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/11232563"
+                }
+            ],
+            "glycoeffect": [
+                "o-glyco-site-loss"
+            ],
+            "start_pos": 662,
+            "end_pos": 662,
+            "sequence_org": "S",
+            "sequence_mut": "G",
+            "comment": "Germline mutation passed 1 out of 1 filters: o-glyco-site-loss (S->G).",
+            "chr_id": "2",
+            "chr_pos": "238257003T>",
+            "ref_nt": "C",
+            "alt_nt": "null",
+            "disease": [
+                {
+                    "disease_id": "DOID:0110011",
+                    "recommended_name": {
+                        "id": "DOID:0110011",
+                        "resource": "Disease Ontology",
+                        "url": "http://disease-ontology.org/term/DOID:0110011",
+                        "name": "advanced sleep phase syndrome 1",
+                        "description": "An advanced sleep phase syndrome that has_material_basis_in heterozygous mutation in the PER2 gene on chromosome 2q37."
+                    },
+                    "synonyms": [
+                        {
+                            "id": "DOID:0110011",
+                            "resource": "Disease Ontology",
+                            "url": "http://disease-ontology.org/term/DOID:0110011",
+                            "name": "FASPS1"
+                        },
+                        {
+                            "id": "DOID:0110011",
+                            "resource": "Disease Ontology",
+                            "url": "http://disease-ontology.org/term/DOID:0110011",
+                            "name": "familial advanced sleep phase syndrome 1"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "advanced sleep phase syndrome 1",
+                            "description": "Any advanced sleep phase syndrome in which the cause of the disease is a mutation in the PER2 gene."
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "familial advanced sleep phase syndrome 1"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "advanced sleep phase syndrome, familial, 1; FASPS1"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "advanced sleep phase syndrome caused by mutation in PER2"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "advanced sleep phase syndrome, familial, 1"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "advanced sleep phase syndrome, familial, type 1"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "FASPS1"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "PER2 advanced sleep phase syndrome"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "advanced sleep phase syndrome type 1"
+                        },
+                        {
+                            "id": "MIM:604348",
+                            "resource": "MIM",
+                            "url": "https://www.omim.org/entry/604348",
+                            "name": "Advanced sleep phase syndrome, familial, 1",
+                            "description": "Advanced sleep phase syndrome, familial, 1"
+                        }
+                    ]
+                },
+                {
+                    "disease_id": "DOID:0050628",
+                    "recommended_name": {
+                        "id": "DOID:0050628",
+                        "resource": "Disease Ontology",
+                        "url": "http://disease-ontology.org/term/DOID:0050628",
+                        "name": "advanced sleep phase syndrome",
+                        "description": "A sleep disorder that involves an altered circadian rhythm resulting in falling asleep in early evening and awaking very early in the morning."
+                    },
+                    "synonyms": [
+                        {
+                            "id": "DOID:0050628",
+                            "resource": "Disease Ontology",
+                            "url": "http://disease-ontology.org/term/DOID:0050628",
+                            "name": "familial advanced sleep-phase syndrome"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "advanced sleep phase syndrome 1",
+                            "description": "Any advanced sleep phase syndrome in which the cause of the disease is a mutation in the PER2 gene."
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "familial advanced sleep phase syndrome 1"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "advanced sleep phase syndrome, familial, 1; FASPS1"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "advanced sleep phase syndrome caused by mutation in PER2"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "advanced sleep phase syndrome, familial, 1"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "advanced sleep phase syndrome, familial, type 1"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "FASPS1"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "PER2 advanced sleep phase syndrome"
+                        },
+                        {
+                            "id": "MONDO:0011442",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011442",
+                            "name": "advanced sleep phase syndrome type 1"
+                        },
+                        {
+                            "id": "MIM:604348",
+                            "resource": "MIM",
+                            "url": "https://www.omim.org/entry/604348",
+                            "name": "Advanced sleep phase syndrome, familial, 1",
+                            "description": "Advanced sleep phase syndrome, familial, 1"
+                        }
+                    ]
+                }
+            ],
+            "keywords": [
+                "ebi",
+                "germline",
+                "disease"
+            ],
+            "uniprot_canonical_ac": "O15055-1"
+        }
+    ],
+    "phosphorylation": [
+        {
+            "start_pos": 662,
+            "end_pos": 662,
+            "kinase_uniprot_canonical_ac": "P49674-1",
+            "kinase_gene_name": "CSNK1E",
+            "residue": "Ser",
+            "evidence": [
+                {
+                    "database": "iPTMnet",
+                    "id": "O15055-1",
+                    "url": "http://research.bioinformatics.udel.edu/iptmnet/entry/O15055-1"
+                },
+                {
+                    "database": "PubMed",
+                    "id": "11232563",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/11232563"
+                },
+                {
+                    "database": "PubMed",
+                    "id": "9349507",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/9349507"
+                },
+                {
+                    "database": "iPTMnet",
+                    "id": "O15055",
+                    "url": "http://research.bioinformatics.udel.edu/iptmnet/entry/O15055"
+                },
+                {
+                    "database": "PubMed",
+                    "id": "17218255",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/17218255"
+                }
+            ],
+            "uniprot_canonical_ac": "O15055-1"
+        },
+        {
+            "start_pos": 662,
+            "end_pos": 662,
+            "kinase_uniprot_canonical_ac": "Q6P1J9-1",
+            "kinase_gene_name": "CDC73",
+            "residue": "Ser",
+            "evidence": [
+                {
+                    "database": "phospho.ELM",
+                    "id": "O15055",
+                    "url": "http://phospho.elm.eu.org/byAccession/O15055.html"
+                },
+                {
+                    "database": "iPTMnet",
+                    "id": "O15055",
+                    "url": "http://research.bioinformatics.udel.edu/iptmnet/entry/O15055"
+                },
+                {
+                    "database": "PubMed",
+                    "id": "11232563",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/11232563"
+                },
+                {
+                    "database": "PubMed",
+                    "id": "11475410",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/11475410"
+                },
+                {
+                    "database": "PubMed",
+                    "id": "17218255",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/17218255"
+                },
+                {
+                    "database": "PubMed",
+                    "id": "21324900",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/21324900"
+                },
+                {
+                    "database": "UniProtKB",
+                    "id": "O15055",
+                    "url": "https://www.uniprot.org/uniprot/O15055"
+                }
+            ],
+            "uniprot_canonical_ac": "O15055-1"
+        },
+        {
+            "start_pos": 662,
+            "end_pos": 662,
+            "residue": "Ser",
+            "comment": "Phosphoserine",
+            "evidence": [
+                {
+                    "database": "UniProtKB",
+                    "id": "O15055",
+                    "url": "https://www.uniprot.org/uniprot/O15055"
+                },
+                {
+                    "database": "PubMed",
+                    "id": "11232563",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/11232563"
+                }
+            ],
+            "uniprot_canonical_ac": "O15055-1"
+        }
+    ],
+    "record_id": "pubmed.11232563",
+    "abstract": "Familial advanced sleep phase syndrome (FASPS) is an autosomal dominant circadian rhythm variant; affected individuals are \"morning larks\" with a 4-hour advance of the sleep, temperature, and melatonin rhythms. Here we report localization of the FASPS gene near the telomere of chromosome 2q. A strong candidate gene (hPer2), a human homolog of the period gene in Drosophila, maps to the same locus. Affected individuals have a serine to glycine mutation within the casein kinase Iepsilon (CKIepsilon) binding region of hPER2, which causes hypophosphorylation by CKIepsilon in vitro. Thus, a variant in human sleep behavior can be attributed to a missense mutation in a clock component, hPER2, which alters the circadian period."
+}

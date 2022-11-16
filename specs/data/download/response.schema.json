@@ -2,26 +2,41 @@
     "$schema": "http://json-schema.org/schema#",
     "type": "object",
     "properties": {
-        "glytoucan": {
-            "type": "object",
-            "properties": {
-                "glytoucan_ac": {
-                    "type": "string"
-                },
-                "glytoucan_url": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "glytoucan_ac",
-                "glytoucan_url"
-            ]
+        "number_monosaccharides": {
+            "type": "integer"
+        },
+        "number_monosaccharides_suffix": {
+            "type": "string"
         },
         "mass": {
             "type": "number"
         },
-        "number_monosaccharides": {
+        "mass_pme": {
+            "type": "number"
+        },
+        "tool_support": {
+            "type": "object",
+            "properties": {
+                "gnome": {
+                    "type": "string"
+                },
+                "sandbox": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "gnome",
+                "sandbox"
+            ]
+        },
+        "fully_determined": {
+            "type": "string"
+        },
+        "missing_score": {
             "type": "integer"
+        },
+        "glycan_type": {
+            "type": "string"
         },
         "iupac": {
             "type": "string"
@@ -30,6 +45,36 @@
             "type": "string"
         },
         "glycoct": {
+            "type": "string"
+        },
+        "inchi": {
+            "type": "string"
+        },
+        "glycam": {
+            "type": "string"
+        },
+        "smiles_isomeric": {
+            "type": "string"
+        },
+        "inchi_key": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "key",
+                "url"
+            ]
+        },
+        "byonic": {
+            "type": "string"
+        },
+        "gwb": {
             "type": "string"
         },
         "species": {
@@ -122,68 +167,6 @@
                 ]
             }
         },
-        "glycoprotein": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "uniprot_canonical_ac": {
-                        "type": "string"
-                    },
-                    "start_pos": {
-                        "type": "integer"
-                    },
-                    "end_pos": {
-                        "type": "integer"
-                    },
-                    "residue": {
-                        "type": "string"
-                    },
-                    "evidence": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "database": {
-                                    "type": "string"
-                                },
-                                "id": {
-                                    "type": "string"
-                                },
-                                "url": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "database",
-                                "id",
-                                "url"
-                            ]
-                        }
-                    },
-                    "protein_name": {
-                        "type": "string"
-                    },
-                    "gene_name": {
-                        "type": "string"
-                    },
-                    "tax_id": {
-                        "type": "integer"
-                    },
-                    "tax_name": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "evidence",
-                    "gene_name",
-                    "protein_name",
-                    "tax_id",
-                    "tax_name",
-                    "uniprot_canonical_ac"
-                ]
-            }
-        },
         "enzyme": {
             "type": "array",
             "items": {
@@ -267,62 +250,67 @@
                 ]
             }
         },
-        "mass_pme": {
-            "type": "number"
-        },
-        "tool_support": {
-            "type": "object",
-            "properties": {
-                "gnome": {
-                    "type": "string"
+        "glycoprotein": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "uniprot_canonical_ac": {
+                        "type": "string"
+                    },
+                    "start_pos": {
+                        "type": "integer"
+                    },
+                    "end_pos": {
+                        "type": "integer"
+                    },
+                    "residue": {
+                        "type": "string"
+                    },
+                    "evidence": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "database": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "database",
+                                "id",
+                                "url"
+                            ]
+                        }
+                    },
+                    "protein_name": {
+                        "type": "string"
+                    },
+                    "gene_name": {
+                        "type": "string"
+                    },
+                    "tax_id": {
+                        "type": "integer"
+                    },
+                    "tax_name": {
+                        "type": "string"
+                    }
                 },
-                "sandbox": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "gnome",
-                "sandbox"
-            ]
-        },
-        "fully_determined": {
-            "type": "string"
-        },
-        "missing_score": {
-            "type": "integer"
-        },
-        "glycan_type": {
-            "type": "string"
-        },
-        "inchi": {
-            "type": "string"
-        },
-        "glycam": {
-            "type": "string"
-        },
-        "smiles_isomeric": {
-            "type": "string"
-        },
-        "inchi_key": {
-            "type": "object",
-            "properties": {
-                "key": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "key",
-                "url"
-            ]
-        },
-        "byonic": {
-            "type": "string"
-        },
-        "gwb": {
-            "type": "string"
+                "required": [
+                    "evidence",
+                    "gene_name",
+                    "protein_name",
+                    "tax_id",
+                    "tax_name",
+                    "uniprot_canonical_ac"
+                ]
+            }
         },
         "publication": {
             "type": "array",
@@ -413,12 +401,16 @@
                     "attachedby": {
                         "type": "string"
                     },
+                    "detachedby": {
+                        "type": "string"
+                    },
                     "parentid": {
                         "type": "string"
                     }
                 },
                 "required": [
                     "attachedby",
+                    "detachedby",
                     "id",
                     "name",
                     "parentid"
@@ -504,9 +496,13 @@
                 "required": [
                     "id",
                     "keywords",
-                    "name"
+                    "name",
+                    "synonym"
                 ]
             }
+        },
+        "interactions": {
+            "type": "array"
         },
         "expression": {
             "type": "array",
@@ -523,6 +519,26 @@
                         "type": "integer"
                     },
                     "residue": {
+                        "type": "string"
+                    },
+                    "tissue": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "uberon": {
+                                "type": "string"
+                            },
+                            "url": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "cell_line": {
+                        "type": "object"
+                    },
+                    "abundance": {
                         "type": "string"
                     },
                     "evidence": {
@@ -546,35 +562,16 @@
                                 "url"
                             ]
                         }
-                    },
-                    "tissue": {
-                        "type": "object",
-                        "properties": {
-                            "name": {
-                                "type": "string"
-                            },
-                            "uberon": {
-                                "type": "string"
-                            },
-                            "url": {
-                                "type": "string"
-                            }
-                        },
-                        "required": [
-                            "name",
-                            "uberon",
-                            "url"
-                        ]
-                    },
-                    "abundance": {
-                        "type": "string"
                     }
                 },
                 "required": [
+                    "abundance",
+                    "cell_line",
                     "end_pos",
                     "evidence",
                     "residue",
                     "start_pos",
+                    "tissue",
                     "uniprot_canonical_ac"
                 ]
             }
@@ -596,6 +593,9 @@
                     "relationship"
                 ]
             }
+        },
+        "names": {
+            "type": "array"
         },
         "keywords": {
             "type": "array",
@@ -655,6 +655,27 @@
                     "target"
                 ]
             }
+        },
+        "dictionary": {
+            "type": "object"
+        },
+        "glytoucan": {
+            "type": "object",
+            "properties": {
+                "glytoucan_ac": {
+                    "type": "string"
+                },
+                "glytoucan_url": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "glytoucan_ac",
+                "glytoucan_url"
+            ]
+        },
+        "results": {
+            "type": "array"
         }
     },
     "required": [
@@ -663,6 +684,7 @@
         "composition",
         "composition_expanded",
         "crossref",
+        "dictionary",
         "enzyme",
         "expression",
         "fully_determined",
@@ -675,15 +697,19 @@
         "gwb",
         "inchi",
         "inchi_key",
+        "interactions",
         "iupac",
         "keywords",
         "mass",
         "mass_pme",
         "missing_score",
         "motifs",
+        "names",
         "number_monosaccharides",
+        "number_monosaccharides_suffix",
         "publication",
         "residues",
+        "results",
         "smiles_isomeric",
         "species",
         "subsumption",

@@ -1,0 +1,39 @@
+{
+    
+    "typeahead": {
+        "url": "/typeahead/",
+        "query": {
+            "field": "glytoucan_ac",
+            "limit": 10,
+            "value": "GH"
+        }
+    }
+    ,"categorized_typeahead": {
+        "url": "/categorized_typeahead/",
+        "query": {
+            "field":"go_term",
+            "value":"kinase",
+            "total_limit":15,
+            "categorywise_limit":5
+        }
+    },
+    "global_typeahead": {
+        "url": "/global_typeahead/",
+        "querylist":[
+            {
+                "label":"Query without target",
+                "query":{ "value": "GH", "limit": 10}
+            },
+            {
+                "label":"Query targeting protein objects",
+                "query":{ "value": "GH", "limit": 10, "target":"protein"}
+            },
+            {
+                "label":"Query targeting glycan objects",
+                "query":{ "value": "GH", "limit": 10, "target":"glycan"}
+            }
+        ]
+    }
+}
+
+

@@ -1,0 +1,1150 @@
+{
+    "id": "P02724-1.52.52",
+    "start_pos": 52,
+    "end_pos": 52,
+    "up_seq": "SSSVTKSYISSQTNDTHKRD",
+    "site_seq": "T",
+    "down_seq": "YAATPRAHEVSEISVRTVYP",
+    "uniprot_canonical_ac": "P02724-1",
+    "species": [
+        {
+            "name": "Homo sapiens",
+            "taxid": 9606,
+            "evidence": [
+                {
+                    "database": "UniProtKB",
+                    "id": "P02724",
+                    "url": "https://www.uniprot.org/uniprot/P02724"
+                }
+            ],
+            "common_name": "Human"
+        }
+    ],
+    "glycosylation": [
+        {
+            "glytoucan_ac": "G00031MO",
+            "type": "O-linked",
+            "subtype": "",
+            "site_category": "reported_with_glycan",
+            "site_seq": "T",
+            "relation": "attached",
+            "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: S-21, T-22, T-23, T-29, S-30, T-31, S-32, T-36, S-38, S-41, T-44, N-45, T-52, T-56, S-63, S-66, T-69",
+            "start_aa": "Thr",
+            "end_aa": "Thr",
+            "residue": "Thr",
+            "evidence": [
+                {
+                    "id": "P02724",
+                    "database": "UniCarbKB",
+                    "url": "http://unicarbkb.org/proteinsummary/P02724/annotated"
+                },
+                {
+                    "id": "6190803",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6190803"
+                },
+                {
+                    "id": "4091823",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/4091823"
+                },
+                {
+                    "id": "3514617",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/3514617"
+                },
+                {
+                    "id": "6619126",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6619126"
+                },
+                {
+                    "id": "7430095",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/7430095"
+                },
+                {
+                    "id": "8384526",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8384526"
+                }
+            ]
+        },
+        {
+            "glytoucan_ac": "G01614ZM",
+            "type": "O-linked",
+            "subtype": "",
+            "site_category": "reported_with_glycan",
+            "site_seq": "T",
+            "relation": "attached",
+            "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: S-21, T-22, T-23, T-29, S-30, T-31, S-32, T-36, S-38, S-41, T-44, N-45, T-52, T-56, S-63, S-66, T-69",
+            "start_aa": "Thr",
+            "end_aa": "Thr",
+            "residue": "Thr",
+            "evidence": [
+                {
+                    "id": "P02724",
+                    "database": "UniCarbKB",
+                    "url": "http://unicarbkb.org/proteinsummary/P02724/annotated"
+                },
+                {
+                    "id": "4091823",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/4091823"
+                },
+                {
+                    "id": "3514617",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/3514617"
+                },
+                {
+                    "id": "6190803",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6190803"
+                },
+                {
+                    "id": "6619126",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6619126"
+                },
+                {
+                    "id": "8384526",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8384526"
+                },
+                {
+                    "id": "7430095",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/7430095"
+                }
+            ]
+        },
+        {
+            "glytoucan_ac": "G16370GQ",
+            "type": "O-linked",
+            "subtype": "",
+            "site_category": "reported_with_glycan",
+            "site_seq": "T",
+            "relation": "attached",
+            "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: S-21, T-22, T-23, T-29, S-30, T-31, S-32, T-36, S-38, S-41, T-44, N-45, T-52, T-56, S-63, S-66, T-69",
+            "start_aa": "Thr",
+            "end_aa": "Thr",
+            "residue": "Thr",
+            "evidence": [
+                {
+                    "id": "P02724",
+                    "database": "UniCarbKB",
+                    "url": "http://unicarbkb.org/proteinsummary/P02724/annotated"
+                },
+                {
+                    "id": "8384526",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8384526"
+                },
+                {
+                    "id": "7430095",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/7430095"
+                },
+                {
+                    "id": "6619126",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6619126"
+                },
+                {
+                    "id": "6190803",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6190803"
+                },
+                {
+                    "id": "3514617",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/3514617"
+                },
+                {
+                    "id": "4091823",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/4091823"
+                }
+            ]
+        },
+        {
+            "glytoucan_ac": "G33350UC",
+            "type": "O-linked",
+            "subtype": "",
+            "site_category": "reported_with_glycan",
+            "site_seq": "T",
+            "relation": "attached",
+            "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: S-21, T-22, T-23, T-29, S-30, T-31, S-32, T-36, S-38, S-41, T-44, N-45, T-52, T-56, S-63, S-66, T-69",
+            "start_aa": "Thr",
+            "end_aa": "Thr",
+            "residue": "Thr",
+            "evidence": [
+                {
+                    "id": "P02724",
+                    "database": "UniCarbKB",
+                    "url": "http://unicarbkb.org/proteinsummary/P02724/annotated"
+                },
+                {
+                    "id": "6619126",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6619126"
+                },
+                {
+                    "id": "6190803",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6190803"
+                },
+                {
+                    "id": "3514617",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/3514617"
+                },
+                {
+                    "id": "4091823",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/4091823"
+                },
+                {
+                    "id": "8384526",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8384526"
+                },
+                {
+                    "id": "7430095",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/7430095"
+                }
+            ]
+        },
+        {
+            "glytoucan_ac": "G42797SX",
+            "type": "O-linked",
+            "subtype": "",
+            "site_category": "reported_with_glycan",
+            "site_seq": "T",
+            "relation": "attached",
+            "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: S-21, T-22, T-23, T-29, S-30, T-31, S-32, T-36, S-38, S-41, T-44, N-45, T-52, T-56, S-63, S-66, T-69",
+            "start_aa": "Thr",
+            "end_aa": "Thr",
+            "residue": "Thr",
+            "evidence": [
+                {
+                    "id": "P02724",
+                    "database": "UniCarbKB",
+                    "url": "http://unicarbkb.org/proteinsummary/P02724/annotated"
+                },
+                {
+                    "id": "7430095",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/7430095"
+                },
+                {
+                    "id": "8384526",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8384526"
+                },
+                {
+                    "id": "6190803",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6190803"
+                },
+                {
+                    "id": "4091823",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/4091823"
+                },
+                {
+                    "id": "3514617",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/3514617"
+                },
+                {
+                    "id": "6619126",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6619126"
+                }
+            ]
+        },
+        {
+            "glytoucan_ac": "G47180UC",
+            "type": "O-linked",
+            "subtype": "",
+            "site_category": "reported_with_glycan",
+            "site_seq": "T",
+            "relation": "attached",
+            "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: S-21, T-22, T-23, T-29, S-30, T-31, S-32, T-36, S-38, S-41, T-44, N-45, T-52, T-56, S-63, S-66, T-69",
+            "start_aa": "Thr",
+            "end_aa": "Thr",
+            "residue": "Thr",
+            "evidence": [
+                {
+                    "id": "P02724",
+                    "database": "UniCarbKB",
+                    "url": "http://unicarbkb.org/proteinsummary/P02724/annotated"
+                },
+                {
+                    "id": "8384526",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8384526"
+                },
+                {
+                    "id": "7430095",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/7430095"
+                },
+                {
+                    "id": "4091823",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/4091823"
+                },
+                {
+                    "id": "3514617",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/3514617"
+                },
+                {
+                    "id": "6190803",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6190803"
+                },
+                {
+                    "id": "6619126",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6619126"
+                }
+            ]
+        },
+        {
+            "glytoucan_ac": "G56245IE",
+            "type": "O-linked",
+            "subtype": "",
+            "site_category": "reported_with_glycan",
+            "site_seq": "T",
+            "relation": "attached",
+            "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: S-21, T-22, T-23, T-29, S-30, T-31, S-32, T-36, S-38, S-41, T-44, N-45, T-52, T-56, S-63, S-66, T-69",
+            "start_aa": "Thr",
+            "end_aa": "Thr",
+            "residue": "Thr",
+            "evidence": [
+                {
+                    "id": "P02724",
+                    "database": "UniCarbKB",
+                    "url": "http://unicarbkb.org/proteinsummary/P02724/annotated"
+                },
+                {
+                    "id": "8384526",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8384526"
+                },
+                {
+                    "id": "7430095",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/7430095"
+                },
+                {
+                    "id": "6619126",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6619126"
+                },
+                {
+                    "id": "3514617",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/3514617"
+                },
+                {
+                    "id": "4091823",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/4091823"
+                },
+                {
+                    "id": "6190803",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6190803"
+                }
+            ]
+        },
+        {
+            "glytoucan_ac": "G56682BC",
+            "type": "O-linked",
+            "subtype": "",
+            "site_category": "reported_with_glycan",
+            "site_seq": "T",
+            "relation": "attached",
+            "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: S-21, T-22, T-23, T-29, S-30, T-31, S-32, T-36, S-38, S-41, T-44, N-45, T-52, T-56, S-63, S-66, T-69",
+            "start_aa": "Thr",
+            "end_aa": "Thr",
+            "residue": "Thr",
+            "evidence": [
+                {
+                    "id": "P02724",
+                    "database": "UniCarbKB",
+                    "url": "http://unicarbkb.org/proteinsummary/P02724/annotated"
+                },
+                {
+                    "id": "8384526",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8384526"
+                },
+                {
+                    "id": "7430095",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/7430095"
+                },
+                {
+                    "id": "6619126",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6619126"
+                },
+                {
+                    "id": "3514617",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/3514617"
+                },
+                {
+                    "id": "4091823",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/4091823"
+                },
+                {
+                    "id": "6190803",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6190803"
+                }
+            ]
+        },
+        {
+            "glytoucan_ac": "G65562ZE",
+            "type": "O-linked",
+            "subtype": "",
+            "site_category": "reported_with_glycan",
+            "site_seq": "T",
+            "relation": "attached",
+            "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: S-21, T-22, T-23, T-29, S-30, T-31, S-32, T-36, S-38, S-41, T-44, N-45, T-52, T-56, S-63, S-66, T-69",
+            "start_aa": "Thr",
+            "end_aa": "Thr",
+            "residue": "Thr",
+            "evidence": [
+                {
+                    "id": "P02724",
+                    "database": "UniCarbKB",
+                    "url": "http://unicarbkb.org/proteinsummary/P02724/annotated"
+                },
+                {
+                    "id": "7430095",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/7430095"
+                },
+                {
+                    "id": "8384526",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8384526"
+                },
+                {
+                    "id": "3514617",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/3514617"
+                },
+                {
+                    "id": "4091823",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/4091823"
+                },
+                {
+                    "id": "6190803",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6190803"
+                },
+                {
+                    "id": "6619126",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6619126"
+                }
+            ]
+        },
+        {
+            "glytoucan_ac": "G94217FB",
+            "type": "O-linked",
+            "subtype": "",
+            "site_category": "reported_with_glycan",
+            "site_seq": "T",
+            "relation": "attached",
+            "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: S-21, T-22, T-23, T-29, S-30, T-31, S-32, T-36, S-38, S-41, T-44, N-45, T-52, T-56, S-63, S-66, T-69",
+            "start_aa": "Thr",
+            "end_aa": "Thr",
+            "residue": "Thr",
+            "evidence": [
+                {
+                    "id": "P02724",
+                    "database": "UniCarbKB",
+                    "url": "http://unicarbkb.org/proteinsummary/P02724/annotated"
+                },
+                {
+                    "id": "8384526",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8384526"
+                },
+                {
+                    "id": "7430095",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/7430095"
+                },
+                {
+                    "id": "6619126",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6619126"
+                },
+                {
+                    "id": "4091823",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/4091823"
+                },
+                {
+                    "id": "3514617",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/3514617"
+                },
+                {
+                    "id": "6190803",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6190803"
+                }
+            ]
+        },
+        {
+            "glytoucan_ac": "G94435QH",
+            "type": "O-linked",
+            "subtype": "",
+            "site_category": "reported_with_glycan",
+            "site_seq": "T",
+            "relation": "attached",
+            "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: S-21, T-22, T-23, T-29, S-30, T-31, S-32, T-36, S-38, S-41, T-44, N-45, T-52, T-56, S-63, S-66, T-69",
+            "start_aa": "Thr",
+            "end_aa": "Thr",
+            "residue": "Thr",
+            "evidence": [
+                {
+                    "id": "P02724",
+                    "database": "UniCarbKB",
+                    "url": "http://unicarbkb.org/proteinsummary/P02724/annotated"
+                },
+                {
+                    "id": "7430095",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/7430095"
+                },
+                {
+                    "id": "8384526",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8384526"
+                },
+                {
+                    "id": "6619126",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6619126"
+                },
+                {
+                    "id": "6190803",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6190803"
+                },
+                {
+                    "id": "3514617",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/3514617"
+                },
+                {
+                    "id": "4091823",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/4091823"
+                }
+            ]
+        },
+        {
+            "glytoucan_ac": "",
+            "type": "O-linked",
+            "subtype": "",
+            "site_category": "reported",
+            "site_seq": "T",
+            "relation": "attached",
+            "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: S-21, T-22, T-23, T-29, S-30, T-31, S-32, T-36, S-38, S-41, T-44, N-45, T-52, T-56, S-63, S-66, T-69",
+            "start_aa": "Thr",
+            "end_aa": "Thr",
+            "residue": "Thr",
+            "evidence": [
+                {
+                    "id": "P02724",
+                    "database": "UniCarbKB",
+                    "url": "http://unicarbkb.org/proteinsummary/P02724/annotated"
+                },
+                {
+                    "id": "4091823",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/4091823"
+                },
+                {
+                    "id": "3514617",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/3514617"
+                },
+                {
+                    "id": "6190803",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6190803"
+                },
+                {
+                    "id": "6619126",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/6619126"
+                },
+                {
+                    "id": "8384526",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8384526"
+                },
+                {
+                    "id": "7430095",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/7430095"
+                },
+                {
+                    "id": "P02724",
+                    "database": "UniProtKB",
+                    "url": "https://www.uniprot.org/uniprot/P02724#ptm_processing"
+                },
+                {
+                    "id": "8286855",
+                    "database": "PubMed",
+                    "url": "https://glygen.org/publication/PubMed/8286855"
+                }
+            ]
+        }
+    ],
+    "snv": [
+        {
+            "evidence": [
+                {
+                    "id": "rs149400689",
+                    "database": "dbSNP",
+                    "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs149400689"
+                },
+                {
+                    "id": "rs149400689",
+                    "database": "TOPMed",
+                    "url": "https://www.ncbi.nlm.nih.gov/snp/rs149400689#frequency_tab"
+                },
+                {
+                    "id": "rs149400689",
+                    "database": "gnomAD",
+                    "url": "http://gnomad.broadinstitute.org/awesome?query=rs149400689"
+                }
+            ],
+            "glycoeffect": [
+                "o-glyco-site-loss"
+            ],
+            "sequence_org": "T",
+            "sequence_mut": "I",
+            "comment": "Germline mutation passed 1 out of 1 filters: o-glyco-site-loss (T->I).",
+            "chr_id": "4",
+            "chr_pos": "144119763G>",
+            "ref_nt": "A",
+            "alt_nt": "null",
+            "minor_allelic_frequency": "",
+            "keywords": [
+                "ebi",
+                "germline"
+            ]
+        }
+    ],
+    "all_sites": [
+        {
+            "type": "glycosylation",
+            "site_list": [
+                {
+                    "start_pos": "21",
+                    "end_pos": "21"
+                },
+                {
+                    "start_pos": "22",
+                    "end_pos": "22"
+                },
+                {
+                    "start_pos": "23",
+                    "end_pos": "23"
+                },
+                {
+                    "start_pos": "29",
+                    "end_pos": "29"
+                },
+                {
+                    "start_pos": "30",
+                    "end_pos": "30"
+                },
+                {
+                    "start_pos": "31",
+                    "end_pos": "31"
+                },
+                {
+                    "start_pos": "32",
+                    "end_pos": "32"
+                },
+                {
+                    "start_pos": "36",
+                    "end_pos": "36"
+                },
+                {
+                    "start_pos": "38",
+                    "end_pos": "38"
+                },
+                {
+                    "start_pos": "41",
+                    "end_pos": "41"
+                },
+                {
+                    "start_pos": "42",
+                    "end_pos": "42"
+                },
+                {
+                    "start_pos": "44",
+                    "end_pos": "44"
+                },
+                {
+                    "start_pos": "45",
+                    "end_pos": "45"
+                },
+                {
+                    "start_pos": "52",
+                    "end_pos": "52"
+                },
+                {
+                    "start_pos": "56",
+                    "end_pos": "56"
+                },
+                {
+                    "start_pos": "59",
+                    "end_pos": "68"
+                },
+                {
+                    "start_pos": "59",
+                    "end_pos": "77"
+                },
+                {
+                    "start_pos": "63",
+                    "end_pos": "63"
+                },
+                {
+                    "start_pos": "66",
+                    "end_pos": "66"
+                },
+                {
+                    "start_pos": "69",
+                    "end_pos": "69"
+                },
+                {
+                    "start_pos": "69",
+                    "end_pos": "80"
+                }
+            ]
+        },
+        {
+            "type": "mutagenesis",
+            "site_list": [
+                {
+                    "start_pos": "102",
+                    "end_pos": "102"
+                },
+                {
+                    "start_pos": "87",
+                    "end_pos": "87"
+                },
+                {
+                    "start_pos": "88",
+                    "end_pos": "88"
+                },
+                {
+                    "start_pos": "90",
+                    "end_pos": "90"
+                },
+                {
+                    "start_pos": "91",
+                    "end_pos": "91"
+                },
+                {
+                    "start_pos": "94",
+                    "end_pos": "94"
+                },
+                {
+                    "start_pos": "95",
+                    "end_pos": "95"
+                },
+                {
+                    "start_pos": "98",
+                    "end_pos": "98"
+                }
+            ]
+        },
+        {
+            "type": "snv",
+            "site_list": [
+                {
+                    "start_pos": "119",
+                    "end_pos": "119"
+                },
+                {
+                    "start_pos": "16",
+                    "end_pos": "16"
+                },
+                {
+                    "start_pos": "21",
+                    "end_pos": "21"
+                },
+                {
+                    "start_pos": "22",
+                    "end_pos": "22"
+                },
+                {
+                    "start_pos": "23",
+                    "end_pos": "23"
+                },
+                {
+                    "start_pos": "30",
+                    "end_pos": "30"
+                },
+                {
+                    "start_pos": "32",
+                    "end_pos": "32"
+                },
+                {
+                    "start_pos": "36",
+                    "end_pos": "36"
+                },
+                {
+                    "start_pos": "42",
+                    "end_pos": "42"
+                },
+                {
+                    "start_pos": "44",
+                    "end_pos": "44"
+                },
+                {
+                    "start_pos": "47",
+                    "end_pos": "47"
+                },
+                {
+                    "start_pos": "52",
+                    "end_pos": "52"
+                },
+                {
+                    "start_pos": "66",
+                    "end_pos": "66"
+                },
+                {
+                    "start_pos": "69",
+                    "end_pos": "69"
+                }
+            ]
+        },
+        {
+            "type": "phosphorylation",
+            "site_list": [
+                {
+                    "start_pos": "133",
+                    "end_pos": "133"
+                },
+                {
+                    "start_pos": "138",
+                    "end_pos": "138"
+                },
+                {
+                    "start_pos": "148",
+                    "end_pos": "148"
+                }
+            ]
+        }
+    ],
+    "categories": [
+        "glycosylation_flag",
+        "snv_flag"
+    ],
+    "mutagenesis": [],
+    "phosphorylation": [],
+    "glycation": [],
+    "neighbors": [
+        {
+            "distance": 20,
+            "direction": "downstream",
+            "id": "P02724-1.32.32",
+            "categories": [
+                "glycosylation_flag",
+                "snv_flag"
+            ]
+        },
+        {
+            "distance": 16,
+            "direction": "downstream",
+            "id": "P02724-1.36.36",
+            "categories": [
+                "glycosylation_flag",
+                "snv_flag"
+            ]
+        },
+        {
+            "distance": 14,
+            "direction": "downstream",
+            "id": "P02724-1.38.38",
+            "categories": [
+                "glycosylation_flag"
+            ]
+        },
+        {
+            "distance": 11,
+            "direction": "downstream",
+            "id": "P02724-1.41.41",
+            "categories": [
+                "glycosylation_flag"
+            ]
+        },
+        {
+            "distance": 10,
+            "direction": "downstream",
+            "id": "P02724-1.42.42",
+            "categories": [
+                "glycosylation_flag",
+                "snv_flag"
+            ]
+        },
+        {
+            "distance": 8,
+            "direction": "downstream",
+            "id": "P02724-1.44.44",
+            "categories": [
+                "glycosylation_flag",
+                "snv_flag"
+            ]
+        },
+        {
+            "distance": 7,
+            "direction": "downstream",
+            "id": "P02724-1.45.45",
+            "categories": [
+                "glycosylation_flag"
+            ]
+        },
+        {
+            "distance": 5,
+            "direction": "downstream",
+            "id": "P02724-1.47.47",
+            "categories": [
+                "snv_flag"
+            ]
+        },
+        {
+            "distance": 4,
+            "direction": "upstream",
+            "id": "P02724-1.56.56",
+            "categories": [
+                "glycosylation_flag"
+            ]
+        },
+        {
+            "distance": 7,
+            "direction": "upstream",
+            "id": "P02724-1.59.68",
+            "categories": [
+                "glycosylation_flag"
+            ]
+        },
+        {
+            "distance": 7,
+            "direction": "upstream",
+            "id": "P02724-1.59.77",
+            "categories": [
+                "glycosylation_flag"
+            ]
+        },
+        {
+            "distance": 11,
+            "direction": "upstream",
+            "id": "P02724-1.63.63",
+            "categories": [
+                "glycosylation_flag"
+            ]
+        },
+        {
+            "distance": 14,
+            "direction": "upstream",
+            "id": "P02724-1.66.66",
+            "categories": [
+                "glycosylation_flag",
+                "snv_flag"
+            ]
+        },
+        {
+            "distance": 17,
+            "direction": "upstream",
+            "id": "P02724-1.69.69",
+            "categories": [
+                "glycosylation_flag",
+                "snv_flag"
+            ]
+        },
+        {
+            "distance": 17,
+            "direction": "upstream",
+            "id": "P02724-1.69.80",
+            "categories": [
+                "glycosylation_flag"
+            ]
+        }
+    ],
+    "uniprot_id": "GLPA_HUMAN",
+    "uniprot": {
+        "uniprot_canonical_ac": "P02724-1",
+        "uniprot_id": "GLPA_HUMAN",
+        "url": "http://www.uniprot.org/uniprot/P02724-1/",
+        "length": 150
+    },
+    "sequence": {
+        "sequence": "MYGKIIFVLLLSEIVSISASSTTGVAMHTSTSSSVTKSYISSQTNDTHKRDTYAATPRAHEVSEISVRTVYPPEEETGERVQLAHHFSEPEITLIIFGVMAGVIGTILLISYGIRRLIKKSPSDVKPLPSPDTDVPLSSVEIENPETSDQ",
+        "length": 150,
+        "header": "sp|P02724-1|GLPA_HUMAN Isoform 1 of Glycophorin-A  OS=Homo sapiens OX=9606 GN=GYPA PE=1 SV=2 CANONICAL=P02724-1"
+    },
+    "mass": {
+        "chemical_mass": 16331.0,
+        "monoisotopic_mass": 16331.0
+    },
+    "protein_names": [
+        {
+            "name": "Glycophorin-A",
+            "resource": "UniProtKB",
+            "type": "recommended",
+            "url": "https://www.uniprot.org/uniprot/P02724#names_and_taxonomy",
+            "id": "P02724"
+        },
+        {
+            "name": "MN sialoglycoprotein",
+            "resource": "UniProtKB",
+            "type": "synonym",
+            "url": "https://www.uniprot.org/uniprot/P02724#names_and_taxonomy",
+            "id": "P02724"
+        },
+        {
+            "name": "PAS-2",
+            "resource": "UniProtKB",
+            "type": "synonym",
+            "url": "https://www.uniprot.org/uniprot/P02724#names_and_taxonomy",
+            "id": "P02724"
+        },
+        {
+            "name": "Sialoglycoprotein alpha",
+            "resource": "UniProtKB",
+            "type": "synonym",
+            "url": "https://www.uniprot.org/uniprot/P02724#names_and_taxonomy",
+            "id": "P02724"
+        },
+        {
+            "name": "glycophorin A (MN blood group); glycophorin SAT; glycophorin A, GPA; erythroid-lineage-specific membrane sialoglycoprotein; glycophorin MiI; glycophorin MiV; glycophorin Erik; glycophorin Sta type C; recombinant glycophorin A-B Miltenberger-DR; Mi.V glycoprotein (24 AA); MN sialoglycoprotein; sialoglycoprotein alpha",
+            "resource": "RefSeq",
+            "type": "synonym",
+            "url": "https://www.ncbi.nlm.nih.gov/protein/NP_001295119",
+            "id": "NP_001295119"
+        },
+        {
+            "name": "glycophorin-A isoform 1 precursor",
+            "resource": "RefSeq",
+            "type": "synonym",
+            "url": "https://www.ncbi.nlm.nih.gov/protein/NP_002090",
+            "id": "NP_002090"
+        },
+        {
+            "name": "glycophorin-A isoform 2 precursor",
+            "resource": "RefSeq",
+            "type": "synonym",
+            "url": "https://www.ncbi.nlm.nih.gov/protein/NP_001295116",
+            "id": "NP_001295116"
+        },
+        {
+            "name": "glycophorin-A isoform 3",
+            "resource": "RefSeq",
+            "type": "synonym",
+            "url": "https://www.ncbi.nlm.nih.gov/protein/NP_001295119",
+            "id": "NP_001295119"
+        },
+        {
+            "name": "glycophorin-A isoform X1",
+            "resource": "RefSeq",
+            "type": "synonym",
+            "url": "https://www.ncbi.nlm.nih.gov/protein/XP_016863623",
+            "id": "XP_016863623"
+        }
+    ],
+    "gene": [
+        {
+            "name": "GYPA",
+            "url": "https://www.uniprot.org/uniprot/P02724",
+            "locus": {
+                "chromosome": "4",
+                "start_pos": 144140786,
+                "end_pos": 144109303,
+                "strand": "-",
+                "evidence": [
+                    {
+                        "database": "Ensembl Gene",
+                        "id": "ENSG00000170180",
+                        "url": "https://www.ensembl.org/id/ENSG00000170180"
+                    }
+                ]
+            }
+        }
+    ],
+    "gene_names": [
+        {
+            "name": "GYPA",
+            "resource": "UniProtKB",
+            "type": "recommended",
+            "url": "https://www.uniprot.org/uniprot/P02724",
+            "id": "P02724"
+        },
+        {
+            "name": "CD235a; GPA; GPErik; GPSAT; HGpMiV; HGpMiXI; HGpSta(C); MN; MNS; PAS-2",
+            "resource": "RefSeq",
+            "type": "synonym",
+            "url": "https://www.ncbi.nlm.nih.gov/protein/NP_001295116",
+            "id": "NP_001295116"
+        },
+        {
+            "name": "GPA",
+            "resource": "UniProtKB",
+            "type": "synonym",
+            "url": "https://www.uniprot.org/uniprot/P02724",
+            "id": "P02724"
+        },
+        {
+            "name": "GPErik",
+            "resource": "UniProtKB",
+            "type": "synonym",
+            "url": "https://www.uniprot.org/uniprot/P02724",
+            "id": "P02724"
+        },
+        {
+            "name": "GYPA",
+            "resource": "RefSeq",
+            "type": "synonym",
+            "url": "https://www.ncbi.nlm.nih.gov/protein/NP_001295116",
+            "id": "NP_001295116"
+        },
+        {
+            "name": "hCG_2026259",
+            "resource": "UniProtKB",
+            "type": "synonym",
+            "url": "https://www.uniprot.org/uniprot/P02724",
+            "id": "P02724"
+        }
+    ],
+    "refseq": {
+        "ac": "XP_016863623",
+        "name": "glycophorin-A isoform X1",
+        "summary": "",
+        "url": "https://www.ncbi.nlm.nih.gov/protein/XP_016863623"
+    }
+}

@@ -1,0 +1,14 @@
+{
+    
+    "site_search_init":{
+        "url":"/site/search_init"
+        ,"query":{}
+    },
+    "site_detail":{
+        "url":"/site/detail"
+        ,"query":"P02724-1.52.52"
+        ,"semantic":true
+    }
+}
+
+

@@ -1,88 +1,87 @@
 {
-    "$schema": "http://json-schema.org/schema#", 
-    "required": [], 
-    "type": "object", 
-    "properties": {
-        "organism": {
-            "items": {
-                "required": [], 
-                "type": "object", 
-                "properties": {
-                    "name": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }, 
-                    "id": {
-                        "type": "integer", 
-                        "description": "", 
-                        "title": ""
-                    }
+    "$schema": "http://json-schema.org/schema#",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "string"
+            },
+            "label": {
+                "type": "string"
+            },
+            "description": {
+                "type": "string"
+            },
+            "fields": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "type": "string"
+                        },
+                        "maxlength": {
+                            "type": "integer"
+                        },
+                        "url": {
+                            "type": "string"
+                        },
+                        "oplist": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "typeahead": {
+                            "type": "string"
+                        },
+                        "enum": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "order": {
+                            "type": "integer"
+                        },
+                        "default_value": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "enum",
+                        "id",
+                        "label",
+                        "maxlength",
+                        "oplist",
+                        "order",
+                        "type",
+                        "typeahead",
+                        "url"
+                    ]
                 }
-            }, 
-            "type": "array", 
-            "description": "", 
-            "title": ""
-        }, 
-        "Protein_mass": {
-            "description": "", 
-            "required": [], 
-            "type": "object", 
-            "properties": {
-                "max": {
-                    "type": "number", 
-                    "description": "", 
-                    "title": ""
-                }, 
-                "min": {
-                    "type": "number", 
-                    "description": "", 
-                    "title": ""
-                }
-            }, 
-            "title": ""
-        }, 
-        "aa_list": {
-            "items": {
-                "required": [], 
-                "type": "object", 
-                "properties": {
-                    "name": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }, 
-                    "key": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }
-                }
-            }, 
-            "type": "array", 
-            "description": "", 
-            "title": ""
-        }, 
-        "simple_search_category": {
-            "items": {
-                "required": [], 
-                "type": "object", 
-                "properties": {
-                    "id": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }, 
-                    "display": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }
-                }
-            }, 
-            "type": "array", 
-            "description": "", 
-            "title": ""
-        }
+            },
+            "record_count": {
+                "type": "integer"
+            },
+            "list_id": {
+                "type": "string"
+            }
+        },
+        "required": [
+            "description",
+            "fields",
+            "id",
+            "label",
+            "list_id",
+            "record_count"
+        ]
     }
 }

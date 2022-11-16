@@ -1,0 +1,128 @@
+{
+    "exact_match": [],
+    "other_matches": {
+        "total_match_count": 0,
+        "protein": {
+            "identifiers": {
+                "list_id": "",
+                "count": 0
+            },
+            "names": {
+                "list_id": "",
+                "count": 0
+            },
+            "gene": {
+                "list_id": "",
+                "count": 0
+            },
+            "species": {
+                "list_id": "",
+                "count": 0
+            },
+            "publications": {
+                "list_id": "",
+                "count": 0
+            },
+            "function": {
+                "list_id": "",
+                "count": 0
+            },
+            "interactions": {
+                "list_id": "",
+                "count": 0
+            },
+            "disease": {
+                "list_id": "",
+                "count": 0
+            },
+            "all": {
+                "list_id": "",
+                "count": 0
+            }
+        },
+        "glycoprotein": {
+            "identifiers": {
+                "list_id": "",
+                "count": 0
+            },
+            "names": {
+                "list_id": "",
+                "count": 0
+            },
+            "gene": {
+                "list_id": "",
+                "count": 0
+            },
+            "species": {
+                "list_id": "",
+                "count": 0
+            },
+            "publications": {
+                "list_id": "",
+                "count": 0
+            },
+            "function": {
+                "list_id": "",
+                "count": 0
+            },
+            "glycosylation": {
+                "list_id": "",
+                "count": 0
+            },
+            "interactions": {
+                "list_id": "",
+                "count": 0
+            },
+            "disease": {
+                "list_id": "",
+                "count": 0
+            },
+            "all": {
+                "list_id": "",
+                "count": 0
+            }
+        },
+        "glycan": {
+            "motifs": {
+                "list_id": "",
+                "count": 0
+            },
+            "species": {
+                "list_id": "",
+                "count": 0
+            },
+            "enzyme": {
+                "list_id": "",
+                "count": 0
+            },
+            "publications": {
+                "list_id": "",
+                "count": 0
+            },
+            "sequences": {
+                "list_id": "",
+                "count": 0
+            },
+            "identifiers": {
+                "list_id": "",
+                "count": 0
+            },
+            "glycoproteins": {
+                "list_id": "",
+                "count": 0
+            },
+            "type": {
+                "list_id": "",
+                "count": 0
+            },
+            "subtype": {
+                "list_id": "",
+                "count": 0
+            },
+            "all": {
+                "list_id": "",
+                "count": 0
+            }
+        }
+    }
+}

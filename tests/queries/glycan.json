@@ -1,0 +1,64 @@
+{
+    "search_init":{
+        "url":"/glycan/search_init/"
+        ,"schemafile":"../specs/glycan/search_init/response.schema.json"
+        ,"query":{
+        }
+    },
+    "glycan_search_simple":{
+        "url":"/glycan/search_simple"
+        ,"schemafile":"../specs/glycan/search_simple/response.schema.json"
+        ,"query":{"term_category":"glycan","term":"G17689DH"}
+    },
+    "glycan_search":{
+        "url":"/glycan/search"
+        ,"schemafile":"../specs/glycan/search/response.schema.json"
+        ,"querylist":[
+            {
+                "label":"Query by GlyTouCan IDs",
+                "query":{
+                    "glycan_identifier":{"glycan_id":"G17689DH,G01543ZX,G00009BX",
+                        "subsumption":"subsumedby"}
+                }
+            }
+        ]
+    }
+    ,"glycan_list": {
+        "url": "/glycan/list/", 
+        "schemafile":"../specs/glycan/list/response.schema.json",
+        "querylist":[
+            {
+                "label":"Simple listing",
+                "query":{
+                    "id":"70814c1091d74aefbe215bfae0d8dce4"
+                }
+            }
+            ,{
+                "label":"Listing with filters",
+                "query":{
+                    "id":"70814c1091d74aefbe215bfae0d8dce4",
+                    "filters":[
+                        {   
+                            "id":"by_mass",
+                            "selected":["2k_3k", "3k_4k"],
+                            "operator":"OR"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+    ,"glycan_detail": {
+        "url": "/glycan/detail/",
+        "schemafile":"../specs/glycan/detail/response.schema.json",
+        "query":"G17689DH",
+        "semantic":true
+    }
+    ,"glycan_image": {
+        "url": "/glycan/image/",
+        "schemafile":"../specs/glycan/image/response.schema.json",
+        "query":"G17689DH",
+        "semantic":true
+    }
+}
+
