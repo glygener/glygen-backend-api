@@ -371,13 +371,8 @@
         "authors",
         "date",
         "journal",
-        "mutagenesis",
-        "phosphorylation",
         "record_id",
         "reference",
-        "referenced_proteins",
-        "snv",
-        "species",
         "title"
     ]
 }
