@@ -367,7 +367,6 @@
         }
     },
     "required": [
-        "abstract",
         "authors",
         "date",
         "journal",
