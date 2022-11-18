@@ -1,6 +1,7 @@
 {
     "publication_detail":{
         "url":"/publication/detail"
+        ,"schemafile":"../specs/publication/detail/response.schema.json"
         ,"querylist":[
             {
                 "label":"PubMed query with phosphorylation, snv, mutagenesis",

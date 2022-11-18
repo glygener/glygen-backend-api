@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "submission": {
+            "type": "string"
+        },
+        "status": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "error_in_wait_server_lines_2": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "error_in_wait_server_lines_2",
+                "status"
+            ]
+        },
+        "jobid": {
+            "type": "integer"
+        }
+    },
+    "required": [
+        "jobid",
+        "status",
+        "submission"
+    ]
+}

@@ -1,20 +1,19 @@
 {
+    "$schema": "http://json-schema.org/schema#",
+    "type": "array",
     "items": {
-        "required": [], 
-        "type": "object", 
+        "type": "object",
         "properties": {
-            "category": {
-                "type": "string", 
-                "description": "", 
-                "title": ""
-            }, 
             "label": {
-                "type": "string", 
-                "description": "", 
-                "title": ""
+                "type": "string"
+            },
+            "category": {
+                "type": "string"
             }
-        }
-    }, 
-    "$schema": "http://json-schema.org/schema#", 
-    "type": "array"
+        },
+        "required": [
+            "category",
+            "label"
+        ]
+    }
 }

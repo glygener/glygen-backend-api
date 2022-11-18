@@ -484,7 +484,7 @@ def job_list(query_obj, config_obj):
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("job_list",query_obj, config_obj)
+    error_list = get_errors_in_query("job_list",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -516,7 +516,7 @@ def job_update(query_obj, config_obj):
 
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("job_update",query_obj, config_obj)
+    error_list = get_errors_in_query("job_update",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -544,7 +544,7 @@ def job_delete(query_obj, config_obj):
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("job_delete",query_obj, config_obj)
+    error_list = get_errors_in_query("job_delete",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 

@@ -1,5 +1,5 @@
 {
-    "search_init":{
+    "protein_search_init":{
         "url":"/protein/search_init/",
         "schemafile":"../specs/protein/search_init/response.schema.json",
         "query":{

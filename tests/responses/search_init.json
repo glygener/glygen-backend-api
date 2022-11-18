@@ -1,1355 +1,222 @@
-[
-    {
-        "id": "protein",
-        "label": "Protein",
-        "description": "GlyGen Protein Concept",
-        "fields": [
-            {
-                "id": "protein.name",
-                "label": "Protein Name",
-                "type": "string",
-                "maxlength": 2500,
-                "url": "https://wiki.glygen.org/index.php/protein.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 100
-            },
-            {
-                "id": "ortholog.name",
-                "label": "Ortholog Protein Name",
-                "type": "string",
-                "maxlength": 2500,
-                "url": "https://wiki.glygen.org/index.php/ortholog.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "publication.date",
-                "label": "Publication (Year)",
-                "type": "string",
-                "maxlength": 9,
-                "url": "https://wiki.glygen.org/index.php/publication.date",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1300
-            },
-            {
-                "id": "publication.reference.id",
-                "label": "Publication PMID",
-                "type": "string",
-                "maxlength": 27,
-                "url": "https://wiki.glygen.org/index.php/publication.reference.id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "orthologs.uniprot_canonical_ac",
-                "label": "Ortholog UniProt Accession",
-                "type": "string",
-                "maxlength": 12,
-                "url": "https://wiki.glygen.org/index.php/orthologs.uniprot_canonical_ac",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1200
-            },
-            {
-                "id": "uniprot_ac",
-                "label": "UniProtKB Accession/ID",
-                "type": "string",
-                "maxlength": 10,
-                "url": "https://wiki.glygen.org/index.php/uniprot_ac",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "uniprot_canonical_ac",
-                "enum": [],
-                "order": 100
-            },
-            {
-                "id": "publication.authors",
-                "label": "Publication (Author)",
-                "type": "string",
-                "maxlength": 6396,
-                "url": "https://wiki.glygen.org/index.php/publication.authors",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1200
-            },
-            {
-                "id": "mass.chemical_mass",
-                "label": "Mass",
-                "type": "number",
-                "maxlength": 9,
-                "url": "https://wiki.glygen.org/index.php/mass.chemical_mass",
-                "oplist": [
-                    "$eq",
-                    "$ne",
-                    "$gt",
-                    "$lt",
-                    "$gte",
-                    "$lte"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 900
-            },
-            {
-                "id": "expression_tissue.tissue.uberon",
-                "label": "Expressed in Tissue (Uberon ID)",
-                "type": "string",
-                "maxlength": 7,
-                "url": "https://wiki.glygen.org/index.php/expression_tissue.tissue.uberon",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1500
-            },
-            {
-                "id": "pathway.name",
-                "label": "Pathway Name",
-                "type": "string",
-                "maxlength": 142,
-                "url": "https://wiki.glygen.org/index.php/pathway.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "pathway_name",
-                "enum": [],
-                "order": 1100
-            },
-            {
-                "id": "refseq.ac",
-                "label": "Refseq Accession",
-                "type": "string",
-                "maxlength": 14,
-                "url": "https://wiki.glygen.org/index.php/refseq.ac",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "refseq_ac",
-                "enum": [],
-                "order": 200
-            },
-            {
-                "id": "crossref.database",
-                "label": "Database",
-                "type": "string",
-                "maxlength": 17,
-                "url": "https://wiki.glygen.org/index.php/crossref.database",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 900
-            },
-            {
-                "id": "go_annotation.categories.go_terms.name",
-                "label": "GO Term Name",
-                "type": "string",
-                "maxlength": 187,
-                "url": "https://wiki.glygen.org/index.php/go_annotation.categories.go_terms.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "go_term",
-                "enum": [],
-                "order": 600
-            },
-            {
-                "id": "go_annotation.categories.go_terms.id",
-                "label": "GO Term ID",
-                "type": "string",
-                "maxlength": 10,
-                "url": "https://wiki.glygen.org/index.php/go_annotation.categories.go_terms.id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "go_id",
-                "enum": [],
-                "order": 500
-            },
-            {
-                "id": "expression_tissue.tissue.name",
-                "label": "Expressed in Tissue (Name)",
-                "type": "string",
-                "maxlength": 17,
-                "url": "https://wiki.glygen.org/index.php/expression_tissue.tissue.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1400
-            },
-            {
-                "id": "publication.journal",
-                "label": "Publication (Journal)",
-                "type": "string",
-                "maxlength": 236,
-                "url": "https://wiki.glygen.org/index.php/publication.journal",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1400
-            },
-            {
-                "id": "pathway.id",
-                "label": "Pathway ID",
-                "type": "string",
-                "maxlength": 13,
-                "url": "https://wiki.glygen.org/index.php/pathway.id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "pathway_id",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "gene.name",
-                "label": "Gene Name",
-                "type": "string",
-                "maxlength": 20,
-                "url": "https://wiki.glygen.org/index.php/gene.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "crossref.id",
-                "label": "Database ID",
-                "type": "string",
-                "maxlength": 19,
-                "url": "https://wiki.glygen.org/index.php/crossref.id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            }
-        ],
-        "record_count": 0,
-        "list_id": ""
+{
+    "glycan_mass": {
+        "native": {
+            "name": "Native",
+            "min": 150.05,
+            "max": 6750.45
+        },
+        "permethylated": {
+            "name": "Permethylated",
+            "min": 206.12,
+            "max": 8306.19
+        }
     },
-    {
-        "id": "enzyme",
-        "label": "Enzyme",
-        "description": "GlyGen Enzyme Concept",
-        "fields": [
-            {
-                "id": "protein.name",
-                "label": "Protein Name",
-                "type": "string",
-                "maxlength": 2500,
-                "url": "https://wiki.glygen.org/index.php/protein.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 100
-            },
-            {
-                "id": "refseq.ac",
-                "label": "Refseq Accession",
-                "type": "string",
-                "maxlength": 14,
-                "url": "https://wiki.glygen.org/index.php/refseq.ac",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 200
-            },
-            {
-                "id": "pathway.name",
-                "label": "Pathway Name",
-                "type": "string",
-                "maxlength": 142,
-                "url": "https://wiki.glygen.org/index.php/pathway.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "pathway_name",
-                "enum": [],
-                "order": 1100
-            },
-            {
-                "id": "uniprot_ac",
-                "label": "UniProtKB Accession/ID",
-                "type": "string",
-                "maxlength": 10,
-                "url": "https://wiki.glygen.org/index.php/uniprot_ac",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 100
-            },
-            {
-                "id": "pathway.id",
-                "label": "Pathway ID",
-                "type": "string",
-                "maxlength": 13,
-                "url": "https://wiki.glygen.org/index.php/pathway.id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "pathway_id",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "publication.reference.id",
-                "label": "Publication PMID",
-                "type": "string",
-                "maxlength": 27,
-                "url": "https://wiki.glygen.org/index.php/publication.reference.id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "gene.name",
-                "label": "Gene Name",
-                "type": "string",
-                "maxlength": 20,
-                "url": "https://wiki.glygen.org/index.php/gene.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "enzyme_annotation.ec",
-                "label": "EC Number",
-                "type": "string",
-                "maxlength": 11,
-                "url": "https://wiki.glygen.org/index.php/enzyme_annotation.ec",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "crossref.database",
-                "label": "Database",
-                "type": "string",
-                "maxlength": 17,
-                "url": "https://wiki.glygen.org/index.php/crossref.database",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 900
-            },
-            {
-                "id": "crossref.id",
-                "label": "Database ID",
-                "type": "string",
-                "maxlength": 19,
-                "url": "https://wiki.glygen.org/index.php/crossref.id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            }
-        ],
-        "record_count": 0,
-        "list_id": ""
+    "number_monosaccharides": {
+        "min": 1,
+        "max": 37
     },
-    {
-        "id": "gene",
-        "label": "Gene",
-        "description": "GlyGen Gene Concept",
-        "fields": [
-            {
-                "id": "gene.locus.chromosome",
-                "label": "Gene Locus Chromosome",
-                "type": "string",
-                "maxlength": 14,
-                "url": "https://wiki.glygen.org/index.php/gene.locus.chromosome",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "gene.locus.strand",
-                "label": "Gene Locus Strand",
-                "type": "string",
-                "maxlength": 1,
-                "url": "https://wiki.glygen.org/index.php/gene.locus.strand",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "gene.locus.start_pos",
-                "label": "Gene Locus Chromosome (Start Position)",
-                "type": "number",
-                "maxlength": 9,
-                "url": "https://wiki.glygen.org/index.php/gene.locus.start_pos",
-                "oplist": [
-                    "$eq",
-                    "$ne",
-                    "$gt",
-                    "$lt",
-                    "$gte",
-                    "$lte"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "gene.locus.end_pos",
-                "label": "Gene Locus Chromosome (End Position)",
-                "type": "number",
-                "maxlength": 9,
-                "url": "https://wiki.glygen.org/index.php/gene.locus.end_pos",
-                "oplist": [
-                    "$eq",
-                    "$ne",
-                    "$gt",
-                    "$lt",
-                    "$gte",
-                    "$lte"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "gene.name",
-                "label": "Gene Name",
-                "type": "string",
-                "maxlength": 20,
-                "url": "https://wiki.glygen.org/index.php/gene.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            }
-        ],
-        "record_count": 0,
-        "list_id": ""
-    },
-    {
-        "id": "glycan",
-        "label": "Glycan",
-        "description": "GlyGen Glycan Concept",
-        "fields": [
-            {
-                "id": "fully_determined",
-                "label": "Fully defined",
-                "type": "string",
-                "maxlength": 3,
-                "url": "https://wiki.glygen.org/index.php/fully_determined",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [
-                    "yes",
-                    "no"
-                ],
-                "order": 700,
-                "default_value": "yes"
-            },
-            {
-                "id": "classification.type.name",
-                "label": "Glycan Type",
-                "type": "string",
-                "maxlength": 17,
-                "url": "https://wiki.glygen.org/index.php/classification.type.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [
-                    "Other",
-                    "O-linked",
-                    "N-linked",
-                    "Glycosphingolipid",
-                    "GAG"
-                ],
-                "order": 500
-            },
-            {
-                "id": "publication.reference.id",
-                "label": "Publication PMID",
-                "type": "string",
-                "maxlength": 8,
-                "url": "https://wiki.glygen.org/index.php/publication.reference.id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "subsumption.id",
-                "label": "Related to Glycan",
-                "type": "string",
-                "maxlength": 8,
-                "url": "https://wiki.glygen.org/index.php/subsumption.id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1100
-            },
-            {
-                "id": "publication.journal",
-                "label": "Publication (Journal)",
-                "type": "string",
-                "maxlength": 181,
-                "url": "https://wiki.glygen.org/index.php/publication.journal",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1400
-            },
-            {
-                "id": "mass_pme",
-                "label": "Mass (perMethylated)",
-                "type": "number",
-                "maxlength": 7,
-                "url": "https://wiki.glygen.org/index.php/mass_pme",
-                "oplist": [
-                    "$eq",
-                    "$ne",
-                    "$gt",
-                    "$lt",
-                    "$gte",
-                    "$lte"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 400
-            },
-            {
-                "id": "crossref.database",
-                "label": "Database",
-                "type": "string",
-                "maxlength": 17,
-                "url": "https://wiki.glygen.org/index.php/crossref.database",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 900
-            },
-            {
-                "id": "classification.subtype.name",
-                "label": "Glycan Subtype",
-                "type": "string",
-                "maxlength": 16,
-                "url": "https://wiki.glygen.org/index.php/classification.subtype.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [
-                    "Other",
-                    "Core 2",
-                    "Bisected",
-                    "Complex",
-                    "Core-fucosylated",
-                    "Hybrid",
-                    "Paucimannose",
-                    "Core 3",
-                    "Truncated",
-                    "Core 1",
-                    "Core 6",
-                    "Lacto series",
-                    "Neo-lacto series",
-                    "Arm-fucosylated",
-                    "Ganglio series"
-                ],
-                "order": 600
-            },
-            {
-                "id": "publication.date",
-                "label": "Publication (Year)",
-                "type": "string",
-                "maxlength": 4,
-                "url": "https://wiki.glygen.org/index.php/publication.date",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1300
-            },
-            {
-                "id": "crossref.id",
-                "label": "Database ID",
-                "type": "string",
-                "maxlength": 53,
-                "url": "https://wiki.glygen.org/index.php/crossref.id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "publication.authors",
-                "label": "Publication (Author)",
-                "type": "string",
-                "maxlength": 520,
-                "url": "https://wiki.glygen.org/index.php/publication.authors",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1200
-            },
-            {
-                "id": "names.name",
-                "label": "Glycan Name",
-                "type": "string",
-                "maxlength": 48,
-                "url": "https://wiki.glygen.org/index.php/names.name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 200
-            },
-            {
-                "id": "mass",
-                "label": "Mass (Native)",
-                "type": "number",
-                "maxlength": 7,
-                "url": "https://wiki.glygen.org/index.php/mass",
-                "oplist": [
-                    "$eq",
-                    "$ne",
-                    "$gt",
-                    "$lt",
-                    "$gte",
-                    "$lte"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 300
-            },
-            {
-                "id": "number_monosaccharides",
-                "label": "Number of Monosaccharides",
-                "type": "number",
-                "maxlength": 2,
-                "url": "https://wiki.glygen.org/index.php/number_monosaccharides",
-                "oplist": [
-                    "$eq",
-                    "$ne",
-                    "$gt",
-                    "$lt",
-                    "$gte",
-                    "$lte"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 800
-            },
-            {
-                "id": "glytoucan_ac",
-                "label": "GlyTouCan Accession",
-                "type": "string",
-                "maxlength": 8,
-                "url": "https://wiki.glygen.org/index.php/glytoucan_ac",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "glytoucan_ac",
-                "enum": [],
-                "order": 100
-            }
-        ],
-        "record_count": 0,
-        "list_id": ""
-    },
-    {
-        "id": "motif",
-        "label": "Motif",
-        "description": "GlyGen Motif Concept",
-        "fields": [
-            {
-                "id": "publication.reference.id",
-                "label": "Publication PMID",
-                "type": "string",
-                "maxlength": 8,
-                "url": "https://wiki.glygen.org/index.php/publication.reference.id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "alignment_method",
-                "label": "Motif Alignment Method",
-                "type": "string",
-                "maxlength": 15,
-                "url": "https://wiki.glygen.org/index.php/alignment_method",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "aglycon",
-                "label": "Glycan Motif aglycon",
-                "type": "string",
-                "maxlength": 7,
-                "url": "https://wiki.glygen.org/index.php/aglycon",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "publication.authors",
-                "label": "Publication (Author)",
-                "type": "string",
-                "maxlength": 210,
-                "url": "https://wiki.glygen.org/index.php/publication.authors",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1200
-            },
-            {
-                "id": "name",
-                "label": "Glycan Name",
-                "type": "string",
-                "maxlength": 2500,
-                "url": "https://wiki.glygen.org/index.php/name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 200
-            },
-            {
-                "id": "publication.journal",
-                "label": "Publication (Journal)",
-                "type": "string",
-                "maxlength": 181,
-                "url": "https://wiki.glygen.org/index.php/publication.journal",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1400
-            },
-            {
-                "id": "publication.title",
-                "label": "Publication (Title)",
-                "type": "string",
-                "maxlength": 303,
-                "url": "https://wiki.glygen.org/index.php/publication.title",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "publication.evidence.database",
-                "label": "Publication Evidence (Database)",
-                "type": "string",
-                "maxlength": 12,
-                "url": "https://wiki.glygen.org/index.php/publication.evidence.database",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "motif_ac",
-                "label": "Glycan Motif ID",
-                "type": "string",
-                "maxlength": 10,
-                "url": "https://wiki.glygen.org/index.php/motif_ac",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 200
-            },
-            {
-                "id": "glytoucan_ac",
-                "label": "GlyTouCan Accession",
-                "type": "string",
-                "maxlength": 8,
-                "url": "https://wiki.glygen.org/index.php/glytoucan_ac",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "glytoucan_ac",
-                "enum": [],
-                "order": 100
-            },
-            {
-                "id": "reducing_end",
-                "label": "Glycan Motif Reducing End",
-                "type": "string",
-                "maxlength": 5,
-                "url": "https://wiki.glygen.org/index.php/reducing_end",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "publication.reference.type",
-                "label": "Publication Reference (Type)",
-                "type": "string",
-                "maxlength": 6,
-                "url": "https://wiki.glygen.org/index.php/publication.reference.type",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "publication.evidence.id",
-                "label": "Publication Evidence (ID)",
-                "type": "string",
-                "maxlength": 10,
-                "url": "https://wiki.glygen.org/index.php/publication.evidence.id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            },
-            {
-                "id": "publication.date",
-                "label": "Publication (Year)",
-                "type": "string",
-                "maxlength": 4,
-                "url": "https://wiki.glygen.org/index.php/publication.date",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1300
-            }
-        ],
-        "record_count": 0,
-        "list_id": ""
-    },
-    {
-        "id": "disease",
-        "label": "Disease",
-        "description": "GlyGen Disease Concept",
-        "fields": [
-            {
-                "id": "disease_id",
-                "label": "Disease ID",
-                "type": "string",
-                "maxlength": 13,
-                "url": "https://wiki.glygen.org/index.php/disease_id",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "disease_id",
-                "enum": [],
-                "order": 200
-            },
-            {
-                "id": "name",
-                "label": "Name",
-                "type": "string",
-                "maxlength": 2500,
-                "url": "https://wiki.glygen.org/index.php/name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 1000
-            }
-        ],
-        "record_count": 0,
-        "list_id": ""
-    },
-    {
-        "id": "species",
-        "label": "Organism",
-        "description": "GlyGen Organism Concept",
-        "fields": [
-            {
-                "id": "name",
-                "label": "Name",
-                "type": "string",
-                "maxlength": 53,
-                "url": "https://wiki.glygen.org/index.php/name",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 100
-            },
-            {
-                "id": "taxid",
-                "label": "NCBI Taxonomy ID",
-                "type": "number",
-                "maxlength": 7,
-                "url": "https://wiki.glygen.org/index.php/taxid",
-                "oplist": [
-                    "$eq",
-                    "$ne",
-                    "$gt",
-                    "$lt",
-                    "$gte",
-                    "$lte"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 200
-            }
-        ],
-        "record_count": 0,
-        "list_id": ""
-    },
-    {
-        "id": "site",
-        "label": "Site",
-        "description": "GlyGen Site Concept",
-        "fields": [
-            {
-                "id": "up_seq",
-                "label": "Upstream Sequence",
-                "type": "string",
-                "maxlength": 2228,
-                "url": "https://wiki.glygen.org/index.php/up_seq",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 500
-            },
-            {
-                "id": "start_pos",
-                "label": "Start Position",
-                "type": "number",
-                "maxlength": 5,
-                "url": "https://wiki.glygen.org/index.php/start_pos",
-                "oplist": [
-                    "$eq",
-                    "$ne",
-                    "$gt",
-                    "$lt",
-                    "$gte",
-                    "$lte"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 600
-            },
-            {
-                "id": "phosphorylation_flag",
-                "label": "Phosphorylation",
-                "type": "string",
-                "maxlength": 2500,
-                "url": "https://wiki.glygen.org/index.php/phosphorylation_flag",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [
-                    "true",
-                    "false"
-                ],
-                "order": 200,
-                "default_value": "true"
-            },
-            {
-                "id": "down_seq",
-                "label": "Downstream Sequence",
-                "type": "string",
-                "maxlength": 2228,
-                "url": "https://wiki.glygen.org/index.php/down_seq",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 500
-            },
-            {
-                "id": "mutagenesis_flag",
-                "label": "Mutagenesis",
-                "type": "string",
-                "maxlength": 2500,
-                "url": "https://wiki.glygen.org/index.php/mutagenesis_flag",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [
-                    "true",
-                    "false"
-                ],
-                "order": 400,
-                "default_value": "true"
-            },
-            {
-                "id": "end_pos",
-                "label": "End Position",
-                "type": "number",
-                "maxlength": 5,
-                "url": "https://wiki.glygen.org/index.php/end_pos",
-                "oplist": [
-                    "$eq",
-                    "$ne",
-                    "$gt",
-                    "$lt",
-                    "$gte",
-                    "$lte"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 700
-            },
-            {
-                "id": "glycation_flag",
-                "label": "Glycation",
-                "type": "string",
-                "maxlength": 2500,
-                "url": "https://wiki.glygen.org/index.php/glycation_flag",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [
-                    "true",
-                    "false"
-                ],
-                "order": 500,
-                "default_value": "true"
-            },
-            {
-                "id": "site_seq",
-                "label": "Site Sequence",
-                "type": "string",
-                "maxlength": 2228,
-                "url": "https://wiki.glygen.org/index.php/site_seq",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 800
-            },
-            {
-                "id": "neighbors.direction",
-                "label": "Neighbor Location",
-                "type": "string",
-                "maxlength": 1000,
-                "url": "https://wiki.glygen.org/index.php/neighbors.direction",
-                "oplist": [
-                    "$eq"
-                ],
-                "typeahead": "",
-                "enum": [
-                    "upstream",
-                    "downstream"
-                ],
-                "order": 1000
-            },
-            {
-                "id": "neighbors.distance",
-                "label": "Neighbor Distance",
-                "type": "number",
-                "maxlength": 1000,
-                "url": "https://wiki.glygen.org/index.php/neighbors.distance",
-                "oplist": [
-                    "$eq",
-                    "$ne",
-                    "$gt",
-                    "$lt",
-                    "$gte",
-                    "$lte"
-                ],
-                "typeahead": "",
-                "enum": [],
-                "order": 900
-            },
-            {
-                "id": "neighbors.categories",
-                "label": "Neigbor Type",
-                "type": "string",
-                "maxlength": 1000,
-                "url": "https://wiki.glygen.org/index.php/neighbors.categories",
-                "oplist": [
-                    "$eq"
-                ],
-                "typeahead": "",
-                "enum": [
-                    "glycosylation_flag",
-                    "snv_flag",
-                    "phosphorylation_flag",
-                    "glycation_flag",
-                    "mutagenesis_flag"
-                ],
-                "order": 1100
-            },
-            {
-                "id": "snv_flag",
-                "label": "Single Nucleotide Variation",
-                "type": "string",
-                "maxlength": 2500,
-                "url": "https://wiki.glygen.org/index.php/snv_flag",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [
-                    "true",
-                    "false"
-                ],
-                "order": 300,
-                "default_value": "true"
-            },
-            {
-                "id": "glycosylation_flag",
-                "label": "Glycosylation",
-                "type": "string",
-                "maxlength": 2500,
-                "url": "https://wiki.glygen.org/index.php/glycosylation_flag",
-                "oplist": [
-                    "$eq",
-                    "$regex",
-                    "$ne"
-                ],
-                "typeahead": "",
-                "enum": [
-                    "true",
-                    "false"
-                ],
-                "order": 100,
-                "default_value": "true"
-            }
-        ],
-        "record_count": 0,
-        "list_id": ""
-    }
-]
+    "organism": [
+        {
+            "name": "Homo sapiens",
+            "id": 9606
+        },
+        {
+            "name": "Mus musculus",
+            "id": 10090
+        },
+        {
+            "name": "Rattus norvegicus",
+            "id": 10116
+        },
+        {
+            "name": "Severe acute respiratory syndrome coronavirus 2",
+            "id": 2697049
+        },
+        {
+            "name": "Drosophila melanogaster",
+            "id": 7227
+        },
+        {
+            "name": "Severe acute respiratory syndrome-related coronavirus",
+            "id": 694009
+        },
+        {
+            "name": "Hepatitis C virus (isolate H)",
+            "id": 63746
+        }
+    ],
+    "glycan_type": [
+        {
+            "name": "Other",
+            "subtype": [
+                "Other"
+            ]
+        },
+        {
+            "name": "N-linked",
+            "subtype": [
+                "Alditol-reduced",
+                "Complex",
+                "Core-fucosylated",
+                "Arm-fucosylated",
+                "Bisected",
+                "High mannose",
+                "Truncated",
+                "Hybrid",
+                "Other",
+                "Paucimannose"
+            ]
+        },
+        {
+            "name": "GAG",
+            "subtype": [
+                "Other"
+            ]
+        },
+        {
+            "name": "O-linked",
+            "subtype": [
+                "Core 1",
+                "Core 3",
+                "Core 6",
+                "Core 2",
+                "Core 4",
+                "Core 5",
+                "Core 7"
+            ]
+        },
+        {
+            "name": "Glycosphingolipid",
+            "subtype": [
+                "Lacto series",
+                "Neo-lacto series",
+                "Ganglio series",
+                "Gala series",
+                "Globo series",
+                "Isoglobo series",
+                "Muco series",
+                "Mollu series",
+                "Arthro series"
+            ]
+        },
+        {
+            "name": "GPI anchor",
+            "subtype": [
+                "Other"
+            ]
+        }
+    ],
+    "id_namespace": [
+        "GlyTouCan",
+        "GNOme",
+        "PubChem Compound",
+        "PubChem Substance",
+        "Glycosciences.de",
+        "CarbBank",
+        "ChEBI",
+        "SandBox",
+        "CFG",
+        "PDB",
+        "KEGG Glycan",
+        "GlyConnect",
+        "UniCarbKB",
+        "Rhea",
+        "UniCarbDB",
+        "Glycan Dictionary",
+        "BCSDB",
+        "GlycoEpitope",
+        "MatrixDB",
+        "Reactome",
+        "GPTwiki"
+    ],
+    "simple_search_category": [
+        {
+            "id": "any",
+            "display": "Any"
+        },
+        {
+            "id": "glycan",
+            "display": "Glycan"
+        },
+        {
+            "id": "protein",
+            "display": "Protein"
+        },
+        {
+            "id": "enzyme",
+            "display": "Enzyme"
+        },
+        {
+            "id": "organism",
+            "display": "Organism"
+        }
+    ],
+    "composition": [
+        {
+            "residue": "dhex",
+            "min": 0,
+            "max": 8,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/840"
+        },
+        {
+            "residue": "hex",
+            "min": 0,
+            "max": 15,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/206"
+        },
+        {
+            "residue": "hexnac",
+            "min": 0,
+            "max": 14,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/899"
+        },
+        {
+            "residue": "hexa",
+            "min": 0,
+            "max": 6,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/610"
+        },
+        {
+            "residue": "hexn",
+            "min": 0,
+            "max": 2,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/739"
+        },
+        {
+            "residue": "neuac",
+            "min": 0,
+            "max": 6,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/439197"
+        },
+        {
+            "residue": "neugc",
+            "min": 0,
+            "max": 5,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/440001"
+        },
+        {
+            "residue": "p",
+            "min": 0,
+            "max": 2,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/1061"
+        },
+        {
+            "residue": "pent",
+            "min": 0,
+            "max": 2,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/229"
+        },
+        {
+            "residue": "s",
+            "min": 0,
+            "max": 11,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/1117"
+        },
+        {
+            "residue": "other",
+            "min": 0,
+            "max": 6,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/"
+        }
+    ]
+}

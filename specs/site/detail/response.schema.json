@@ -1,212 +1,535 @@
 {
-  "$id": "http://example.com/example.json",
-  "type": "object",
-  "properties": {
-    "uniprot_canonical_id": {
-      "$id": "/properties/uniprot_canonical_id",
-      "type": "string",
-      "description": "ID of the protein using Uniprot entry name.",
-      "examples": ["SHBG_HUMAN"]
-    },
-    "uniprot_canonical_ac": {
-      "$id": "/properties/uniprot_canonical_ac",
-      "type": "string",
-      "description": "Accession ID of the protein using Uniprot entry ID",
-      "examples": ["P04278"]
-    },
-    "mass": {
-      "$id": "/properties/mass",
-      "type": "object",
-      "description": "Mass of the protein.",
-      "properties": {
-        "chemical_mass": {
-          "$id": "/properties/recommendedName/properties/chemical_mass",
-          "type": "number",
-          "description": "Chemical mass.",
-          "examples": [50638]
-        }
-      }
-    },
-    "recommendedName": {
-      "$id": "/properties/recommendedName",
-      "type": "object",
-      "description": "Object with a tuple of short and long name for the protein. It is possible that one of the names is missing.",
-      "properties": {
-        "full": {
-          "$id": "/properties/recommendedName/properties/full",
-          "type": "string",
-          "description": "Full name of the protein.",
-          "examples": ["Sex hormone-binding globulin"]
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string"
         },
-        "short": {
-          "$id": "/properties/recommendedName/properties/short",
-          "type": "string",
-          "description": "Corresponding short name of the protein.",
-          "examples": ["SHBG"]
-        }
-      }
-    },
-
-    "sequence": {
-      "$id": "/properties/sequence",
-      "type": "object",
-      "description": "Sequence object for the protein. It contains the amino acid sequence and the sequence length (number of amino acids.",
-      "properties": {
-        "sequence": {
-          "$id": "/properties/sequence/properties/sequence",
-          "type": "string",
-          "description": "Amino acid sequence of the protein.",
-          "default": "",
-          "examples": [
-            "MESRGPLATSRLLLLLLLLLLRHTRQGWALRPVLPTQSAHDPPAVHLSNGPGQEPIAVMTFDLTKITKTSSSFEVRTWDPEGVIFYGDTNPKDDWFMLGLRDGRPEIQ"
-          ]
-        },
-        "length": {
-          "$id": "/properties/sequence/properties/length",
-          "type": "integer",
-          "description": "Number of amino acides in the sequence.",
-          "examples": [402]
-        }
-      },
-      "required": ["sequence"]
-    },
-    "keywords": {
-      "$id": "/properties/keywords",
-      "type": "array",
-      "description": "List of keywords that annotate the protein. The keyword concept is identical to the one in UniProt.",
-      "items": {
-        "$id": "/properties/keywords/items",
-        "type": "string",
-        "description": "String representing the keyword.",
-        "examples": ["3D-structure"]
-      }
-    },
-
-    "glycosylation": {
-      "$id": "/properties/glycosylation",
-      "type": "array",
-      "description": "List of glycosylations.",
-      "items": {
-        "$id": "/properties/glycosylation/items",
-        "type": "object",
-        "description": "Glycosylation object that contains the glycosylated amino acid, the positon of this amino acid, the reported glycan and a list of evidence for this annotation.",
-        "properties": {
-          "residue": {
-            "$id": "/properties/glycosylation/items/properties/residue",
-            "type": "string",
-            "description": "Amino acid residue that is glycosylated (one letter code).",
-            "examples": ["T"]
-          },
-          "position": {
-            "$id": "/properties/glycosylation/items/properties/position",
-            "type": "integer",
-            "description": "Position of the amino acid residue in the protein sequence.",
-            "examples": [36]
-          },
-          "glytoucan_ac": {
-            "$id": "/properties/glycosylation/items/properties/glytoucan_ac",
-            "type": "string",
-            "description": "ID of the glycan represented as GlyTouCan ID.",
-            "examples": ["G123456"]
-          },
-          "type": {
-            "$id": "/properties/glycosylation/items/properties/type",
-            "type": "string",
-            "description": "Type of glycosylation (e.g. N-Glycan).",
-            "examples": ["N-Glycan"]
-          },
-          "evidence": {
-            "$id": "/properties/glycosylation/items/properties/evidence",
-            "type": "array",
-            "description": "List of evidence objects.",
-            "items": {
-              "$id": "/properties/glycosylation/items/properties/evidence/items",
-              "type": "object",
-              "description": "Evidence object that stores the database name, entry ID and URL. The objects refers to an entry on another database that provided this glycosylation annotation.",
-              "properties": {
-                "database": {
-                  "$id": "/properties/glycosylation/items/properties/evidence/items/properties/database",
-                  "type": "string",
-                  "description": "Name of the database that provided this glycosylation annotation.",
-                  "default": "",
-                  "examples": ["UniProt"]
-                },
-                "id": {
-                  "$id": "/properties/glycosylation/items/properties/evidence/items/properties/id",
-                  "type": "string",
-                  "description": "Databases entry that provides this glycosylation annotation.",
-                  "default": "",
-                  "examples": ["P04278"]
-                },
-                "url": {
-                  "$id": "/properties/glycosylation/items/properties/evidence/items/properties/url",
-                  "type": "string",
-                  "description": "Link to the database entry that provided this glycosylation annotation.",
-                  "default": "",
-                  "examples": ["http://glycomics.ccrc.uga.edu/ontologies"]
-                }
-              },
-              "required": ["database"]
-            }
-          }
-        },
-        "required": ["type", "evidence"]
-      }
-    },
-
-    "mutation": {
-      "$id": "/properties/mutation",
-      "type": "array",
-      "description": "List of mutations in the gene.",
-      "items": {
-        "$id": "/properties/mutation/items",
-        "type": "object",
-        "description": "Object describing a mutation.",
-        "properties": {
-          "annotation": {
-            "$id": "/properties/mutation/items/properties/annotation",
-            "type": "string",
-            "description": "Description of the mutation.",
-            "default": "",
-            "examples": [
-              "High frequency non-synonymous mutation in BRCA (DOID:001) cancer"
-            ]
-          }
-        }
-      }
-    }
-  },
-  "site_annotation": {
-    "$id": "/properties/site_annotation",
-    "type": "array",
-    "description": "List of site_annotation in the protein.",
-    "items": {
-      "$id": "/properties/site_annotation/items",
-      "type": "object",
-      "description": "Object describing a site_annotation.",
-      "properties": {
         "start_pos": {
-          "$id": "/properties/isoforms/items/properties/site_annotation/properties/start_pos",
-          "type": "integer",
-          "description": "Start position (number of base) where the site_annotation begins.",
-          "examples": [1233131]
+            "type": "integer"
         },
         "end_pos": {
-          "$id": "/properties/isoforms/items/properties/site_annotation/properties/end_pos",
-          "type": "integer",
-          "description": "End position (number of base) the site_annotation ends with.",
-          "examples": [332423]
+            "type": "integer"
         },
-        "annotation": {
-          "$id": "/properties/site_annotation/items/properties/annotation",
-          "type": "string",
-          "description": "Description of the site_annotation.",
-          "default": "",
-          "examples": [
-            "High frequency non-synonymous site_annotation in BRCA (DOID:001) cancer"
-          ]
+        "up_seq": {
+            "type": "string"
+        },
+        "site_seq": {
+            "type": "string"
+        },
+        "down_seq": {
+            "type": "string"
+        },
+        "uniprot_canonical_ac": {
+            "type": "string"
+        },
+        "species": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "taxid": {
+                        "type": "integer"
+                    },
+                    "evidence": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "database": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "database",
+                                "id",
+                                "url"
+                            ]
+                        }
+                    },
+                    "common_name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "common_name",
+                    "evidence",
+                    "name",
+                    "taxid"
+                ]
+            }
+        },
+        "glycosylation": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "glytoucan_ac": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "subtype": {
+                        "type": "string"
+                    },
+                    "site_category": {
+                        "type": "string"
+                    },
+                    "site_seq": {
+                        "type": "string"
+                    },
+                    "relation": {
+                        "type": "string"
+                    },
+                    "comment": {
+                        "type": "string"
+                    },
+                    "start_aa": {
+                        "type": "string"
+                    },
+                    "end_aa": {
+                        "type": "string"
+                    },
+                    "residue": {
+                        "type": "string"
+                    },
+                    "evidence": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "database": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "database",
+                                "id",
+                                "url"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "comment",
+                    "end_aa",
+                    "evidence",
+                    "glytoucan_ac",
+                    "relation",
+                    "residue",
+                    "site_category",
+                    "site_seq",
+                    "start_aa",
+                    "subtype",
+                    "type"
+                ]
+            }
+        },
+        "snv": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "evidence": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "database": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "database",
+                                "id",
+                                "url"
+                            ]
+                        }
+                    },
+                    "glycoeffect": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "sequence_org": {
+                        "type": "string"
+                    },
+                    "sequence_mut": {
+                        "type": "string"
+                    },
+                    "comment": {
+                        "type": "string"
+                    },
+                    "chr_id": {
+                        "type": "string"
+                    },
+                    "chr_pos": {
+                        "type": "string"
+                    },
+                    "ref_nt": {
+                        "type": "string"
+                    },
+                    "alt_nt": {
+                        "type": "string"
+                    },
+                    "minor_allelic_frequency": {
+                        "type": "string"
+                    },
+                    "keywords": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "alt_nt",
+                    "chr_id",
+                    "chr_pos",
+                    "comment",
+                    "evidence",
+                    "glycoeffect",
+                    "keywords",
+                    "minor_allelic_frequency",
+                    "ref_nt",
+                    "sequence_mut",
+                    "sequence_org"
+                ]
+            }
+        },
+        "all_sites": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "site_list": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "start_pos": {
+                                    "type": "string"
+                                },
+                                "end_pos": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "end_pos",
+                                "start_pos"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "site_list",
+                    "type"
+                ]
+            }
+        },
+        "categories": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "mutagenesis": {
+            "type": "array"
+        },
+        "phosphorylation": {
+            "type": "array"
+        },
+        "glycation": {
+            "type": "array"
+        },
+        "neighbors": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "distance": {
+                        "type": "integer"
+                    },
+                    "direction": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "categories": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "categories",
+                    "direction",
+                    "distance",
+                    "id"
+                ]
+            }
+        },
+        "uniprot_id": {
+            "type": "string"
+        },
+        "uniprot": {
+            "type": "object",
+            "properties": {
+                "uniprot_canonical_ac": {
+                    "type": "string"
+                },
+                "uniprot_id": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "length": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "length",
+                "uniprot_canonical_ac",
+                "uniprot_id",
+                "url"
+            ]
+        },
+        "sequence": {
+            "type": "object",
+            "properties": {
+                "sequence": {
+                    "type": "string"
+                },
+                "length": {
+                    "type": "integer"
+                },
+                "header": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "header",
+                "length",
+                "sequence"
+            ]
+        },
+        "mass": {
+            "type": "object",
+            "properties": {
+                "chemical_mass": {
+                    "type": "number"
+                },
+                "monoisotopic_mass": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "chemical_mass",
+                "monoisotopic_mass"
+            ]
+        },
+        "protein_names": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "resource": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "resource",
+                    "type",
+                    "url"
+                ]
+            }
+        },
+        "gene": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "locus": {
+                        "type": "object",
+                        "properties": {
+                            "chromosome": {
+                                "type": "string"
+                            },
+                            "start_pos": {
+                                "type": "integer"
+                            },
+                            "end_pos": {
+                                "type": "integer"
+                            },
+                            "strand": {
+                                "type": "string"
+                            },
+                            "evidence": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "database": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "url": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "database",
+                                        "id",
+                                        "url"
+                                    ]
+                                }
+                            }
+                        },
+                        "required": [
+                            "chromosome",
+                            "end_pos",
+                            "evidence",
+                            "start_pos",
+                            "strand"
+                        ]
+                    }
+                },
+                "required": [
+                    "locus",
+                    "name",
+                    "url"
+                ]
+            }
+        },
+        "gene_names": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "resource": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "resource",
+                    "type",
+                    "url"
+                ]
+            }
+        },
+        "refseq": {
+            "type": "object",
+            "properties": {
+                "ac": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "summary": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "ac",
+                "name",
+                "summary",
+                "url"
+            ]
         }
-      }
-    }
-  }
+    },
+    "required": [
+        "all_sites",
+        "categories",
+        "down_seq",
+        "end_pos",
+        "gene",
+        "gene_names",
+        "glycation",
+        "glycosylation",
+        "id",
+        "mass",
+        "mutagenesis",
+        "neighbors",
+        "phosphorylation",
+        "protein_names",
+        "refseq",
+        "sequence",
+        "site_seq",
+        "snv",
+        "species",
+        "start_pos",
+        "uniprot",
+        "uniprot_canonical_ac",
+        "uniprot_id",
+        "up_seq"
+    ]
 }

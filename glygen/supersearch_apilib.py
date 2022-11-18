@@ -246,15 +246,16 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
                 edge_rules += config_obj["ignored_edges"][concept]
 
         for o in edge_rules:
-            if "source" not in o or "target" not in o or "direction" not in o:
+            if "source" not in o or "target" not in o:
                 return {"error_list":[{"error_code":"invalid-ignore-edge-object"}]}
             if o["source"] not in ignore_dict:
                 ignore_dict[o["source"]] = {}
             ignore_dict[o["source"]][o["target"]] = True
-            if o["direction"] == "both":
-                if o["target"] not in ignore_dict:
-                    ignore_dict[o["target"]] = {}
-                ignore_dict[o["target"]][o["source"]] = True
+            if "direction" in o:
+                if o["direction"] == "both":
+                    if o["target"] not in ignore_dict:
+                        ignore_dict[o["target"]] = {}
+                    ignore_dict[o["target"]][o["source"]] = True
 
 
 
@@ -894,26 +895,27 @@ def transform_query(in_obj, concept, seen_path, path_map):
                 val = obj["string_value"] if "string_value" in obj else val
                 val = obj["numeric_value"] if "numeric_value" in obj else val
                 
-                if concept == "site" and "string_value" in obj and obj["string_value"].find("|") != -1:
-                    d, s = obj["string_value"].split("|")
-                    if obj["path"] == "up_seq":
-                        l = int(d) - len(s)  
-                        if l < 0:
-                            error_obj = {"error_code": "bad-regex-pattern"}
-                            error_list.append(error_obj)
-                        s = s.upper().replace("X", "{1}[A-Z]")
-                        val = "%s{%s}[A-Z]$" % (s,l)
-                        if l == 0:
-                            val = "%s$" % (s)
-                    elif obj["path"] == "down_seq":
-                        l = int(d) - 1
-                        if l < 1:
-                            error_obj = {"error_code": "bad-regex-pattern"}
-                            error_list.append(error_obj)
-                        s = s.upper().replace("X", "{1}[A-Z]")
-                        val = "^[A-Z]{%s}%s" % (l,s)
-                        #"^[A-Z]{8}C"
-
+                if concept == "site" and "string_value" in obj:
+                    if type(obj["string_value"]) is str:
+                        if obj["string_value"].find("|") != -1:
+                            d, s = obj["string_value"].split("|")
+                            if obj["path"] == "up_seq":
+                                l = int(d) - len(s)  
+                                if l < 0:
+                                    error_obj = {"error_code": "bad-regex-pattern"}
+                                    error_list.append(error_obj)
+                                s = s.upper().replace("X", "{1}[A-Z]")
+                                val = "%s{%s}[A-Z]$" % (s,l)
+                                if l == 0:
+                                    val = "%s$" % (s)
+                            elif obj["path"] == "down_seq":
+                                l = int(d) - 1
+                                if l < 1:
+                                    error_obj = {"error_code": "bad-regex-pattern"}
+                                    error_list.append(error_obj)
+                                s = s.upper().replace("X", "{1}[A-Z]")
+                                val = "^[A-Z]{%s}%s" % (l,s)
+                                #"^[A-Z]{8}C"
                 val_obj = {obj["operator"]:val}
                 if obj["operator"] == "$eq" and "string_value" in obj:
                     val = "^%s$" % (val)

@@ -1,10 +1,12 @@
 {
     "job_init":{
         "url":"/job/init"
+        ,"schemafile":"../specs/job/init/response.schema.json"
         ,"query":{}
     },
     "job_addnew":{
         "url":"/job/addnew"
+        ,"schemafile":"../specs/job/addnew/response.schema.json"
         ,"querylist":[
             {
                 "label":"Successful blastp example",
@@ -94,10 +96,12 @@
     }
     ,"job_results":{
         "url":"/job/results"
-        ,"query":{"jobid":1}
+        ,"schemafile":"../specs/job/results/response.schema.json"
+        ,"query":{"jobid":7}
     }
     ,"glycan_list": {
-        "url": "/glycan/list/", 
+        "url": "/glycan/list/" 
+        ,"schemafile":"../specs/glycan/list/response.schema.json"
         ,"querylist":[
             {
                 "label":"Simple listing",
@@ -122,18 +126,22 @@
     }
     ,"job_queue":{
         "url":"/job/queue"
+        ,"schemafile":"../specs/job/queue/response.schema.json"
         ,"query":{}
     }
     ,"job_status":{
         "url":"/job/status"
+        ,"schemafile":"../specs/job/status/response.schema.json"
         ,"query":{"jobid": 1}
     }
     ,"job_detail":{
         "url":"/job/detail"
+        ,"schemafile":"../specs/job/detail/response.schema.json"
         ,"query":{"jobid": 1}
     }
     ,"job_list":{
         "url":"/job/list"
+        ,"schemafile":"../specs/job/list/response.schema.json"
         ,"query":{"visibility":"all"}
     }
 }

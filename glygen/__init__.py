@@ -26,6 +26,7 @@ from .event import api as event_api
 from .misc import api as misc_api
 from .job import api as job_api
 from .usecases import api as usecases_api
+from .graph import api as graph_api
 
 
 
@@ -55,6 +56,7 @@ def create_app():
     api.add_namespace(misc_api)
     api.add_namespace(job_api)
     api.add_namespace(usecases_api)
+    api.add_namespace(graph_api)
 
 
     try:

@@ -1,15 +1,17 @@
 {
     
-    "typeahead": {
-        "url": "/typeahead/",
+    "typeahead_typeahead": {
+        "url": "/typeahead/typeahead",
+        "schemafile":"../specs/typeahead/typeahead/response.schema.json",
         "query": {
             "field": "glytoucan_ac",
             "limit": 10,
             "value": "GH"
         }
     }
-    ,"categorized_typeahead": {
-        "url": "/categorized_typeahead/",
+    ,"typeahead_categorized_typeahead": {
+        "url": "/typeahead/categorized_typeahead/",
+        "schemafile":"../specs/typeahead/categorized_typeahead/response.schema.json",
         "query": {
             "field":"go_term",
             "value":"kinase",
@@ -17,8 +19,9 @@
             "categorywise_limit":5
         }
     },
-    "global_typeahead": {
-        "url": "/global_typeahead/",
+    "typeahead_global_typeahead": {
+        "url": "/typeahead/global_typeahead/",
+        "schemafile":"../specs/typeahead/global_typeahead/response.schema.json", 
         "querylist":[
             {
                 "label":"Query without target",

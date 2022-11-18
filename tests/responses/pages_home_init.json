@@ -18,16 +18,16 @@
     ],
     "statistics": [
         {
-            "species": "Mus musculus",
-            "glycans": 5194,
-            "proteins": 21986,
-            "glycoproteins": 3902
-        },
-        {
             "species": "Homo sapiens",
             "glycans": 15818,
             "proteins": 20588,
             "glycoproteins": 9303
+        },
+        {
+            "species": "Hepatitis C virus (isolate Japanese)",
+            "glycans": 0,
+            "proteins": 1,
+            "glycoproteins": 1
         },
         {
             "species": "Hepatitis C virus (isolate H)",
@@ -36,10 +36,10 @@
             "glycoproteins": 1
         },
         {
-            "species": "Severe acute respiratory syndrome-related coronavirus",
-            "glycans": 8,
-            "proteins": 15,
-            "glycoproteins": 3
+            "species": "Mus musculus",
+            "glycans": 5194,
+            "proteins": 21986,
+            "glycoproteins": 3902
         },
         {
             "species": "Rattus norvegicus",
@@ -54,16 +54,16 @@
             "glycoproteins": 2
         },
         {
-            "species": "Hepatitis C virus (isolate Japanese)",
-            "glycans": 0,
-            "proteins": 1,
-            "glycoproteins": 1
+            "species": "Severe acute respiratory syndrome-related coronavirus",
+            "glycans": 8,
+            "proteins": 15,
+            "glycoproteins": 3
         }
     ],
     "events": [],
     "video": {
         "url": "https://www.youtube.com/embed/xyV5v5nRm6A?rel=0",
-        "createdts": "2022-11-08 15:07:18",
-        "visibility": "hidden"
+        "createdts": "2022-11-17 13:21:09",
+        "visibility": "visible"
     }
 }

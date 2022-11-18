@@ -1,18 +1,17 @@
 {
-    "search_init": {
+    "supersearch_search_init": {
         "url": "/supersearch/search_init",
+        "schemafile":"../specs/supersearch/search_init/response.schema.json",
         "query": {}
     }
-    ,"search": {
+    ,"supersearch_search": {
         "url": "/supersearch/search", 
-        "querylist": []
-    }
-    ,"reason": {
-        "url": "/supersearch/reason",
+        "schemafile":"../specs/supersearch/search/response.schema.json",
         "querylist": []
     }
     ,"supersearch_list": {
         "url": "/supersearch/list/", 
+        "schemafile":"../specs/supersearch/list/response.schema.json",
         "query": {"id": ""}
     }
 }

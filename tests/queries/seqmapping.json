@@ -1,6 +1,7 @@
 {
     "seqmapping_search":{
         "url":"/seqmapping/search"
+        ,"schemafile":"../specs/seqmapping/search/response.schema.json"
         ,"querylist":[
             {
                 "label":"PubMed query with phosphorylation, snv, mutagenesis",

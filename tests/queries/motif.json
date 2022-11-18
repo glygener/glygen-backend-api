@@ -1,10 +1,12 @@
 {
     "motif_detail":{
         "url":"/motif/detail"
+        ,"schemafile":"../specs/motif/detail/response.schema.json"
         ,"query":{"motif_ac":"GGM.000115"}
     }
     ,"motif_list":{
         "url":"/motif/list"
+        ,"schemafile":"../specs/motif/list/response.schema.json"
         ,"query":{"sort":"glycan_count", "order":"desc"}
     }
 }

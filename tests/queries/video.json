@@ -1,19 +1,23 @@
 {
     "video_addnew":{
         "url":"/video/addnew"
-        ,"query":{"token":"","url":"https://www.youtube.com/embed/xyV5v5nRm6A?rel=0"}
+        ,"schemafile":"../specs/video/addnew/response.schema.json"
+        ,"query":{"url":"https://www.youtube.com/embed/xyV5v5nRm6A?rel=0"}
     }
     ,"video_detail":{
         "url":"/video/detail"
-        ,"query":{"token":""}
+        ,"schemafile":"../specs/video/detail/response.schema.json"
+        ,"query":{"id":"636ab6f6c05cd07cd9f87dff"}
     }
     ,"video_list":{
         "url":"/video/list"
-        ,"query":{"token":""}
+        ,"schemafile":"../specs/video/list/response.schema.json"
+        ,"query":{}
     }
     ,"video_delete":{
         "url":"/video/delete"
-        ,"query":{"id": "", "token":""}
+        ,"schemafile":"../specs/video/delete/response.schema.json"
+        ,"query":{"id": "636ab6f6c05cd07cd9f87dff"}
     }
 }
 

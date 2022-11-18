@@ -1,6 +1,7 @@
 {
     "pages_home_init": {
         "url": "/pages/home_init/",
+        "schemafile":"../specs/pages/home_init/response.schema.json",
         "query":{}
     }
 }

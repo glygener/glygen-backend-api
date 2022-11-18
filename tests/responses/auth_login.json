@@ -1,7 +1,7 @@
 {
-    "access_csrf": "89813afa-6c8c-4e1d-8dbc-62ae3b763b79",
-    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Njg2MjQxOTcsIm5iZiI6MTY2ODYyNDE5NywianRpIjoiNDUzMDk0NmUtZDI1YS00NWVhLWE1N2YtNTBhMzgzOTRhZjBlIiwiZXhwIjoxNjY4NzEwNTk3LCJpZGVudGl0eSI6InJ5a2Foc2F5QGd3dS5lZHUiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJjc3JmIjoiODk4MTNhZmEtNmM4Yy00ZTFkLThkYmMtNjJhZTNiNzYzYjc5In0.-EX5dgtEuci2h2HxRJS2CiD6s18Wimh0Kzuc1dKt6nE",
-    "refresh_csrf": "e6374e10-da90-4ef2-88e1-6cb83b65ac0b",
+    "access_csrf": "fda74d42-0d03-466e-b617-117fda814141",
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Njg3MDkyNzAsIm5iZiI6MTY2ODcwOTI3MCwianRpIjoiYmZhYzA0NDQtMDAyZC00Yjc1LWJjMTAtZDlmMTUyOGFiZGVlIiwiZXhwIjoxNjY4Nzk1NjcwLCJpZGVudGl0eSI6InJ5a2Foc2F5QGd3dS5lZHUiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJjc3JmIjoiZmRhNzRkNDItMGQwMy00NjZlLWI2MTctMTE3ZmRhODE0MTQxIn0.DZHkLr_ZOV9X0uCIMwaXvQzzhVgPZElTOinf-Pxy_Ik",
+    "refresh_csrf": "7c47e580-2489-4601-8f69-6a263bcc9f49",
     "status": 1,
     "username": "rykahsay@gwu.edu"
 }

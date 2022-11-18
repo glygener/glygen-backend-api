@@ -65,9 +65,8 @@ def video_detail(query_obj, config_obj):
 
     res_obj = {}
     try:
-        q_obj = {}
-        doc_list = list(dbh["c_video"].find(q_obj))
-        res_obj = doc_list[0]
+        q_obj = {"_id":ObjectId(query_obj["id"])}
+        res_obj = dbh["c_video"].find_one(q_obj)
         if res_obj == None:
             return {"error_list":[{"error_code":"record-not-found"}]}
         res_obj["id"] = str(res_obj["_id"])
