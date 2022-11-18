@@ -1,4 +1,4 @@
-graft gsa/conf
+graft glygen/conf
 global-exclude *.pyc
 
 

@@ -15,25 +15,6 @@ from glygen.db import get_mongodb
 
 
 
-def connect_to_mongodb(db_obj):
-
-    try:
-        client = pymongo.MongoClient('mongodb://localhost:27017',
-            username=db_obj["mongodbuser"],
-            password=db_obj["mongodbpassword"],
-            authSource=db_obj["mongodbname"],
-            authMechanism='SCRAM-SHA-1',
-            serverSelectionTimeoutMS=10000
-        )
-        client.server_info()
-        dbh = client[db_obj["mongodbname"]]
-        return dbh, {}
-    except pymongo.errors.ServerSelectionTimeoutError as err:
-        return {}, {"error_list":[{"error_code": "open-connection-failed"}]}
-    except pymongo.errors.OperationFailure as err:
-        return {}, {"error_list":[{"error_code": "mongodb-auth-failed"}]}
-
-
 
 def get_random_string(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -354,8 +335,7 @@ def gzip_str(string_):
 
 def get_cached_records_direct(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -451,8 +431,7 @@ def get_cached_records_direct(query_obj, config_obj):
 
 def get_cached_motif_records_direct(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -517,13 +496,13 @@ def get_cached_motif_records_direct(query_obj, config_obj):
 
 def get_cached_records_indirect(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     if query_obj["id"] == "":
         return {"error_list":[{"error_code":"empty-list-id"}]}
+
 
     #Collect errors 
     error_list = get_errors_in_query("cached_list", query_obj, config_obj)
@@ -542,6 +521,8 @@ def get_cached_records_indirect(query_obj, config_obj):
     cached_obj = dbh[cache_collection].find_one(mongo_query)
 
 
+
+
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
     if cached_obj == None:
@@ -551,6 +532,7 @@ def get_cached_records_indirect(query_obj, config_obj):
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "conf/hit_scoring.json")
     score_dict = json.loads(open(json_url, "r").read())
+
 
     cached_obj.pop("_id")
     cached_obj["results"] = []
