@@ -503,6 +503,7 @@ def get_cached_records_indirect(query_obj, config_obj):
     if query_obj["id"] == "":
         return {"error_list":[{"error_code":"empty-list-id"}]}
 
+
     #Collect errors 
     error_list = get_errors_in_query("cached_list", query_obj, config_obj)
     if error_list != []:
@@ -520,6 +521,8 @@ def get_cached_records_indirect(query_obj, config_obj):
     cached_obj = dbh[cache_collection].find_one(mongo_query)
 
 
+
+
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
     if cached_obj == None:
@@ -529,6 +532,7 @@ def get_cached_records_indirect(query_obj, config_obj):
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "conf/hit_scoring.json")
     score_dict = json.loads(open(json_url, "r").read())
+
 
     cached_obj.pop("_id")
     cached_obj["results"] = []
