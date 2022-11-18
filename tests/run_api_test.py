@@ -51,18 +51,23 @@ def main():
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
-    
+    parser.add_option("-g","--group",action="store",dest="group",help="all/protein/glycan/...")
+      
     (options,args) = parser.parse_args()
-    for key in ([options.server]):
+    for key in ([options.server, options.group]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     log_dir = "/data/shared/glygen/logs/"
+    base_url = "http://localhost:8082"
     if options.server == "dev":
         log_dir = "/Volumes/disk2/data/shared/glygen/logs/"
+        base_url = "http://localhost:5000"
 
     file_list = glob.glob("queries/*.json")
+    if options.group != "all":
+        file_list = glob.glob("queries/%s.json" % (options.group))
 
     in_file = "queries/qlist/supersearch_querylist.json"
     supersearch_qlist = json.loads(open(in_file, "r").read())
@@ -70,9 +75,6 @@ def main():
     
     
     out_obj_list = []
-    #base_url = "https://api.dev.glygen.org"
-    base_url = "http://localhost:8082"
-    
     last_list_id = ""
     try:
         cmd = "rm -f " + log_dir + "failure_log*"
