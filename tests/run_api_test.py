@@ -71,7 +71,7 @@ def main():
     
     out_obj_list = []
     #base_url = "https://api.dev.glygen.org"
-    base_url = "http://localhost:5000"
+    base_url = "http://localhost:8082"
     
     last_list_id = ""
     try:
