@@ -1,5 +1,5 @@
 {
-    "search_init":{
+    "glycan_search_init":{
         "url":"/glycan/search_init/"
         ,"schemafile":"../specs/glycan/search_init/response.schema.json"
         ,"query":{

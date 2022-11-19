@@ -1,72 +1,44 @@
-supersearch_search_init query:1 status:failed [see logs/failure_log_supersearch_search_init.1.json] 
-supersearch_search query:1 status:failed [see logs/failure_log_supersearch_search.1.json] 
-supersearch_search query:2 status:failed [see logs/failure_log_supersearch_search.2.json] 
-supersearch_search query:3 status:failed [see logs/failure_log_supersearch_search.3.json] 
-supersearch_search query:4 status:failed [see logs/failure_log_supersearch_search.4.json] 
-supersearch_search query:5 status:failed [see logs/failure_log_supersearch_search.5.json] 
-supersearch_search query:6 status:failed [see logs/failure_log_supersearch_search.6.json] 
-supersearch_search query:7 status:failed [see logs/failure_log_supersearch_search.7.json] 
-supersearch_search query:8 status:failed [see logs/failure_log_supersearch_search.8.json] 
-supersearch_search query:9 status:failed [see logs/failure_log_supersearch_search.9.json] 
-supersearch_search query:10 status:failed [see logs/failure_log_supersearch_search.10.json] 
-supersearch_search query:11 status:failed [see logs/failure_log_supersearch_search.11.json] 
-supersearch_search query:12 status:failed [see logs/failure_log_supersearch_search.12.json] 
-supersearch_search query:13 status:failed [see logs/failure_log_supersearch_search.13.json] 
-supersearch_search query:14 status:failed [see logs/failure_log_supersearch_search.14.json] 
-supersearch_search query:15 status:failed [see logs/failure_log_supersearch_search.15.json] 
-supersearch_search query:16 status:failed [see logs/failure_log_supersearch_search.16.json] 
-supersearch_search query:17 status:failed [see logs/failure_log_supersearch_search.17.json] 
-supersearch_list query:1 status:failed [see logs/failure_log_supersearch_list.1.json] 
-data_download query:1 status:success 
-search_init query:1 status:success 
-glycan_search_simple query:1 status:success 
-glycan_search query:1 status:success 
-glycan_list query:1 status:failed [see logs/failure_log_glycan_list.1.json] 
-glycan_list query:2 status:failed [see logs/failure_log_glycan_list.2.json] 
-glycan_detail query:1 status:success 
-glycan_image query:1 status:failed [see logs/failure_log_glycan_image.1.json] 
-seqmapping_search query:1 status:success 
-site_search_init query:1 status:success 
-site_detail query:1 status:success 
-video_addnew query:1 status:success 
-video_detail query:1 status:failed [see logs/failure_log_video_detail.1.json] 
-video_list query:1 status:success 
-video_delete query:1 status:failed [see logs/failure_log_video_delete.1.json] 
-protein_search_init query:1 status:success 
-protein_search_simple query:1 status:success 
-protein_search query:1 status:success 
-protein_list query:1 status:failed [see logs/failure_log_protein_list.1.json] 
-protein_detail query:1 status:success 
-protein_alignment query:1 status:success 
-auth_userid query:1 status:success 
-auth_contact query:1 status:success 
-auth_register query:1 status:failed [see logs/failure_log_auth_register.1.json] 
-auth_userinfo query:1 status:failed [see logs/failure_log_auth_userinfo.1.json] 
 auth_userupdate query:1 status:success 
+auth_userinfo query:1 status:failed [see logs/failure_log_auth_userinfo.1.json] 
+auth_userid query:1 status:success 
+auth_register query:1 status:failed [see logs/failure_log_auth_register.1.json] 
 auth_login query:1 status:failed [see logs/failure_log_auth_login.1.json] 
-auth_contactlist query:1 status:failed [see logs/failure_log_auth_contactlist.1.json] 
 auth_contactupdate query:1 status:success 
+auth_contactlist query:1 status:failed [see logs/failure_log_auth_contactlist.1.json] 
 auth_contactdelete query:1 status:success 
-pages_home_init query:1 status:success 
-globalsearch_search query:1 status:failed [see logs/failure_log_globalsearch_search.1.json] 
-event_addnew query:1 status:success 
-event_list query:1 status:failed [see logs/failure_log_event_list.1.json] 
+auth_contact query:1 status:success 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+data_download query:1 status:success 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
 event_update query:1 status:success 
+event_list query:1 status:failed [see logs/failure_log_event_list.1.json] 
 event_detail query:1 status:failed [see logs/failure_log_event_detail.1.json] 
 event_delete query:1 status:success 
-typeahead_typeahead query:1 status:success 
-typeahead_categorized_typeahead query:1 status:success 
-typeahead_global_typeahead query:1 status:success 
-typeahead_global_typeahead query:2 status:success 
-typeahead_global_typeahead query:3 status:success 
-motif_detail query:1 status:success 
-motif_list query:1 status:failed [see logs/failure_log_motif_list.1.json] 
-graph_getdata query:1 status:failed [see logs/failure_log_graph_getdata.1.json] 
-publication_detail query:1 status:success 
-publication_detail query:2 status:failed [see logs/failure_log_publication_detail.2.json] 
-publication_detail query:3 status:failed [see logs/failure_log_publication_detail.3.json] 
-publication_detail query:4 status:failed [see logs/failure_log_publication_detail.4.json] 
+event_addnew query:1 status:success 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+glycan_search_simple query:1 status:success 
+glycan_search_init query:1 status:success 
+glycan_search query:1 status:success 
+glycan_list query:1 status:success 
+glycan_list query:2 status:success 
+glycan_image query:1 status:failed [see logs/failure_log_glycan_image.1.json] 
+glycan_detail query:1 status:success 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+graph_getdata query:1 status:success 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+job_status query:1 status:failed [see logs/failure_log_job_status.1.json] 
+job_results query:1 status:failed [see logs/failure_log_job_results.1.json] 
+job_queue query:1 status:success 
+job_list query:1 status:failed [see logs/failure_log_job_list.1.json] 
 job_init query:1 status:success 
+job_detail query:1 status:failed [see logs/failure_log_job_detail.1.json] 
 job_addnew query:1 status:failed [see logs/failure_log_job_addnew.1.json] 
 job_addnew query:2 status:failed [see logs/failure_log_job_addnew.2.json] 
 job_addnew query:3 status:failed [see logs/failure_log_job_addnew.3.json] 
@@ -75,12 +47,50 @@ job_addnew query:5 status:failed [see logs/failure_log_job_addnew.5.json]
 job_addnew query:6 status:failed [see logs/failure_log_job_addnew.6.json] 
 job_addnew query:7 status:failed [see logs/failure_log_job_addnew.7.json] 
 job_addnew query:8 status:failed [see logs/failure_log_job_addnew.8.json] 
-job_results query:1 status:failed [see logs/failure_log_job_results.1.json] 
-glycan_list query:1 status:failed [see logs/failure_log_glycan_list.1.json] 
-glycan_list query:2 status:failed [see logs/failure_log_glycan_list.2.json] 
-job_queue query:1 status:success 
-job_status query:1 status:failed [see logs/failure_log_job_status.1.json] 
-job_detail query:1 status:failed [see logs/failure_log_job_detail.1.json] 
-job_list query:1 status:failed [see logs/failure_log_job_list.1.json] 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+motif_list query:1 status:success 
+motif_detail query:1 status:success 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+pages_home_init query:1 status:success 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+protein_search_simple query:1 status:success 
+protein_search_init query:1 status:success 
+protein_search query:1 status:success 
+protein_list query:1 status:success 
+protein_detail query:1 status:success 
+protein_alignment query:1 status:success 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+publication_detail query:1 status:success 
+publication_detail query:2 status:success 
+publication_detail query:3 status:success 
+publication_detail query:4 status:success 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+seqmapping_search query:1 status:success 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+site_search_init query:1 status:success 
+site_detail query:1 status:success 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+typeahead_typeahead query:1 status:success 
+typeahead_global_typeahead query:1 status:success 
+typeahead_global_typeahead query:2 status:success 
+typeahead_global_typeahead query:3 status:success 
+typeahead_categorized_typeahead query:1 status:success 
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+
+Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+video_list query:1 status:success 
+video_detail query:1 status:failed [see logs/failure_log_video_detail.1.json] 
+video_delete query:1 status:failed [see logs/failure_log_video_delete.1.json] 
+video_addnew query:1 status:success 
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
