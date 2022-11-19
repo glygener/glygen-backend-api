@@ -21,18 +21,6 @@
                 }
             },
             {
-                "label":"Failing blastp example",
-                "query":{
-                    "jobtype":"blastp",
-                    "parameters":{
-                        "seq":"000000111100000",
-                        "targetdb":"canonicalsequences_all",
-                        "num_alignments":3,
-                        "evalue":1e-3
-                    }
-                }
-            },
-            {
                 "label":"Successful substructure search + None (align = substructure) glycoct format",
                 "query":{
                     "jobtype":"structure_search",
