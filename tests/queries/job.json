@@ -99,31 +99,6 @@
         ,"schemafile":"../specs/job/results/response.schema.json"
         ,"query":{"jobid":7}
     }
-    ,"glycan_list": {
-        "url": "/glycan/list/" 
-        ,"schemafile":"../specs/glycan/list/response.schema.json"
-        ,"querylist":[
-            {
-                "label":"Simple listing",
-                "query":{
-                    "id":""
-                }
-            }
-            ,{
-                "label":"Listing with filters",
-                "query":{
-                    "id":"",
-                    "filters":[
-                        {   
-                            "id":"by_mass",
-                            "selected":["2k_3k", "3k_4k"],
-                            "operator":"OR"
-                        }
-                    ]
-                }
-            }
-        ]
-    }
     ,"job_queue":{
         "url":"/job/queue"
         ,"schemafile":"../specs/job/queue/response.schema.json"

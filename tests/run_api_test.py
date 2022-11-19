@@ -77,8 +77,6 @@ def main():
     out_obj_list = []
     last_list_id = ""
     try:
-        cmd = "rm -f " + log_dir + "failure_log*"
-        x = subprocess.getoutput(cmd)
         summary_file = log_dir + "api_test_summary.csv"
         FW = open(summary_file, "w")
         for in_file in file_list:
@@ -87,7 +85,10 @@ def main():
                 print (json.dumps(res_obj, indent=4))
                 continue
             t_obj_dict = json.loads(open(in_file, "r").read())
-            for api_name in t_obj_dict:
+            api_name_list = sorted(list(t_obj_dict.keys()), reverse=True)
+            for api_name in api_name_list:
+                cmd = "rm -f " + log_dir + "failure_log_%s*" % (api_name)
+                x = subprocess.getoutput(cmd)
                 t_obj = t_obj_dict[api_name]
                 t_obj["url"] += "/" if t_obj["url"][-1] != "/" else ""
                 api_url = base_url + t_obj["url"]
@@ -96,7 +97,10 @@ def main():
                     if api_name.find("supersearch") != -1:
                         t_obj["querylist"] = supersearch_qlist
                     for o in t_obj["querylist"]:
+                        if api_name.find("_list") != -1 and "id" in o["query"]:
+                            o["query"]["id"] = last_list_id
                         req_obj_list.append(o["query"])
+                    
                 elif "query" in t_obj:
                     if api_name.find("_list") != -1 and "id" in t_obj["query"]:
                         t_obj["query"]["id"] = last_list_id

@@ -1,0 +1,20 @@
+#python3 run_api_test.py -s tst -g globalsearch
+#python3 run_api_test.py -s tst -g supersearch
+
+python3 run_api_test.py -s tst -g auth
+python3 run_api_test.py -s tst -g data
+python3 run_api_test.py -s tst -g event
+python3 run_api_test.py -s tst -g glycan
+python3 run_api_test.py -s tst -g graphdata
+python3 run_api_test.py -s tst -g idmapping
+python3 run_api_test.py -s tst -g job
+python3 run_api_test.py -s tst -g log
+python3 run_api_test.py -s tst -g motif
+python3 run_api_test.py -s tst -g pages
+python3 run_api_test.py -s tst -g protein
+python3 run_api_test.py -s tst -g publication
+python3 run_api_test.py -s tst -g seqmapping
+python3 run_api_test.py -s tst -g site
+python3 run_api_test.py -s tst -g typeahead
+python3 run_api_test.py -s tst -g usecases
+python3 run_api_test.py -s tst -g video
