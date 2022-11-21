@@ -85,7 +85,7 @@
     ,"job_results":{
         "url":"/job/results"
         ,"schemafile":"../specs/job/results/response.schema.json"
-        ,"query":{"jobid":7}
+        ,"query":{"jobid":1}
     }
     ,"job_queue":{
         "url":"/job/queue"
