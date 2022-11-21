@@ -178,15 +178,16 @@ def auth_userinfo(logged_user, query_obj, config_obj):
     error_list = get_errors_in_query("auth_userinfo",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
-   
     logged_user_info = dbh["c_users"].find_one({'email' : logged_user})
-
     if "role" not in logged_user_info:
         return {"error_list":[{"error_code":"no-admin-access"}]}
     if logged_user_info["role"] != "admin":
         return {"error_list":[{"error_code":"no-admin-access"}]}
 
-    res_obj = dbh["c_users"].find_one({'email' : query_obj["email"].lower()})
+    q_obj = {'email' : query_obj["email"]}
+    res_obj = dbh["c_users"].find_one(q_obj)
+    if res_obj == None:
+        return {"error_list":[{"error_code":"user-does-not-exist"}]}
     res_obj.pop("_id")
     res_obj.pop("password")
 
@@ -302,6 +303,37 @@ def auth_userupdate(logged_user, query_obj, config_obj):
         return {"type":"success"}
     except Exception as e:
         return {"error_list":[{"error_code":str(e)}]}
+
+
+
+
+def auth_userdelete(logged_user, query_obj, config_obj):
+    dbh, error_obj = get_mongodb()
+
+    #Collect errors
+    error_list = get_errors_in_query("auth_userdelete",query_obj, config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+
+    try:
+        target_user_name = query_obj["email"]
+        target_user_info = dbh["c_users"].find_one({'email' : target_user_name})
+        logged_user_info = dbh["c_users"].find_one({'email' : logged_user})
+        update_obj = {}
+        if "role" not in logged_user_info:
+            return {"error_list":[{"error_code":"no-admin-role"}]}
+        if logged_user_info["role"] != "admin":
+            return {"error_list":[{"error_code":"no-admin-role"}]}
+        q_obj = {"email":target_user_name}
+        user_doc = dbh["c_users"].find_one(q_obj)
+        if user_doc == None:
+            return {"error_list":[{"error_code":"user-does-not-exist"}]}
+        res = dbh["c_users"].delete_one(q_obj)
+        return {"type":"success"}
+    except Exception as e:
+        return {"error_list":[{"error_code":str(e)}]}
+
+
 
 
 
