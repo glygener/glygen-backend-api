@@ -127,6 +127,7 @@
 
 >> Test this guys on glygen server
   $ http POST http://localhost:5000/job/init/ < temp/empty.json
+  $ http POST http://localhost:5000/job/clean/ < temp/empty.json
   $ http POST http://localhost:5000/job/addnew/ < temp/job_addnew.json
   $ http POST http://localhost:5000/job/list/ < temp/job_list.json
   $ http POST http://localhost:5000/job/detail/ < temp/job_detail.json
