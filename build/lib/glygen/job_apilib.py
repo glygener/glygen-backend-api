@@ -423,6 +423,9 @@ def job_status(query_obj, config_obj):
                     in_dir = config_obj[config_obj["server"]]["pathinfo"]["userdata"]
                     in_dir += str(job_doc["jobid"])
                     out_file = in_dir + "/" + f_obj["name"] 
+                    if os.path.isfile(out_file) == False:
+                        err = "invalid-file jobid=%s, filename=%s" % (job_doc["jobid"],f_obj["name"])
+                        return {"error_list":[{"error_code":err}]}
                     res_obj["result_count"] = get_result_count(job_doc["jobtype"], out_file)
                 idx += 1
     except Exception as e:
@@ -441,12 +444,12 @@ def get_result_count(job_type, out_file):
     elif job_type == "blastp":
         cmd = "grep \"Score =\" %s | wc" % (out_file)
         n = int(subprocess.getoutput(cmd).strip().split(" ")[0])
+
     return n
 
 
  
 def job_detail(query_obj, config_obj):
-
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
