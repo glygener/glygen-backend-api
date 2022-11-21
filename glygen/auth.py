@@ -18,7 +18,8 @@ from flask_jwt_extended import (
     set_refresh_cookies, unset_jwt_cookies
     )
 
-from glygen.auth_apilib import auth_userid, auth_contact, auth_register, auth_login,  auth_userinfo, auth_userupdate, auth_contactlist, auth_contactupdate, auth_contactdelete
+from glygen.auth_apilib import auth_userid, auth_contact, auth_register, auth_login,  auth_userinfo, auth_userupdate, auth_userdelete, auth_contactlist, auth_contactupdate, auth_contactdelete
+
 from glygen.util import get_error_obj, trim_object
 import traceback
 
@@ -30,7 +31,9 @@ contact_query_model = api.model('Yyy Query',{ 'query':fields.String(required=Tru
 register_query_model = api.model('Yyy Query',{ 'query':fields.String(required=True, default="", description="")})
 login_query_model = api.model('Login Query',{ 'query':fields.String(required=True, default="", description="")})
 userinfo_query_model = api.model('Yyy Query',{ 'query':fields.String(required=True, default="", description="")})
-userupdate_query_model = api.model('Yyy Query',{ 'query':fields.String(required=True, default="", description="")})
+userupdate_query_model = api.model('User Update Query',{ 'query':fields.String(required=True, default="", description="")})
+userdelete_query_model = api.model('User Delete Query',{ 'query':fields.String(required=True,    default="", description="")})
+
 contactlist_query_model = api.model('Yyy Query',{ 'query':fields.String(required=True, default="", description="")})
 contactupdate_query_model = api.model('Yyy Query',{ 'query':fields.String(required=True, default="", description="")})
 contactdelete_query_model = api.model('Yyy Query',{ 'query':fields.String(required=True, default="", description="")})
@@ -217,7 +220,32 @@ class Auth(Resource):
         
         return res_obj
 
+@api.route('/userdelete/')
+class Auth(Resource):
+    @api.doc('userdelete')
+    @api.expect(userdelete_query_model)
+    #@jwt_required
+    def post(self):
+        api_name = "auth_userdelete"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            trim_object(req_obj)
+            current_user, user_info = "rykahsay@gwu.edu", {}
+            #current_user = get_jwt_identity()
+            #user_info, err_obj, status = get_userinfo(current_user)
+            #if status == 0:
+            #    return err_obj
+            res_obj = auth_userdelete(current_user, req_obj, config_obj)
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        http_code = 500 if "error_list" in res_obj else 200
 
+        return res_obj
 
 
 
