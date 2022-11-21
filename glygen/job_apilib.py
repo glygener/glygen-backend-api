@@ -444,12 +444,12 @@ def get_result_count(job_type, out_file):
     elif job_type == "blastp":
         cmd = "grep \"Score =\" %s | wc" % (out_file)
         n = int(subprocess.getoutput(cmd).strip().split(" ")[0])
+
     return n
 
 
  
 def job_detail(query_obj, config_obj):
-
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
