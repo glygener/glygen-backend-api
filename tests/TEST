@@ -87,7 +87,8 @@
   $ http POST http://localhost:5000/event/delete/ < temp/event_delete.json
 
 
-  
+ 
+
   $ http POST http://localhost:5000/misc/info/ < temp/empty.json
   $ http POST http://localhost:5000/misc/lastid/ < temp/empty.json
 

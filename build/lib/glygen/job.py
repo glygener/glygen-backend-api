@@ -52,6 +52,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        config_obj["server"] = current_app.config["SERVER"]
         res_obj = {}
         try:
             req_obj = request.json
@@ -73,6 +74,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        config_obj["server"] = current_app.config["SERVER"]
         res_obj = {}
         try:
             req_obj = request.json
@@ -93,6 +95,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        config_obj["server"] = current_app.config["SERVER"]
         res_obj = {}
         try:
             req_obj = request.json
@@ -113,6 +116,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        config_obj["server"] = current_app.config["SERVER"]
         res_obj = {}
         try:
             req_obj = request.json
@@ -132,6 +136,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        config_obj["server"] = current_app.config["SERVER"]
         res_obj = {}
         try:
             req_obj = request.json
@@ -152,6 +157,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        config_obj["server"] = current_app.config["SERVER"]
         res_obj = {}
         try:
             req_obj = request.json
@@ -173,6 +179,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        config_obj["server"] = current_app.config["SERVER"]
         res_obj = {}
         try:
             req_obj = request.json
@@ -192,6 +199,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        config_obj["server"] = current_app.config["SERVER"]
         res_obj = {}
         try:
             req_obj = request.json
@@ -211,6 +219,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        config_obj["server"] = current_app.config["SERVER"]
         res_obj = {}
         try:
             req_obj = request.json
