@@ -8,6 +8,7 @@ import time
 import subprocess
 import json
 import bcrypt
+import pymongo
 from flask_jwt_extended import (
     jwt_required, get_jwt_identity
 )
@@ -38,6 +39,9 @@ bcolist_query_model = api.model(
 
 info_query_model = api.model(
     'Info Query', { 'query': fields.String(required=True, default="", description='')})
+
+lastid_query_model = api.model(
+    'Last ID Query', { 'query': fields.String(required=True, default="", description='')})
 
 
 @api.route('/info/')
@@ -203,6 +207,39 @@ class Misc(Resource):
         return res_obj
 
 
+@api.route('/lastid/')
+class Misc(Resource):
+    @api.doc('lastid')
+    @api.expect(lastid_query_model)
+    def post(self):
+        api_name = "misc_lastid"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = request.json
+            dbh, error_obj = get_mongodb()
+            if error_obj != {}:
+                return error_obj
+            p_dict = {
+                "c_job":"jobid",
+                "c_video":"_id",
+                "c_event":"_id"
+            }
+            res_obj = {}
+            
+            sort_obj = [("_id",pymongo.DESCENDING)]
+            for coll in p_dict:
+                p = p_dict[coll]
+                for doc in dbh[coll].find({}).sort(sort_obj):
+                    val = str(doc[p]) if p == "_id" else doc[p]
+                    res_obj[coll] = {p:val}
+                    break
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
 
 
 
