@@ -23,6 +23,9 @@ def is_valid_json(myjson):
     return True
 
 
+
+
+
 def validate_response(res_obj, schema_file):
 
     base_uri = 'file://{}/'.format(os.path.dirname(schema_file))
@@ -43,6 +46,18 @@ def validate_response(res_obj, schema_file):
 
 
 
+def get_id_dict(base_url):
+
+    id_dict = {}
+    api_url = base_url + "/misc/lastid"
+    res = requests.post(api_url, json={}, verify=False)
+    res_obj = json.loads(res.content)
+    for coll in res_obj:
+        p = coll[2:]
+        id_dict[p] = res_obj[coll]
+        if "_id" in id_dict[p]:
+            id_dict[p]["id"] = id_dict[p]["_id"]
+    return id_dict
 
 
 
@@ -79,14 +94,15 @@ def main():
     try:
         summary_file = log_dir + "api_test_summary.csv"
         FW = open(summary_file, "w")
+       
+
         for in_file in file_list:
             if is_valid_json(open(in_file, "r").read()) == False:
                 res_obj = {"infile":in_file, "error_code": "invalid-query-json"}
                 print (json.dumps(res_obj, indent=4))
                 continue
             t_obj_dict = json.loads(open(in_file, "r").read())
-            api_name_list = sorted(list(t_obj_dict.keys()), reverse=True)
-            for api_name in api_name_list:
+            for api_name in t_obj_dict:
                 cmd = "rm -f " + log_dir + "failure_log_%s*" % (api_name)
                 x = subprocess.getoutput(cmd)
                 t_obj = t_obj_dict[api_name]
@@ -117,6 +133,13 @@ def main():
                         o.pop("query")
                         api_url += t_obj["query"] + "/"
                         req_obj = {}
+                   
+                    id_dict = get_id_dict(base_url)
+                    grp = api_name.split("_")[0]
+                    if grp in id_dict:
+                        for p in id_dict[grp]:
+                            if p in req_obj:
+                                req_obj[p] = id_dict[grp][p]
                     res = requests.post(api_url, json=req_obj, verify=False)
                     o["url"] = api_url
                     o["status_code"] = res.status_code

@@ -4,13 +4,9 @@
     "properties": {
         "status": {
             "type": "string"
-        },
-        "error_in_wait_server_lines_2": {
-            "type": "string"
         }
     },
     "required": [
-        "error_in_wait_server_lines_2",
         "status"
     ]
 }

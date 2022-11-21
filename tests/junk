@@ -1,31 +1,31 @@
-auth_userupdate query:1 status:success 
-auth_userinfo query:1 status:failed [see logs/failure_log_auth_userinfo.1.json] 
 auth_userid query:1 status:success 
-auth_register query:1 status:failed [see logs/failure_log_auth_register.1.json] 
-auth_login query:1 status:failed [see logs/failure_log_auth_login.1.json] 
-auth_contactupdate query:1 status:success 
-auth_contactlist query:1 status:failed [see logs/failure_log_auth_contactlist.1.json] 
-auth_contactdelete query:1 status:success 
 auth_contact query:1 status:success 
+auth_register query:1 status:failed [see logs/failure_log_auth_register.1.json] 
+auth_userinfo query:1 status:failed [see logs/failure_log_auth_userinfo.1.json] 
+auth_userupdate query:1 status:success 
+auth_login query:1 status:failed [see logs/failure_log_auth_login.1.json] 
+auth_contactlist query:1 status:failed [see logs/failure_log_auth_contactlist.1.json] 
+auth_contactupdate query:1 status:success 
+auth_contactdelete query:1 status:success 
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
 data_download query:1 status:success 
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
-event_update query:1 status:success 
-event_list query:1 status:failed [see logs/failure_log_event_list.1.json] 
-event_detail query:1 status:failed [see logs/failure_log_event_detail.1.json] 
-event_delete query:1 status:success 
 event_addnew query:1 status:success 
+event_list query:1 status:failed [see logs/failure_log_event_list.1.json] 
+event_update query:1 status:success 
+event_detail query:1 status:success 
+event_delete query:1 status:success 
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
-glycan_search_simple query:1 status:success 
 glycan_search_init query:1 status:success 
+glycan_search_simple query:1 status:success 
 glycan_search query:1 status:success 
 glycan_list query:1 status:success 
 glycan_list query:2 status:success 
-glycan_image query:1 status:failed [see logs/failure_log_glycan_image.1.json] 
 glycan_detail query:1 status:success 
+glycan_image query:1 status:failed [see logs/failure_log_glycan_image.1.json] 
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
 graph_getdata query:1 status:success 
@@ -33,33 +33,32 @@ graph_getdata query:1 status:success
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
-job_status query:1 status:failed [see logs/failure_log_job_status.1.json] 
+job_init query:1 status:success 
+job_addnew query:1 status:success 
+job_addnew query:2 status:success 
+job_addnew query:3 status:success 
+job_addnew query:4 status:success 
+job_addnew query:5 status:success 
+job_addnew query:6 status:success 
+job_addnew query:7 status:success 
 job_results query:1 status:failed [see logs/failure_log_job_results.1.json] 
 job_queue query:1 status:success 
-job_list query:1 status:failed [see logs/failure_log_job_list.1.json] 
-job_init query:1 status:success 
-job_detail query:1 status:failed [see logs/failure_log_job_detail.1.json] 
-job_addnew query:1 status:failed [see logs/failure_log_job_addnew.1.json] 
-job_addnew query:2 status:failed [see logs/failure_log_job_addnew.2.json] 
-job_addnew query:3 status:failed [see logs/failure_log_job_addnew.3.json] 
-job_addnew query:4 status:failed [see logs/failure_log_job_addnew.4.json] 
-job_addnew query:5 status:failed [see logs/failure_log_job_addnew.5.json] 
-job_addnew query:6 status:failed [see logs/failure_log_job_addnew.6.json] 
-job_addnew query:7 status:failed [see logs/failure_log_job_addnew.7.json] 
-job_addnew query:8 status:failed [see logs/failure_log_job_addnew.8.json] 
+job_status query:1 status:success 
+job_detail query:1 status:success 
+job_list query:1 status:success 
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
-motif_list query:1 status:success 
 motif_detail query:1 status:success 
+motif_list query:1 status:success 
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
 pages_home_init query:1 status:success 
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
-protein_search_simple query:1 status:success 
 protein_search_init query:1 status:success 
+protein_search_simple query:1 status:success 
 protein_search query:1 status:success 
 protein_list query:1 status:success 
 protein_detail query:1 status:success 
@@ -80,17 +79,17 @@ site_detail query:1 status:success
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
 typeahead_typeahead query:1 status:success 
+typeahead_categorized_typeahead query:1 status:success 
 typeahead_global_typeahead query:1 status:success 
 typeahead_global_typeahead query:2 status:success 
 typeahead_global_typeahead query:3 status:success 
-typeahead_categorized_typeahead query:1 status:success 
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
-video_list query:1 status:success 
-video_detail query:1 status:failed [see logs/failure_log_video_detail.1.json] 
-video_delete query:1 status:failed [see logs/failure_log_video_delete.1.json] 
 video_addnew query:1 status:success 
+video_detail query:1 status:success 
+video_list query:1 status:success 
+video_delete query:1 status:success 
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
