@@ -567,6 +567,24 @@ def job_delete(query_obj, config_obj):
     return res_obj
 
 
+def job_clean(data_path, server):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    res_obj = {}
+    try:
+        res = dbh["c_job"].delete_many({})
+        res_obj = {"type":"success"}
+        in_dir = data_path + "/data/shared/glygen/userdata/" + server + "/jobs/*"
+        cmd = "rm -rf " + in_dir
+        x = subprocess.getoutput(cmd)
+    except Exception as e:
+        res_obj = {"error_list":[{"error_code":str(e)}]}
+
+    return res_obj
+
 def validate_protein_seq(seq):
 
     seq = seq.upper()
