@@ -89,6 +89,8 @@
 
   
   $ http POST http://localhost:5000/misc/info/ < temp/empty.json
+  $ http POST http://localhost:5000/misc/lastid/ < temp/empty.json
+
   $ http POST http://localhost:5000/misc/bcolist/ < temp/empty.json
   $ http POST http://localhost:5000/misc/gtclist/ < temp/empty.json
   $ http POST http://localhost:5000/misc/verlist/ < temp/empty.json

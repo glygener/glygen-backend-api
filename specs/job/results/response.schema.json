@@ -16,7 +16,6 @@
                 }
             },
             "required": [
-                "align",
                 "seq"
             ]
         },
