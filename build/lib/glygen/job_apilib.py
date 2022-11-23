@@ -103,7 +103,7 @@ def job_addnew(query_obj, config_obj, data_path, server):
                 return status_obj
             res_obj = {"submission":"old", "status":status_obj, "jobid":old_doc["jobid"]}
         else:
-            in_dir = data_path + "/data/shared/glygen/userdata/" + server + "/jobs/"
+            in_dir = data_path + "/userdata/" + server + "/jobs/"
             in_dir += str(query_obj["jobid"]) + "/"
             cmd = "mkdir -p " + in_dir
             x = subprocess.getoutput(cmd)
@@ -567,6 +567,25 @@ def job_delete(query_obj, config_obj):
     return res_obj
 
 
+def job_clean(data_path, server):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    res_obj = {}
+    try:
+        res = dbh["c_job"].delete_many({})
+        res_obj = {"type":"success"}
+        in_dir = data_path + "/userdata/" + server + "/jobs/*"
+        cmd = "rm -rf " + in_dir
+        x = subprocess.getoutput(cmd)
+        #res_obj["cmd"] = x
+    except Exception as e:
+        res_obj = {"error_list":[{"error_code":str(e)}]}
+
+    return res_obj
+
 def validate_protein_seq(seq):
 
     seq = seq.upper()
@@ -675,9 +694,5 @@ def update_job_status(dbh, job_doc, config_obj):
         res_obj = {"error_list":[{"error_code":str(e)}]}
 
     return res_obj
-
-
-
-    return obj
 
 

@@ -12,7 +12,7 @@ from flask_jwt_extended import (
     jwt_required, get_jwt_identity
 )
 
-from glygen.job_apilib import job_addnew, job_detail, job_update, job_list, job_delete, job_results, job_status, job_queue, job_init
+from glygen.job_apilib import job_addnew, job_detail, job_update, job_list, job_delete,job_clean, job_results, job_status, job_queue, job_init
 
 from glygen.util import get_error_obj, trim_object
 import traceback
@@ -32,6 +32,8 @@ update_query_model = api.model(
     'Update Query', { 'query': fields.String(required=True, default="", description='')})
 delete_query_model = api.model(
     'Delete Query', { 'query': fields.String(required=True, default="", description='')})
+clean_query_model = api.model(
+    'Clean Query', { 'query': fields.String(required=True, default="", description='')})
 results_query_model = api.model(
     'Results Query', { 'query': fields.String(required=True, default="", description='')})
 status_query_model = api.model(
@@ -230,6 +232,25 @@ class Job(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+
+@api.route('/clean/')
+class Job(Resource):
+    @api.doc('clean')
+    @api.expect(clean_query_model)
+    def post(self):
+        api_name = "job_clean"
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        config_obj["server"] = current_app.config["SERVER"]
+        res_obj = {}
+        try:
+            data_path, server = current_app.config["DATA_PATH"],current_app.config["SERVER"]
+            res_obj = job_clean(data_path, server)
+        except Exception as e:
+            log_path = current_app.config["LOG_PATH"]
+            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+        return res_obj
 
 
 

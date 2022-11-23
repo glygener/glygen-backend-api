@@ -57,6 +57,10 @@ class Misc(Resource):
                 res_obj["config"][k] = current_app.config[k]
             mongo_dbh, error_obj = get_mongodb()
             res_obj["connection_status"] = "success" if error_obj == {} else error_obj
+            init_obj = mongo_dbh["c_init"].find_one({})
+            if "_id" in init_obj:
+                init_obj.pop("_id")
+            res_obj["initobj"] = init_obj
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
