@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/misc.py", line 230, in post
+    doc_list = list(dbh[collection].find({}))
+NameError: name 'collection' is not defined

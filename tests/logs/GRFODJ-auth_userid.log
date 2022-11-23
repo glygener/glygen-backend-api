@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/auth.py", line 56, in post
+    res_obj = auth_userid(config_obj)
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/auth_apilib.py", line 52, in auth_userid
+    user_id = util.get_random_string(32).lower()
+NameError: name 'util' is not defined

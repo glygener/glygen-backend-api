@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/glycan.py", line 172, in post
+    return send_file(img_file, mimetype='image/png')
+  File "/Users/rykahsay/Library/Python/3.8/lib/python/site-packages/flask/helpers.py", line 629, in send_file
+    file = open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: '/data/shared/glygen/releases/data/v-2.0.2/glycanimages_snfg/G0000000.png'

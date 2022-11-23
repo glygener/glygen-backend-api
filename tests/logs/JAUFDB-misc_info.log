@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/misc.py", line 55, in post
+    mongo_dbh, error_obj = get_mongodb()
+NameError: name 'get_mongodb' is not defined
