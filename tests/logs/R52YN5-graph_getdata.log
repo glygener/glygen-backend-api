@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/graph.py", line 36, in post
+    res_obj = getdata(req_obj, config_obj)
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/graph_apilib.py", line 41, in getdata
+    concept_list = query_obj["conceptlist"]
+KeyError: 'conceptlist'

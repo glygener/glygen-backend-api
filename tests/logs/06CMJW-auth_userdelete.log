@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/auth.py", line 242, in post
+    res_obj = auth_userdelete(current_user, req_obj, config_obj)
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/auth_apilib.py", line 313, in auth_userdelete
+    error_list = get_errors_in_query("auth_userdelete",query_obj, config_obj)
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/util.py", line 916, in get_errors_in_query
+    field_info = config_obj[svc_name]["field_info"]
+KeyError: 'auth_userdelete'

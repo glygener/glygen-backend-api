@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/auth.py", line 56, in post
+    res_obj = auth_userid(req_obj, config_obj)
+TypeError: auth_userid() takes 1 positional argument but 2 were given
