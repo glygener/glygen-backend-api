@@ -19,7 +19,7 @@
 	    "structure_search":{
                 "incmdflag":"-i",
                 "outcmdflag":"-o",
-                "path":"/usr/bin/python3 /software/job_submitters/structure_search.py",
+                "path":"/usr/bin/python3 /app/job_submitters/structure_search.py",
                 "input_files":[
                     {"name":"input.json", "format":"json"}
                 ],
@@ -35,7 +35,7 @@
                 "incmdflag":"-query",
                 "outcmdflag":"-out",
                 "max_input_records":10,
-                "path":"/usr/bin/python3 /software/job_submitters/blastp.py",
+                "path":"/usr/bin/python3 /app/job_submitters/blastp.py",
                 "input_files":[
                     {"name":"input.fasta", "format":"fasta"}
                 ],
@@ -1025,7 +1025,7 @@
 			,"glycanimagespath":"/data/shared/glygen/releases/data/v-%s/glycanimages_snfg/"
 		        ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
-                        ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
+                        ,"blastp":"/app/ncbi-blast-2.6.0+/bin/blastp"
                         ,"userdata":"/data/shared/glygen/userdata/dev/jobs/"
                         ,"cgipath":"/var/www/cgi-bin/api/"
                 }
@@ -1066,7 +1066,7 @@
                         ,"glycanimagespath":"/data/shared/glygen/releases/data/v-%s/glycanimages_snfg/"
                         ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
-                        ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
+                        ,"blastp":"/app/ncbi-blast-2.6.0+/bin/blastp"
                         ,"userdata":"/data/shared/glygen/userdata/tst/jobs/"
                 }
         }
@@ -1106,7 +1106,7 @@
                         ,"glycanimagespath":"/data/shared/glygen/releases/data/v-%s/glycanimages_snfg/"
                         ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
-                        ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
+                        ,"blastp":"/app/ncbi-blast-2.6.0+/bin/blastp"
                         ,"userdata":"/data/shared/glygen/userdata/beta/jobs/"
                 }
         }
@@ -1146,7 +1146,7 @@
                         ,"glycanimagespath":"/data/shared/glygen/releases/data/v-%s/glycanimages_snfg/"
                         ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
-                        ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
+                        ,"blastp":"/app/ncbi-blast-2.6.0+/bin/blastp"
                 }
         }       
         ,"prd":{
@@ -1185,7 +1185,7 @@
 			,"glycanimagespath":"/data/shared/glygen/releases/data/v-%s/glycanimages_snfg/"
 		        ,"datareleasespath":"/data/shared/glygen/releases/"
                         ,"gzip":"/usr/bin/gzip"
-                        ,"blastp":"/software/ncbi-blast-2.6.0+/bin/blastp"
+                        ,"blastp":"/app/ncbi-blast-2.6.0+/bin/blastp"
                         ,"userdata":"/data/shared/glygen/userdata/prd/jobs/"
                 }
 	}

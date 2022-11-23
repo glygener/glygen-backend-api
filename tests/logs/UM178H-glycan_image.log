@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/glycan.py", line 172, in post
+    img_file = glycan_image(req_obj, data_path)
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/glycan_apilib.py", line 299, in glycan_image
+    img_file = img_path +  "G0000000.png"
+NameError: name 'img_path' is not defined

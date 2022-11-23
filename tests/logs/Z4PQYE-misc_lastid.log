@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/misc.py", line 230, in post
+    doc_list = list(dbh[coll].find({}).sort({"_id":-1}))
+  File "/Users/rykahsay/Library/Python/3.8/lib/python/site-packages/pymongo/cursor.py", line 726, in sort
+    keys = helpers._index_list(key_or_list, direction)
+  File "/Users/rykahsay/Library/Python/3.8/lib/python/site-packages/pymongo/helpers.py", line 73, in _index_list
+    raise TypeError("if no direction is specified, "
+TypeError: if no direction is specified, key_or_list must be an instance of list

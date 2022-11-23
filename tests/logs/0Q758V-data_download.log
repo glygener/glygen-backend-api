@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/data.py", line 41, in post
+    res_obj = data_download(req_obj, config_obj, data_path)
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/data_apilib.py", line 151, in data_download
+    for j in xrange(0, len(list_obj["results"])):
+NameError: name 'xrange' is not defined

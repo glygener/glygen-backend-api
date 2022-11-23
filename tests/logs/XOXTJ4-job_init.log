@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/job.py", line 59, in post
+    res_obj = job_addnew(config_obj)
+TypeError: job_addnew() missing 1 required positional argument: 'config_obj'

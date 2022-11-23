@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/glycan.py", line 89, in post
+    res_obj = glycan_search(req_obj, config_obj)
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/glycan_apilib.py", line 184, in glycan_search
+    record_list.append(doc["glytoucan_ac"])
+TypeError: 'NoneType' object is not subscriptable

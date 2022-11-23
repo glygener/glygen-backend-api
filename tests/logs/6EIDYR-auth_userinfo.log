@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/auth.py", line 205, in post
+    res_obj = auth_userinfo(req_obj, config_obj)
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/auth_apilib.py", line 213, in auth_userinfo
+    user_info = dbh["c_users"].find_one({'email' : res_obj["email"].lower()})
+UnboundLocalError: local variable 'res_obj' referenced before assignment
