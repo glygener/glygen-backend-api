@@ -692,6 +692,13 @@
             ,"requiredfields":["email"]
             ,"collectionlist":["c_users"]
         }
+        ,"auth_userdelete":{
+            "field_info":{
+                "email":{"type":"string"}
+            }
+            ,"requiredfields":["email"]
+            ,"collectionlist":["c_users"]
+        }
         ,"auth_login":{
             "field_info":{
                 "email":{"type":"string"}

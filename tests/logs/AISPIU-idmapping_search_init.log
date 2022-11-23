@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/idmapping.py", line 53, in post
+    res_obj = search_init(req_obj, config_obj)
+TypeError: search_init() takes 1 positional argument but 2 were given
