@@ -5,8 +5,17 @@ container="running_"$mod"_"$server"_api"
 port="8082"
 #port="8882" #for beta
 
+python3 setup.py bdist_wheel $mod $ver
+
+##################################################################
+# maintain customized versions of the config file for each server
+# following instance/config.dev.py, and keep these versions in 
+# private folder
+##############################################################
+
+cp private/config.glygen_$server.py instance/config.prd.py 
 docker build --network=host -t "$mod"_"$server"_api .
-exit;
+rm instance/config.prd.py
 
 docker rm -f $container
 
