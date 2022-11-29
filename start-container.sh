@@ -13,9 +13,9 @@ python3 setup.py bdist_wheel $mod $ver
 # private folder
 ##############################################################
 
-cp private/config.glygen_$server.py instance/config.prd.py 
+cp private/config.glygen_$server.py instance/config.py 
 docker build --network=host -t "$mod"_"$server"_api .
-rm instance/config.prd.py
+rm instance/config.py
 
 docker rm -f $container
 
