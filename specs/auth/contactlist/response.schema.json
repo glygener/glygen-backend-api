@@ -48,20 +48,6 @@
             }
         },
         "required": [
-            "agent",
-            "comment",
-            "creation_time",
-            "email",
-            "fname",
-            "id",
-            "lname",
-            "message",
-            "message_status",
-            "page",
-            "status",
-            "subject",
-            "update_time",
-            "visibility"
         ]
     }
 }

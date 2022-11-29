@@ -65,7 +65,7 @@ def create_app():
         pass
 
     if app.config["ENV"] == "production":
-        app.config.from_pyfile('config.prd.py', silent=True)
+        app.config.from_pyfile('config.py', silent=True)
     else:
         app.config.from_pyfile('config.dev.py', silent=True)
 
