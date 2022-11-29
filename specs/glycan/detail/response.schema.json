@@ -62,9 +62,6 @@
                                 }
                             },
                             "required": [
-                                "database",
-                                "id",
-                                "url"
                             ]
                         }
                     },
@@ -73,11 +70,6 @@
                     }
                 },
                 "required": [
-                    "annotation_category",
-                    "common_name",
-                    "evidence",
-                    "name",
-                    "taxid"
                 ]
             }
         },
@@ -97,8 +89,6 @@
                             }
                         },
                         "required": [
-                            "name",
-                            "url"
                         ]
                     },
                     "subtype": {
@@ -112,13 +102,10 @@
                             }
                         },
                         "required": [
-                            "name"
                         ]
                     }
                 },
                 "required": [
-                    "subtype",
-                    "type"
                 ]
             }
         },
@@ -155,9 +142,6 @@
                                 }
                             },
                             "required": [
-                                "database",
-                                "id",
-                                "url"
                             ]
                         }
                     },
@@ -175,12 +159,6 @@
                     }
                 },
                 "required": [
-                    "evidence",
-                    "gene_name",
-                    "protein_name",
-                    "tax_id",
-                    "tax_name",
-                    "uniprot_canonical_ac"
                 ]
             }
         },
@@ -226,22 +204,11 @@
                                 }
                             },
                             "required": [
-                                "database",
-                                "id",
-                                "url"
                             ]
                         }
                     }
                 },
                 "required": [
-                    "evidence",
-                    "gene",
-                    "gene_link",
-                    "protein_name",
-                    "tax_common_name",
-                    "tax_id",
-                    "tax_name",
-                    "uniprot_canonical_ac"
                 ]
             }
         },
@@ -261,9 +228,6 @@
                     }
                 },
                 "required": [
-                    "database",
-                    "id",
-                    "url"
                 ]
             }
         },
@@ -281,8 +245,6 @@
                 }
             },
             "required": [
-                "gnome",
-                "sandbox"
             ]
         },
         "fully_determined": {
@@ -314,8 +276,6 @@
                 }
             },
             "required": [
-                "key",
-                "url"
             ]
         },
         "byonic": {
@@ -357,9 +317,6 @@
                                 }
                             },
                             "required": [
-                                "database",
-                                "id",
-                                "url"
                             ]
                         }
                     },
@@ -382,20 +339,11 @@
                                 }
                             },
                             "required": [
-                                "id",
-                                "type",
-                                "url"
                             ]
                         }
                     }
                 },
                 "required": [
-                    "authors",
-                    "date",
-                    "evidence",
-                    "journal",
-                    "reference",
-                    "title"
                 ]
             }
         },
@@ -418,10 +366,6 @@
                     }
                 },
                 "required": [
-                    "attachedby",
-                    "id",
-                    "name",
-                    "parentid"
                 ]
             }
         },
@@ -447,11 +391,6 @@
                     }
                 },
                 "required": [
-                    "cid",
-                    "count",
-                    "name",
-                    "residue",
-                    "url"
                 ]
             }
         },
@@ -477,9 +416,6 @@
                     }
                 },
                 "required": [
-                    "count",
-                    "name",
-                    "residue"
                 ]
             }
         },
@@ -502,9 +438,6 @@
                     }
                 },
                 "required": [
-                    "id",
-                    "keywords",
-                    "name"
                 ]
             }
         },
@@ -541,9 +474,6 @@
                                 }
                             },
                             "required": [
-                                "database",
-                                "id",
-                                "url"
                             ]
                         }
                     },
@@ -561,9 +491,6 @@
                             }
                         },
                         "required": [
-                            "name",
-                            "uberon",
-                            "url"
                         ]
                     },
                     "abundance": {
@@ -571,11 +498,6 @@
                     }
                 },
                 "required": [
-                    "end_pos",
-                    "evidence",
-                    "residue",
-                    "start_pos",
-                    "uniprot_canonical_ac"
                 ]
             }
         },
@@ -592,8 +514,6 @@
                     }
                 },
                 "required": [
-                    "related_accession",
-                    "relationship"
                 ]
             }
         },
@@ -625,8 +545,6 @@
                             }
                         },
                         "required": [
-                            "full_name",
-                            "id"
                         ]
                     },
                     "enzymes": {
@@ -642,52 +560,18 @@
                                 }
                             },
                             "required": [
-                                "tax_name",
-                                "uniprotkb_ac"
                             ]
                         }
                     }
                 },
                 "required": [
-                    "enzymes",
-                    "residue_affected",
-                    "source",
-                    "target"
                 ]
             }
         }
     },
     "required": [
-        "byonic",
-        "classification",
-        "composition",
-        "composition_expanded",
-        "crossref",
-        "enzyme",
-        "expression",
-        "fully_determined",
-        "glycam",
-        "glycan_type",
-        "glycoct",
-        "glycoprotein",
-        "glycotree_pathways",
         "glytoucan",
-        "gwb",
-        "inchi",
-        "inchi_key",
-        "iupac",
-        "keywords",
         "mass",
-        "mass_pme",
-        "missing_score",
-        "motifs",
-        "number_monosaccharides",
-        "publication",
-        "residues",
-        "smiles_isomeric",
-        "species",
-        "subsumption",
-        "tool_support",
-        "wurcs"
+        "missing_score"
     ]
 }

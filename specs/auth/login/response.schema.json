@@ -19,10 +19,5 @@
         }
     },
     "required": [
-        "access_csrf",
-        "access_token",
-        "refresh_csrf",
-        "status",
-        "username"
     ]
 }

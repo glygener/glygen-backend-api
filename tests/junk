@@ -1,10 +1,11 @@
 auth_userid query:1 status:success 
 auth_contact query:1 status:success 
-auth_register query:1 status:failed [see logs/failure_log_auth_register.1.json] 
-auth_userinfo query:1 status:failed [see logs/failure_log_auth_userinfo.1.json] 
+auth_register query:1 status:success 
+auth_userinfo query:1 status:success 
 auth_userupdate query:1 status:success 
-auth_login query:1 status:failed [see logs/failure_log_auth_login.1.json] 
-auth_contactlist query:1 status:failed [see logs/failure_log_auth_contactlist.1.json] 
+auth_login query:1 status:success 
+auth_userdelete query:1 status:success 
+auth_contactlist query:1 status:success 
 auth_contactupdate query:1 status:success 
 auth_contactdelete query:1 status:success 
 
@@ -13,7 +14,7 @@ data_download query:1 status:success
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
 event_addnew query:1 status:success 
-event_list query:1 status:failed [see logs/failure_log_event_list.1.json] 
+event_list query:1 status:success 
 event_update query:1 status:success 
 event_detail query:1 status:success 
 event_delete query:1 status:success 
@@ -25,7 +26,7 @@ glycan_search query:1 status:success
 glycan_list query:1 status:success 
 glycan_list query:2 status:success 
 glycan_detail query:1 status:success 
-glycan_image query:1 status:failed [see logs/failure_log_glycan_image.1.json] 
+glycan_image query:1 status:success 
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
 graph_getdata query:1 status:success 
@@ -33,15 +34,10 @@ graph_getdata query:1 status:success
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
 
 Summary output file: /data/shared/glygen/logs/api_test_summary.csv
+job_clean query:1 status:success 
 job_init query:1 status:success 
 job_addnew query:1 status:success 
-job_addnew query:2 status:success 
-job_addnew query:3 status:success 
-job_addnew query:4 status:success 
-job_addnew query:5 status:success 
-job_addnew query:6 status:success 
-job_addnew query:7 status:success 
-job_results query:1 status:failed [see logs/failure_log_job_results.1.json] 
+job_results query:1 status:success 
 job_queue query:1 status:success 
 job_status query:1 status:success 
 job_detail query:1 status:success 

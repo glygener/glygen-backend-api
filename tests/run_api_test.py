@@ -61,41 +61,107 @@ def get_id_dict(base_url):
 
 
 
-def main():
-    
-    usage = "\n%prog  [options]"
-    parser = OptionParser(usage,version="%prog version___")
-    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
-    parser.add_option("-g","--group",action="store",dest="group",help="all/protein/glycan/...")
-      
-    (options,args) = parser.parse_args()
-    for key in ([options.server, options.group]):
-        if not (key):
-            parser.print_help()
-            sys.exit(0)
+def run_exhaustive(server, api_grp):
 
+    data_dir = "/data/shared/glygen/"
+    base_url = "http://localhost:8082"
+    if server == "dev":
+        data_dir =  "/Volumes/disk2/data/shared/glygen/"
+        base_url = "http://localhost:5000"
+
+    api_url = base_url + "/misc/info"
+    res = requests.post(api_url, json={}, verify=False)
+    info_obj =  json.loads(res.content)
+    data_version = info_obj["initobj"]["dataversion"]
+
+
+    jsondb_dir = data_dir + "releases/data/v-%s/jsondb/" % (data_version)
+    log_dir = data_dir + "logs/"
+
+    api_url = base_url + "/misc/info"
+    res = requests.post(api_url, json={}, verify=False)
+    info_obj =  json.loads(res.content)
+    data_version = info_obj["initobj"]["dataversion"]
+
+
+    cmd = "rm -f " + log_dir + "failure_log_%s_detail.*" % (api_grp)
+    x = subprocess.getoutput(cmd)
+
+                                    
+
+    file_list = glob.glob(jsondb_dir + "%sdb/*.json" % (api_grp))
+    file_list = file_list[0:10]
+    try:
+        summary_file = log_dir + "test_summary_%s_mode_2.csv" % (api_grp)
+        FW = open(summary_file, "w")
+                       
+
+        for in_file in file_list:
+            main_id = in_file.split("/")[-1].split(".")[0]
+            api_url = base_url + "/%s/detail/%s/" % (api_grp, main_id)
+
+            o = {"bad_respose":False, "url":api_url}
+            res = requests.post(api_url, json={}, verify=False)
+            o["status_code"] = res.status_code
+            if is_valid_json(res.content) == False:
+                o["bad_respose"] = True
+            else:
+                res_obj = json.loads(res.content)
+                if "error_list" in res_obj:
+                    o["error_list"] = res_obj["error_list"]
+                else:
+                    schema_file = "../specs/%s/detail/response.schema.json" % (api_grp)
+                    o["validation"] =validate_response(res_obj,schema_file)
+            
+            flag_list = []
+            if o["bad_respose"] == True:
+                flag_list.append("bad_response")
+            if "error_list" in o:
+                flag_list.append("error_response")
+            if flag_list == [] and o["validation"]["status"] == "failed":
+                flag_list.append("invalid_response")
+            flags = "success" if flag_list == [] else "failed:" + ";".join(flag_list)
+            row = [api_grp, main_id, flags]
+            FW.write("%s\n" % (",".join(row)))
+
+            if flags != "success":
+                out_file = log_dir + "failure_log_%s_detail.%s.json" % (api_grp, main_id)
+                with open(out_file, "w") as FL:
+                    FL.write("%s\n" % (json.dumps(o, indent=4)))
+        FW.close()
+        print ("\nSummary output file: %s\n" %(summary_file))
+    except Exception as e:
+        print (traceback.format_exc())
+
+
+    return
+
+
+def run_from_queries(server, api_grp):
+    
     log_dir = "/data/shared/glygen/logs/"
     base_url = "http://localhost:8082"
-    if options.server == "dev":
+    if server == "dev":
         log_dir = "/Volumes/disk2/data/shared/glygen/logs/"
         base_url = "http://localhost:5000"
 
     file_list = glob.glob("queries/*.json")
-    if options.group != "all":
-        file_list = glob.glob("queries/%s.json" % (options.group))
+    if api_grp != "all":
+        file_list = glob.glob("queries/%s.json" % (api_grp))
 
     in_file = "queries/qlist/supersearch_querylist.json"
     supersearch_qlist = json.loads(open(in_file, "r").read())
+   
+    file_list = sorted(file_list)
+    if "queries/globalsearch.json" in file_list:
+        file_list.pop(file_list.index("queries/globalsearch.json"))
 
-    
-    
     out_obj_list = []
     last_list_id = ""
     try:
-        summary_file = log_dir + "api_test_summary.csv"
+        summary_file = log_dir + "test_summary_%s_mode_1.csv" % (api_grp)        
         FW = open(summary_file, "w")
        
-
         for in_file in file_list:
             if is_valid_json(open(in_file, "r").read()) == False:
                 res_obj = {"infile":in_file, "error_code": "invalid-query-json"}
@@ -143,17 +209,20 @@ def main():
                     res = requests.post(api_url, json=req_obj, verify=False)
                     o["url"] = api_url
                     o["status_code"] = res.status_code
-                    if is_valid_json(res.content) == False:
-                        o["bad_respose"] = True
-                    else:
-                        res_obj = json.loads(res.content)
-                        if "error_list" in res_obj:
-                            o["error_list"] = res_obj["error_list"]
+                    if res.headers["Content-Type"] == "image/png":
+                        o["validation"] = {"status":"passed"}
+                    elif res.headers["Content-Type"] == "application/json":
+                        if is_valid_json(res.content) == False:
+                            o["bad_respose"] = True
                         else:
-                            if "schemafile" in t_obj:
-                                o["validation"] =validate_response(res_obj,t_obj["schemafile"])
-                            if "list_id" in res_obj:
-                                last_list_id = res_obj["list_id"]
+                            res_obj = json.loads(res.content)
+                            if "error_list" in res_obj:
+                                o["error_list"] = res_obj["error_list"]
+                            else:
+                                if "schemafile" in t_obj:
+                                    o["validation"] =validate_response(res_obj,t_obj["schemafile"])
+                                if "list_id" in res_obj:
+                                    last_list_id = res_obj["list_id"]
                     flag_list = []
                     if o["bad_respose"] == True:
                         flag_list.append("bad_response")
@@ -170,13 +239,45 @@ def main():
                             FL.write("%s\n" % (json.dumps(o, indent=4)))
                     flg_file = "logs/failure_log_%s.%s.json" % (o["name"], idx)
                     status = "success" if flags == "success" else "failed [see %s]"% (flg_file)
-                    print ("%s query:%s status:%s " % (api_name, idx, status))
 
-        print ("\nSummary output file: %s" %(summary_file))
+        print ("\nSummary output file: %s\n" %(summary_file))
 
         FW.close()
     except Exception as e:
         print (traceback.format_exc())
+
+    return
+
+
+def main():
+   
+    usage = "\n%prog  [options]"
+    parser = OptionParser(usage,version="%prog version___")
+    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
+    parser.add_option("-m","--mode",action="store",dest="mode",help="1 (using example queries), 2 (exhaustive detail API calls)")
+    parser.add_option("-g","--group",action="store",dest="group",help="all/protein/glycan/...")
+        
+
+    (options,args) = parser.parse_args()
+    for key in ([options.server, options.group, options.mode]):
+        if not (key):
+            parser.print_help()
+            sys.exit(0)
+
+    server = options.server
+    api_grp = options.group
+    mode = int(options.mode)
+
+    if mode == 2:
+        run_exhaustive(server, api_grp)
+    else:
+        run_from_queries(server, api_grp)
+
+    return
+
+
+
+
 
 
 if __name__ == '__main__':
