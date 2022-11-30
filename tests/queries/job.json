@@ -1,0 +1,56 @@
+{
+    "job_clean":{
+        "url":"/job/clean/"
+        ,"schemafile":"../specs/job/clean/response.schema.json"
+        ,"query":{}
+    },
+    "job_init":{
+        "url":"/job/init/"
+        ,"schemafile":"../specs/job/init/response.schema.json"
+        ,"query":{}
+    },
+    "job_addnew":{
+        "url":"/job/addnew/"
+        ,"schemafile":"../specs/job/addnew/response.schema.json"
+        ,"querylist":[
+            {
+                "label":"Successful blastp example",
+                "query":{
+                    "jobtype":"blastp",
+                    "parameters":{
+                        "seq":"MSIQENISSLQLRSWVSKSQRDLAKSILIGAPGGPAGYLRRASVAQLTQELGTAFFQQQQLPAAMADTFLEHLCLLDIDSEPVAARSTSIIATIGPASRSVERLKEMIKAGMNIARLNFSQHAIAREAEAAVYHRQLFEELRRAAPLSRDPTEVTAIGAVEAAFKCCAAAIIVLTTTGRS",
+                        "targetdb":"canonicalsequences_all",
+                        "num_alignments":3,
+                        "evalue":1e-3
+                    }
+                }
+            }
+        ]
+    }
+    ,"job_results":{
+        "url":"/job/results"
+        ,"schemafile":"../specs/job/results/response.schema.json"
+        ,"query":{"jobid":1}
+    }
+    ,"job_queue":{
+        "url":"/job/queue"
+        ,"schemafile":"../specs/job/queue/response.schema.json"
+        ,"query":{}
+    }
+    ,"job_status":{
+        "url":"/job/status"
+        ,"schemafile":"../specs/job/status/response.schema.json"
+        ,"query":{"jobid": 1}
+    }
+    ,"job_detail":{
+        "url":"/job/detail"
+        ,"schemafile":"../specs/job/detail/response.schema.json"
+        ,"query":{"jobid": 1}
+    }
+    ,"job_list":{
+        "url":"/job/list"
+        ,"schemafile":"../specs/job/list/response.schema.json"
+        ,"query":{"visibility":"all"}
+    }
+}
+

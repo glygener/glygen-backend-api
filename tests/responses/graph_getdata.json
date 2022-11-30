@@ -1,0 +1,216 @@
+{
+    "nodes": [
+        {
+            "id": "protein",
+            "normal": {
+                "fill": "#990000",
+                "stroke": "3 #990000",
+                "height": 30
+            }
+        },
+        {
+            "id": "site",
+            "normal": {
+                "fill": "#cccccc",
+                "stroke": "3 #cccccc",
+                "height": 30
+            }
+        },
+        {
+            "id": "enzyme",
+            "normal": {
+                "fill": "#cccccc",
+                "stroke": "3 #cccccc",
+                "height": 30
+            }
+        },
+        {
+            "id": "glycan",
+            "normal": {
+                "fill": "#990000",
+                "stroke": "3 #990000",
+                "height": 30
+            }
+        },
+        {
+            "id": "motif",
+            "normal": {
+                "fill": "#cccccc",
+                "stroke": "3 #cccccc",
+                "height": 30
+            }
+        },
+        {
+            "id": "disease",
+            "normal": {
+                "fill": "#cccccc",
+                "stroke": "3 #cccccc",
+                "height": 30
+            }
+        },
+        {
+            "id": "gene",
+            "normal": {
+                "fill": "#cccccc",
+                "stroke": "3 #cccccc",
+                "height": 30
+            }
+        },
+        {
+            "id": "species",
+            "normal": {
+                "fill": "#cccccc",
+                "stroke": "3 #cccccc",
+                "height": 30
+            }
+        }
+    ],
+    "edges": [
+        {
+            "from": "protein",
+            "to": "site",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#990000",
+                    "format": "{%id}"
+                }
+            },
+            "direction": "<-->"
+        },
+        {
+            "from": "protein",
+            "to": "enzyme",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#990000",
+                    "format": "{%id}"
+                }
+            }
+        },
+        {
+            "from": "protein",
+            "to": "glycan",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#990000",
+                    "format": "{%id}"
+                }
+            },
+            "direction": "<-->"
+        },
+        {
+            "from": "protein",
+            "to": "disease",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#990000",
+                    "format": "{%id}"
+                }
+            }
+        },
+        {
+            "from": "protein",
+            "to": "gene",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#990000",
+                    "format": "{%id}"
+                }
+            }
+        },
+        {
+            "from": "protein",
+            "to": "species",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#990000",
+                    "format": "{%id}"
+                }
+            }
+        },
+        {
+            "from": "site",
+            "to": "glycan",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#990000",
+                    "format": "{%id}"
+                }
+            },
+            "direction": "<-->"
+        },
+        {
+            "from": "site",
+            "to": "disease",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#990000",
+                    "format": "{%id}"
+                }
+            }
+        },
+        {
+            "from": "glycan",
+            "to": "enzyme",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#990000",
+                    "format": "{%id}"
+                }
+            }
+        },
+        {
+            "from": "glycan",
+            "to": "species",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#990000",
+                    "format": "{%id}"
+                }
+            }
+        },
+        {
+            "from": "glycan",
+            "to": "motif",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#990000",
+                    "format": "{%id}"
+                }
+            }
+        },
+        {
+            "from": "disease",
+            "to": "gene",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#eeeeee",
+                    "dash": "3 1"
+                }
+            }
+        },
+        {
+            "from": "gene",
+            "to": "species",
+            "normal": {
+                "stroke": {
+                    "thickness": 2,
+                    "color": "#eeeeee",
+                    "dash": "3 1"
+                }
+            }
+        }
+    ]
+}

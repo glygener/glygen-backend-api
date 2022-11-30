@@ -1,0 +1,4 @@
+graft glygen/conf
+global-exclude *.pyc
+
+

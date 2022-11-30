@@ -1,0 +1,16 @@
+{
+    
+    "site_search_init":{
+        "url":"/site/search_init"
+        ,"schemafile":"../specs/site/search_init/response.schema.json"
+        ,"query":{}
+    },
+    "site_detail":{
+        "url":"/site/detail"
+        ,"schemafile":"../specs/site/detail/response.schema.json"
+        ,"query":"P02724-1.52.52"
+        ,"semantic":true
+    }
+}
+
+

@@ -1,0 +1,222 @@
+{
+    "glycan_mass": {
+        "native": {
+            "name": "Native",
+            "min": 150.05,
+            "max": 6750.45
+        },
+        "permethylated": {
+            "name": "Permethylated",
+            "min": 206.12,
+            "max": 8306.19
+        }
+    },
+    "number_monosaccharides": {
+        "min": 1,
+        "max": 37
+    },
+    "organism": [
+        {
+            "name": "Homo sapiens",
+            "id": 9606
+        },
+        {
+            "name": "Mus musculus",
+            "id": 10090
+        },
+        {
+            "name": "Rattus norvegicus",
+            "id": 10116
+        },
+        {
+            "name": "Severe acute respiratory syndrome coronavirus 2",
+            "id": 2697049
+        },
+        {
+            "name": "Drosophila melanogaster",
+            "id": 7227
+        },
+        {
+            "name": "Severe acute respiratory syndrome-related coronavirus",
+            "id": 694009
+        },
+        {
+            "name": "Hepatitis C virus (isolate H)",
+            "id": 63746
+        }
+    ],
+    "glycan_type": [
+        {
+            "name": "Other",
+            "subtype": [
+                "Other"
+            ]
+        },
+        {
+            "name": "N-linked",
+            "subtype": [
+                "Alditol-reduced",
+                "Complex",
+                "Core-fucosylated",
+                "Arm-fucosylated",
+                "Bisected",
+                "High mannose",
+                "Truncated",
+                "Hybrid",
+                "Other",
+                "Paucimannose"
+            ]
+        },
+        {
+            "name": "GAG",
+            "subtype": [
+                "Other"
+            ]
+        },
+        {
+            "name": "O-linked",
+            "subtype": [
+                "Core 1",
+                "Core 3",
+                "Core 6",
+                "Core 2",
+                "Core 4",
+                "Core 5",
+                "Core 7"
+            ]
+        },
+        {
+            "name": "Glycosphingolipid",
+            "subtype": [
+                "Lacto series",
+                "Neo-lacto series",
+                "Ganglio series",
+                "Gala series",
+                "Globo series",
+                "Isoglobo series",
+                "Muco series",
+                "Mollu series",
+                "Arthro series"
+            ]
+        },
+        {
+            "name": "GPI anchor",
+            "subtype": [
+                "Other"
+            ]
+        }
+    ],
+    "id_namespace": [
+        "GlyTouCan",
+        "GNOme",
+        "PubChem Compound",
+        "PubChem Substance",
+        "Glycosciences.de",
+        "CarbBank",
+        "ChEBI",
+        "SandBox",
+        "CFG",
+        "PDB",
+        "KEGG Glycan",
+        "GlyConnect",
+        "UniCarbKB",
+        "Rhea",
+        "UniCarbDB",
+        "Glycan Dictionary",
+        "BCSDB",
+        "GlycoEpitope",
+        "MatrixDB",
+        "Reactome",
+        "GPTwiki"
+    ],
+    "simple_search_category": [
+        {
+            "id": "any",
+            "display": "Any"
+        },
+        {
+            "id": "glycan",
+            "display": "Glycan"
+        },
+        {
+            "id": "protein",
+            "display": "Protein"
+        },
+        {
+            "id": "enzyme",
+            "display": "Enzyme"
+        },
+        {
+            "id": "organism",
+            "display": "Organism"
+        }
+    ],
+    "composition": [
+        {
+            "residue": "dhex",
+            "min": 0,
+            "max": 8,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/840"
+        },
+        {
+            "residue": "hex",
+            "min": 0,
+            "max": 15,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/206"
+        },
+        {
+            "residue": "hexnac",
+            "min": 0,
+            "max": 14,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/899"
+        },
+        {
+            "residue": "hexa",
+            "min": 0,
+            "max": 6,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/610"
+        },
+        {
+            "residue": "hexn",
+            "min": 0,
+            "max": 2,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/739"
+        },
+        {
+            "residue": "neuac",
+            "min": 0,
+            "max": 6,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/439197"
+        },
+        {
+            "residue": "neugc",
+            "min": 0,
+            "max": 5,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/440001"
+        },
+        {
+            "residue": "p",
+            "min": 0,
+            "max": 2,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/1061"
+        },
+        {
+            "residue": "pent",
+            "min": 0,
+            "max": 2,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/229"
+        },
+        {
+            "residue": "s",
+            "min": 0,
+            "max": 11,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/1117"
+        },
+        {
+            "residue": "other",
+            "min": 0,
+            "max": 6,
+            "url": "https://pubchem.ncbi.nlm.nih.gov/compound/"
+        }
+    ]
+}

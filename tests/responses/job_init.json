@@ -1,0 +1,77 @@
+{
+    "structure_search": {
+        "paramlist": [
+            {
+                "id": "seq",
+                "label": "Sequence",
+                "value": "xxx"
+            },
+            {
+                "id": "align",
+                "label": "Align",
+                "value": "core"
+            }
+        ]
+    },
+    "blastp": {
+        "paramlist": [
+            {
+                "id": "seq",
+                "label": "Sequence",
+                "value": "xxx"
+            },
+            {
+                "id": "targetdb",
+                "label": "Target DB",
+                "optlist": [
+                    {
+                        "value": "canonicalsequences_all",
+                        "label": "All species"
+                    },
+                    {
+                        "value": "canonicalsequences_human",
+                        "label": "Homo sapiens"
+                    },
+                    {
+                        "value": "canonicalsequences_mouse",
+                        "label": "Mus musculus"
+                    },
+                    {
+                        "value": "canonicalsequences_rat",
+                        "label": "Rattus norvegicus"
+                    },
+                    {
+                        "value": "canonicalsequences_hcv1a",
+                        "label": "Hepatitis C virus (isolate H)"
+                    },
+                    {
+                        "value": "canonicalsequences_hcv1b",
+                        "label": "Hepatitis C virus (isolate Japanese)"
+                    },
+                    {
+                        "value": "canonicalsequences_sarscov1",
+                        "label": "Severe acute respiratory syndrome-related coronavirus"
+                    },
+                    {
+                        "value": "canonicalsequences_sarscov2",
+                        "label": "Severe acute respiratory syndrome coronavirus 2"
+                    },
+                    {
+                        "value": "canonicalsequences_fruitfly",
+                        "label": "Drosophila melanogaster"
+                    }
+                ]
+            },
+            {
+                "id": "evalue",
+                "label": "E-value",
+                "value": 0.001
+            },
+            {
+                "id": "num_alignments",
+                "label": "Max number of hits",
+                "value": 250
+            }
+        ]
+    }
+}

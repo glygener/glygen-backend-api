@@ -1,0 +1,94 @@
+{
+    "query": {
+        "concept_query_list": [
+            {
+                "concept": "site",
+                "query": {
+                    "aggregator": "$and",
+                    "unaggregated_list": [
+                        {
+                            "order": 1,
+                            "path": "site_annotation.annotation",
+                            "operator": "$eq",
+                            "string_value": "n_glycosylation_sequon"
+                        },
+                        {
+                            "order": 2,
+                            "path": "glycosylation",
+                            "operator": "$exists",
+                            "string_value": "false"
+                        }
+                    ],
+                    "aggregated_list": []
+                }
+            }
+        ]
+    },
+    "results_summary": {
+        "protein": {
+            "list_id": "",
+            "result_count": 0,
+            "bylinkage": {
+                "site": {
+                    "list_id": "",
+                    "result_count": 0
+                }
+            }
+        },
+        "enzyme": {
+            "list_id": "",
+            "result_count": 0,
+            "bylinkage": {}
+        },
+        "gene": {
+            "list_id": "",
+            "result_count": 0,
+            "bylinkage": {
+                "protein": {
+                    "list_id": "",
+                    "result_count": 0
+                }
+            }
+        },
+        "glycan": {
+            "list_id": "",
+            "result_count": 0,
+            "bylinkage": {
+                "site": {
+                    "list_id": "",
+                    "result_count": 0
+                }
+            }
+        },
+        "motif": {
+            "list_id": "",
+            "result_count": 0,
+            "bylinkage": {}
+        },
+        "disease": {
+            "list_id": "",
+            "result_count": 0,
+            "bylinkage": {
+                "site": {
+                    "list_id": "",
+                    "result_count": 0
+                }
+            }
+        },
+        "species": {
+            "list_id": "",
+            "result_count": 0,
+            "bylinkage": {
+                "protein": {
+                    "list_id": "",
+                    "result_count": 0
+                }
+            }
+        },
+        "site": {
+            "list_id": "",
+            "result_count": 0,
+            "bylinkage": {}
+        }
+    }
+}

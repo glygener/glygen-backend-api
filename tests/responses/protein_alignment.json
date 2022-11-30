@@ -1,0 +1,2776 @@
+{
+    "cls_id": "homologset.oma.871500",
+    "date": "2022-04-11 20:15:25 EDT-0400",
+    "sequences": [
+        {
+            "uniprot_ac": "P14210-1",
+            "uniprot_id": "HGF_HUMAN",
+            "id": "P14210-1",
+            "name": "Hepatocyte growth factor",
+            "aln": "-MWVTKLLPALLLQHVLLHLLLLPIAIPYAEGQRKRRNTIHEFKKSAKTTLIKIDPALKIKTKKVNTADQCANRCTRNKGLPFTCKAFVFDKARKQCLWFPFNSMSSGVKKEFGHEFDLYENKDYIRNCIIGKGRSYKGTVSITKSGIKCQPWSSMIPHEHSFLPSSYRGKDLQENYCRNPRGEEGGPWCFTSNPEVRYEVCDIPQCSEVECMTCNGESYRGLMDHTESGKICQRWDHQTPHRHKFLPERYPDKGFDDNYCRNPDGQPRPWCYTLDPHTRWEYCAIKTCADNTMNDTDVPLETTECIQGQGEGYRGTVNTIWNGIPCQRWDSQYPHEHDMTPENFKCKDLRENYCRNPDGSESPWCFTTDPNIRVGYCSQIPNCDMSHGQDCYRGNGKNYMGNLSQTRSGLTCSMWDKNMEDLHRHIFWEPDASKLNENYCRNPDDDAHGPWCYTGNPLIPWDYCPISRCEGDTTPTIVNLDHPVISCAKTKQLRVVNGIPTRTNIGWMVSLRYRNKHICGGSLIKESWVLTARQCFPSR--DLKDYEAWLGIHDVHGRGDEKCKQVLNVSQLVYGPEGSDLVLMKLARPAVLDDFVSTIDLPNYGCTIPEKTSCSVYGWGYTGLINYDGLLRVAHLYIMGNEKCSQHHRGKVTLNESEICAGAEKIGSGPCEGDYGGPLVCEQHKMRMVLGVIVPGRGCAIPNRPGIFVRVAYYAKWIHKIILTYKVPQS",
+            "tax_id": 9606,
+            "tax_name": "Homo sapiens"
+        },
+        {
+            "uniprot_ac": "P17945-1",
+            "uniprot_id": "HGF_RAT",
+            "id": "P17945-1",
+            "name": "Hepatocyte growth factor",
+            "aln": "MMWGTKLLPVLLLQHVLLHLLLLPVTIPYAEGQKKRRNTLHEFKKSAKTTLTKEDPLVKIKTKKVNSADECANRCIRNKGFPFTCKAFVFDKSRKRCYWYPFNSMSSGVKKGFGHEFDLYENKDYIRNCIIGKGGSYKGTVSITKSGIKCQPWNSMIPHEHSFLPSSYRGKDLQENYCRNPRGEEGGPWCFTSNPEVRYEVCDIPQCSEVECMTCNGESYRGPMDHTESGKTCQRWDQQTPHRHKFLPERYPDKGFDDNYCRNPDGKPRPWCYTLDPDTPWEYCAIKMCAHSAVNETDVPMETTECIKGQGEGYRGTTNTIWNGIPCQRWDSQYPHKHDITPENFKCKDLRENYCRNPDGAESPWCFTTDPNIRVGYCSQIPKCDVSSGQDCYRGNGKNYMGNLSKTRSGLTCSMWDKNMEDLHRHIFWEPDASKLTKNYCRNPDDDAHGPWCYTGNPLVPWDYCPISRCEGDTTPTIVNLDHPVISCAKTKQLRVVNGIPTQTTVGWMVSLKYRNKHICGGSLIKESWVLTARQCFPARNKDLKDYEAWLGIHDVHERGEEKRKQILNISQLVYGPEGSDLVLLKLARPAILDNFVSTIDLPSYGCTIPEKTTCSIYGWGYTGLINADGLLRVAHLYIMGNEKCSQHHQGKVTLNESELCAGAEKIGSGPCEGDYGGPLICEQHKMRMVLGVIVPGRGCAIPNRPGIFVRVAYYAKWIHKVILTYKL---",
+            "tax_id": 10116,
+            "tax_name": "Rattus norvegicus"
+        }
+    ],
+    "algorithm": {
+        "name": "clustalw2",
+        "url": "http://www.clustal.org/clustal2/",
+        "parameter": "Default Clustalw2 parameters"
+    },
+    "consensus": " ** *****.**************::*******:*****:*********** * ** :********:**:***** ****:***********:**:* *:*********** ********************** ******************.******************************************************************** ******** *****:****************************:**********.* ******* **..::*:****:******:*********.******************:**:********************:*********************:**:* *****************:******************************.:*********************:******************************************:*.:******:*************************:*  *************** **:** **:**:**************:******:**:********.*********:**:********** *********************:*********:********************:****************************************:*****:   ",
+    "identical_positions": 657,
+    "similar_positions": 52,
+    "identity": "89.88%",
+    "details": [
+        {
+            "uniprot_canonical_ac": "P14210-1",
+            "ptm_annotation": [],
+            "glycation": [],
+            "snv": [
+                {
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "BioMuta",
+                            "url": "https://hive.biochemistry.gwu.edu/biomuta/proteinview/P14210"
+                        }
+                    ],
+                    "glycoeffect": [],
+                    "start_pos": 700,
+                    "end_pos": 700,
+                    "subjects_tested": "1514",
+                    "subjects_positive": "30",
+                    "frequency": "2.0",
+                    "sequence_org": "P",
+                    "sequence_mut": "T",
+                    "comment": "Somatic mutation passed 2 out of 6 filters: patient freq. (2.0%); patient count (30/1514).",
+                    "chr_id": "7",
+                    "chr_pos": "81331986",
+                    "ref_nt": "G",
+                    "alt_nt": "T",
+                    "minor_allelic_frequency": "",
+                    "disease": [
+                        {
+                            "disease_id": "DOID:1324",
+                            "recommended_name": {
+                                "id": "DOID:1324",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:1324",
+                                "name": "lung cancer",
+                                "description": "A respiratory system cancer that is located_in the lung."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "MONDO:0012159",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012159",
+                                    "name": "LNCR1",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0012159",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012159",
+                                    "name": "lung cancer susceptibility 1",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0012159",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012159",
+                                    "name": "LNCR1",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0012159",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012159",
+                                    "name": "lung cancer susceptibility 1; LNCR1",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0012955",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012955",
+                                    "name": "lung cancer susceptibility 4",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0012955",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012955",
+                                    "name": "LNCR4",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0012955",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012955",
+                                    "name": "lung cancer susceptibility 4; LNCR4",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0012955",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012955",
+                                    "name": "lung cancer susceptibility 4",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0012942",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012942",
+                                    "name": "LNCR3",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0012942",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012942",
+                                    "name": "lung cancer susceptibility 3",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0012942",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012942",
+                                    "name": "adenocarcinoma of lung, susceptibility to",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0012942",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012942",
+                                    "name": "LNCR3",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0012942",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0012942",
+                                    "name": "lung cancer susceptibility 3; LNCR3",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0013631",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0013631",
+                                    "name": "LNCR5",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0013631",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0013631",
+                                    "name": "LNCR5",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0013631",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0013631",
+                                    "name": "lung cancer susceptibility 5; LNCR5",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0013631",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0013631",
+                                    "name": "lung cancer susceptibility 5",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "lung cancer",
+                                    "description": "A malignant neoplasm involving the lung."
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "malignant tumor of the lung",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "cancer of lung",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "malignant neoplasm of lung",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "lung cancer, protection against",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "lung cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "alveolar cell carcinoma",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "malignant neoplasm of the lung",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "malignant lung tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "Nonsmall cell lung cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "malignant lung neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "lung neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008903",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                                    "name": "malignant tumor of lung",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MIM:211980",
+                                    "resource": "MIM",
+                                    "url": "https://www.omim.org/entry/211980",
+                                    "name": "Lung cancer",
+                                    "description": "Lung cancer"
+                                }
+                            ]
+                        }
+                    ],
+                    "keywords": [
+                        "biomuta",
+                        "somatic",
+                        "cancer",
+                        "disease"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "rs1406377447",
+                            "database": "dbSNP",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs1406377447"
+                        },
+                        {
+                            "id": "rs1406377447",
+                            "database": "gnomAD",
+                            "url": "http://gnomad.broadinstitute.org/awesome?query=rs1406377447"
+                        }
+                    ],
+                    "glycoeffect": [
+                        "n-glyco-sequon-gain"
+                    ],
+                    "start_pos": 104,
+                    "end_pos": 104,
+                    "sequence_org": "M",
+                    "sequence_mut": "T",
+                    "comment": "Germline mutation passed 1 out of 1 filters: n-glyco-sequon-gain (NSM->NST).",
+                    "chr_id": "7",
+                    "chr_pos": "81758748A>",
+                    "ref_nt": "G",
+                    "alt_nt": "null",
+                    "minor_allelic_frequency": "",
+                    "keywords": [
+                        "ebi",
+                        "germline"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "BioMuta",
+                            "url": "https://hive.biochemistry.gwu.edu/biomuta/proteinview/P14210"
+                        }
+                    ],
+                    "glycoeffect": [],
+                    "start_pos": 178,
+                    "end_pos": 178,
+                    "subjects_tested": "162",
+                    "subjects_positive": "1",
+                    "frequency": "0.6",
+                    "sequence_org": "R",
+                    "sequence_mut": "Q",
+                    "comment": "Somatic mutation passed 1 out of 6 filters: num. of cancers (3). In dbSNP: rs776090604.",
+                    "chr_id": "7",
+                    "chr_pos": "81381528",
+                    "ref_nt": "C",
+                    "alt_nt": "T",
+                    "minor_allelic_frequency": "",
+                    "disease": [
+                        {
+                            "disease_id": "DOID:9256",
+                            "recommended_name": {
+                                "id": "DOID:9256",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:9256",
+                                "name": "colorectal cancer",
+                                "description": "A large intestine cancer that is located_in the colon and/or located_in the rectum."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "MONDO:0023113",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0023113",
+                                    "name": "familial colorectal cancer",
+                                    "description": "Familial colon cancer is a cluster of colon cancer within a family. Most cases ofcolon cancer occur sporadically in people with little to no family history of the condition. Approximately 3-5% of colon cancer is considered 'hereditary' and is thought to be caused by an inherited predisposition tocolon cancer that is passed down through a family in an autosomal dominant or autosomal recessive manner. In some of these families, the underlying genetic cause is not known; however, many of these cases are caused by changes ( mutations ) in the APC , MYH , MLH1 , MSH2 , MSH6 , PMS2 , EPCAM , PTEN , STK11 , SMAD4 , BMPR1A , NTHL1 , POLE , and POLD1 genes (which are associated with hereditary cancer syndromes). An additional 10-30% of people diagnosed with colon cancer have a significant family history of the condition but have no identifiable mutation in a gene known to cause a hereditary predisposition to colon cancer. These clusters of colon cancer are likely due to a combination of gene(s) and other shared factors such as environment and lifestyle. High-risk cancer screening and other preventative measures such as prophylactic surgeries are typically recommended in people who have an increased risk for colon cancer based on their personal and/or family histories."
+                                },
+                                {
+                                    "id": "MONDO:0023113",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0023113",
+                                    "name": "hereditary colorectal cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0023113",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0023113",
+                                    "name": "colorectal cancer, familial",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MIM:114500",
+                                    "resource": "MIM",
+                                    "url": "https://www.omim.org/entry/114500",
+                                    "name": "Colorectal cancer",
+                                    "description": "Colorectal cancer"
+                                }
+                            ]
+                        },
+                        {
+                            "disease_id": "DOID:10534",
+                            "recommended_name": {
+                                "id": "DOID:10534",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:10534",
+                                "name": "stomach cancer",
+                                "description": "A gastrointestinal system cancer that is located_in the stomach."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "DOID:10534",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:10534",
+                                    "name": "gastric cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:10534",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:10534",
+                                    "name": "gastric neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "gastric cancer",
+                                    "description": "A primary or metastatic malignant neoplasm involving the stomach."
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "malignant tumor of body of stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "malignant tumor of the stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "gastric neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "malignant tumor of stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "malignant tumor of lesser curve of stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "malignant gastric tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "malignant neoplasm of body of stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "gastric cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "gastric cancer, intestinal",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "stomach cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "Ca body - stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "malignant tumor of greater curve of stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "ca greater curvature of stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "Ca lesser curvature - stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "malignant stomach neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "malignant neoplasm of stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "malignant gastric neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "malignant neoplasm of the stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "malignant neoplasm of lesser curve of stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001056",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                                    "name": "cancer of stomach",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MIM:613659",
+                                    "resource": "MIM",
+                                    "url": "https://www.omim.org/entry/613659",
+                                    "name": "Gastric cancer",
+                                    "description": "Gastric cancer"
+                                }
+                            ]
+                        },
+                        {
+                            "disease_id": "DOID:4159",
+                            "recommended_name": {
+                                "id": "DOID:4159",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:4159",
+                                "name": "skin cancer",
+                                "description": "An integumentary system cancer located_in the skin that is the uncontrolled growth of abnormal skin cells."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "DOID:4159",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:4159",
+                                    "name": "CA - skin cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:4159",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:4159",
+                                    "name": "malignant neoplasm of skin",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:4159",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:4159",
+                                    "name": "melanoma and Non-melanoma skin cancer",
+                                    "description": ""
+                                }
+                            ]
+                        }
+                    ],
+                    "keywords": [
+                        "biomuta",
+                        "somatic",
+                        "cancer",
+                        "disease"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "BioMuta",
+                            "url": "https://hive.biochemistry.gwu.edu/biomuta/proteinview/P14210"
+                        }
+                    ],
+                    "glycoeffect": [],
+                    "start_pos": 1,
+                    "end_pos": 1,
+                    "subjects_tested": "50",
+                    "subjects_positive": "1",
+                    "frequency": "2.0",
+                    "sequence_org": "M",
+                    "sequence_mut": "L",
+                    "comment": "Somatic mutation passed 1 out of 6 filters: patient freq. (2.0%).",
+                    "chr_id": "7",
+                    "chr_pos": "81399287",
+                    "ref_nt": "T",
+                    "alt_nt": "A",
+                    "minor_allelic_frequency": "",
+                    "disease": [
+                        {
+                            "disease_id": "DOID:1781",
+                            "recommended_name": {
+                                "id": "DOID:1781",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:1781",
+                                "name": "thyroid gland cancer",
+                                "description": "An endocrine gland cancer located in the thryoid gland located in the neck below the thyroid cartilage."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "Thyroid gland neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "malignant neoplasm of thyroid gland",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "malignant tumour of thyroid gland",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "neoplasm of thyroid gland",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "thyroid neoplasm",
+                                    "description": ""
+                                }
+                            ]
+                        }
+                    ],
+                    "keywords": [
+                        "biomuta",
+                        "somatic",
+                        "cancer",
+                        "disease"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "BioMuta",
+                            "url": "https://hive.biochemistry.gwu.edu/biomuta/proteinview/P14210"
+                        }
+                    ],
+                    "glycoeffect": [],
+                    "start_pos": 251,
+                    "end_pos": 251,
+                    "subjects_tested": "103",
+                    "subjects_positive": "1",
+                    "frequency": "1.0",
+                    "sequence_org": "P",
+                    "sequence_mut": "L",
+                    "comment": "Somatic mutation passed 1 out of 6 filters: patient freq. (1.0%).",
+                    "chr_id": "7",
+                    "chr_pos": "81372782",
+                    "ref_nt": "G",
+                    "alt_nt": "A",
+                    "minor_allelic_frequency": "",
+                    "disease": [
+                        {
+                            "disease_id": "DOID:11054",
+                            "recommended_name": {
+                                "id": "DOID:11054",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:11054",
+                                "name": "urinary bladder cancer",
+                                "description": "An urinary system cancer that results_in malignant growth located_in the urinary bladder."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "DOID:11054",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:11054",
+                                    "name": "bladder cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:11054",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:11054",
+                                    "name": "tumor of the bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "urinary bladder cancer",
+                                    "description": "A primary or metastatic malignant neoplasm involving the bladder."
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "bladder cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant neoplasm of the bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant bladder neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant tumor of the urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant tumor of urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant neoplasm of bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant bladder tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant urinary bladder neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant tumor of the bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "urinary bladder malignant neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant neoplasm, urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant tumor of bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "cancer of urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "urinary bladder cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant neoplasm of urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant neoplasm of the urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "tumor of the bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant tumor, urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant urinary bladder tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "urinary bladder malignant tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant neoplasm, bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MIM:109800",
+                                    "resource": "MIM",
+                                    "url": "https://www.omim.org/entry/109800",
+                                    "name": "Bladder cancer",
+                                    "description": "Bladder cancer"
+                                }
+                            ]
+                        }
+                    ],
+                    "keywords": [
+                        "biomuta",
+                        "somatic",
+                        "cancer",
+                        "disease"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "BioMuta",
+                            "url": "https://hive.biochemistry.gwu.edu/biomuta/proteinview/P14210"
+                        }
+                    ],
+                    "glycoeffect": [],
+                    "start_pos": 252,
+                    "end_pos": 252,
+                    "subjects_tested": "162",
+                    "subjects_positive": "1",
+                    "frequency": "0.6",
+                    "sequence_org": "D",
+                    "sequence_mut": "N",
+                    "comment": "Somatic mutation passed 1 out of 6 filters: num. of cancers (3). In dbSNP: rs752123971.",
+                    "chr_id": "7",
+                    "chr_pos": "81372780",
+                    "ref_nt": "C",
+                    "alt_nt": "T",
+                    "minor_allelic_frequency": "",
+                    "disease": [
+                        {
+                            "disease_id": "DOID:9256",
+                            "recommended_name": {
+                                "id": "DOID:9256",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:9256",
+                                "name": "colorectal cancer",
+                                "description": "A large intestine cancer that is located_in the colon and/or located_in the rectum."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "MONDO:0023113",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0023113",
+                                    "name": "familial colorectal cancer",
+                                    "description": "Familial colon cancer is a cluster of colon cancer within a family. Most cases ofcolon cancer occur sporadically in people with little to no family history of the condition. Approximately 3-5% of colon cancer is considered 'hereditary' and is thought to be caused by an inherited predisposition tocolon cancer that is passed down through a family in an autosomal dominant or autosomal recessive manner. In some of these families, the underlying genetic cause is not known; however, many of these cases are caused by changes ( mutations ) in the APC , MYH , MLH1 , MSH2 , MSH6 , PMS2 , EPCAM , PTEN , STK11 , SMAD4 , BMPR1A , NTHL1 , POLE , and POLD1 genes (which are associated with hereditary cancer syndromes). An additional 10-30% of people diagnosed with colon cancer have a significant family history of the condition but have no identifiable mutation in a gene known to cause a hereditary predisposition to colon cancer. These clusters of colon cancer are likely due to a combination of gene(s) and other shared factors such as environment and lifestyle. High-risk cancer screening and other preventative measures such as prophylactic surgeries are typically recommended in people who have an increased risk for colon cancer based on their personal and/or family histories."
+                                },
+                                {
+                                    "id": "MONDO:0023113",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0023113",
+                                    "name": "hereditary colorectal cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0023113",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0023113",
+                                    "name": "colorectal cancer, familial",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MIM:114500",
+                                    "resource": "MIM",
+                                    "url": "https://www.omim.org/entry/114500",
+                                    "name": "Colorectal cancer",
+                                    "description": "Colorectal cancer"
+                                }
+                            ]
+                        },
+                        {
+                            "disease_id": "DOID:1319",
+                            "recommended_name": {
+                                "id": "DOID:1319",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:1319",
+                                "name": "brain cancer",
+                                "description": "A central nervous system cancer that is characterized by the growth of abnormal cells in the tissues of the brain."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "BT - Brain tumour",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "adult brain tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "adult malignant brain neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "brain neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "brain neoplasm, adult",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "malignant brain tumour",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "malignant primary brain neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "malignant primary brain tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "malignant tumor of Brain",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "malignant tumor of adult brain",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "neoplasm of brain",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "primary brain neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "primary brain tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "primary malignant neoplasm of brain",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1319",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1319",
+                                    "name": "tumor of the Brain",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        {
+                            "disease_id": "DOID:363",
+                            "recommended_name": {
+                                "id": "DOID:363",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:363",
+                                "name": "uterine cancer",
+                                "description": "A female reproductive organ cancer that is located_in the uterus."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "DOID:363",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:363",
+                                    "name": "CA - cancer of uterus",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:363",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:363",
+                                    "name": "Tumour of uterus",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:363",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:363",
+                                    "name": "malignant neoplasm of uterus",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:363",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:363",
+                                    "name": "malignant uterine tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:363",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:363",
+                                    "name": "neoplasm of uterus",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:363",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:363",
+                                    "name": "uterine tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:363",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:363",
+                                    "name": "uterus neoplasm",
+                                    "description": ""
+                                }
+                            ]
+                        }
+                    ],
+                    "keywords": [
+                        "biomuta",
+                        "somatic",
+                        "cancer",
+                        "disease"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "BioMuta",
+                            "url": "https://hive.biochemistry.gwu.edu/biomuta/proteinview/P14210"
+                        }
+                    ],
+                    "glycoeffect": [],
+                    "start_pos": 264,
+                    "end_pos": 264,
+                    "subjects_tested": "103",
+                    "subjects_positive": "1",
+                    "frequency": "1.0",
+                    "sequence_org": "D",
+                    "sequence_mut": "H",
+                    "comment": "Somatic mutation passed 1 out of 6 filters: patient freq. (1.0%).",
+                    "chr_id": "7",
+                    "chr_pos": "81372744",
+                    "ref_nt": "C",
+                    "alt_nt": "G",
+                    "minor_allelic_frequency": "",
+                    "disease": [
+                        {
+                            "disease_id": "DOID:11054",
+                            "recommended_name": {
+                                "id": "DOID:11054",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:11054",
+                                "name": "urinary bladder cancer",
+                                "description": "An urinary system cancer that results_in malignant growth located_in the urinary bladder."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "DOID:11054",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:11054",
+                                    "name": "bladder cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:11054",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:11054",
+                                    "name": "tumor of the bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "urinary bladder cancer",
+                                    "description": "A primary or metastatic malignant neoplasm involving the bladder."
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "bladder cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant neoplasm of the bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant bladder neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant tumor of the urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant tumor of urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant neoplasm of bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant bladder tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant urinary bladder neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant tumor of the bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "urinary bladder malignant neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant neoplasm, urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant tumor of bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "cancer of urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "urinary bladder cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant neoplasm of urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant neoplasm of the urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "tumor of the bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant tumor, urinary bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant urinary bladder tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "urinary bladder malignant tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0001187",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                                    "name": "malignant neoplasm, bladder",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MIM:109800",
+                                    "resource": "MIM",
+                                    "url": "https://www.omim.org/entry/109800",
+                                    "name": "Bladder cancer",
+                                    "description": "Bladder cancer"
+                                }
+                            ]
+                        }
+                    ],
+                    "keywords": [
+                        "biomuta",
+                        "somatic",
+                        "cancer",
+                        "disease"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "BioMuta",
+                            "url": "https://hive.biochemistry.gwu.edu/biomuta/proteinview/P14210"
+                        }
+                    ],
+                    "glycoeffect": [],
+                    "start_pos": 279,
+                    "end_pos": 279,
+                    "subjects_tested": "50",
+                    "subjects_positive": "1",
+                    "frequency": "2.0",
+                    "sequence_org": "R",
+                    "sequence_mut": "H",
+                    "comment": "Somatic mutation passed 1 out of 6 filters: patient freq. (2.0%).",
+                    "chr_id": "7",
+                    "chr_pos": "81372698",
+                    "ref_nt": "C",
+                    "alt_nt": "T",
+                    "minor_allelic_frequency": "",
+                    "disease": [
+                        {
+                            "disease_id": "DOID:1781",
+                            "recommended_name": {
+                                "id": "DOID:1781",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:1781",
+                                "name": "thyroid gland cancer",
+                                "description": "An endocrine gland cancer located in the thryoid gland located in the neck below the thyroid cartilage."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "Thyroid gland neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "malignant neoplasm of thyroid gland",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "malignant tumour of thyroid gland",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "neoplasm of thyroid gland",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "thyroid neoplasm",
+                                    "description": ""
+                                }
+                            ]
+                        }
+                    ],
+                    "keywords": [
+                        "biomuta",
+                        "somatic",
+                        "cancer",
+                        "disease"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "rs754659494",
+                            "database": "dbSNP",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs754659494"
+                        },
+                        {
+                            "id": "rs754659494",
+                            "database": "ExAC",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs754659494"
+                        },
+                        {
+                            "id": "rs754659494",
+                            "database": "TOPMed",
+                            "url": "https://www.ncbi.nlm.nih.gov/snp/rs754659494#frequency_tab"
+                        },
+                        {
+                            "id": "rs754659494",
+                            "database": "gnomAD",
+                            "url": "http://gnomad.broadinstitute.org/awesome?query=rs754659494"
+                        }
+                    ],
+                    "glycoeffect": [
+                        "n-glyco-sequon-loss"
+                    ],
+                    "start_pos": 294,
+                    "end_pos": 294,
+                    "sequence_org": "N",
+                    "sequence_mut": "Y",
+                    "comment": "Germline mutation passed 1 out of 1 filters: n-glyco-sequon-loss (NDT->YDT).",
+                    "chr_id": "7",
+                    "chr_pos": "81729765T>",
+                    "ref_nt": "A",
+                    "alt_nt": "null",
+                    "minor_allelic_frequency": "",
+                    "keywords": [
+                        "ebi",
+                        "germline"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "rs1289926169",
+                            "database": "dbSNP",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs1289926169"
+                        },
+                        {
+                            "id": "rs1289926169",
+                            "database": "TOPMed",
+                            "url": "https://www.ncbi.nlm.nih.gov/snp/rs1289926169#frequency_tab"
+                        },
+                        {
+                            "id": "rs1289926169",
+                            "database": "gnomAD",
+                            "url": "http://gnomad.broadinstitute.org/awesome?query=rs1289926169"
+                        }
+                    ],
+                    "glycoeffect": [
+                        "n-glyco-sequon-loss",
+                        "o-glyco-site-loss"
+                    ],
+                    "start_pos": 296,
+                    "end_pos": 296,
+                    "sequence_org": "T",
+                    "sequence_mut": "A",
+                    "comment": "Germline mutation passed 1 out of 1 filters: n-glyco-sequon-loss (NDT->NDA).",
+                    "chr_id": "7",
+                    "chr_pos": "81729759T>",
+                    "ref_nt": "C",
+                    "alt_nt": "null",
+                    "minor_allelic_frequency": "",
+                    "keywords": [
+                        "ebi",
+                        "germline"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "rs1410083247",
+                            "database": "dbSNP",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs1410083247"
+                        },
+                        {
+                            "id": "rs1410083247",
+                            "database": "gnomAD",
+                            "url": "http://gnomad.broadinstitute.org/awesome?query=rs1410083247"
+                        }
+                    ],
+                    "glycoeffect": [
+                        "n-glyco-sequon-loss",
+                        "o-glyco-site-loss"
+                    ],
+                    "start_pos": 296,
+                    "end_pos": 296,
+                    "sequence_org": "T",
+                    "sequence_mut": "I",
+                    "comment": "Germline mutation passed 1 out of 1 filters: n-glyco-sequon-loss (NDT->NDI).",
+                    "chr_id": "7",
+                    "chr_pos": "81729758G>",
+                    "ref_nt": "A",
+                    "alt_nt": "null",
+                    "minor_allelic_frequency": "",
+                    "keywords": [
+                        "ebi",
+                        "germline"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "rs745555932",
+                            "database": "dbSNP",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs745555932"
+                        },
+                        {
+                            "id": "rs745555932",
+                            "database": "ExAC",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs745555932"
+                        },
+                        {
+                            "id": "rs745555932",
+                            "database": "gnomAD",
+                            "url": "http://gnomad.broadinstitute.org/awesome?query=rs745555932"
+                        }
+                    ],
+                    "glycoeffect": [
+                        "n-glyco-sequon-gain"
+                    ],
+                    "start_pos": 384,
+                    "end_pos": 384,
+                    "sequence_org": "D",
+                    "sequence_mut": "N",
+                    "comment": "Germline mutation passed 1 out of 1 filters: n-glyco-sequon-gain (DMS->NMS).",
+                    "chr_id": "7",
+                    "chr_pos": "81725908C>",
+                    "ref_nt": "T",
+                    "alt_nt": "null",
+                    "minor_allelic_frequency": "",
+                    "keywords": [
+                        "ebi",
+                        "germline"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "rs1365681296",
+                            "database": "dbSNP",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs1365681296"
+                        },
+                        {
+                            "id": "rs1365681296",
+                            "database": "TOPMed",
+                            "url": "https://www.ncbi.nlm.nih.gov/snp/rs1365681296#frequency_tab"
+                        },
+                        {
+                            "id": "rs1365681296",
+                            "database": "gnomAD",
+                            "url": "http://gnomad.broadinstitute.org/awesome?query=rs1365681296"
+                        }
+                    ],
+                    "glycoeffect": [
+                        "n-glyco-sequon-gain"
+                    ],
+                    "start_pos": 400,
+                    "end_pos": 400,
+                    "sequence_org": "M",
+                    "sequence_mut": "T",
+                    "comment": "Germline mutation passed 1 out of 1 filters: n-glyco-sequon-gain (NYM->NYT).",
+                    "chr_id": "7",
+                    "chr_pos": "81720817A>",
+                    "ref_nt": "G",
+                    "alt_nt": "null",
+                    "minor_allelic_frequency": "",
+                    "keywords": [
+                        "ebi",
+                        "germline"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "rs1392395915",
+                            "database": "dbSNP",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs1392395915"
+                        },
+                        {
+                            "id": "rs1392395915",
+                            "database": "gnomAD",
+                            "url": "http://gnomad.broadinstitute.org/awesome?query=rs1392395915"
+                        }
+                    ],
+                    "glycoeffect": [
+                        "n-glyco-sequon-loss"
+                    ],
+                    "start_pos": 402,
+                    "end_pos": 402,
+                    "sequence_org": "N",
+                    "sequence_mut": "S",
+                    "comment": "Germline mutation passed 1 out of 1 filters: n-glyco-sequon-loss (NLS->SLS).",
+                    "chr_id": "7",
+                    "chr_pos": "81720811T>",
+                    "ref_nt": "C",
+                    "alt_nt": "null",
+                    "minor_allelic_frequency": "",
+                    "keywords": [
+                        "ebi",
+                        "germline"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "BioMuta",
+                            "url": "https://hive.biochemistry.gwu.edu/biomuta/proteinview/P14210"
+                        }
+                    ],
+                    "glycoeffect": [],
+                    "start_pos": 416,
+                    "end_pos": 416,
+                    "subjects_tested": "44",
+                    "subjects_positive": "1",
+                    "frequency": "2.3",
+                    "sequence_org": "D",
+                    "sequence_mut": "E",
+                    "comment": "Somatic mutation passed 1 out of 6 filters: patient freq. (2.3%).",
+                    "chr_id": "7",
+                    "chr_pos": "81350084",
+                    "ref_nt": "G",
+                    "alt_nt": "C",
+                    "minor_allelic_frequency": "",
+                    "disease": [
+                        {
+                            "disease_id": "DOID:11934",
+                            "recommended_name": {
+                                "id": "DOID:11934",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:11934",
+                                "name": "head and neck cancer",
+                                "description": "An organ system cancer that arises in the head or neck region. This region includes the nasal cavity, sinuses, lips, mouth, salivary glands, throat, or larynx."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "DOID:11934",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:11934",
+                                    "name": "head and neck neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:11934",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:11934",
+                                    "name": "head and neck tumours",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:11934",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:11934",
+                                    "name": "head/neck neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:11934",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:11934",
+                                    "name": "tumor of head and neck",
+                                    "description": ""
+                                }
+                            ]
+                        }
+                    ],
+                    "keywords": [
+                        "biomuta",
+                        "somatic",
+                        "cancer",
+                        "disease"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "rs1275169968",
+                            "database": "dbSNP",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs1275169968"
+                        },
+                        {
+                            "id": "rs1275169968",
+                            "database": "TOPMed",
+                            "url": "https://www.ncbi.nlm.nih.gov/snp/rs1275169968#frequency_tab"
+                        },
+                        {
+                            "id": "rs1275169968",
+                            "database": "gnomAD",
+                            "url": "http://gnomad.broadinstitute.org/awesome?query=rs1275169968"
+                        }
+                    ],
+                    "glycoeffect": [
+                        "n-glyco-sequon-gain"
+                    ],
+                    "start_pos": 438,
+                    "end_pos": 438,
+                    "sequence_org": "N",
+                    "sequence_mut": "S",
+                    "comment": "Germline mutation passed 1 out of 1 filters: n-glyco-sequon-gain (NEN->NES).",
+                    "chr_id": "7",
+                    "chr_pos": "81717324T>",
+                    "ref_nt": "C",
+                    "alt_nt": "null",
+                    "minor_allelic_frequency": "",
+                    "keywords": [
+                        "ebi",
+                        "germline"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "rs17855203",
+                            "database": "dbSNP",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs17855203"
+                        },
+                        {
+                            "id": "rs17855203",
+                            "database": "gnomAD",
+                            "url": "http://gnomad.broadinstitute.org/awesome?query=rs17855203"
+                        }
+                    ],
+                    "glycoeffect": [
+                        "n-glyco-sequon-gain",
+                        "o-glyco-site-loss"
+                    ],
+                    "start_pos": 43,
+                    "end_pos": 43,
+                    "sequence_org": "K",
+                    "sequence_mut": "N",
+                    "comment": "Germline mutation passed 1 out of 1 filters: n-glyco-sequon-gain (KKS->NKS).",
+                    "chr_id": "7",
+                    "chr_pos": "81762832T>",
+                    "ref_nt": "G",
+                    "alt_nt": "null",
+                    "minor_allelic_frequency": "",
+                    "keywords": [
+                        "ebi",
+                        "germline"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "BioMuta",
+                            "url": "https://hive.biochemistry.gwu.edu/biomuta/proteinview/P14210"
+                        }
+                    ],
+                    "glycoeffect": [
+                        "o-glyco-site-loss"
+                    ],
+                    "start_pos": 649,
+                    "end_pos": 649,
+                    "subjects_tested": "50",
+                    "subjects_positive": "1",
+                    "frequency": "2.0",
+                    "sequence_org": "K",
+                    "sequence_mut": "M",
+                    "comment": "Somatic mutation passed 1 out of 6 filters: patient freq. (2.0%).",
+                    "chr_id": "7",
+                    "chr_pos": "81334770",
+                    "ref_nt": "T",
+                    "alt_nt": "A",
+                    "minor_allelic_frequency": "",
+                    "disease": [
+                        {
+                            "disease_id": "DOID:1781",
+                            "recommended_name": {
+                                "id": "DOID:1781",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:1781",
+                                "name": "thyroid gland cancer",
+                                "description": "An endocrine gland cancer located in the thryoid gland located in the neck below the thyroid cartilage."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "Thyroid gland neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "malignant neoplasm of thyroid gland",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "malignant tumour of thyroid gland",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "neoplasm of thyroid gland",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "thyroid neoplasm",
+                                    "description": ""
+                                }
+                            ]
+                        }
+                    ],
+                    "keywords": [
+                        "biomuta",
+                        "somatic",
+                        "cancer",
+                        "disease"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "BioMuta",
+                            "url": "https://hive.biochemistry.gwu.edu/biomuta/proteinview/P14210"
+                        }
+                    ],
+                    "glycoeffect": [],
+                    "start_pos": 670,
+                    "end_pos": 670,
+                    "subjects_tested": "50",
+                    "subjects_positive": "1",
+                    "frequency": "2.0",
+                    "sequence_org": "E",
+                    "sequence_mut": "*",
+                    "comment": "Somatic mutation passed 1 out of 6 filters: patient freq. (2.0%).",
+                    "chr_id": "7",
+                    "chr_pos": "81334708",
+                    "ref_nt": "C",
+                    "alt_nt": "A",
+                    "minor_allelic_frequency": "",
+                    "disease": [
+                        {
+                            "disease_id": "DOID:1781",
+                            "recommended_name": {
+                                "id": "DOID:1781",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:1781",
+                                "name": "thyroid gland cancer",
+                                "description": "An endocrine gland cancer located in the thryoid gland located in the neck below the thyroid cartilage."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "Thyroid gland neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "malignant neoplasm of thyroid gland",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "malignant tumour of thyroid gland",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "neoplasm of thyroid gland",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:1781",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:1781",
+                                    "name": "thyroid neoplasm",
+                                    "description": ""
+                                }
+                            ]
+                        }
+                    ],
+                    "keywords": [
+                        "biomuta",
+                        "somatic",
+                        "cancer",
+                        "disease"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "rs780386537",
+                            "database": "dbSNP",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs780386537"
+                        },
+                        {
+                            "id": "rs780386537",
+                            "database": "ExAC",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs780386537"
+                        },
+                        {
+                            "id": "rs780386537",
+                            "database": "TOPMed",
+                            "url": "https://www.ncbi.nlm.nih.gov/snp/rs780386537#frequency_tab"
+                        },
+                        {
+                            "id": "rs780386537",
+                            "database": "gnomAD",
+                            "url": "http://gnomad.broadinstitute.org/awesome?query=rs780386537"
+                        }
+                    ],
+                    "glycoeffect": [
+                        "n-glyco-sequon-gain"
+                    ],
+                    "start_pos": 67,
+                    "end_pos": 67,
+                    "sequence_org": "A",
+                    "sequence_mut": "S",
+                    "comment": "Germline mutation passed 1 out of 1 filters: n-glyco-sequon-gain (NTA->NTS).",
+                    "chr_id": "7",
+                    "chr_pos": "81762762C>",
+                    "ref_nt": "A",
+                    "alt_nt": "null",
+                    "minor_allelic_frequency": "",
+                    "keywords": [
+                        "ebi",
+                        "germline"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "rs780386537",
+                            "database": "dbSNP",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs780386537"
+                        },
+                        {
+                            "id": "rs780386537",
+                            "database": "ExAC",
+                            "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs780386537"
+                        },
+                        {
+                            "id": "rs780386537",
+                            "database": "TOPMed",
+                            "url": "https://www.ncbi.nlm.nih.gov/snp/rs780386537#frequency_tab"
+                        },
+                        {
+                            "id": "rs780386537",
+                            "database": "gnomAD",
+                            "url": "http://gnomad.broadinstitute.org/awesome?query=rs780386537"
+                        }
+                    ],
+                    "glycoeffect": [
+                        "n-glyco-sequon-gain"
+                    ],
+                    "start_pos": 67,
+                    "end_pos": 67,
+                    "sequence_org": "A",
+                    "sequence_mut": "T",
+                    "comment": "Germline mutation passed 1 out of 1 filters: n-glyco-sequon-gain (NTA->NTT).",
+                    "chr_id": "7",
+                    "chr_pos": "81762762C>",
+                    "ref_nt": "T",
+                    "alt_nt": "null",
+                    "minor_allelic_frequency": "",
+                    "keywords": [
+                        "ebi",
+                        "germline"
+                    ]
+                },
+                {
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "BioMuta",
+                            "url": "https://hive.biochemistry.gwu.edu/biomuta/proteinview/P14210"
+                        }
+                    ],
+                    "glycoeffect": [],
+                    "start_pos": 98,
+                    "end_pos": 98,
+                    "subjects_tested": "93",
+                    "subjects_positive": "1",
+                    "frequency": "1.1",
+                    "sequence_org": "W",
+                    "sequence_mut": "L",
+                    "comment": "Somatic mutation passed 1 out of 6 filters: patient freq. (1.1%).",
+                    "chr_id": "7",
+                    "chr_pos": "81388082",
+                    "ref_nt": "C",
+                    "alt_nt": "A",
+                    "minor_allelic_frequency": "",
+                    "disease": [
+                        {
+                            "disease_id": "DOID:2394",
+                            "recommended_name": {
+                                "id": "DOID:2394",
+                                "resource": "Disease Ontology",
+                                "url": "http://disease-ontology.org/term/DOID:2394",
+                                "name": "ovarian cancer",
+                                "description": "A female reproductive organ cancer that is located_in the ovary."
+                            },
+                            "synonyms": [
+                                {
+                                    "id": "DOID:2394",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:2394",
+                                    "name": "malignant Ovarian tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:2394",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:2394",
+                                    "name": "malignant tumour of ovary",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:2394",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:2394",
+                                    "name": "ovarian neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:2394",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:2394",
+                                    "name": "ovary neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:2394",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:2394",
+                                    "name": "primary ovarian cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "DOID:2394",
+                                    "resource": "Disease Ontology",
+                                    "url": "http://disease-ontology.org/term/DOID:2394",
+                                    "name": "tumor of the Ovary",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0011931",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0011931",
+                                    "name": "OVCAS1",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0011931",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0011931",
+                                    "name": "OVCAS1",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0011931",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0011931",
+                                    "name": "ovarian cancer, susceptibility to, 1",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0011931",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0011931",
+                                    "name": "ovarian cancer, susceptibility to, 1; OVCAS1",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "ovarian cancer",
+                                    "description": "A primary or metastatic malignant neoplasm involving the ovary. Most primary malignant ovarian neoplasms are either carcinomas (serous, mucinous, or endometrioid adenocarcinomas) or malignant germ cell tumors. Metastatic malignant neoplasms to the ovary include carcinomas, lymphomas, and melanomas."
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "malignant neoplasm of the ovary",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "primary ovarian cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "ovarian cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "ovary neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "ovarian cancer, NOS",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "ovarian malignant tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "malignant tumour of ovary",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "malignant tumor of the ovary",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "cancer of ovary",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "malignant ovarian neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "ovarian cancer, epithelial",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "malignant tumor of ovary",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "cancer of the ovary",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "ovary cancer",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "malignant ovarian tumor",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "ovarian neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "tumor of the ovary",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "malignant neoplasm of ovary",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MONDO:0008170",
+                                    "resource": "MONDO",
+                                    "url": "https://monarchinitiative.org/disease/MONDO:0008170",
+                                    "name": "malignant ovary neoplasm",
+                                    "description": ""
+                                },
+                                {
+                                    "id": "MIM:167000",
+                                    "resource": "MIM",
+                                    "url": "https://www.omim.org/entry/167000",
+                                    "name": "Ovarian cancer",
+                                    "description": "Ovarian cancer"
+                                }
+                            ]
+                        }
+                    ],
+                    "keywords": [
+                        "biomuta",
+                        "somatic",
+                        "cancer",
+                        "disease"
+                    ]
+                }
+            ],
+            "site_annotation": [
+                {
+                    "start_pos": 294,
+                    "end_pos": 296,
+                    "annotation": "n_glycosylation_sequon"
+                },
+                {
+                    "start_pos": 402,
+                    "end_pos": 404,
+                    "annotation": "n_glycosylation_sequon"
+                },
+                {
+                    "start_pos": 566,
+                    "end_pos": 568,
+                    "annotation": "n_glycosylation_sequon"
+                },
+                {
+                    "start_pos": 653,
+                    "end_pos": 655,
+                    "annotation": "n_glycosylation_sequon"
+                }
+            ],
+            "glycosylation": [
+                {
+                    "glytoucan_ac": "G17689DH",
+                    "type": "N-linked",
+                    "subtype": "",
+                    "site_category": "reported_with_glycan",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: N-294, N-402, T-476, N-566, N-653",
+                    "start_pos": 294,
+                    "start_aa": "Asn",
+                    "end_pos": 294,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniCarbKB",
+                            "url": "http://unicarbkb.org/proteinsummary/P14210/annotated"
+                        },
+                        {
+                            "id": "8407880",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/8407880"
+                        },
+                        {
+                            "id": "1482348",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/1482348"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "G60542VK",
+                    "type": "N-linked",
+                    "subtype": "",
+                    "site_category": "reported_with_glycan",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: ASN-294 AND ASN-402 ; ASN-294 AND ASN-402",
+                    "start_pos": 294,
+                    "start_aa": "Asn",
+                    "end_pos": 294,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniCarbKB",
+                            "url": "http://unicarbkb.org/proteinsummary/P14210/annotated"
+                        },
+                        {
+                            "id": "8407880",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/8407880"
+                        },
+                        {
+                            "id": "1482348",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/1482348"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "G77252PU",
+                    "type": "N-linked",
+                    "subtype": "",
+                    "site_category": "reported_with_glycan",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: N-294, N-402, T-476, N-566, N-653",
+                    "start_pos": 294,
+                    "start_aa": "Asn",
+                    "end_pos": 294,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniCarbKB",
+                            "url": "http://unicarbkb.org/proteinsummary/P14210/annotated"
+                        },
+                        {
+                            "id": "1482348",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/1482348"
+                        },
+                        {
+                            "id": "8407880",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/8407880"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "",
+                    "type": "N-linked",
+                    "subtype": "Complex",
+                    "site_category": "reported",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "N-linked (GlcNAc...) (complex) asparagine Complex",
+                    "start_pos": 294,
+                    "start_aa": "Asn",
+                    "end_pos": 294,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniProtKB",
+                            "url": "https://www.uniprot.org/uniprot/P14210#ptm_processing"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "G17689DH",
+                    "type": "N-linked",
+                    "subtype": "",
+                    "site_category": "reported_with_glycan",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: N-294, N-402, T-476, N-566, N-653",
+                    "start_pos": 402,
+                    "start_aa": "Asn",
+                    "end_pos": 402,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniCarbKB",
+                            "url": "http://unicarbkb.org/proteinsummary/P14210/annotated"
+                        },
+                        {
+                            "id": "1482348",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/1482348"
+                        },
+                        {
+                            "id": "8407880",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/8407880"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "G77252PU",
+                    "type": "N-linked",
+                    "subtype": "",
+                    "site_category": "reported_with_glycan",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: N-294, N-402, T-476, N-566, N-653",
+                    "start_pos": 402,
+                    "start_aa": "Asn",
+                    "end_pos": 402,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniCarbKB",
+                            "url": "http://unicarbkb.org/proteinsummary/P14210/annotated"
+                        },
+                        {
+                            "id": "8407880",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/8407880"
+                        },
+                        {
+                            "id": "1482348",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/1482348"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "",
+                    "type": "N-linked",
+                    "subtype": "Complex",
+                    "site_category": "reported",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "N-linked (GlcNAc...) (complex) asparagine Complex",
+                    "start_pos": 402,
+                    "start_aa": "Asn",
+                    "end_pos": 402,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniProtKB",
+                            "url": "https://www.uniprot.org/uniprot/P14210#ptm_processing"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "G45637XA",
+                    "type": "O-linked",
+                    "subtype": "",
+                    "site_category": "reported_with_glycan",
+                    "site_seq": "T",
+                    "relation": "attached",
+                    "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: N-294, N-402, T-476, N-566, N-653",
+                    "start_pos": 476,
+                    "start_aa": "Thr",
+                    "end_pos": 476,
+                    "end_aa": "Thr",
+                    "residue": "Thr",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniCarbKB",
+                            "url": "http://unicarbkb.org/proteinsummary/P14210/annotated"
+                        },
+                        {
+                            "id": "8407880",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/8407880"
+                        },
+                        {
+                            "id": "1482348",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/1482348"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "",
+                    "type": "O-linked",
+                    "subtype": "O-GalNAcylation",
+                    "site_category": "reported",
+                    "site_seq": "T",
+                    "relation": "attached",
+                    "comment": "O-linked (GalNAc...) threonine O-GalNAcylation",
+                    "start_pos": 476,
+                    "start_aa": "Thr",
+                    "end_pos": 476,
+                    "end_aa": "Thr",
+                    "residue": "Thr",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniProtKB",
+                            "url": "https://www.uniprot.org/uniprot/P14210#ptm_processing"
+                        },
+                        {
+                            "id": "1482348",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/1482348"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "G17689DH",
+                    "type": "N-linked",
+                    "subtype": "",
+                    "site_category": "reported_with_glycan",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: N-294, N-402, T-476, N-566, N-653",
+                    "start_pos": 566,
+                    "start_aa": "Asn",
+                    "end_pos": 566,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniCarbKB",
+                            "url": "http://unicarbkb.org/proteinsummary/P14210/annotated"
+                        },
+                        {
+                            "id": "8407880",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/8407880"
+                        },
+                        {
+                            "id": "1482348",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/1482348"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "G77252PU",
+                    "type": "N-linked",
+                    "subtype": "",
+                    "site_category": "reported_with_glycan",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: N-294, N-402, T-476, N-566, N-653",
+                    "start_pos": 566,
+                    "start_aa": "Asn",
+                    "end_pos": 566,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniCarbKB",
+                            "url": "http://unicarbkb.org/proteinsummary/P14210/annotated"
+                        },
+                        {
+                            "id": "1482348",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/1482348"
+                        },
+                        {
+                            "id": "8407880",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/8407880"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "",
+                    "type": "N-linked",
+                    "subtype": "Complex",
+                    "site_category": "reported",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "N-linked (GlcNAc...) (complex) asparagine Complex",
+                    "start_pos": 566,
+                    "start_aa": "Asn",
+                    "end_pos": 566,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniProtKB",
+                            "url": "https://www.uniprot.org/uniprot/P14210#ptm_processing"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "G17689DH",
+                    "type": "N-linked",
+                    "subtype": "",
+                    "site_category": "reported_with_glycan",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: N-294, N-402, T-476, N-566, N-653",
+                    "start_pos": 653,
+                    "start_aa": "Asn",
+                    "end_pos": 653,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniCarbKB",
+                            "url": "http://unicarbkb.org/proteinsummary/P14210/annotated"
+                        },
+                        {
+                            "id": "1482348",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/1482348"
+                        },
+                        {
+                            "id": "8407880",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/8407880"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "G77252PU",
+                    "type": "N-linked",
+                    "subtype": "",
+                    "site_category": "reported_with_glycan",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "GlycoSuiteDB  curation notes. Reported structure can be attached to the following: N-294, N-402, T-476, N-566, N-653",
+                    "start_pos": 653,
+                    "start_aa": "Asn",
+                    "end_pos": 653,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniCarbKB",
+                            "url": "http://unicarbkb.org/proteinsummary/P14210/annotated"
+                        },
+                        {
+                            "id": "8407880",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/8407880"
+                        },
+                        {
+                            "id": "1482348",
+                            "database": "PubMed",
+                            "url": "https://glygen.org/publication/PubMed/1482348"
+                        }
+                    ]
+                },
+                {
+                    "glytoucan_ac": "",
+                    "type": "N-linked",
+                    "subtype": "Complex",
+                    "site_category": "reported",
+                    "site_seq": "N",
+                    "relation": "attached",
+                    "comment": "N-linked (GlcNAc...) (complex) asparagine Complex",
+                    "start_pos": 653,
+                    "start_aa": "Asn",
+                    "end_pos": 653,
+                    "end_aa": "Asn",
+                    "residue": "Asn",
+                    "evidence": [
+                        {
+                            "id": "P14210",
+                            "database": "UniProtKB",
+                            "url": "https://www.uniprot.org/uniprot/P14210#ptm_processing"
+                        }
+                    ]
+                }
+            ],
+            "mutagenesis": [
+                {
+                    "start_pos": 494,
+                    "end_pos": 494,
+                    "sequence_org": "R",
+                    "sequence_mut": "Q",
+                    "comment": "Loss of activity due to absence of proteolytic cleavage.",
+                    "evidence": [
+                        {
+                            "database": "UniProtKB",
+                            "id": "P14210",
+                            "url": "https://www.uniprot.org/uniprot/P14210"
+                        },
+                        {
+                            "database": "PubMed",
+                            "id": "1280830",
+                            "url": "https://glygen.org/publication/PubMed/1280830"
+                        }
+                    ]
+                }
+            ],
+            "phosphorylation": []
+        }
+    ]
+}

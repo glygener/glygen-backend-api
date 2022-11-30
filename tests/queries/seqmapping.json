@@ -1,0 +1,14 @@
+{
+    "seqmapping_search":{
+        "url":"/seqmapping/search"
+        ,"schemafile":"../specs/seqmapping/search/response.schema.json"
+        ,"querylist":[
+            {
+                "label":"PubMed query with phosphorylation, snv, mutagenesis",
+                "query":{ "glytoucan_ac_list":["G17689DH","G01543ZX","G00009BX"]}
+            }
+        ]
+    }
+}
+
+

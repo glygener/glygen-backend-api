@@ -1,88 +1,162 @@
 {
-    "$schema": "http://json-schema.org/schema#", 
-    "required": [], 
-    "type": "object", 
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
     "properties": {
-        "organism": {
-            "items": {
-                "required": [], 
-                "type": "object", 
-                "properties": {
-                    "name": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }, 
-                    "id": {
-                        "type": "integer", 
-                        "description": "", 
-                        "title": ""
-                    }
-                }
-            }, 
-            "type": "array", 
-            "description": "", 
-            "title": ""
-        }, 
-        "Protein_mass": {
-            "description": "", 
-            "required": [], 
-            "type": "object", 
+        "glycan_mass": {
+            "type": "object",
             "properties": {
-                "max": {
-                    "type": "number", 
-                    "description": "", 
-                    "title": ""
-                }, 
-                "min": {
-                    "type": "number", 
-                    "description": "", 
-                    "title": ""
+                "native": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "min": {
+                            "type": "number"
+                        },
+                        "max": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "max",
+                        "min",
+                        "name"
+                    ]
+                },
+                "permethylated": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "min": {
+                            "type": "number"
+                        },
+                        "max": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "max",
+                        "min",
+                        "name"
+                    ]
                 }
-            }, 
-            "title": ""
-        }, 
-        "aa_list": {
+            },
+            "required": [
+                "native",
+                "permethylated"
+            ]
+        },
+        "number_monosaccharides": {
+            "type": "object",
+            "properties": {
+                "min": {
+                    "type": "integer"
+                },
+                "max": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "max",
+                "min"
+            ]
+        },
+        "organism": {
+            "type": "array",
             "items": {
-                "required": [], 
-                "type": "object", 
+                "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }, 
-                    "key": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer"
                     }
-                }
-            }, 
-            "type": "array", 
-            "description": "", 
-            "title": ""
-        }, 
-        "simple_search_category": {
+                },
+                "required": [
+                    "id",
+                    "name"
+                ]
+            }
+        },
+        "glycan_type": {
+            "type": "array",
             "items": {
-                "required": [], 
-                "type": "object", 
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "subtype": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "name",
+                    "subtype"
+                ]
+            }
+        },
+        "id_namespace": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "simple_search_category": {
+            "type": "array",
+            "items": {
+                "type": "object",
                 "properties": {
                     "id": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
-                    }, 
+                        "type": "string"
+                    },
                     "display": {
-                        "type": "string", 
-                        "description": "", 
-                        "title": ""
+                        "type": "string"
                     }
-                }
-            }, 
-            "type": "array", 
-            "description": "", 
-            "title": ""
+                },
+                "required": [
+                    "display",
+                    "id"
+                ]
+            }
+        },
+        "composition": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "residue": {
+                        "type": "string"
+                    },
+                    "min": {
+                        "type": "integer"
+                    },
+                    "max": {
+                        "type": "integer"
+                    },
+                    "url": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "max",
+                    "min",
+                    "residue",
+                    "url"
+                ]
+            }
         }
-    }
+    },
+    "required": [
+        "id_namespace",
+        "organism",
+        "simple_search_category"
+    ]
 }

@@ -1,0 +1,110 @@
+{
+    "cache_info": {
+        "query": {
+            "glycan_identifier": {
+                "glycan_id": "G12344UQ"
+            }
+        },
+        "ts": "2022-11-03 18:14:23 EDT-0400",
+        "record_type": "glycan",
+        "search_type": "search"
+    },
+    "filters": {
+        "applied": [
+            {
+                "id": "by_mass",
+                "selected": [
+                    "2k_3k",
+                    "3k_4k"
+                ],
+                "operator": "OR"
+            }
+        ],
+        "available": [
+            {
+                "id": "by_mass",
+                "label": "By Mass",
+                "order": 1,
+                "tooltip": "",
+                "options": [
+                    {
+                        "id": "1k_2k",
+                        "label": "1K - 2K",
+                        "count": 0,
+                        "order": 2
+                    }
+                ]
+            },
+            {
+                "id": "by_organism",
+                "label": "By Organism",
+                "order": 2,
+                "tooltip": "",
+                "options": [
+                    {
+                        "id": "Homo sapiens",
+                        "label": "Human",
+                        "count": 0,
+                        "order": 1
+                    }
+                ]
+            },
+            {
+                "id": "by_glycan_type",
+                "label": "By Glycan Type",
+                "order": 3,
+                "tooltip": "",
+                "options": [
+                    {
+                        "id": "N-linked",
+                        "label": "N-glycan",
+                        "count": 0,
+                        "order": 1
+                    }
+                ]
+            },
+            {
+                "id": "by_sequence_details",
+                "label": "By Sequence Details",
+                "order": 4,
+                "tooltip": "",
+                "options": [
+                    {
+                        "id": "Topology",
+                        "label": "Topology",
+                        "count": 0,
+                        "order": 2
+                    }
+                ]
+            },
+            {
+                "id": "by_data",
+                "label": "By Data",
+                "order": 5,
+                "tooltip": "",
+                "options": []
+            },
+            {
+                "id": "by_monosaccharide",
+                "label": "By Monosaccharide",
+                "order": 6,
+                "tooltip": "",
+                "options": [
+                    {
+                        "id": "hex",
+                        "label": "Hex",
+                        "count": 0,
+                        "order": 1
+                    },
+                    {
+                        "id": "hexnac",
+                        "label": "HexNAc",
+                        "count": 0,
+                        "order": 2
+                    }
+                ]
+            }
+        ]
+    },
+    "results": []
+}

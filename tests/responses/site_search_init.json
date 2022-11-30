@@ -1,0 +1,110 @@
+{
+    "aa_type_list": [
+        {
+            "id": "R",
+            "label": "Arginine - Arg - R"
+        },
+        {
+            "id": "S",
+            "label": "Serine - Ser - S"
+        },
+        {
+            "id": "I",
+            "label": "Isoleucine - Ile - I"
+        },
+        {
+            "id": "A",
+            "label": "Alanine - Ala - A"
+        },
+        {
+            "id": "Y",
+            "label": "Tyrosine - Tyr - Y"
+        },
+        {
+            "id": "N",
+            "label": "Asparagine - Asn - N"
+        },
+        {
+            "id": "E",
+            "label": "Glutamic acid - Glu - E"
+        },
+        {
+            "id": "T",
+            "label": "Threonine - Thr - T"
+        },
+        {
+            "id": "C",
+            "label": "Cysteine - Cys - C"
+        },
+        {
+            "id": "D",
+            "label": "Aspartic acid - Asp - D"
+        },
+        {
+            "id": "K",
+            "label": "Lysine - Lys - K"
+        },
+        {
+            "id": "V",
+            "label": "Valine - Val - V"
+        },
+        {
+            "id": "G",
+            "label": "Glycine - Gly - G"
+        },
+        {
+            "id": "P",
+            "label": "Proline - Pro - P"
+        },
+        {
+            "id": "H",
+            "label": "Histidine - His - H"
+        },
+        {
+            "id": "W",
+            "label": "Tryptophan - Trp - W"
+        },
+        {
+            "id": "Q",
+            "label": "Glutamine - Gln - Q"
+        },
+        {
+            "id": "M",
+            "label": "Methionine - Met - M"
+        },
+        {
+            "id": "L",
+            "label": "Leucine - Leu - L"
+        },
+        {
+            "id": "F",
+            "label": "Phenylalanine - Phe - F"
+        },
+        {
+            "id": "U",
+            "label": "Selenocysteine - Sec - U"
+        }
+    ],
+    "annotation_type_list": [
+        {
+            "id": "snv_flag",
+            "label": "SNV"
+        },
+        {
+            "id": "glycosylation_flag",
+            "label": "Glycosylation"
+        },
+        {
+            "id": "mutagenesis_flag",
+            "label": "Mutagenesis"
+        },
+        {
+            "id": "phosphorylation_flag",
+            "label": "Phosphorylation"
+        },
+        {
+            "id": "glycation_flag",
+            "label": "Glycation"
+        }
+    ]
+}

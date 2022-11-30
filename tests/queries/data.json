@@ -1,0 +1,13 @@
+{
+    "data_download": {
+        "url": "/data/download/",
+        "schemafile":"../specs/data/download/response.schema.json",
+        "query": {
+            "compressed": false,
+            "type": "glycan_detail",
+            "format": "json",
+            "id": "G17689DH"
+        }
+    }
+}
+

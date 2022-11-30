@@ -1,0 +1,20 @@
+{
+    "jobtype": "blastp",
+    "parameters": {
+        "seq": "MSIQENISSLQLRSWVSKSQRDLAKSILIGAPGGPAGYLRRASVAQLTQELGTAFFQQQQLPAAMADTFLEHLCLLDIDSEPVAARSTSIIATIGPASRSVERLKEMIKAGMNIARLNFSQHAIAREAEAAVYHRQLFEELRRAAPLSRDPTEVTAIGAVEAAFKCCAAAIIVLTTTGRS",
+        "targetdb": "canonicalsequences_all",
+        "num_alignments": 3,
+        "evalue": 0.001
+    },
+    "cmd": "/usr/bin/python3 /software/job_submitters/blastp.py -db /Volumes/disk2/data/shared/glygen/releases/data/v-2.0.1/blastdb/canonicalsequences_all -evalue 0.001 -num_alignments 3 -query /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/1/input.fasta -out /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/1/output.blastout",
+    "seq_id": "QUERY",
+    "md5sum": "/bin/sh:",
+    "jobid": 1,
+    "cmdout": "0",
+    "tsid": "0",
+    "status": {
+        "status": "Error",
+        "error_in_wait_server_lines_2": ""
+    },
+    "id": "636bf85ab97dfff1decbae46"
+}

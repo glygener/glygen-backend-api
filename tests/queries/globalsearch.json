@@ -1,0 +1,9 @@
+{
+    "globalsearch_search": {
+        "url": "/globalsearch/search/",
+        "schemafile":"../specs/globalsearch/search/response.schema.json",
+        "query": {
+            "term":"Psoriasis"
+        }
+    }
+}

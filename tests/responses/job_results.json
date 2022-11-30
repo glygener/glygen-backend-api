@@ -1,0 +1,9 @@
+{
+    "status": "Error", 
+    "parameters": {
+        "align": "wholeglycan", 
+        "seq": "RES\n1b:x-dglc-HEX-x:x\n2b:b-dgal-HEX-1:5\n3b:a-dgal-HEX-1:5\n4b:b-dgal-HEX-1:5\n5s:n-acetyl\nLIN\n1:1o(4+1)2d\n2:2o(3+1)3d\n3:3o(3+1)4d\n4:4d(2+1)5n"
+    }, 
+    "jobtype": "structure_search", 
+    "list_id": ""
+}

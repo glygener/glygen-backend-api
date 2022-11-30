@@ -1,0 +1,130 @@
+[
+    {
+        "jobtype": "blastp",
+        "parameters": {
+            "seq": "MSIQENISSLQLRSWVSKSQRDLAKSILIGAPGGPAGYLRRASVAQLTQELGTAFFQQQQLPAAMADTFLEHLCLLDIDSEPVAARSTSIIATIGPASRSVERLKEMIKAGMNIARLNFSQHAIAREAEAAVYHRQLFEELRRAAPLSRDPTEVTAIGAVEAAFKCCAAAIIVLTTTGRS",
+            "targetdb": "canonicalsequences_all",
+            "num_alignments": 3,
+            "evalue": 0.001
+        },
+        "cmd": "/usr/bin/python3 /software/job_submitters/blastp.py -db /Volumes/disk2/data/shared/glygen/releases/data/v-2.0.1/blastdb/canonicalsequences_all -evalue 0.001 -num_alignments 3 -query /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/1/input.fasta -out /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/1/output.blastout",
+        "seq_id": "QUERY",
+        "md5sum": "/bin/sh:",
+        "jobid": 1,
+        "cmdout": "0",
+        "tsid": "0",
+        "status": {
+            "status": "Error",
+            "error_in_wait_server_lines_2": ""
+        },
+        "id": "636bf85ab97dfff1decbae46"
+    },
+    {
+        "jobtype": "structure_search",
+        "parameters": {
+            "seq": "RES\n1b:x-dglc-HEX-1:5\n2b:x-dgal-HEX-1:5\n3b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n4s:n-glycolyl\n5b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n6s:n-glycolyl\nLIN\n1:1o(-1+1)2d\n2:2o(-1+2)3d\n3:3d(5+1)4n\n4:3o(-1+2)5d\n5:5d(5+1)6n",
+            "align": "substructure"
+        },
+        "cmd": "/usr/bin/python3 /software/job_submitters/structure_search.py -i /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/2/input.json -o /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/2/output.json",
+        "seq_id": "QUERY",
+        "md5sum": "/bin/sh:",
+        "jobid": 2,
+        "cmdout": "0",
+        "tsid": "0",
+        "status": {
+            "status": "Error",
+            "error_in_wait_server_lines_2": ""
+        },
+        "id": "636dac466553f8c9f7e1af34"
+    },
+    {
+        "jobtype": "structure_search",
+        "parameters": {
+            "seq": "WURCS=2.0/3,4,3/[a2122h-1x_1-5][a2112h-1x_1-5][Aad21122h-2x_2-6_5*NCCO/3=O]/1-2-3-3/a?-b1_b?-c2_c?-d2",
+            "align": "substructure"
+        },
+        "cmd": "/usr/bin/python3 /software/job_submitters/structure_search.py -i /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/3/input.json -o /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/3/output.json",
+        "seq_id": "QUERY",
+        "md5sum": "/bin/sh:",
+        "jobid": 3,
+        "cmdout": "0",
+        "tsid": "0",
+        "status": {
+            "status": "Error",
+            "error_in_wait_server_lines_2": ""
+        },
+        "id": "636dac466553f8c9f7e1af36"
+    },
+    {
+        "jobtype": "structure_search",
+        "parameters": {
+            "seq": "RES\n1b:x-dglc-HEX-1:5\n2b:x-dgal-HEX-1:5\n3b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n4s:n-glycolyl\n5b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n6s:n-glycolyl\nLIN\n1:1o(-1+1)2d\n2:2o(-1+2)3d\n3:3d(5+1)4n\n4:3o(-1+2)5d\n5:5d(5+1)6n",
+            "align": "wholeglycan"
+        },
+        "cmd": "/usr/bin/python3 /software/job_submitters/structure_search.py -i /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/4/input.json -o /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/4/output.json",
+        "seq_id": "QUERY",
+        "md5sum": "/bin/sh:",
+        "jobid": 4,
+        "cmdout": "0",
+        "tsid": "0",
+        "status": {
+            "status": "Error",
+            "error_in_wait_server_lines_2": ""
+        },
+        "id": "636dac466553f8c9f7e1af38"
+    },
+    {
+        "jobtype": "structure_search",
+        "parameters": {
+            "align": "wholeglycan",
+            "seq": "RES\n1b:b-dglc-HEX-1:5\n2s:n-acetyl\n3b:b-dgal-HEX-1:5\nLIN\n1:1d(2+1)2n\nd2:1o(3+1)3d"
+        },
+        "cmd": "/usr/bin/python3 /software/job_submitters/structure_search.py -i /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/5/input.json -o /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/5/output.json",
+        "seq_id": "QUERY",
+        "md5sum": "/bin/sh:",
+        "jobid": 5,
+        "cmdout": "0",
+        "tsid": "0",
+        "status": {
+            "status": "Error",
+            "error_in_wait_server_lines_2": ""
+        },
+        "id": "636dac476553f8c9f7e1af3a"
+    },
+    {
+        "jobtype": "structure_search",
+        "parameters": {
+            "seq": "RES\n1b:x-dglc-HEX-1:5\n2b:x-dgal-HEX-1:5\n3b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n4s:n-glycolyl\n5b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n6s:n-glycolyl\nLIN\n1:1o(-1+1)2d\n2:2o(-1+2)3d\n3:3d(5+1)4n\n4:3o(-1+2)5d\n5:5d(5+1)6n",
+            "align": "core"
+        },
+        "cmd": "/usr/bin/python3 /software/job_submitters/structure_search.py -i /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/6/input.json -o /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/6/output.json",
+        "seq_id": "QUERY",
+        "md5sum": "/bin/sh:",
+        "jobid": 6,
+        "cmdout": "0",
+        "tsid": "0",
+        "status": {
+            "status": "Error",
+            "error_in_wait_server_lines_2": ""
+        },
+        "id": "636dac476553f8c9f7e1af3c"
+    },
+    {
+        "jobtype": "structure_search",
+        "parameters": {
+            "seq": "RES\n1b:x-dglc-HEX-1:5\n2b:x-dgal-HEX-1:5\n3b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n4s:n-glycolyl\n5b:x-dgro-dgal-NON-2:6|1:a|2:keto|3:d\n6s:n-glycolyl\nLIN\n1:1o(-1+1)2d\n2:2o(-1+2)3d\n3:3d(5+1)4n\n4:3o(-1+2)5d\n5:5d(5+1)6n",
+            "align": "nonreducingend"
+        },
+        "cmd": "/usr/bin/python3 /software/job_submitters/structure_search.py -i /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/7/input.json -o /Volumes/disk2/data/shared/glygen/data/shared/glygen/userdata/dev/jobs/7/output.json",
+        "seq_id": "QUERY",
+        "md5sum": "/bin/sh:",
+        "jobid": 7,
+        "cmdout": "0",
+        "tsid": "0",
+        "status": {
+            "status": "Error",
+            "error_in_wait_server_lines_2": ""
+        },
+        "id": "636dac476553f8c9f7e1af3e"
+    }
+]

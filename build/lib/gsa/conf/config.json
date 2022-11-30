@@ -1,0 +1,142 @@
+{
+    "qcinfo":{
+      "glyco_site":{
+        "requiredfields":["uniprotkb_ac","start_pos", "end_pos", "site_seq", "glytoucan_ac", "glyco_type","xref_id", "citation_id","citation_type", "notes"]
+      },
+      "glyco_site_unicarbkb":{
+        "requiredfields":["protein","position", "toucan", "id", "aminoacid","aminoacidtype", "pmid", "notes"]
+      }
+    },
+    "collinfo":{
+        "c_init":{
+            "get_one":{
+                "prj":{},
+                "queryfields":{}
+            }
+        },
+        "c_user":{
+            "primaryid":"userid",
+            "get_one":{
+              "prj":{},
+              "queryfields":{
+                "email":{
+                  "datatype":"string",
+                  "required":true,
+                  "junction":"$or",
+                  "pathlist":[{"path":"email","operator":"$eq"}]
+                }
+              }
+            }
+        },
+        "c_html":{
+            "get_one":{
+                "prj":{"pageid":1,"cn":1},
+                "queryfields":{
+                    "pageid":{
+                      "required":true,
+                      "datatype":"string",
+                      "junction":"$or",
+                      "pathlist":[{"path":"pageid","operator":"$eq"}]
+                    }
+                }
+            }
+        },
+        "c_glycan":{
+            "primaryid":"recordid",
+            "max_batch_size":1000,
+            "get_one":{
+                "prj":{},
+                "queryfields":{
+                    "gsa_id":{
+                      "required":true,
+                      "datatype":"string",
+                      "junction":"$or",
+                      "pathlist":[{"path":"gsa_id","operator":"$eq"}]
+                    }
+                }
+            },
+            "get_many":{
+                "prj":{},
+                "sortfield":"sort_score",
+                "queryfields":{
+                    "query":{
+                      "required":false,
+                      "datatype":"string",
+                      "junction":"$or",
+                      "pathlist":[
+                          {"path":"recordid", "operator":"$regex"},
+                          {"path":"gsa_id", "operator":"$regex"},
+                          {"path":"glycan.glytoucan_ac", "operator":"$regex"},
+                          {"path":"glycan.sequence", "operator":"$regex"},
+                          {"path":"glycan.sequence_type", "operator":"$regex"},
+                          {"path":"glycoprotein.uniprot_ac", "operator":"$regex"},
+                          {"path":"glycoconjugate_type", "operator":"$regex"},
+                          {"path":"keywords", "operator":"$regex"},
+                          {"path":"publication.id", "operator":"$regex"},
+                          {"path":"biological_source.tax_id", "operator":"$regex"},
+                          {"path":"biological_source.tax_name", "operator":"$regex"},
+                          {"path":"expression_system.tax_id", "operator":"$regex"},
+                          {"path":"expression_system.tax_name", "operator":"$regex"},
+                          {"path":"userinfo.email", "operator":"$regex"},
+                          {"path":"userinfo.fname", "operator":"$regex"},
+                          {"path":"userinfo.lname", "operator":"$regex"},
+                          {"path":"userinfo.institute", "operator":"$regex"},
+                          {"path":"userinfo.department", "operator":"$regex"},
+                          {"path":"title", "operator":"$regex"},
+                          {"path":"description", "operator":"$regex"},
+                          {"path":"filename", "operator":"$regex"}
+                      ]
+                    },
+                    "email":{
+                      "required":false,
+                      "datatype":"string",
+                      "junction":"$or",
+                      "pathlist":[
+                          {"path":"userinfo.email", "operator":"$eq"}
+                      ]
+                    }
+                }
+            }
+        }
+    }
+    ,"rootinfo":{
+    }
+    ,"pathinfo":{
+    }
+    ,"bco_field_order":{
+      "object_id":0.1
+      ,"type":0.2
+      ,"etag":0.3
+      ,"spec_version":0.4
+      ,"provenance_domain":1.0
+      ,"name": 1.1
+      ,"version": 1.3
+      ,"license": 1.4
+      ,"derived_from": 1.5
+      ,"created": 1.6
+      ,"modified": 1.7
+      ,"obsolete_after": 1.8
+      ,"review": 1.9
+      ,"status": 1.91
+      ,"reviewer_comment":1.92
+      ,"reviewer":1.930
+      ,"orcid":1.96
+      ,"affiliation":1.97
+      ,"usability_domain":2.0
+      ,"extension_domain":3.0
+      ,"description_domain":4.0
+      ,"execution_domain":5.0
+      ,"parametric_domain":6.0
+      ,"io_domain":7.0
+      ,"error_domain":9.0
+    }
+}
+
+
+
+
+
+
+
+
+
