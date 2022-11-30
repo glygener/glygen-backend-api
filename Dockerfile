@@ -6,23 +6,15 @@ ENV FLASK_APP=glygen
 
 ENV FLASK_ENV=production
 
-COPY ./tools/ts-1.0.2.tar.gz .
-
-COPY ./tools/ncbi-blast-2.6.0+-x64-linux.tar.gz .
-
-COPY ./tools/job_submitters.tar.gz .
-
-RUN /bin/tar xvf ts-1.0.2.tar.gz
-
-RUN /bin/tar xvf ncbi-blast-2.6.0+-x64-linux.tar.gz
-
-RUN /bin/tar xvf job_submitters.tar.gz
-
-WORKDIR /app/ts-1.0.2
-
-RUN make 
-
-RUN make install
+#COPY ./tools/ts-1.0.2.tar.gz .
+#COPY ./tools/ncbi-blast-2.6.0+-x64-linux.tar.gz .
+#COPY ./tools/job_submitters.tar.gz .
+#RUN /bin/tar xvf ts-1.0.2.tar.gz
+#RUN /bin/tar xvf ncbi-blast-2.6.0+-x64-linux.tar.gz
+#RUN /bin/tar xvf job_submitters.tar.gz
+#WORKDIR /app/ts-1.0.2
+#RUN make 
+#RUN make install
 
 WORKDIR /app
 
@@ -38,7 +30,7 @@ RUN mkdir -p /data/shared/glygen
 
 RUN mkdir -p /usr/local/var/glygen-instance
 
-COPY ./instance/config.prd.py /usr/local/var/glygen-instance/config.prd.py
+COPY ./instance/config.py /usr/local/var/glygen-instance/config.py
 
 COPY . .
 
