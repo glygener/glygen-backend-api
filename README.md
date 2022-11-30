@@ -14,7 +14,19 @@ your host server under:
 
 {DATA_PATH}/releases/data/ 
 
-where DATA_PATH is specified in your instance/config.py
+You will also need to create the following path in your host server:
+
+{DATA_PATH}/userdata/{SERVER}/jobs/
+
+where DATA_PATH and SERVER are specified in your instance/config.py
+
+
+## Testing APIs
+Go to the "tests" folder and run:
+
+#### python3 run_api_test.py -
+
+
 
 
 
