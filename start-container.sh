@@ -1,11 +1,10 @@
-mod="glygen"
-ver="1.0"
 server="tst"
-container="running_"$mod"_"$server"_api"
+image="glygen_"$server"_api"
+container="running_"$image
 port="8082"
 #port="8882" #for beta
 
-python3 setup.py bdist_wheel $mod $ver
+python3 setup.py bdist_wheel 
 
 ##################################################################
 # maintain customized versions of the config file for each server
@@ -14,9 +13,10 @@ python3 setup.py bdist_wheel $mod $ver
 ##############################################################
 
 cp private/config.glygen_$server.py instance/config.py 
-docker build --network=host -t "$mod"_"$server"_api .
+docker build --network=host -t $image .
 rm instance/config.py
 
 docker rm -f $container
 
-sudo docker run -dit --name $container -p 127.0.0.1:$port:80 -v /data/shared/$mod:/data/shared/$mod "$mod"_"$server"_api
+sudo docker run -dit --name $container -p 127.0.0.1:$port:80 -v /data/shared/glygen:/data/shared/glygen $image
+
