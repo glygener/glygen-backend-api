@@ -1,30 +1,22 @@
-
 DEBUG = True
 TESTING = False
 
 SERVER = "dev"
 DB_HOST = "mongodb://localhost:27017"
 DB_NAME = "glydb"
-DB_USERNAME = "glydbadmin"
-DB_PASSWORD = "glydbpass"
+DB_USERNAME = "xxx"
+DB_PASSWORD = "xxx"
 DATA_PATH = "/Volumes/disk2/data/shared/glygen"
 LOG_PATH = "/Volumes/disk2/data/shared/glygen/logs"
 MAX_CONTENT_LENGTH = 16 * 1000 * 1000
 
 TOTP_INTERVAL = 3600
 
-#MAIL_SERVER = "smtp.gmail.com"
-#MAIL_PORT = 465
-#MAIL_USE_TLS = False
-#MAIL_USE_SSL = True
-#MAIL_USERNAME = ""
-#MAIL_PASSWORD = ""
-
-MAIL_SERVER = "127.17.0.1"
+MAIL_SERVER = "xxx"
 MAIL_PORT = 25
 MAIL_USE_TLS = False
 MAIL_USE_SSL = False
-MAIL_SENDER = "no-reply@glygen.gwu.edu"
+MAIL_SENDER = "xxx"
 MAIL_USERNAME = None
 MAIL_PASSWORD = None
 
