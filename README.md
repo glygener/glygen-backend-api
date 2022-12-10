@@ -37,10 +37,10 @@ tests/queries/protein.json, run:
 #### python3 run_api_test.py -m 1 -g $grp
 
 where $grp can one of [protein, glycan, motif ...]. This will produce 
-the following log files:
+the following log files ($username is your ssh login user name):
 
-{DATA_PATH}/logs/test_summary_$grp_mode_1.csv (status of each call)
-{DATA_PATH}/logs/failure_log_$grp*.json (details for failed calls)
+{DATA_PATH}/logs/$username_test_summary_$grp_mode_1.csv (status of each call)
+{DATA_PATH}/logs/$username_failure_log_$grp*.json (details for failed calls)
 
 
 ### Exhaustive tests for record/detail APIs
@@ -50,10 +50,10 @@ information about a given record. To test such APIs for a given API group:
 #### python3 run_api_test.py -m 2 -g $grp
 
 where $grp can one of [protein, glycan, motif ...]. This will produce 
-the following log files:
+the following log files ($username is your ssh login user name):
 
-{DATA_PATH}/logs/test_summary_$grp_mode_2.csv (status of each call)
-{DATA_PATH}/logs/failure_log_$grp_detail.*.json (details for failed calls)
+{DATA_PATH}/logs/$username_test_summary_$grp_mode_2.csv (status of each call)
+{DATA_PATH}/logs/$username_failure_log_$grp_detail.*.json (details for failed calls)
 
 
 
