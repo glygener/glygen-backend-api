@@ -4,6 +4,11 @@ container="running_"$image
 port="8082"
 #port="8882" #for beta
 
+if [ ! -d "/data/shared/glygen" ] 
+then
+    mkdir -p /data/shared/glygen 
+fi
+
 python3 setup.py bdist_wheel 
 
 docker build --network=host -t $image .
