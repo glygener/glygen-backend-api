@@ -62,6 +62,9 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     },
@@ -70,6 +73,11 @@
                     }
                 },
                 "required": [
+                    "annotation_category",
+                    "common_name",
+                    "evidence",
+                    "name",
+                    "taxid"
                 ]
             }
         },
@@ -89,6 +97,7 @@
                             }
                         },
                         "required": [
+                            "name"
                         ]
                     },
                     "subtype": {
@@ -102,10 +111,13 @@
                             }
                         },
                         "required": [
+                            "name"
                         ]
                     }
                 },
                 "required": [
+                    "subtype",
+                    "type"
                 ]
             }
         },
@@ -142,6 +154,9 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     },
@@ -159,6 +174,12 @@
                     }
                 },
                 "required": [
+                    "evidence",
+                    "gene_name",
+                    "protein_name",
+                    "tax_id",
+                    "tax_name",
+                    "uniprot_canonical_ac"
                 ]
             }
         },
@@ -204,11 +225,22 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     }
                 },
                 "required": [
+                    "evidence",
+                    "gene",
+                    "gene_link",
+                    "protein_name",
+                    "tax_common_name",
+                    "tax_id",
+                    "tax_name",
+                    "uniprot_canonical_ac"
                 ]
             }
         },
@@ -228,6 +260,9 @@
                     }
                 },
                 "required": [
+                    "database",
+                    "id",
+                    "url"
                 ]
             }
         },
@@ -245,6 +280,8 @@
                 }
             },
             "required": [
+                "gnome",
+                "sandbox"
             ]
         },
         "fully_determined": {
@@ -276,6 +313,8 @@
                 }
             },
             "required": [
+                "key",
+                "url"
             ]
         },
         "byonic": {
@@ -317,6 +356,9 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     },
@@ -339,11 +381,20 @@
                                 }
                             },
                             "required": [
+                                "id",
+                                "type",
+                                "url"
                             ]
                         }
                     }
                 },
                 "required": [
+                    "authors",
+                    "date",
+                    "evidence",
+                    "journal",
+                    "reference",
+                    "title"
                 ]
             }
         },
@@ -366,6 +417,10 @@
                     }
                 },
                 "required": [
+                    "attachedby",
+                    "id",
+                    "name",
+                    "parentid"
                 ]
             }
         },
@@ -391,6 +446,9 @@
                     }
                 },
                 "required": [
+                    "count",
+                    "name",
+                    "residue"
                 ]
             }
         },
@@ -416,6 +474,9 @@
                     }
                 },
                 "required": [
+                    "count",
+                    "name",
+                    "residue"
                 ]
             }
         },
@@ -438,6 +499,8 @@
                     }
                 },
                 "required": [
+                    "id",
+                    "name"
                 ]
             }
         },
@@ -474,6 +537,9 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     },
@@ -491,6 +557,9 @@
                             }
                         },
                         "required": [
+                            "name",
+                            "uberon",
+                            "url"
                         ]
                     },
                     "abundance": {
@@ -498,6 +567,11 @@
                     }
                 },
                 "required": [
+                    "end_pos",
+                    "evidence",
+                    "residue",
+                    "start_pos",
+                    "uniprot_canonical_ac"
                 ]
             }
         },
@@ -514,6 +588,8 @@
                     }
                 },
                 "required": [
+                    "related_accession",
+                    "relationship"
                 ]
             }
         },
@@ -545,6 +621,8 @@
                             }
                         },
                         "required": [
+                            "full_name",
+                            "id"
                         ]
                     },
                     "enzymes": {
@@ -560,18 +638,29 @@
                                 }
                             },
                             "required": [
+                                "tax_name",
+                                "uniprotkb_ac"
                             ]
                         }
                     }
                 },
                 "required": [
+                    "residue_affected",
+                    "source",
+                    "target"
                 ]
             }
         }
     },
     "required": [
+        "classification",
+        "composition",
+        "composition_expanded",
+        "crossref",
+        "glycoct",
         "glytoucan",
-        "mass",
-        "missing_score"
+        "missing_score",
+        "tool_support",
+        "wurcs"
     ]
 }
