@@ -85,7 +85,7 @@ def run_exhaustive(api_grp):
     file_list = glob.glob(jsondb_dir + "%sdb/*.json" % (api_grp))
     file_list = file_list[0:10]
     try:
-        summary_file = log_dir + "test_summary_%s_mode_2.csv" % (api_grp)
+        summary_file = log_dir + "%s_test_summary_%s_mode_2.csv" % (user_name,api_grp)
         FW = open(summary_file, "w")
                        
 
@@ -122,7 +122,7 @@ def run_exhaustive(api_grp):
             FW.write("%s\n" % (",".join(row)))
 
             if flags != "success":
-                out_file = log_dir + "failure_log_%s_detail.%s.json" % (api_grp, main_id)
+                out_file = log_dir + "%s_failure_log_%s_detail.%s.json" % (user_name, api_grp, main_id)
                 with open(out_file, "w") as FL:
                     FL.write("%s\n" % (json.dumps(o, indent=4)))
         FW.close()
@@ -152,7 +152,7 @@ def run_from_queries(api_grp):
     out_obj_list = []
     last_list_id = ""
     try:
-        summary_file = log_dir + "test_summary_%s_mode_1.csv" % (api_grp)        
+        summary_file = log_dir + "%s_test_summary_%s_mode_1.csv" % (user_name,api_grp)        
         FW = open(summary_file, "w")
        
         for in_file in file_list:
@@ -227,7 +227,7 @@ def run_from_queries(api_grp):
                     row = [o["name"], "query-"+str(idx), flags]
                     FW.write("%s\n" % (",".join(row)))
                     if flags != "success":
-                        out_file = log_dir + "failure_log_%s.%s.json" % (o["name"], idx)
+                        out_file = log_dir + "%s_failure_log_%s.%s.json" % (out_file, o["name"], idx)
                         with open(out_file, "w") as FL:
                             FL.write("%s\n" % (json.dumps(o, indent=4)))
                     flg_file = "logs/failure_log_%s.%s.json" % (o["name"], idx)
@@ -260,9 +260,11 @@ def main():
     mode = int(options.mode)
 
     global config_obj
+    global user_name
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
         
+    user_name = os.getlogin()
 
     if mode == 2:
         run_exhaustive(api_grp)
