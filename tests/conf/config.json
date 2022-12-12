@@ -1,5 +1,0 @@
-{
-    "port":"8082",
-    "base_url":"http://localhost:8082",
-    "data_path":"/data/shared/glygen/"
-}

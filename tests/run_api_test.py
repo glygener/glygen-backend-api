@@ -262,7 +262,7 @@ def main():
     global config_obj
     global user_name
 
-    config_obj = json.loads(open("./conf/config.json", "r").read())
+    config_obj = json.loads(open("../conf/config.json", "r").read())
         
     user_name = os.getlogin()
 
