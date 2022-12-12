@@ -21,13 +21,17 @@ def main():
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-v","--dataversion",action="store",dest="dataversion",help="2.0.2/2.0.3 ...")
+    parser.add_option("-m","--mode",action="store",dest="mode",help="partial/full")
+        
     (options,args) = parser.parse_args()
-    for key in ([options.dataversion]):
+
+    for key in ([options.dataversion, options.mode]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     ver = options.dataversion
+    mode = options.mode
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     mongo_port = config_obj["dbinfo"]["port"]
@@ -56,9 +60,11 @@ def main():
             coll = "c_" + d[:-2]
             if coll == "c_jumbo":
                 continue
+            result = dbh[coll].delete_many({})
 
             file_list = glob.glob(jsondb_dir + "/" + d + "/*.json")
-            file_list = file_list[:2000]
+            if mode == "partial":
+                file_list = file_list[:2000]
             nrecords = 0
             for in_file in file_list:
                 doc = json.loads(open(in_file, "r").read())

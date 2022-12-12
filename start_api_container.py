@@ -13,17 +13,9 @@ __status__ = "Dev"
 ###############################
 def main():
 
-    usage = "\n%prog  [options]"
-    parser = OptionParser(usage,version="%prog version___")
-    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
-    (options,args) = parser.parse_args()
-    for key in ([options.server]):
-        if not (key):
-            parser.print_help()
-            sys.exit(0)
 
-    server = options.server
     config_obj = json.loads(open("./conf/config.json", "r").read())
+    server = config_obj["server"]
 
     image = "glygen_%s_api" % (server) 
     api_container = "running_" + image
