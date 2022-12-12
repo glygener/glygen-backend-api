@@ -28,7 +28,7 @@ The script tests/run_api_test.py is a wrapper outside of the container
 that allows you to test APIs in an automated manner. 
 
 Before running, you will need to set some paramters in the 
-tests/conf/config.json file.
+conf/config.json file.
 
 ### API tests using example queries
 To test a group of APIs using the example queries given in 

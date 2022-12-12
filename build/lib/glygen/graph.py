@@ -32,7 +32,7 @@ class GRaph(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-            data_path = current_app.config["DATA_PATH"]
+            data_path = os.environ["DATA_PATH"]
             res_obj = getdata(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]

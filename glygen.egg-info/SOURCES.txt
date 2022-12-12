@@ -1,4 +1,5 @@
 MANIFEST.in
+README.md
 setup.cfg
 setup.py
 glygen/__init__.py
