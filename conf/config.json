@@ -2,7 +2,7 @@
     "server":"tst",
     "api_port":"8082",
     "base_url":"http://localhost:8082",
-    "data_path":"/data/shared/glygen/tmp/",
+    "data_path":"/data/shared/glygen/",
     "mail":{
         "server":"172.17.0.1", 
         "port":"25",

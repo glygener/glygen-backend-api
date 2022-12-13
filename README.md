@@ -20,7 +20,9 @@ Run the python script given to build and start a mongodb container:
 
 
 ## Step-3: Initialize and populate your mongodb database
-To init your mongodb, run (this should be done only one time):
+To init your mongodb, run (this should be done only one time, and requires
+that you have installed pymongo 'sudo pip3 install pymongo'):
+
 
 #### `python3 init_mongodb.py`
 
