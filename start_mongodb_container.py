@@ -35,9 +35,10 @@ def main():
             cmd_list.append("docker rm -f %s " % (c))
     
     cmd = "docker network ls| grep %s" % (mongo_network)
-    x = subprocess.getoutput(cmd).split()[1]
-    if x == mongo_network:
-        cmd_list.append("docker network rm %s | true" % (mongo_network))
+    x = subprocess.getoutput(cmd).split()
+    if x != []:
+        if x[1] == mongo_network:
+            cmd_list.append("docker network rm %s | true" % (mongo_network))
     
     cmd_list.append("docker network create -d bridge %s" % (mongo_network))
     cmd = "docker run --name %s --network %s -p 127.0.0.1:%s:27017" % (mongo_container, mongo_network,mongo_port)
