@@ -3,7 +3,6 @@ import string
 from optparse import OptionParser
 import glob
 import json
-from bson import json_util
 import pymongo
 from pymongo import MongoClient
 import datetime
