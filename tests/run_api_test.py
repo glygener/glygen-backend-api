@@ -83,7 +83,6 @@ def run_exhaustive(api_grp):
                                     
 
     file_list = glob.glob(jsondb_dir + "%sdb/*.json" % (api_grp))
-    file_list = file_list[0:10]
     try:
         summary_file = log_dir + "%s_test_summary_%s_mode_2.csv" % (user_name,api_grp)
         FW = open(summary_file, "w")
