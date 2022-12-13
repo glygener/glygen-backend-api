@@ -2,7 +2,7 @@
     "server":"tst",
     "api_port":"8082",
     "base_url":"http://localhost:8082",
-    "data_path":"/data/shared/glygen/",
+    "data_path":"/data/shared/glygen/tmp/",
     "mail":{
         "server":"172.17.0.1", 
         "port":"25",
@@ -21,5 +21,30 @@
             "user":"glydbadmin",
             "password":"glydbpass"
         }
+    },
+    "downloads":{
+        "jsondb":[
+            "initdb"
+            ,"glycandb" 
+            ,"proteindb"
+            ,"alignmentdb"
+            ,"bcodb"
+            ,"clusterdb"
+            ,"diseasedb"
+            ,"extractdb"
+            ,"glytoucandb"
+            ,"historydb"
+            ,"htmldb"
+            ,"idtrackdb"
+            ,"listdb"
+            ,"motifdb"
+            ,"networkdb"
+            ,"pathdb"
+            ,"publicationdb"
+            ,"searchinitdb"
+            ,"sitedb"
+            ,"speciesdb"
+            ,"statdb"
+        ]
     }
 }
