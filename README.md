@@ -3,38 +3,26 @@ After cloning this repo, you will need to set the paramters given in
 conf/config.json
 
 
-## Data dependence
-Download data release from https://data.glygen.org/ftp/ and unpack it in
-your host server under:
+## Step-1: Data download
+Visit https://data.glygen.org/ftp/ to see what data release/version {VER} you want to 
+download (for example 2.0.2), and run the python script given to download from
+that release. Since this will take long, use nohup as shown below.
 
-{DATA_PATH}/releases/data/v-{VER}/
-
-where {VER} is the version label for the data release (e.g 2.0.2).
-
-You will also need to create the following paths in your host server:
-
-{DATA_PATH}/logs/
-{DATA_PATH}/userdata/{SERVER}/jobs/
-
-where DATA_PATH and SERVER are specified in your conf/config.json
+#### `nohup python3 download_data.py -v {VER} > logfile.log`
 
 
 
-## Starting the mongodb container
-
+## Step-2: Starting the mongodb container
 Run the python script given to build and start a mongodb container:
 
 #### `python3 start_mongodb_container.py`
 
 
 
-## Initialize and populate your mongodb database
-
-To init your mongodb, run:
+## Step-3: Initialize and populate your mongodb database
+To init your mongodb, run (this should be done only one time):
 
 #### `python3 init_mongodb.py`
-
-this should be done only one time. 
 
 You can populate the database partially (for test purposes) or fully using
 the following commands:
@@ -42,22 +30,16 @@ the following commands:
 #### `python3 load_objects.py -v {VER} -m partial`
 #### `python3 load_objects.py -v {VER} -m full`
 
-where {VER} is the version label for the data release (e.g 2.0.2).
 
 
-
-## Building and starting the docker container for the APIs
-
+## Step-4: Building and starting the docker container for the APIs
 Run the python script given to build and start container:
 
 #### `python3 start_api_container.py`
 
 
 
-
-
-
-## Testing APIs
+## Step-5: Testing APIs
 The script tests/run_api_test.py is a wrapper outside of the container 
 that allows you to test APIs in an automated manner. 
 

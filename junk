@@ -1,6 +1,21 @@
-img_path = data_path + "/releases/data/v-%s/glycanimages_snfg/" % (init_obj["dataversion"])
-in_file = data_path + "/releases/data/v-%s/misc/species_info.csv" % (init_obj["dataversion"])
-release_dir = data_path + "/releases/data/v-%s/" % (init_obj["dataversion"])
-in_file = data_path + "/releases/data/v-%s/misc/species_info.csv" % (init_obj["dataversion"])
-
-in_dir = data_path + "/userdata/" + server + "/jobs/*"
+alignmentdb
+bcodb
+clusterdb
+diseasedb
+extractdb
+glycandb
+glytoucandb
+historydb
+htmldb
+idtrackdb
+initdb
+listdb
+motifdb
+networkdb
+pathdb
+proteindb
+publicationdb
+searchinitdb
+sitedb
+speciesdb
+statdb
