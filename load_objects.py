@@ -54,6 +54,7 @@ def main():
         )
         client.server_info()
         dbh = client[glydb_db]
+        result = dbh["c_cache"].insert_one({})
         for d in dir_list:
             if d[-2:] != "db":
                 continue
