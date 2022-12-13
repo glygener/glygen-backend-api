@@ -1,10 +1,7 @@
 import os,sys
 import string
 from optparse import OptionParser
-import glob
 import json
-from bson import json_util
-import datetime
 import subprocess
 import requests
 
