@@ -58,10 +58,10 @@ class Misc(Resource):
                 if k in os.environ:
                     res_obj["config"][k] = os.environ[k]
             
-            #init_obj = mongo_dbh["c_init"].find_one({})
-            #if "_id" in init_obj:
-            #    init_obj.pop("_id")
-            #res_obj["initobj"] = init_obj
+            init_obj = mongo_dbh["c_init"].find_one({})
+            if "_id" in init_obj:
+                init_obj.pop("_id")
+            res_obj["initobj"] = init_obj
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
