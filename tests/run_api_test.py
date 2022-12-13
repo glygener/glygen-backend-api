@@ -227,7 +227,7 @@ def run_from_queries(api_grp):
                     row = [o["name"], "query-"+str(idx), flags]
                     FW.write("%s\n" % (",".join(row)))
                     if flags != "success":
-                        out_file = log_dir + "%s_failure_log_%s.%s.json" % (out_file, o["name"], idx)
+                        out_file = log_dir + "%s_failure_log_%s.%s.json" % (user_name, o["name"], idx)
                         with open(out_file, "w") as FL:
                             FL.write("%s\n" % (json.dumps(o, indent=4)))
                     flg_file = "logs/failure_log_%s.%s.json" % (o["name"], idx)

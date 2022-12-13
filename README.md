@@ -1,3 +1,11 @@
+## Requirements
+The following python modules must be available on your server:
+
+* pymongo
+* jsonref
+* jsonschema
+
+
 ## Setting config parameters
 After cloning this repo, you will need to set the paramters given in
 conf/config.json
@@ -20,8 +28,7 @@ Run the python script given to build and start a mongodb container:
 
 
 ## Step-3: Initialize and populate your mongodb database
-To init your mongodb, run (this should be done only one time, and requires
-that you have installed pymongo 'sudo pip3 install pymongo'):
+To init your mongodb, run (this should be done only one time):
 
 
 #### `python3 init_mongodb.py`
