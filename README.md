@@ -8,7 +8,7 @@ Visit https://data.glygen.org/ftp/ to see what data release/version {VER} you wa
 download (for example 2.0.2), and run the python script given to download from
 that release. Since this will take long, use nohup as shown below.
 
-#### `nohup python3 download_data.py -v {VER} > logfile.log`
+#### `nohup python3 download_data.py -v {VER} > logfile.log & `
 
 
 
