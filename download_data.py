@@ -38,11 +38,18 @@ def main():
     jsondb_dir = rel_dir + "/jsondb/"
     cmd = "mkdir -p %s" % (jsondb_dir)
     x = subprocess.getoutput(cmd)
-    
+    if os.path.isdir(jsondb_dir) == False:
+        print ("\t\nCould not create directory %s!\n" % (jsondb_dir))
+        exit()
+
+
     for d in [log_dir, userdata_dir]:
         if os.path.isdir(d) == False:
             cmd = "mkdir -p %s" % (d)
             x = subprocess.getoutput(cmd)
+            if os.path.isdir(d) == False:
+                print ("\t\nCould not create directory %s!\n" % (d))
+                exit()
 
     
     
