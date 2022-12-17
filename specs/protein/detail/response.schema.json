@@ -10,6 +10,7 @@
                 }
             },
             "required": [
+                "chemical_mass"
             ]
         },
         "refseq": {
@@ -29,6 +30,10 @@
                 }
             },
             "required": [
+                "ac",
+                "name",
+                "summary",
+                "url"
             ]
         },
         "gene_names": {
@@ -53,6 +58,11 @@
                     }
                 },
                 "required": [
+                    "name",
+                    "resource",
+                    "type",
+                    "url",
+                    "id"
                 ]
             }
         },
@@ -78,6 +88,11 @@
                     }
                 },
                 "required": [
+                    "name",
+                    "resource",
+                    "type",
+                    "url",
+                    "id"
                 ]
             }
         },
@@ -105,11 +120,16 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     }
                 },
                 "required": [
+                    "annotation",
+                    "evidence"
                 ]
             }
         },
@@ -141,6 +161,11 @@
                             }
                         },
                         "required": [
+                            "id",
+                            "resource",
+                            "url",
+                            "name",
+                            "description"
                         ]
                     },
                     "synonyms": {
@@ -165,6 +190,11 @@
                                 }
                             },
                             "required": [
+                                "id",
+                                "resource",
+                                "url",
+                                "name",
+                                "description"
                             ]
                         }
                     },
@@ -184,11 +214,16 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     }
                 },
                 "required": [
+                    "disease_id",
+                    "recommended_name"
                 ]
             }
         },
@@ -213,6 +248,9 @@
                                 }
                             },
                             "required": [
+                                "database ",
+                                "id",
+                                "url"
                             ]
                         }
                     },
@@ -280,6 +318,13 @@
                                         }
                                     },
                                     "required": [
+                                        [
+                                            "id",
+                                            "resource",
+                                            "url",
+                                            "name",
+                                            "evidence"
+                                        ]
                                     ]
                                 },
                                 "synonyms": {
@@ -304,11 +349,17 @@
                                             }
                                         },
                                         "required": [
+                                            "id",
+                                            "resource",
+                                            "url",
+                                            "name",
+                                            "description"
                                         ]
                                     }
                                 }
                             },
                             "required": [
+                                "recommended_name"
                             ]
                         }
                     },
@@ -326,6 +377,15 @@
                     }
                 },
                 "required": [
+                    "evidence",
+                    "start_pos",
+                    "end_pos",
+                    "sequence_org",
+                    "alt_nt",
+                    "sequence_mut",
+                    "ref_nt",
+                    "chr_id",
+                    "keywords"
                 ]
             }
         },
@@ -365,11 +425,17 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     }
                 },
                 "required": [
+                    "start_pos",
+                    "end_pos",
+                    "sequence_org"
                 ]
             }
         },
@@ -392,6 +458,9 @@
                             }
                         },
                         "required": [
+                            "name",
+                            "url",
+                            "type"
                         ]
                     },
                     "score": {
@@ -416,11 +485,18 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     }
                 },
                 "required": [
+                    "tissue",
+                    "score",
+                    "present",
+                    "evidence"
                 ]
             }
         },
@@ -457,6 +533,9 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     },
@@ -488,6 +567,11 @@
                                         }
                                     },
                                     "required": [
+                                        "id",
+                                        "resource",
+                                        "url",
+                                        "name",
+                                        "evidence"
                                     ]
                                 },
                                 "synonyms": {
@@ -512,16 +596,28 @@
                                             }
                                         },
                                         "required": [
+                                            "id",
+                                            "resource",
+                                            "url",
+                                            "name",
+                                            "description"
                                         ]
                                     }
                                 }
                             },
                             "required": [
+                                "recommended_name"
                             ]
                         }
                     }
                 },
                 "required": [
+                    "name",
+                    "trend",
+                    "disease",
+                    "url",
+                    "evidence",
+                    "disease"
                 ]
             }
         },
@@ -552,6 +648,9 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     },
@@ -560,6 +659,10 @@
                     }
                 },
                 "required": [
+                    "name",
+                    "taxid",
+                    "evidence",
+                    "common_name"
                 ]
             }
         },
@@ -605,16 +708,17 @@
                                         }
                                     },
                                     "required": [
+                                        "database",
+                                        "id",
+                                        "url"
                                     ]
                                 }
                             }
                         },
-                        "required": [
-                        ]
+                        "required": []
                     }
                 },
-                "required": [
-                ]
+                "required": []
             }
         },
         "crossref": {
@@ -633,6 +737,9 @@
                     }
                 },
                 "required": [
+                    "id",
+                    "url",
+                    "database"
                 ]
             }
         },
@@ -647,6 +754,8 @@
                 }
             },
             "required": [
+                "sequence",
+                "length"
             ]
         },
         "isoforms": {
@@ -671,6 +780,8 @@
                             }
                         },
                         "required": [
+                            "sequence",
+                            "length"
                         ]
                     },
                     "locus": {
@@ -703,16 +814,17 @@
                                             "type": "string"
                                         }
                                     },
-                                    "required": [
-                                    ]
+                                    "required": []
                                 }
                             }
                         },
-                        "required": [
-                        ]
+                        "required": []
                     }
                 },
                 "required": [
+                    "isoform",
+                    "url",
+                    "sequence"
                 ]
             }
         },
@@ -770,6 +882,9 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     },
@@ -778,6 +893,12 @@
                     }
                 },
                 "required": [
+                    "type",
+                    "evidence",
+                    "site_category",
+                    "residue",
+                    "relation",
+                    "type"
                 ]
             }
         },
@@ -820,6 +941,9 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     },
@@ -839,11 +963,20 @@
                                 }
                             },
                             "required": [
+                                "database",
+                                "id",
+                                "url"
                             ]
                         }
                     }
                 },
                 "required": [
+                    "title",
+                    "journal",
+                    "data",
+                    "authors",
+                    "evidence",
+                    "reference"
                 ]
             }
         },
@@ -869,6 +1002,9 @@
                     }
                 },
                 "required": [
+                    "id",
+                    "url",
+                    "resource"
                 ]
             }
         },
@@ -903,6 +1039,8 @@
                             }
                         },
                         "required": [
+                            "sequence",
+                            "length"
                         ]
                     },
                     "evidence": {
@@ -921,6 +1059,9 @@
                                 }
                             },
                             "required": [
+                                "id",
+                                "url",
+                                "database"
                             ]
                         }
                     },
@@ -929,6 +1070,13 @@
                     }
                 },
                 "required": [
+                    "uniprot_canonical_ac",
+                    "protein_name",
+                    "tax_id",
+                    "organism",
+                    "sequence",
+                    "evidence",
+                    "common_name"
                 ]
             }
         },
@@ -976,6 +1124,9 @@
                                                     }
                                                 },
                                                 "required": [
+                                                    "id",
+                                                    "url",
+                                                    "database"
                                                 ]
                                             }
                                         },
@@ -984,16 +1135,24 @@
                                         }
                                     },
                                     "required": [
+                                        "name",
+                                        "id",
+                                        "url",
+                                        "evidence"
                                     ]
                                 }
                             }
                         },
                         "required": [
+                            "name",
+                            "total",
+                            "go_terms"
                         ]
                     }
                 }
             },
             "required": [
+                "categories"
             ]
         },
         "pro_annotation": {
@@ -1023,11 +1182,17 @@
                                 }
                             },
                             "required": [
+                                "id",
+                                "url",
+                                "database"
                             ]
                         }
                     }
                 },
                 "required": [
+                    "name",
+                    "definition",
+                    "evidence"
                 ]
             }
         },
@@ -1047,6 +1212,9 @@
                     }
                 },
                 "required": [
+                    "start_pos",
+                    "end_pos",
+                    "annotation"
                 ]
             }
         },
@@ -1080,11 +1248,17 @@
                                 }
                             },
                             "required": [
+                                "id",
+                                "url",
+                                "database"
                             ]
                         }
                     }
                 },
                 "required": [
+                    "interactor_id",
+                    "interaction_type",
+                    "evidence"
                 ]
             }
         },
@@ -1101,6 +1275,8 @@
                     }
                 },
                 "required": [
+                    "name",
+                    "label"
                 ]
             }
         },
@@ -1121,6 +1297,10 @@
                 }
             },
             "required": [
+                "uniprot_canonical_ac",
+                "uniprot_id",
+                "url",
+                "length"
             ]
         }
     },
@@ -1128,6 +1308,7 @@
         "mass",
         "sequence",
         "species",
-        "uniprot"
+        "uniprot",
+        "publication"
     ]
 }
