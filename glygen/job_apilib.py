@@ -96,7 +96,8 @@ def job_addnew(query_obj, config_obj, data_path, server):
             if p not in ["cmd", "status", "jobid"]:
                 q_obj[p] = query_obj[p]
 
-        old_doc = dbh["c_job"].find_one(q_obj)
+        #old_doc = dbh["c_job"].find_one(q_obj)
+        old_doc = None
         if old_doc != None:
             status_obj = update_job_status(dbh, old_doc, config_obj)
             if "error_list" in status_obj:
