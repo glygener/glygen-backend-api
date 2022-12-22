@@ -1,0 +1,117 @@
+<html>
+<head>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<script language="javascript" src="jquery.min.js"></script>
+<script language="javascript" src="api_test.js"></script>
+
+<script>
+var testInfo = {
+    "search_init":{
+        "string_fields":[
+        ]
+        ,"numeric_fields":[
+        ]
+        ,"required_fields":[]
+        ,"url":"/protein/search_init"
+        ,"query":{
+        }
+    },
+    "protein_search_simple":{
+        "string_fields":[
+            "query_type", "operation", "term", "term_category [glycan|protein|gene|organism|enzyme]"
+        ]
+        ,"numeric_fields":[
+        ]
+        ,"required_fields":["term", "term_category"]
+        ,"url":"/protein/search_simple"
+        ,"query":{"term_category":"protein","term":"P14210"}
+    }
+    ,"protein_search": {
+        "string_fields": [
+            "pathway_id",
+            "uniprot_canonical_ac",
+            "protein_name",
+            "attached_glycan_id",
+            "binding_glycan_id",
+            "query_type",
+            "refseq_ac",
+            "go_term",
+            "go_id",
+            "disease_id",
+            "version",
+            "disease_name",
+            "operation",
+            "glycosylation_evidence",
+            "pmid",
+            "gene_name",
+            "organism.name",
+            "organism.id", 
+            "mass.min",
+            "mass.max",
+            "sequence.aa_sequence", 
+            "glycosylated_aa"
+        ],
+        "url": "/protein/search/",
+        "required_fields": [],
+        "numeric_fields": [
+            "organism.id"
+        ],
+        "query": {"uniprot_canonical_ac":"P14210"}
+    }
+    ,"protein_list": {
+        "string_fields": [
+            "sort", 
+            "id", 
+            "order"
+        ], 
+        "url": "/protein/list/", 
+        "required_fields": [
+            "id"
+        ], 
+        "numeric_fields": [
+            "offset", 
+            "limit"
+        ], 
+        "query": {
+            "id": ""
+        }
+    }
+    ,"protein_detail": {
+        "string_fields": [
+            "uniprot_canonical_ac"
+        ],
+        "url": "/protein/detail/",
+        "required_fields": [
+            "uniprot_canonical_ac"
+        ],
+        "numeric_fields": [],
+        "query":"P14210",
+        "semantic":true
+    }
+    ,"protein_alignment": {
+        "string_fields": [
+            "uniprot_canonical_ac",
+            "cluster_type [isoformset.uniprotkb|homologset.oma|homologset.mgi]"
+        ],
+        "url": "/protein/alignment/",
+        "required_fields": [
+            "uniprot_canonical_ac",
+            "cluster_type"
+        ],
+        "numeric_fields": [],
+        "query": {
+            "uniprot_canonical_ac": "P11531-1",
+            "cluster_type": "homologset.oma"
+        }
+    }
+};
+
+
+
+</script>
+
+</head>
+<body>
+
+</body>
+<html>

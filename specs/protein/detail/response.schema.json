@@ -10,7 +10,10 @@
                 }
             },
             "required": [
+<<<<<<< HEAD
                 "chemical_mass"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             ]
         },
         "refseq": {
@@ -30,10 +33,13 @@
                 }
             },
             "required": [
+<<<<<<< HEAD
                 "ac",
                 "name",
                 "summary",
                 "url"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             ]
         },
         "gene_names": {
@@ -58,11 +64,14 @@
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "name",
                     "resource",
                     "type",
                     "url",
                     "id"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -88,11 +97,14 @@
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "name",
                     "resource",
                     "type",
                     "url",
                     "id"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -120,16 +132,22 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "annotation",
                     "evidence"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -161,11 +179,14 @@
                             }
                         },
                         "required": [
+<<<<<<< HEAD
                             "id",
                             "resource",
                             "url",
                             "name",
                             "description"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                         ]
                     },
                     "synonyms": {
@@ -190,11 +211,14 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "id",
                                 "resource",
                                 "url",
                                 "name",
                                 "description"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     },
@@ -214,16 +238,22 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "disease_id",
                     "recommended_name"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -248,9 +278,12 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "database ",
                                 "id",
                                 "url"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     },
@@ -318,6 +351,7 @@
                                         }
                                     },
                                     "required": [
+<<<<<<< HEAD
                                         [
                                             "id",
                                             "resource",
@@ -325,6 +359,8 @@
                                             "name",
                                             "evidence"
                                         ]
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                                     ]
                                 },
                                 "synonyms": {
@@ -349,17 +385,23 @@
                                             }
                                         },
                                         "required": [
+<<<<<<< HEAD
                                             "id",
                                             "resource",
                                             "url",
                                             "name",
                                             "description"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                                         ]
                                     }
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "recommended_name"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     },
@@ -377,6 +419,7 @@
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "evidence",
                     "start_pos",
                     "end_pos",
@@ -386,6 +429,8 @@
                     "ref_nt",
                     "chr_id",
                     "keywords"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -425,17 +470,23 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "start_pos",
                     "end_pos",
                     "sequence_org"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -458,9 +509,12 @@
                             }
                         },
                         "required": [
+<<<<<<< HEAD
                             "name",
                             "url",
                             "type"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                         ]
                     },
                     "score": {
@@ -485,18 +539,24 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "tissue",
                     "score",
                     "present",
                     "evidence"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -533,9 +593,12 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     },
@@ -567,11 +630,14 @@
                                         }
                                     },
                                     "required": [
+<<<<<<< HEAD
                                         "id",
                                         "resource",
                                         "url",
                                         "name",
                                         "evidence"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                                     ]
                                 },
                                 "synonyms": {
@@ -596,28 +662,37 @@
                                             }
                                         },
                                         "required": [
+<<<<<<< HEAD
                                             "id",
                                             "resource",
                                             "url",
                                             "name",
                                             "description"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                                         ]
                                     }
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "recommended_name"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "name",
                     "trend",
                     "disease",
                     "url",
                     "evidence",
                     "disease"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -648,9 +723,12 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     },
@@ -659,10 +737,13 @@
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "name",
                     "taxid",
                     "evidence",
                     "common_name"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -708,17 +789,29 @@
                                         }
                                     },
                                     "required": [
+<<<<<<< HEAD
                                         "database",
                                         "id",
                                         "url"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                                     ]
                                 }
                             }
                         },
+<<<<<<< HEAD
                         "required": []
                     }
                 },
                 "required": []
+=======
+                        "required": [
+                        ]
+                    }
+                },
+                "required": [
+                ]
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             }
         },
         "crossref": {
@@ -737,9 +830,12 @@
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "id",
                     "url",
                     "database"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -754,8 +850,11 @@
                 }
             },
             "required": [
+<<<<<<< HEAD
                 "sequence",
                 "length"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             ]
         },
         "isoforms": {
@@ -780,8 +879,11 @@
                             }
                         },
                         "required": [
+<<<<<<< HEAD
                             "sequence",
                             "length"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                         ]
                     },
                     "locus": {
@@ -814,6 +916,7 @@
                                             "type": "string"
                                         }
                                     },
+<<<<<<< HEAD
                                     "required": []
                                 }
                             }
@@ -825,6 +928,18 @@
                     "isoform",
                     "url",
                     "sequence"
+=======
+                                    "required": [
+                                    ]
+                                }
+                            }
+                        },
+                        "required": [
+                        ]
+                    }
+                },
+                "required": [
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -882,9 +997,12 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     },
@@ -893,12 +1011,15 @@
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "type",
                     "evidence",
                     "site_category",
                     "residue",
                     "relation",
                     "type"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -941,9 +1062,12 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     },
@@ -963,20 +1087,26 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "title",
                     "journal",
                     "data",
                     "authors",
                     "evidence",
                     "reference"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -1002,9 +1132,12 @@
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "id",
                     "url",
                     "resource"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -1039,8 +1172,11 @@
                             }
                         },
                         "required": [
+<<<<<<< HEAD
                             "sequence",
                             "length"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                         ]
                     },
                     "evidence": {
@@ -1059,9 +1195,12 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "id",
                                 "url",
                                 "database"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     },
@@ -1070,6 +1209,7 @@
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "uniprot_canonical_ac",
                     "protein_name",
                     "tax_id",
@@ -1077,6 +1217,8 @@
                     "sequence",
                     "evidence",
                     "common_name"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -1124,9 +1266,12 @@
                                                     }
                                                 },
                                                 "required": [
+<<<<<<< HEAD
                                                     "id",
                                                     "url",
                                                     "database"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                                                 ]
                                             }
                                         },
@@ -1135,24 +1280,33 @@
                                         }
                                     },
                                     "required": [
+<<<<<<< HEAD
                                         "name",
                                         "id",
                                         "url",
                                         "evidence"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                                     ]
                                 }
                             }
                         },
                         "required": [
+<<<<<<< HEAD
                             "name",
                             "total",
                             "go_terms"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                         ]
                     }
                 }
             },
             "required": [
+<<<<<<< HEAD
                 "categories"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             ]
         },
         "pro_annotation": {
@@ -1182,17 +1336,23 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "id",
                                 "url",
                                 "database"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "name",
                     "definition",
                     "evidence"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -1212,9 +1372,12 @@
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "start_pos",
                     "end_pos",
                     "annotation"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -1248,17 +1411,23 @@
                                 }
                             },
                             "required": [
+<<<<<<< HEAD
                                 "id",
                                 "url",
                                 "database"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "interactor_id",
                     "interaction_type",
                     "evidence"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -1275,8 +1444,11 @@
                     }
                 },
                 "required": [
+<<<<<<< HEAD
                     "name",
                     "label"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -1297,10 +1469,13 @@
                 }
             },
             "required": [
+<<<<<<< HEAD
                 "uniprot_canonical_ac",
                 "uniprot_id",
                 "url",
                 "length"
+=======
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             ]
         }
     },
@@ -1308,7 +1483,11 @@
         "mass",
         "sequence",
         "species",
+<<<<<<< HEAD
         "uniprot",
         "publication"
+=======
+        "uniprot"
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
     ]
 }

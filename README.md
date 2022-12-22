@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Requirements
 The following python modules must be available on your server:
 
@@ -81,5 +82,15 @@ the following log files ($username is your ssh login user name):
 {DATA_PATH}/logs/$username_failure_log_$grp_detail.*.json (details for failed calls)
 
 
+=======
+## Building and starting docker container
+
+After cloning, copy instance/config.dev.py to instance/config.py 
+and set config paramters for your production server.
+
+Then, run the shell script given to build and start container:
+
+### `sh start-container.sh`
+>>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
 
 
