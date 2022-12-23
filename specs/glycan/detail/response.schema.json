@@ -62,12 +62,9 @@
                                 }
                             },
                             "required": [
-<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     },
@@ -76,14 +73,11 @@
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "annotation_category",
                     "common_name",
                     "evidence",
                     "name",
                     "taxid"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -103,10 +97,7 @@
                             }
                         },
                         "required": [
-<<<<<<< HEAD
                             "name"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                         ]
                     },
                     "subtype": {
@@ -120,19 +111,13 @@
                             }
                         },
                         "required": [
-<<<<<<< HEAD
                             "name"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                         ]
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "subtype",
                     "type"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -169,12 +154,9 @@
                                 }
                             },
                             "required": [
-<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     },
@@ -192,15 +174,12 @@
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "evidence",
                     "gene_name",
                     "protein_name",
                     "tax_id",
                     "tax_name",
                     "uniprot_canonical_ac"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -246,18 +225,14 @@
                                 }
                             },
                             "required": [
-<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "evidence",
                     "gene",
                     "gene_link",
@@ -266,8 +241,6 @@
                     "tax_id",
                     "tax_name",
                     "uniprot_canonical_ac"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -287,12 +260,9 @@
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "database",
                     "id",
                     "url"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -310,11 +280,8 @@
                 }
             },
             "required": [
-<<<<<<< HEAD
                 "gnome",
                 "sandbox"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             ]
         },
         "fully_determined": {
@@ -346,11 +313,8 @@
                 }
             },
             "required": [
-<<<<<<< HEAD
                 "key",
                 "url"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             ]
         },
         "byonic": {
@@ -392,12 +356,9 @@
                                 }
                             },
                             "required": [
-<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     },
@@ -420,26 +381,20 @@
                                 }
                             },
                             "required": [
-<<<<<<< HEAD
                                 "id",
                                 "type",
                                 "url"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "authors",
                     "date",
                     "evidence",
                     "journal",
                     "reference",
                     "title"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -462,13 +417,10 @@
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "attachedby",
                     "id",
                     "name",
                     "parentid"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -494,12 +446,9 @@
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "count",
                     "name",
                     "residue"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -525,12 +474,9 @@
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "count",
                     "name",
                     "residue"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -553,11 +499,8 @@
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "id",
                     "name"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -594,12 +537,9 @@
                                 }
                             },
                             "required": [
-<<<<<<< HEAD
                                 "database",
                                 "id",
                                 "url"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     },
@@ -617,12 +557,9 @@
                             }
                         },
                         "required": [
-<<<<<<< HEAD
                             "name",
                             "uberon",
                             "url"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                         ]
                     },
                     "abundance": {
@@ -630,14 +567,11 @@
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "end_pos",
                     "evidence",
                     "residue",
                     "start_pos",
                     "uniprot_canonical_ac"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -654,11 +588,8 @@
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "related_accession",
                     "relationship"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         },
@@ -690,11 +621,8 @@
                             }
                         },
                         "required": [
-<<<<<<< HEAD
                             "full_name",
                             "id"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                         ]
                     },
                     "enzymes": {
@@ -710,28 +638,21 @@
                                 }
                             },
                             "required": [
-<<<<<<< HEAD
                                 "tax_name",
                                 "uniprotkb_ac"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                             ]
                         }
                     }
                 },
                 "required": [
-<<<<<<< HEAD
                     "residue_affected",
                     "source",
                     "target"
-=======
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
                 ]
             }
         }
     },
     "required": [
-<<<<<<< HEAD
         "classification",
         "composition",
         "composition_expanded",
@@ -741,10 +662,5 @@
         "missing_score",
         "tool_support",
         "wurcs"
-=======
-        "glytoucan",
-        "mass",
-        "missing_score"
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
     ]
 }
