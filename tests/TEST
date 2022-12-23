@@ -1,6 +1,5 @@
  
     
-<<<<<<< HEAD
     $ http POST http://localhost:8082/protein/search_init/ < temp/empty.json
     $ http POST http://localhost:8082/protein/search_simple/ < temp/protein_search_simple.json
     $ http POST http://localhost:8082/protein/search/ < temp/protein_search.json
@@ -87,99 +86,10 @@
   $ http POST http://localhost:8082/event/detail/ < temp/event_detail.json
   $ http POST http://localhost:8082/event/update/ < temp/event_update.json
   $ http POST http://localhost:8082/event/delete/ < temp/event_delete.json
-=======
-    $ http POST http://localhost:5000/protein/search_init/ < temp/empty.json
-    $ http POST http://localhost:5000/protein/search_simple/ < temp/protein_search_simple.json
-    $ http POST http://localhost:5000/protein/search/ < temp/protein_search.json
-    $ http POST http://localhost:5000/protein/list/ < temp/protein_list.json
-    $ http POST http://localhost:5000/protein/detail/P14210-1/
-    $ http POST http://localhost:5000/protein/alignment/ < temp/protein_alignment.json
-
-
-    $ http POST http://localhost:5000/glycan/search_init/ < temp/empty.json
-    $ http POST http://localhost:5000/glycan/search_simple/ < temp/glycan_search_simple.json
-    $ http POST http://localhost:5000/glycan/search/ < temp/glycan_search.json
-    $ http POST http://localhost:5000/glycan/list/ < temp/glycan_list.json
-    $ http POST http://localhost:5000/glycan/detail/G12344UQ/
-    $ http POST http://localhost:5000/glycan/image/G12344UQ/
-
-    $ http POST http://localhost:5000/auth/register/ < temp/auth_register.json
-    $ http POST http://localhost:5000/auth/userinfo/ < temp/auth_userinfo.json
-    $ http POST http://localhost:5000/auth/userupdate/ < temp/auth_userupdate.json
-    $ http POST http://localhost:5000/auth/userdelete/ < temp/auth_userdelete.json
-    $ http POST http://localhost:5000/auth/login/ < temp/auth_login.json
-    $ http POST http://localhost:5000/auth/userid/ < temp/auth_userid.json
-    $ http POST http://localhost:5000/auth/contact/ < temp/auth_contact.json
-    $ http POST http://localhost:5000/auth/contactlist/ < temp/auth_contactlist.json
-    $ http POST http://localhost:5000/auth/contactupdate/ < temp/auth_contactupdate.json
-    $ http POST http://localhost:5000/auth/contactdelete/ < temp/auth_contactdelete.json
-
-
-    $ http POST http://localhost:5000/data/download/ < temp/data_download.json
-
-  
-    $ http POST :5000/directsearch/protein/ < temp/directsearch_protein.json
-    $ http POST :5000/directsearch/gene/ < temp/directsearch_gene.json
-    $ http POST :5000/directsearch/glycan/ < temp/directsearch_glycan.json
-    $ http POST :5000/directsearch/glycan_to_biosynthesis_enzymes/ < temp/directsearch_glycan_to_biosynthesis_enzymes.json
-    $ http POST :5000/directsearch/glycan_to_glycoproteins/ < temp/directsearch_glycan_to_glycoproteins.json
-    $ http POST :5000/directsearch/biosynthesis_enzyme_to_glycans/ < temp/directsearch_biosynthesis_enzyme_to_glycans.json
-    $ http POST :5000/directsearch/protein_to_homologs/ < temp/directsearch_protein_to_homologs.json
-    $ http POST :5000/directsearch/species_to_glycosyltransferases/ < temp/directsearch_species_to_glycosyltransferases.json
-    $ http POST :5000/directsearch/species_to_glycohydrolases/ < temp/directsearch_species_to_glycohydrolases.json
-    $ http POST :5000/directsearch/species_to_glycoproteins/ < temp/directsearch_species_to_glycoproteins.json
-    $ http POST :5000/directsearch/disease_to_glycosyltransferases/ < temp/directsearch_disease_to_glycosyltransferases.json
-
-
-  $ http POST :5000/globalsearch/search/ < temp/globalsearch_search.json
-  $ http POST :5000/pages/home_init/ < temp/empty.json
-  $ http POST :5000/seqmapping/search/ < temp/seqmapping_search.json
-  $ http POST :5000/publication/detail/ < temp/publication_detail.json
-
-  $ http POST :5000/motif/detail/ < temp/motif_detail.json
-  $ http POST :5000/motif/list/ < temp/motif_list.json
-
-  $ http POST http://localhost:5000/site/search_init/ < temp/empty.json
-  $ http POST http://localhost:5000/site/detail/P02724-1.52.52/
-  
-  $ http POST http://localhost:5000/idmapping/search_init/ < temp/empty.json
-  $ http POST http://localhost:5000/idmapping/search/ < temp/idmapping_search.json
-  $ http POST http://localhost:5000/idmapping/list/ < temp/idmapping_list.json
-
-
-  $ http POST http://localhost:5000/typeahead/typeahead/ < temp/typeahead_typeahead.json
-  $ http POST http://localhost:5000/typeahead/categorized_typeahead/ < temp/typeahead_categorized_typeahead.json
-  $ http POST http://localhost:5000/typeahead/global_typeahead/ < temp/typeahead_global_typeahead.json
-
-
-  $ http POST http://localhost:5000/log/logging/ < temp/log_logging.json
-  $ http POST http://localhost:5000/log/init/ < temp/log_init.json
-  $ http POST http://localhost:5000/log/access/ < temp/log_access.json
-  $ http POST http://localhost:5000/log/grouped/ < temp/log_grouped.json
-
-  
-  $ http POST http://localhost:5000/video/addnew/ < temp/video_addnew.json
-  $ http POST http://localhost:5000/video/list/ < temp/video_list.json
-  $ http POST http://localhost:5000/video/detail/ < temp/video_detail.json
-  $ http POST http://localhost:5000/video/delete/ < temp/video_delete.json
-
-
-  $ http POST http://localhost:5000/supersearch/search_init/ < temp/empty.json
-  $ http POST http://localhost:5000/supersearch/search/ < temp/supersearch_search.json
-  $ http POST http://localhost:5000/supersearch/reason/ < temp/supersearch_reason.json
-  $ http POST http://localhost:5000/supersearch/list/ < temp/supersearch_list.json
-
-  $ http POST http://localhost:5000/event/addnew/ < temp/event_addnew.json
-  $ http POST http://localhost:5000/event/list/ < temp/event_list.json
-  $ http POST http://localhost:5000/event/detail/ < temp/event_detail.json
-  $ http POST http://localhost:5000/event/update/ < temp/event_update.json
-  $ http POST http://localhost:5000/event/delete/ < temp/event_delete.json
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
 
 
  
 
-<<<<<<< HEAD
   $ http POST http://localhost:8082/misc/info/ < temp/empty.json
   $ http POST http://localhost:8082/misc/lastid/ < temp/empty.json
 
@@ -211,45 +121,11 @@
   $ http POST :8082/usecases/genelocus_list/ < temp/usecases_genelocus_list.json
   $ http POST :8082/usecases/ortholog_list/ < temp/usecases_ortholog_list.json
   $ http POST :8082/usecases/glycosequon_list/ < temp/usecases_glycosequon_list.json
-=======
-  $ http POST http://localhost:5000/misc/info/ < temp/empty.json
-  $ http POST http://localhost:5000/misc/lastid/ < temp/empty.json
-
-  $ http POST http://localhost:5000/misc/bcolist/ < temp/empty.json
-  $ http POST http://localhost:5000/misc/gtclist/ < temp/empty.json
-  $ http POST http://localhost:5000/misc/verlist/ < temp/empty.json
-  $ http POST http://localhost:5000/misc/messagelist/ < temp/empty.json
-  $ http POST http://localhost:5000/misc/validate/ < temp/misc_validate.json
-  $ http POST http://localhost:5000/misc/propertylist/ < temp/misc_propertylist.json
-  $ http POST http://localhost:5000/misc/pathlist/ < temp/misc_pathlist.json
-
-
-  $ http POST :5000/usecases/search_init/ < temp/empty.json
-  
-  $ http POST :5000/usecases/glycan_to_biosynthesis_enzymes/0/G17689DH/ 
-  $ http POST :5000/usecases/glycan_to_glycoproteins/0/G17689DH/
-  $ http POST :5000/usecases/glycan_to_enzyme_gene_loci/0/G17689DH/
-
-  $ http POST :5000/usecases/protein_to_glycosequons/P14210-1/
-  $ http POST :5000/usecases/protein_to_orthologs/P14210-1/
-  $ http POST :5000/usecases/biosynthesis_enzyme_to_glycans/0/P26572-1/
-
-  $ http POST :5000/usecases/species_to_glycohydrolases/0/
-  $ http POST :5000/usecases/species_to_glycosyltransferases/0/
-  $ http POST :5000/usecases/species_to_glycoproteins/0/reported/
- 
-  $ http POST :5000/usecases/disease_to_glycosyltransferases/ < temp/usecases_disease_to_glycosyltransferases.json
-
-  $ http POST :5000/usecases/genelocus_list/ < temp/usecases_genelocus_list.json
-  $ http POST :5000/usecases/ortholog_list/ < temp/usecases_ortholog_list.json
-  $ http POST :5000/usecases/glycosequon_list/ < temp/usecases_glycosequon_list.json
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
 
 
 
 
 >> Test this guys on glygen server
-<<<<<<< HEAD
   $ http POST http://localhost:8082/job/init/ < temp/empty.json
   $ http POST http://localhost:8082/job/clean/ < temp/empty.json
   $ http POST http://localhost:8082/job/addnew/ < temp/job_addnew.json
@@ -263,20 +139,5 @@
 
 
   $ http POST http://localhost:8082/graph/getdata/ < temp/graph_getdata.json
-=======
-  $ http POST http://localhost:5000/job/init/ < temp/empty.json
-  $ http POST http://localhost:5000/job/clean/ < temp/empty.json
-  $ http POST http://localhost:5000/job/addnew/ < temp/job_addnew.json
-  $ http POST http://localhost:5000/job/list/ < temp/job_list.json
-  $ http POST http://localhost:5000/job/detail/ < temp/job_detail.json
-  $ http POST http://localhost:5000/job/update/ < temp/job_update.json
-  $ http POST http://localhost:5000/job/delete/ < temp/job_delete.json
-  $ http POST http://localhost:5000/job/results/ < temp/job_results.json
-  $ http POST http://localhost:5000/job/status/ < temp/job_status.json
-  $ http POST http://localhost:5000/job/queue/ < temp/job_queue.json
-
-
-  $ http POST http://localhost:5000/graph/getdata/ < temp/graph_getdata.json
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
 
 

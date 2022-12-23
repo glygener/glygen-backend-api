@@ -80,11 +80,7 @@ class Usecases(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = search_init(config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"] 
@@ -103,11 +99,7 @@ class Usecases(Resource):
         res_obj = {}
         try:
             req_obj = {"glytoucan_ac":glytoucan_ac, "tax_id":int(tax_id)}
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = glycan_to_biosynthesis_enzymes(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -127,11 +119,7 @@ class Usecases(Resource):
         res_obj = {}
         try:
             req_obj = {"glytoucan_ac":glytoucan_ac, "tax_id":int(tax_id)}
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = glycan_to_glycoproteins(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -150,11 +138,7 @@ class Usecases(Resource):
         res_obj = {}
         try:
             req_obj = {"glytoucan_ac":glytoucan_ac, "tax_id":int(tax_id)}
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = glycan_to_enzyme_gene_loci(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -174,11 +158,7 @@ class Usecases(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = biosynthesis_enzyme_to_glycans(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -197,11 +177,7 @@ class Usecases(Resource):
         res_obj = {}
         try:
             req_obj = {"uniprot_canonical_ac":uniprot_canonical_ac}
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = protein_to_orthologs(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -220,11 +196,7 @@ class Usecases(Resource):
         res_obj = {}
         try:
             req_obj = {"uniprot_canonical_ac":uniprot_canonical_ac}
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = protein_to_glycosequons(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -243,11 +215,7 @@ class Usecases(Resource):
         res_obj = {}
         try:
             req_obj = {"tax_id":int(tax_id)}
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = species_to_glycosyltransferases(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -266,11 +234,7 @@ class Usecases(Resource):
         res_obj = {}
         try:
             req_obj = {"tax_id":int(tax_id)} 
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = species_to_glycohydrolases(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -289,11 +253,7 @@ class Usecases(Resource):
         res_obj = {}
         try:
             req_obj = {"tax_id":int(tax_id), "evidence_type":evidence_type} 
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = species_to_glycoproteins(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -314,11 +274,7 @@ class Usecases(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = disease_to_glycosyltransferases(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -338,11 +294,7 @@ class Usecases(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = genelocus_list(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -362,11 +314,7 @@ class Usecases(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = genelocus_list(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -386,11 +334,7 @@ class Usecases(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = ortholog_list(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -410,11 +354,7 @@ class Usecases(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = glycosequon_list(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]

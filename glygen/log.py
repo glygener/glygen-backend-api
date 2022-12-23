@@ -43,11 +43,7 @@ class Log(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = log_logging(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"] 
@@ -67,11 +63,7 @@ class Log(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = log_init(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -93,11 +85,7 @@ class Log(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = log_access(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -119,11 +107,7 @@ class Log(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = log_grouped(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]

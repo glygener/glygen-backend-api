@@ -52,20 +52,12 @@ class Misc(Resource):
         api_name = "misc_info"
         res_obj = {"config":{}}
         try:
-<<<<<<< HEAD
             mongo_dbh, error_obj = get_mongodb()
             res_obj["connection_status"] = "success" if error_obj == {} else error_obj
             for k in ["SERVER", "DATA_PATH", "DB_NAME", "MAIL_SERVER", "MAIL_PORT", "MAIL_SENDER"]:
                 if k in os.environ:
                     res_obj["config"][k] = os.environ[k]
             
-=======
-            k_list = ["DB_HOST", "DB_NAME", "DB_USERNAME",  "DATA_PATH", "MAX_CONTENT_LENGTH"]
-            for k in k_list:
-                res_obj["config"][k] = current_app.config[k]
-            mongo_dbh, error_obj = get_mongodb()
-            res_obj["connection_status"] = "success" if error_obj == {} else error_obj
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             init_obj = mongo_dbh["c_init"].find_one({})
             if "_id" in init_obj:
                 init_obj.pop("_id")
@@ -89,11 +81,7 @@ class Misc(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = validate(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"] 
@@ -113,11 +101,7 @@ class Misc(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = propertylist(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -138,11 +122,7 @@ class Misc(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = pathlist(req_obj, config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -162,11 +142,7 @@ class Misc(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = messagelist(config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -187,11 +163,7 @@ class Misc(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = verlist(config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -212,11 +184,7 @@ class Misc(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = gtclist(config_obj,data_path)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
@@ -236,11 +204,7 @@ class Misc(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = bcolist(config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]

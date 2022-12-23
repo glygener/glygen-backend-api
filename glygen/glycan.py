@@ -168,11 +168,7 @@ class Glycan(Resource):
         res_obj = {}
         try:
             req_obj = {"glytoucan_ac":glytoucan_ac}
-<<<<<<< HEAD
             data_path = os.environ["DATA_PATH"]
-=======
-            data_path = current_app.config["DATA_PATH"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             img_file = glycan_image(req_obj, data_path)
             return send_file(img_file, mimetype='image/png')
         except Exception as e:

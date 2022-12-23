@@ -54,20 +54,12 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-<<<<<<< HEAD
         config_obj["server"] = os.environ["SERVER"]
-=======
-        config_obj["server"] = current_app.config["SERVER"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
         res_obj = {}
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             res_obj = job_init(config_obj, os.environ["DATA_PATH"])
-=======
-            res_obj = job_init(config_obj, current_app.config["DATA_PATH"])
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
@@ -84,20 +76,12 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-<<<<<<< HEAD
         config_obj["server"] = os.environ["SERVER"]
-=======
-        config_obj["server"] = current_app.config["SERVER"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
         res_obj = {}
         try:
             req_obj = request.json
             trim_object(req_obj)
-<<<<<<< HEAD
             data_path, server = os.environ["DATA_PATH"],os.environ["SERVER"]
-=======
-            data_path, server = current_app.config["DATA_PATH"],current_app.config["SERVER"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = job_addnew(req_obj, config_obj, data_path, server)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"] 
@@ -113,11 +97,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-<<<<<<< HEAD
         config_obj["server"] = os.environ["SERVER"]
-=======
-        config_obj["server"] = current_app.config["SERVER"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
         res_obj = {}
         try:
             req_obj = request.json
@@ -138,11 +118,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-<<<<<<< HEAD
         config_obj["server"] = os.environ["SERVER"]
-=======
-        config_obj["server"] = current_app.config["SERVER"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
         res_obj = {}
         try:
             req_obj = request.json
@@ -162,11 +138,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-<<<<<<< HEAD
         config_obj["server"] = os.environ["SERVER"]
-=======
-        config_obj["server"] = current_app.config["SERVER"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
         res_obj = {}
         try:
             req_obj = request.json
@@ -187,11 +159,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-<<<<<<< HEAD
         config_obj["server"] = os.environ["SERVER"]
-=======
-        config_obj["server"] = current_app.config["SERVER"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
         res_obj = {}
         try:
             req_obj = request.json
@@ -213,11 +181,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-<<<<<<< HEAD
         config_obj["server"] = os.environ["SERVER"]
-=======
-        config_obj["server"] = current_app.config["SERVER"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
         res_obj = {}
         try:
             req_obj = request.json
@@ -237,11 +201,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-<<<<<<< HEAD
         config_obj["server"] = os.environ["SERVER"]
-=======
-        config_obj["server"] = current_app.config["SERVER"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
         res_obj = {}
         try:
             req_obj = request.json
@@ -261,11 +221,7 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-<<<<<<< HEAD
         config_obj["server"] = os.environ["SERVER"]
-=======
-        config_obj["server"] = current_app.config["SERVER"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
         res_obj = {}
         try:
             req_obj = request.json
@@ -286,17 +242,10 @@ class Job(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-<<<<<<< HEAD
         config_obj["server"] = os.environ["SERVER"]
         res_obj = {}
         try:
             data_path, server = os.environ["DATA_PATH"],os.environ["SERVER"]
-=======
-        config_obj["server"] = current_app.config["SERVER"]
-        res_obj = {}
-        try:
-            data_path, server = current_app.config["DATA_PATH"],current_app.config["SERVER"]
->>>>>>> b661168d86f050c4e3f5b0a0708b45922caf2f3b
             res_obj = job_clean(data_path, server)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"]
