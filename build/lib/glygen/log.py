@@ -50,6 +50,10 @@ class Log(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
+
+
 @api.route('/init/')
 class Log(Resource):
     @api.doc('init')
@@ -71,6 +75,8 @@ class Log(Resource):
         
         return res_obj
 
+    def get(self):
+        return self.post()
 
 @api.route('/access/')
 class Log(Resource):
@@ -92,6 +98,9 @@ class Log(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         
         return res_obj
+
+    def get(self):
+        return self.post()
 
 
 @api.route('/grouped/')
@@ -116,6 +125,8 @@ class Log(Resource):
         return res_obj
 
 
+    def get(self):
+        return self.post()
 
 
 

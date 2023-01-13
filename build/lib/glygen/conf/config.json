@@ -13,6 +13,9 @@
 		  "glycan":100000
 		,"protein":100000
 	}
+        ,"admin_list":[
+            "rykahsay@gwu.edu"
+         ]
         ,"jobinfo":{
             "tspath":"/usr/local/bin/ts",
             "maxjobs":5,

@@ -60,6 +60,10 @@ class Event(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
+
+
 @api.route('/detail/')
 class Event(Resource):
     @api.doc('detail')
@@ -80,6 +84,10 @@ class Event(Resource):
         return res_obj
 
 
+    def get(self):
+        return self.post()
+
+
 @api.route('/list/')
 class Event(Resource):
     @api.doc('list')
@@ -98,6 +106,10 @@ class Event(Resource):
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
+
+    def get(self):
+        return self.post()
+
 
 @api.route('/update/')
 class Event(Resource):
@@ -123,6 +135,10 @@ class Event(Resource):
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
+
+    def get(self):
+        return self.post()
+
 
 
 @api.route('/delete/')
@@ -150,6 +166,9 @@ class Event(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    
+    def get(self):
+        return self.post()
 
 
 

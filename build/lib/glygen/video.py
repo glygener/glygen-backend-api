@@ -56,6 +56,10 @@ class Video(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
+
+
 @api.route('/detail/')
 class Video(Resource):
     @api.doc('detail')
@@ -75,6 +79,8 @@ class Video(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
 
 @api.route('/list/')
 class Video(Resource):
@@ -94,6 +100,9 @@ class Video(Resource):
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
+
+    def get(self):
+        return self.post()
 
 @api.route('/delete/')
 class Video(Resource):
@@ -119,6 +128,9 @@ class Video(Resource):
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
+
+    def get(self):
+        return self.post()
 
 
 

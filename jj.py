@@ -20,24 +20,11 @@ def main():
     mongo_port = config_obj["dbinfo"]["port"]
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
     
-    admin_user, admin_pass = config_obj["dbinfo"]["admin"]["user"], config_obj["dbinfo"]["admin"]["password"]
-    admin_db = config_obj["dbinfo"]["admin"]["db"]
-
     glydb_user, glydb_pass = config_obj["dbinfo"]["glydb"]["user"], config_obj["dbinfo"]["glydb"]["password"]
     glydb_db =  config_obj["dbinfo"]["glydb"]["db"]
 
     try:
-        client_one = pymongo.MongoClient(host,
-            username=admin_user,
-            password=admin_pass,
-            authSource=admin_db,
-            authMechanism='SCRAM-SHA-1',
-            serverSelectionTimeoutMS=10000
-        )
-        client_one.server_info()
-        client_one.glydb.command('createUser', glydb_user, pwd=glydb_pass, roles=[{'role': 'readWrite', 'db': glydb_db}])
-    
-
+        
         client_two = pymongo.MongoClient(host,
             username=glydb_user,
             password=glydb_pass,
@@ -47,9 +34,11 @@ def main():
         )
         client_two.server_info()
         dbh = client_two[glydb_db]
-        for c in ["c_cache", "c_users", "c_video", "c_event", "c_message", "c_userid"]:
-            res = dbh[c].insert_one({})
-    
+        for c in ["c_cache", "c_users", "c_video", "c_event"]:
+            res = dbh[c]
+        for c in dbh.list_collection_names():
+            print (c)
+
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

@@ -96,6 +96,9 @@ class Data(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
+
 
 @api.route('/gene/')
 class Data(Resource):
@@ -116,6 +119,8 @@ class Data(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
 
 
 @api.route('/glycan/')
@@ -137,6 +142,9 @@ class Data(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
+
 
 @api.route('/glycan_to_biosynthesis_enzymes/')
 class Data(Resource):
@@ -157,6 +165,9 @@ class Data(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
+
 
 @api.route('/glycan_to_glycoproteins/')
 class Data(Resource):
@@ -176,6 +187,9 @@ class Data(Resource):
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
+
+    def get(self):
+        return self.post()
 
 
 
@@ -198,6 +212,8 @@ class Data(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
 
 
 @api.route('/protein_to_homologs/')
@@ -219,6 +235,8 @@ class Data(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
 
 
 @api.route('/species_to_glycosyltransferases/')
@@ -239,6 +257,9 @@ class Data(Resource):
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
+
+    def get(self):
+        return self.post()
 
 
 
@@ -261,6 +282,8 @@ class Data(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
 
 
 @api.route('/species_to_glycoproteins/')
@@ -282,6 +305,8 @@ class Data(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
 
 
 @api.route('/disease_to_glycosyltransferases/')
@@ -303,6 +328,8 @@ class Data(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
 
 
 
