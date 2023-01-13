@@ -58,6 +58,10 @@ class Supersearch(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
+
+
 @api.route('/search/')
 class Supersearch(Resource):
     @api.doc('search')
@@ -85,6 +89,8 @@ class Supersearch(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
 
 @api.route('/reason/')
 class Supersearch(Resource):
@@ -112,6 +118,10 @@ class Supersearch(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
+
+
 @api.route('/list/')
 class Supersearch(Resource):
     @api.doc('list')
@@ -138,6 +148,8 @@ class Supersearch(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
 
 
 

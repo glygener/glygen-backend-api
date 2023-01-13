@@ -37,10 +37,6 @@ list_query_model = api.model(
     { 'query': fields.String(required=True, default="", description='')}
 )
 
-detail_query_model = api.model(
-    'Detail Query',
-    { 'query': fields.String(required=True, default="", description='')}
-) 
 
 image_query_model = api.model(
     'Detail Query',
@@ -72,6 +68,8 @@ class Glycan(Resource):
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj
 
+    def get(self):
+        return self.post()
 
 @api.route('/search/')
 class Glycan(Resource):
@@ -92,6 +90,9 @@ class Glycan(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj
+    
+    def get(self):
+        return self.post()
 
 
 @api.route('/search_simple/')
@@ -113,6 +114,9 @@ class Glycan(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
+    
+    def get(self):
+        return self.post()
 
 
 @api.route('/list/')
@@ -135,10 +139,12 @@ class Glycan(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    def get(self):
+        return self.post()
+
 @api.route('/detail/<glytoucan_ac>/')
 class Glycan(Resource):
     @api.doc('detail')
-    @api.expect(detail_query_model)
     def post(self, glytoucan_ac):
         api_name = "glycan_detail"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -153,7 +159,9 @@ class Glycan(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
-
+   
+    def get(self, glytoucan_ac):
+        return self.post(glytoucan_ac)
 
 
 @api.route('/image/<glytoucan_ac>/')
@@ -177,7 +185,8 @@ class Glycan(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
-
+    def get(self):
+        return self.post(glytoucan_ac)
 
 
 

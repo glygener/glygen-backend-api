@@ -22,10 +22,6 @@ search_init_query_model = api.model(
     'Search Init Query',
     { 'query': fields.String(required=True, default="", description='')}
 )
-detail_query_model = api.model(
-    'Detail Query',
-    { 'query': fields.String(required=True, default="", description='')}
-) 
 
 @api.route('/search_init/')
 class Site(Resource):
@@ -47,10 +43,13 @@ class Site(Resource):
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj
 
+    def get(self):
+        return self.post()
+
+
 @api.route('/detail/<site_id>/')
 class Site(Resource):
     @api.doc('detail')
-    @api.expect(detail_query_model)
     def post(self, site_id):
         api_name = "site_detail"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -65,6 +64,9 @@ class Site(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
+
+    def get(self, site_id):
+        return self.post(site_id)
 
 
 

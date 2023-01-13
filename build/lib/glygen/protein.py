@@ -37,10 +37,6 @@ list_query_model = api.model(
     { 'query': fields.String(required=True, default="", description='')}
 )
 
-detail_query_model = api.model(
-    'Detail Query',
-    { 'query': fields.String(required=True, default="", description='')}
-) 
 
 alignment_query_model = api.model(
     'Alignment Query',
@@ -68,6 +64,8 @@ class Protein(Resource):
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj
 
+    def get(self):
+        return self.post()
 
 @api.route('/search/')
 class Protein(Resource):
@@ -88,6 +86,9 @@ class Protein(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj
+    
+    def get(self):
+        return self.post()
 
 
 @api.route('/search_simple/')
@@ -110,6 +111,9 @@ class Protein(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    def get(self):
+        return self.post()
+
 
 @api.route('/list/')
 class Protein(Resource):
@@ -131,12 +135,14 @@ class Protein(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    def get(self):
+        return self.post()
+
 
 
 @api.route('/detail/<uniprot_canonical_ac>/')
 class Protein(Resource):
     @api.doc('detail')
-    @api.expect(detail_query_model)
     def post(self, uniprot_canonical_ac):
         api_name = "protein_detail"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -151,6 +157,10 @@ class Protein(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
+
+    def get(self, uniprot_canonical_ac):
+        return self.post(uniprot_canonical_ac)
+
 
 @api.route('/alignment/')
 class Protein(Resource):
@@ -171,6 +181,9 @@ class Protein(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
+
+    def get(self):
+        return self.post()
 
 
 

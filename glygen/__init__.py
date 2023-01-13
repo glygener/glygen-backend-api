@@ -32,31 +32,35 @@ from .graph import api as graph_api
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
+    app.url_map.strict_slashes = False
+
     CORS(app, supports_credentials=True)
     #CORS(app)
 
     api = Api(app, version='1.0', title='GlyGen APIs', description='Documentation for the GlyGen APIs',)
-    api.add_namespace(protein_api)
-    api.add_namespace(glycan_api)
-    api.add_namespace(auth_api)
-    api.add_namespace(data_api)
+    
     api.add_namespace(directsearch_api)
+    api.add_namespace(usecases_api)
+    api.add_namespace(supersearch_api)
     api.add_namespace(globalsearch_api)
-    api.add_namespace(pages_api)
-    api.add_namespace(seqmapping_api)
+    api.add_namespace(protein_api)
+    api.add_namespace(site_api)
+    api.add_namespace(glycan_api)
     api.add_namespace(motif_api)
     api.add_namespace(publication_api)
-    api.add_namespace(site_api)
+    api.add_namespace(data_api)
+    api.add_namespace(pages_api)
+    api.add_namespace(seqmapping_api)
     api.add_namespace(idmapping_api)
     api.add_namespace(typeahead_api)
+    api.add_namespace(auth_api)
     api.add_namespace(log_api)
     api.add_namespace(video_api)
-    api.add_namespace(supersearch_api)
     api.add_namespace(event_api)
-    api.add_namespace(misc_api)
     api.add_namespace(job_api)
-    api.add_namespace(usecases_api)
-    api.add_namespace(graph_api)
+    
+    api.add_namespace(misc_api)
+    #api.add_namespace(graph_api)
 
 
     try:

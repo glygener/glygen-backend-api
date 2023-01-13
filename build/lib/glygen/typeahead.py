@@ -75,6 +75,10 @@ class Typeahead(Resource):
         return res_obj
 
 
+    def get(self):
+        return self.post()
+
+
 
 @api.route('/categorized_typeahead/')
 class Typeahead(Resource):
@@ -99,6 +103,8 @@ class Typeahead(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    def get(self):
+        return self.post()
 
 @api.route('/global_typeahead/')
 class Typeahead(Resource):
@@ -124,6 +130,8 @@ class Typeahead(Resource):
         return res_obj
 
 
+    def get(self):
+        return self.post()
 
 
 

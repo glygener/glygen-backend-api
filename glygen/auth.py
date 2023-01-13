@@ -63,6 +63,9 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    def get(self):
+        return self.post()
+
 
 @api.route('/contact/')
 class Auth(Resource):
@@ -84,6 +87,9 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    def get(self):
+        return self.post()
+
 
 @api.route('/register/')
 class Auth(Resource):
@@ -97,9 +103,9 @@ class Auth(Resource):
         res_obj = {}
         try:
             req_obj = request.json
-            #req_obj["status"], req_obj["access"], req_obj["role"] = 1, "write", "admin"
             req_obj["status"], req_obj["access"], req_obj["role"] = 0, "readonly", ""
-
+            if req_obj["email"] in config_obj["admin_list"]:
+                req_obj["status"], req_obj["access"], req_obj["role"] = 1, "write", "admin"
             trim_object(req_obj)
             res_obj = auth_register(req_obj, config_obj)
         except Exception as e:
@@ -108,6 +114,8 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    def get(self):
+        return self.post()
 
 
 @api.route('/login/')
@@ -160,6 +168,8 @@ class Auth(Resource):
         #http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    def get(self):
+        return self.post()
 
 
 
@@ -191,6 +201,8 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    def get(self):
+        return self.post()
 
 
 @api.route('/userupdate/')
@@ -220,6 +232,9 @@ class Auth(Resource):
         
         return res_obj
 
+    def get(self):
+        return self.post()
+
 @api.route('/userdelete/')
 class Auth(Resource):
     @api.doc('userdelete')
@@ -247,6 +262,8 @@ class Auth(Resource):
 
         return res_obj
 
+    def get(self):
+        return self.post()
 
 
 @api.route('/contactlist/')
@@ -275,6 +292,8 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    def get(self):
+        return self.post()
 
 @api.route('/contactupdate/')
 class Auth(Resource):
@@ -302,6 +321,8 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    def get(self):
+        return self.post()
 
 @api.route('/contactdelete/')
 class Auth(Resource):
@@ -329,6 +350,8 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    def get(self):
+        return self.post()
 
 
 
