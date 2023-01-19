@@ -19,13 +19,21 @@ import traceback
 
 api = Namespace("motif", description="Motif APIs")
 
+
+
 detail_query_model = api.model(
-    'Detail Query', 
-    { 'query': fields.String(required=True, default="", description='')}
+    'Motif Detail Query', 
+    { 
+        "motif_ac": fields.String(required=True, default="GGM.000115"),
+        "offset": fields.Integer(required=True, default=1)
+    }
 )
 list_query_model = api.model(
-    'List Query',
-    { 'query': fields.String(required=True, default="", description='')}
+    'Motif List Query',
+    { 
+        "sort": fields.String(required=True, default="glycan_count"),
+        "order": fields.String(required=True, default="desc")
+    }
 )
 
 
@@ -49,6 +57,7 @@ class Motif(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -72,6 +81,7 @@ class Motif(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 

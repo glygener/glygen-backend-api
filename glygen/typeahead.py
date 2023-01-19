@@ -75,6 +75,7 @@ class Typeahead(Resource):
         return res_obj
 
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -103,6 +104,7 @@ class Typeahead(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -130,6 +132,7 @@ class Typeahead(Resource):
         return res_obj
 
 
+    @api.doc(False)
     def get(self):
         return self.post()
 

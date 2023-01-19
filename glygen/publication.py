@@ -17,22 +17,17 @@ from glygen.util import get_error_obj, trim_object
 import traceback
 
 
-api = Namespace("publication", description="Motif APIs")
+api = Namespace("publication", description="Publication APIs")
 
-detail_query_model = api.model(
-    'Detail Query', 
-    { 'query': fields.String(required=True, default="", description='')}
+detail_query_model = api.model("Publication Detail Query", 
+    { 
+        "id": fields.String(required=True, default="11232563"),
+        "type": fields.String(required=True, default="PubMed")
+    }
 )
-list_query_model = api.model(
-    'List Query',
-    { 'query': fields.String(required=True, default="", description='')}
-)
-
-
 
 @api.route('/detail/')
-class Motif(Resource):
-    @api.doc('detail')
+class Publication(Resource):
     @api.expect(detail_query_model)
     def post(self):
         api_name = "publication_detail"
@@ -49,6 +44,7 @@ class Motif(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 

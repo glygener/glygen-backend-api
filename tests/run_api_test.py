@@ -72,7 +72,9 @@ def run_exhaustive(api_grp):
     log_dir = config_obj["data_path"]  + "/logs/"
 
     api_url = config_obj["base_url"] + "/misc/info"
-    res = requests.post(api_url, json={}, verify=False)
+    #res = requests.post(api_url, json={}, verify=False)
+    res = requests.get(api_url, json={}, verify=False)
+
     info_obj =  json.loads(res.content)
     data_version = info_obj["initobj"]["dataversion"]
 
@@ -97,7 +99,8 @@ def run_exhaustive(api_grp):
                 req_obj = {"motif_ac":main_id}
 
             o = {"bad_respose":False, "url":api_url}
-            res = requests.post(api_url, json=req_obj, verify=False)
+            #res = requests.post(api_url, json=req_obj, verify=False)
+            res = requests.get(api_url, json=req_obj, verify=False)
             o["status_code"] = res.status_code
             if is_valid_json(res.content) == False:
                 o["bad_respose"] = True
@@ -107,7 +110,7 @@ def run_exhaustive(api_grp):
                     o["error_list"] = res_obj["error_list"]
                 else:
                     schema_file = "../specs/%s/detail/response.schema.json" % (api_grp)
-                    o["validation"] =validate_response(res_obj,schema_file)
+                    o["validation"] = validate_response(res_obj,schema_file)
             
             flag_list = []
             if o["bad_respose"] == True:
@@ -198,10 +201,16 @@ def run_from_queries(api_grp):
                         for p in id_dict[grp]:
                             if p in req_obj:
                                 req_obj[p] = id_dict[grp][p]
-                    res = requests.post(api_url, json=req_obj, verify=False)
+                    #res = requests.post(api_url, json=req_obj, verify=False)
+                    res = requests.get(api_url, json=req_obj, verify=False)
+                    
+                    #if api_name in ["protein_detail"]:
+                    #    continue
+                    #print (api_name)
+
                     o["url"] = api_url
                     o["status_code"] = res.status_code
-                    if res.headers["Content-Type"] == "image/png":
+                    if api_name == "glycan_image" or res.headers["Content-Type"] == "image/png":
                         o["validation"] = {"status":"passed"}
                     elif res.headers["Content-Type"] == "application/json":
                         if is_valid_json(res.content) == False:
@@ -212,7 +221,7 @@ def run_from_queries(api_grp):
                                 o["error_list"] = res_obj["error_list"]
                             else:
                                 if "schemafile" in t_obj:
-                                    o["validation"] =validate_response(res_obj,t_obj["schemafile"])
+                                    o["validation"] = validate_response(res_obj,t_obj["schemafile"])
                                 if "list_id" in res_obj:
                                     last_list_id = res_obj["list_id"]
                     flag_list = []

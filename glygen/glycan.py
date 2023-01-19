@@ -18,30 +18,20 @@ import traceback
 
 
 api = Namespace("glycan", description="Glycan APIs")
-search_init_query_model = api.model(
-    'Search Init Query',
-    { 'query': fields.String(required=True, default="", description='')}
-)
+
 search_simple_query_model = api.model(
-    'Simple Search Query',
-    { 'query': fields.String(required=True, default="", description='')}
+    "Glycan Simple Search Query", 
+    {
+        "term_category": fields.String(required=True, default="glycan"),
+        "term": fields.String(required=True, default="G17689DH")
+    }
 )
-
-search_query_model = api.model(
-    'Search Query', 
-    { 'query': fields.String(required=True, default="", description='')}
-)
-
-list_query_model = api.model(
-    'List Query',
-    { 'query': fields.String(required=True, default="", description='')}
-)
+GLYCAN_ID = api.model("GLYCAN_ID", {"glycan_id": fields.String(required=True, default="G17689DH")})
+search_query_model = api.model("Glycan Search Query", {"glycan_identifier":fields.Nested(GLYCAN_ID)})
+search_init_query_model = api.model("Glycan Search Init Query", {})
+list_query_model = api.model("Glycan List Query",{ "id": fields.String(required=True, default="")})
 
 
-image_query_model = api.model(
-    'Detail Query',
-    { 'query': fields.String(required=True, default="", description='')}
-)
 
 
 
@@ -50,8 +40,7 @@ image_query_model = api.model(
 
 @api.route('/search_init/')
 class Glycan(Resource):
-    @api.doc('search_init')
-    @api.expect(search_query_model)
+    @api.expect(search_init_query_model)
     def post(self):
         api_name = "glycan_search_init"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -59,8 +48,6 @@ class Glycan(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
             res_obj = glycan_search_init(config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"] 
@@ -68,12 +55,12 @@ class Glycan(Resource):
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
 @api.route('/search/')
 class Glycan(Resource):
-    @api.doc('search')
     @api.expect(search_query_model)
     def post(self):
         api_name = "glycan_search"
@@ -90,14 +77,14 @@ class Glycan(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj
-    
+
+    @api.doc(False) 
     def get(self):
         return self.post()
 
 
 @api.route('/search_simple/')
 class Glycan(Resource):
-    @api.doc('search_simple')
     @api.expect(search_simple_query_model)
     def post(self):
         api_name = "glycan_search_simple"
@@ -115,6 +102,7 @@ class Glycan(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
     
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -139,10 +127,12 @@ class Glycan(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
 @api.route('/detail/<glytoucan_ac>/')
+@api.doc(params={"glytoucan_ac": {"in": "query", "default": "G17689DH"}})
 class Glycan(Resource):
     @api.doc('detail')
     def post(self, glytoucan_ac):
@@ -160,14 +150,15 @@ class Glycan(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
    
+    @api.doc(False)
     def get(self, glytoucan_ac):
         return self.post(glytoucan_ac)
 
 
 @api.route('/image/<glytoucan_ac>/')
+@api.doc(params={"glytoucan_ac": {"in": "query", "default": "G17689DH"}})
 class Glycan(Resource):
     @api.doc('image')
-    @api.expect(image_query_model)
     def post(self, glytoucan_ac):
         api_name = "glycan_image"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -185,6 +176,7 @@ class Glycan(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post(glytoucan_ac)
 

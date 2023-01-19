@@ -50,14 +50,13 @@ class Supersearch(Resource):
 
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
             res_obj = search_init(config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"] 
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -89,6 +88,7 @@ class Supersearch(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -118,6 +118,7 @@ class Supersearch(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -148,6 +149,7 @@ class Supersearch(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 

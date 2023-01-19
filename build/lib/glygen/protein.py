@@ -18,36 +18,33 @@ import traceback
 
 
 api = Namespace("protein", description="Protein APIs")
-search_init_query_model = api.model(
-    'Search Init Query',
-    { 'query': fields.String(required=True, default="", description='')}
-)
-search_simple_query_model = api.model(
-    'Simple Search Query',
-    { 'query': fields.String(required=True, default="", description='')}
-)
 
-search_query_model = api.model(
-    'Search Query', 
-    { 'query': fields.String(required=True, default="", description='')}
+search_init_query_model = api.model("Protein Search Init Query", {})
+search_simple_query_model = api.model("Protein Simple Search Query", 
+    {
+        "term_category": fields.String(required=True, default="P12314"),
+        "term": fields.String(required=True, default="protein")
+    }
 )
-
-list_query_model = api.model(
-    'List Query',
-    { 'query': fields.String(required=True, default="", description='')}
+search_query_model = api.model("Protein Search Query",
+    { "uniprot_canonical_ac": fields.String(required=True, default="P12314")}
 )
+list_query_model = api.model("Protein List Query",{ "id": fields.String(required=True, default="")})
 
-
-alignment_query_model = api.model(
-    'Alignment Query',
-    { 'query': fields.String(required=True, default="", description='')}
+alignment_query_model = api.model("Protein Alignment Query",
+    { 
+        "uniprot_canonical_ac": fields.String(required=True, default="P14210-1"),
+        "cluster_type": fields.String(required=True, default="homologset.oma")
+    }
 ) 
+
+
 
 
 @api.route('/search_init/')
 class Protein(Resource):
     @api.doc('search_init')
-    @api.expect(search_query_model)
+    @api.expect(search_init_query_model)
     def post(self):
         api_name = "protein_search_init"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -55,8 +52,6 @@ class Protein(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
             res_obj = protein_search_init(config_obj)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"] 
@@ -64,6 +59,7 @@ class Protein(Resource):
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -87,6 +83,7 @@ class Protein(Resource):
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj
     
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -111,6 +108,7 @@ class Protein(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -135,12 +133,14 @@ class Protein(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
 
 
 @api.route('/detail/<uniprot_canonical_ac>/')
+@api.doc(params={"uniprot_canonical_ac": {"in": "query", "default": "P14210"}})
 class Protein(Resource):
     @api.doc('detail')
     def post(self, uniprot_canonical_ac):
@@ -158,6 +158,7 @@ class Protein(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self, uniprot_canonical_ac):
         return self.post(uniprot_canonical_ac)
 
@@ -182,6 +183,7 @@ class Protein(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
