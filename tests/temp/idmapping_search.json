@@ -1,6 +1,6 @@
 {
-  "recordtype":"glycan",
-  "input_namespace":"PubChem Compound",
-  "output_namespace":"ChEBI",
-  "input_idlist":["91859018","91845230","91845682","439177","XYZ"]
+  "recordtype":"protein",
+  "input_namespace":"UniProtKB",
+  "output_namespace":"GeneID",
+  "input_idlist":["M9PJ12", "Q9VRR2"]
 }

@@ -65,6 +65,9 @@ class Job(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
+    def get(self):
+        return self.post()
 
 
 @api.route('/addnew/')
@@ -87,6 +90,10 @@ class Job(Resource):
             log_path = current_app.config["LOG_PATH"] 
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
+    
+    @api.doc(False)
+    def get(self):
+        return self.post()
 
 @api.route('/detail/')
 class Job(Resource):
@@ -108,6 +115,9 @@ class Job(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
+    def get(self):
+        return self.post()
 
 @api.route('/list/')
 class Job(Resource):
@@ -128,6 +138,10 @@ class Job(Resource):
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
+        
+    @api.doc(False)
+    def get(self):
+        return self.post()
 
 @api.route('/update/')
 class Job(Resource):
@@ -148,6 +162,10 @@ class Job(Resource):
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
+
+    @api.doc(False)
+    def get(self):
+        return self.post()
 
 
 @api.route('/delete/')
@@ -170,6 +188,9 @@ class Job(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
+    def get(self):
+        return self.post()
 
 
 @api.route('/results/')
@@ -192,6 +213,10 @@ class Job(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
 @api.route('/status/')
 class Job(Resource):
     @api.doc('status')
@@ -211,6 +236,11 @@ class Job(Resource):
             log_path = current_app.config["LOG_PATH"]
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
+
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
 
 @api.route('/queue/')
 class Job(Resource):
@@ -232,6 +262,10 @@ class Job(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
 
 @api.route('/clean/')
 class Job(Resource):
@@ -252,5 +286,8 @@ class Job(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
+    def get(self):
+        return self.post()
 
 

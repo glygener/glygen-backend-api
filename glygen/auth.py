@@ -63,9 +63,9 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
-
 
 @api.route('/contact/')
 class Auth(Resource):
@@ -87,6 +87,7 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -114,6 +115,7 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -168,6 +170,7 @@ class Auth(Resource):
         #http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -201,6 +204,7 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -232,6 +236,7 @@ class Auth(Resource):
         
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -262,6 +267,7 @@ class Auth(Resource):
 
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -292,6 +298,7 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -321,6 +328,7 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -350,6 +358,7 @@ class Auth(Resource):
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 

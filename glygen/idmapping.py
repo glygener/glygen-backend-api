@@ -19,14 +19,19 @@ import traceback
 
 api = Namespace("idmapping", description="IDmapping APIs")
 
-search_init_query_model = api.model(
+idmapping_search_init_query_model = api.model(
     'Search Init Query', 
     { 'query': fields.String(required=True, default="", description='')}
 )
 
-search_query_model = api.model(
+idmapping_search_query_model = api.model(
     'Search Query',
-    { 'query': fields.String(required=True, default="", description='')}
+    { 
+        "recordtype": fields.String(required=True, default="protein", description=""),
+        "input_namespace": fields.String(required=True, default="UniProtKB", description=""),
+        "output_namespace": fields.String(required=True, default="GeneID", description=""),
+        "input_idlist": fields.List(fields.String(), required=True, default=["Q9VRR2", "M9PJ12"])
+    }
 )
 
 list_query_model = api.model(
@@ -38,8 +43,8 @@ list_query_model = api.model(
 
 @api.route('/search_init/')
 class Idmapping(Resource):
-    @api.doc('search_init')
-    @api.expect(search_init_query_model)
+    #@api.doc('search_init')
+    @api.expect(idmapping_search_init_query_model)
     def post(self):
         api_name = "idmapping_search_init"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -47,8 +52,6 @@ class Idmapping(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
             data_path = os.environ["DATA_PATH"]
             res_obj = search_init(config_obj)
         except Exception as e:
@@ -56,14 +59,15 @@ class Idmapping(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
 
 @api.route('/search/')
 class Idmapping(Resource):
-    @api.doc('search')
-    @api.expect(search_query_model)
+    #@api.doc('search')
+    @api.expect(idmapping_search_query_model)
     def post(self):
         api_name = "idmapping_search"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -79,6 +83,7 @@ class Idmapping(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
@@ -101,6 +106,7 @@ class Idmapping(Resource):
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 
+    @api.doc(False)
     def get(self):
         return self.post()
 
