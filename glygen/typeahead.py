@@ -8,9 +8,6 @@ import time
 import subprocess
 import json
 import bcrypt
-from flask_jwt_extended import (
-    jwt_required, get_jwt_identity
-)
 
 from glygen.typeahead_apilib import glycan_typeahead, protein_typeahead, global_typeahead, categorized_typeahead
 from glygen.util import trim_object, get_cached_records_direct

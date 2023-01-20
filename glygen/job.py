@@ -9,9 +9,6 @@ import time
 import subprocess
 import json
 import bcrypt
-from flask_jwt_extended import (
-    jwt_required, get_jwt_identity
-)
 
 from glygen.job_apilib import job_addnew, job_detail, job_update, job_list, job_delete,job_clean, job_results, job_status, job_queue, job_init
 

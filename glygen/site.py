@@ -9,9 +9,6 @@ import time
 import subprocess
 import json
 import bcrypt
-from flask_jwt_extended import (
-    jwt_required, get_jwt_identity
-)
 
 from glygen.site_apilib import site_search_init, site_detail
 from glygen.util import trim_object
