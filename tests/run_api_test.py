@@ -117,8 +117,11 @@ def run_exhaustive(api_grp):
                 flag_list.append("bad_response")
             if "error_list" in o:
                 flag_list.append("error_response")
-            if flag_list == [] and o["validation"]["status"] == "failed":
-                flag_list.append("invalid_response")
+            if flag_list == []:
+                if "validation" not in o:
+                    flag_list.append("schema_validation_failed")
+                elif o["validation"]["status"] == "failed":
+                    flag_list.append("schema_validation_failed")
             flags = "success" if flag_list == [] else "failed:" + ";".join(flag_list)
             row = [api_grp, main_id, flags]
             FW.write("%s\n" % (",".join(row)))
@@ -201,12 +204,10 @@ def run_from_queries(api_grp):
                         for p in id_dict[grp]:
                             if p in req_obj:
                                 req_obj[p] = id_dict[grp][p]
-                    #res = requests.post(api_url, json=req_obj, verify=False)
-                    res = requests.get(api_url, json=req_obj, verify=False)
-                    
+                    res = requests.post(api_url, json=req_obj, verify=False)
+                    #res = requests.get(api_url, json=req_obj, verify=False)
                     #if api_name in ["protein_detail"]:
                     #    continue
-                    #print (api_name)
 
                     o["url"] = api_url
                     o["status_code"] = res.status_code
@@ -229,8 +230,11 @@ def run_from_queries(api_grp):
                         flag_list.append("bad_response")
                     if "error_list" in o:
                         flag_list.append("error_response")
-                    if flag_list == [] and o["validation"]["status"] == "failed":
-                        flag_list.append("invalid_response")
+                    if flag_list == []:
+                        if "validation" not in o:
+                            flag_list.append("schema_validation_failed")
+                        elif o["validation"]["status"] == "failed":
+                            flag_list.append("schema_validation_failed")
                     flags = "success" if flag_list == [] else "failed:" + ";".join(flag_list)
                     row = [o["name"], "query-"+str(idx), flags]
                     FW.write("%s\n" % (",".join(row)))
