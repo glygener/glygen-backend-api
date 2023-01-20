@@ -1,6 +1,7 @@
 import os,sys
 from flask_restx import Namespace, Resource, fields
 from flask import (request, current_app)
+from glygen.db import log_error
 from glygen.document import get_one, get_many, insert_one, update_one, delete_one, order_json_obj
 from werkzeug.utils import secure_filename
 import datetime
@@ -13,7 +14,7 @@ from flask_jwt_extended import (
 )
 
 from glygen.site_apilib import site_search_init, site_detail
-from glygen.util import get_error_obj, trim_object
+from glygen.util import trim_object
 import traceback
 
 
@@ -27,7 +28,6 @@ search_init_query_model = api.model(
 class Site(Resource):
     @api.expect(search_init_query_model)
     def post(self):
-        api_name = "site_search_init"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -35,8 +35,7 @@ class Site(Resource):
         try:
             res_obj = site_search_init(config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"] 
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj
 
@@ -49,7 +48,6 @@ class Site(Resource):
 @api.doc(params={"site_id": {"in": "query", "default": "P02724-1.52.52"}})
 class Site(Resource):
     def post(self, site_id):
-        api_name = "site_detail"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -58,8 +56,7 @@ class Site(Resource):
             req_obj = {"site_id":site_id}
             res_obj = site_detail(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj
 

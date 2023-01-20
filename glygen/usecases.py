@@ -1,6 +1,7 @@
 import os,sys
 from flask_restx import Namespace, Resource, fields
 from flask import (request, current_app, send_file)
+from glygen.db import log_error
 from glygen.document import get_one, get_many, insert_one, update_one, delete_one, order_json_obj
 from werkzeug.utils import secure_filename
 import datetime
@@ -30,7 +31,7 @@ from glygen.usecases_apilib import (
         glycosequon_list
     )
 
-from glygen.util import get_error_obj, trim_object
+from glygen.util import trim_object
 import traceback
 
 
@@ -67,7 +68,6 @@ glycosequon_list_query_model = api.model("Glycosequon List Query",
 class Usecases(Resource):
     @api.expect(search_init_query_model)
     def post(self):
-        api_name = "search_init"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -76,8 +76,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = search_init(config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"] 
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
     @api.doc(False)
@@ -91,7 +90,6 @@ class Usecases(Resource):
 })
 class Usecases(Resource):
     def post(self, tax_id, glytoucan_ac):
-        api_name = "glycan_to_biosynthesis_enzymes"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -101,8 +99,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = glycan_to_biosynthesis_enzymes(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
     @api.doc(False)
@@ -116,7 +113,6 @@ class Usecases(Resource):
 })
 class Usecases(Resource):
     def post(self, tax_id, glytoucan_ac):
-        api_name = "glycan_to_glycoproteins"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -126,8 +122,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = glycan_to_glycoproteins(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
     
     @api.doc(False)
@@ -142,7 +137,6 @@ class Usecases(Resource):
 })
 class Usecases(Resource):
     def post(self, tax_id, glytoucan_ac):
-        api_name = "glycan_to_enzyme_gene_loci"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -152,8 +146,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = glycan_to_enzyme_gene_loci(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
     @api.doc(False)
@@ -169,7 +162,6 @@ class Usecases(Resource):
 )
 class Usecases(Resource):
     def post(self, tax_id, uniprot_canonical_ac):
-        api_name = "biosynthesis_enzyme_to_glycans"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -179,8 +171,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = biosynthesis_enzyme_to_glycans(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
     @api.doc(False)
@@ -192,7 +183,6 @@ class Usecases(Resource):
 @api.doc(params={"uniprot_canonical_ac": {"in": "query", "default": "P14210-1"}})
 class Usecases(Resource):
     def post(self, uniprot_canonical_ac):
-        api_name = "protein_to_orthologs"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -202,8 +192,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = protein_to_orthologs(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
     @api.doc(False)
@@ -216,7 +205,6 @@ class Usecases(Resource):
 @api.doc(params={"uniprot_canonical_ac": {"in": "query", "default": "P14210-1"}})
 class Usecases(Resource):
     def post(self, uniprot_canonical_ac):
-        api_name = "protein_to_glycosequons"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -226,8 +214,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = protein_to_glycosequons(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
     @api.doc(False)
@@ -240,7 +227,6 @@ class Usecases(Resource):
 @api.doc(params={"tax_id": {"in": "query", "default": 9606}})
 class Usecases(Resource):
     def post(self, tax_id):
-        api_name = "species_to_glycosyltransferases"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -250,8 +236,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = species_to_glycosyltransferases(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
     @api.doc(False)
@@ -262,7 +247,6 @@ class Usecases(Resource):
 @api.doc(params={"tax_id": {"in": "query", "default": 9606}})
 class Usecases(Resource):
     def post(self, tax_id):
-        api_name = "species_to_glycohydrolases"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -272,8 +256,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = species_to_glycohydrolases(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
     
     @api.doc(False)
@@ -284,7 +267,6 @@ class Usecases(Resource):
 @api.doc(params={"tax_id": {"in": "query", "default": 9606}, "evidence_type":{"in": "query", "default": "reported"}})
 class Usecases(Resource):
     def post(self, tax_id, evidence_type):
-        api_name = "species_to_glycoproteins"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -294,8 +276,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = species_to_glycoproteins(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
     @api.doc(False)
@@ -306,7 +287,6 @@ class Usecases(Resource):
 class Usecases(Resource):
     @api.expect(disease_to_glycosyltransferases_query_model)
     def post(self):
-        api_name = "disease_to_glycosyltransferases"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -317,8 +297,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = disease_to_glycosyltransferases(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
     @api.doc(False)
@@ -330,7 +309,6 @@ class Usecases(Resource):
 class Usecases(Resource):
     @api.expect(genelocus_list_query_model)
     def post(self):
-        api_name = "genelocus_list"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -341,8 +319,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = genelocus_list(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
     @api.doc(False)
@@ -355,7 +332,6 @@ class Usecases(Resource):
 class Usecases(Resource):
     @api.expect(genelocus_list_query_model)
     def post(self):
-        api_name = "genelocus_list"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -366,8 +342,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = genelocus_list(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
     @api.doc(False)
@@ -380,7 +355,6 @@ class Usecases(Resource):
 class Usecases(Resource):
     @api.expect(ortholog_list_query_model)
     def post(self):
-        api_name = "ortholog_list"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -391,8 +365,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = ortholog_list(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
     @api.doc(False)
@@ -405,7 +378,6 @@ class Usecases(Resource):
 class Usecases(Resource):
     @api.expect(glycosequon_list_query_model)
     def post(self):
-        api_name = "glycosequon_list"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -416,8 +388,7 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = glycosequon_list(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
     
     @api.doc(False)
