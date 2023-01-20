@@ -179,7 +179,6 @@ def get_arg_value(arg, method):
 
 
 def trim_object(obj):
-
     for key in obj:
         if type(obj[key]) is str:
             obj[key] = obj[key].strip()

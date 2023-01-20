@@ -13,43 +13,21 @@ from flask_jwt_extended import (
     jwt_required, get_jwt_identity
 )
 
-from glygen.db import get_mongodb
+from glygen.db import get_mongodb, log_error
 
 from glygen.misc_apilib import validate, propertylist, pathlist, messagelist, verlist, gtclist, bcolist
-from glygen.util import get_error_obj, trim_object
+from glygen.util import trim_object
 import traceback
 
 
 api = Namespace("misc", description="Misc APIs")
 
-validate_query_model = api.model(
-    'Validate Query', { 'query': fields.String(required=True, default="", description='')})
-propertylist_query_model = api.model(
-    'Propertylist Query', { 'query': fields.String(required=True, default="", description='')})
-pathlist_query_model = api.model(
-    'Pathlist Query', { 'query': fields.String(required=True, default="", description='')})
-messagelist_query_model = api.model(
-    'Messagelist Query', { 'query': fields.String(required=True, default="", description='')})
-verlist_query_model = api.model(
-    'Verlist Query', { 'query': fields.String(required=True, default="", description='')})
-gtclist_query_model = api.model(
-    'Gtclist Query', { 'query': fields.String(required=True, default="", description='')})
-bcolist_query_model = api.model(
-    'Bcolist Query', { 'query': fields.String(required=True, default="", description='')})
-
-info_query_model = api.model(
-    'Info Query', { 'query': fields.String(required=True, default="", description='')})
-
-lastid_query_model = api.model(
-    'Last ID Query', { 'query': fields.String(required=True, default="", description='')})
 
 
 @api.route('/info/')
 class Misc(Resource):
-    @api.doc('info')
-    @api.expect(info_query_model)
+    @api.doc(False)
     def post(self):
-        api_name = "misc_info"
         res_obj = {"config":{}}
         try:
             mongo_dbh, error_obj = get_mongodb()
@@ -63,17 +41,14 @@ class Misc(Resource):
                 init_obj.pop("_id")
             res_obj["initobj"] = init_obj
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
 
 @api.route('/validate/')
 class Misc(Resource):
-    @api.doc('validate')
-    @api.expect(validate_query_model)
+    @api.doc(False)
     def post(self):
-        api_name = "misc_validate"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -84,16 +59,13 @@ class Misc(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = validate(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"] 
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
 @api.route('/propertylist/')
 class Misc(Resource):
-    @api.doc('propertylist')
-    @api.expect(propertylist_query_model)
+    @api.doc(False)
     def post(self):
-        api_name = "misc_propertylist"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -104,17 +76,14 @@ class Misc(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = propertylist(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
 
 @api.route('/pathlist/')
 class Misc(Resource):
-    @api.doc('pathlist')
-    @api.expect(pathlist_query_model)
+    @api.doc(False)
     def post(self):
-        api_name = "misc_pathlist"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -125,16 +94,13 @@ class Misc(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = pathlist(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
 @api.route('/messagelist/')
 class Misc(Resource):
-    @api.doc('messagelist')
-    @api.expect(messagelist_query_model)
+    @api.doc(False)
     def post(self):
-        api_name = "misc_messagelist"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -145,17 +111,14 @@ class Misc(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = messagelist(config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
 
 @api.route('/verlist/')
 class Misc(Resource):
-    @api.doc('verlist')
-    @api.expect(verlist_query_model)
+    @api.doc(False)
     def post(self):
-        api_name = "misc_verlist"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -166,17 +129,14 @@ class Misc(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = verlist(config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
 
 @api.route('/gtclist/')
 class Misc(Resource):
-    @api.doc('gtclist')
-    @api.expect(gtclist_query_model)
+    @api.doc(False)
     def post(self):
-        api_name = "misc_gtclist"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -187,16 +147,13 @@ class Misc(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = gtclist(config_obj,data_path)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
 @api.route('/bcolist/')
 class Misc(Resource):
-    @api.doc('bcolist')
-    @api.expect(bcolist_query_model)
+    @api.doc(False)
     def post(self):
-        api_name = "misc_bcolist"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -207,17 +164,14 @@ class Misc(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = bcolist(config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
 
 @api.route('/lastid/')
 class Misc(Resource):
-    @api.doc('lastid')
-    @api.expect(lastid_query_model)
+    @api.doc(False)
     def post(self):
-        api_name = "misc_lastid"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -242,8 +196,7 @@ class Misc(Resource):
                     res_obj[coll] = {p:val}
                     break
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
+            res_obj = log_error(traceback.format_exc())
         return res_obj
 
 

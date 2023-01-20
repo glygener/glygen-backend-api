@@ -1,3 +1,0 @@
-  $ http POST :8082/usecases/biosynthesis_enzyme_to_glycans/0/P26572-1/
-  $ http POST :8082/usecases/ortholog_list/ < temp/usecases_ortholog_list.json
-  $ http POST :8082/usecases/glycosequon_list/ < temp/usecases_glycosequon_list.json

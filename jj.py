@@ -24,7 +24,6 @@ def main():
     glydb_db =  config_obj["dbinfo"]["glydb"]["db"]
 
     try:
-        
         client_two = pymongo.MongoClient(host,
             username=glydb_user,
             password=glydb_pass,
@@ -34,11 +33,9 @@ def main():
         )
         client_two.server_info()
         dbh = client_two[glydb_db]
-        for c in ["c_cache", "c_users", "c_video", "c_event"]:
-            res = dbh[c]
-        for c in dbh.list_collection_names():
-            print (c)
-
+        for c in ["c_version"]:
+            res = dbh[c].insert_one({})
+    
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:
