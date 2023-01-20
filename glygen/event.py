@@ -38,9 +38,8 @@ delete_query_model = api.model(
 
 @api.route('/addnew/')
 class Event(Resource):
-    @api.doc('addnew')
     @api.expect(addnew_query_model)
-    #@jwt_required
+    @jwt_required
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
@@ -49,11 +48,8 @@ class Event(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-            current_user, user_info = "rykahsay@gwu.edu", {}
-            #current_user = get_jwt_identity()
-            #user_info, err_obj, status = get_userinfo(current_user)
-            #if status == 0:
-            #    return err_obj
+            #current_user, user_info = "rykahsay@gwu.edu", {}
+            current_user = get_jwt_identity()
             res_obj = event_addnew(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -66,7 +62,6 @@ class Event(Resource):
 
 @api.route('/detail/')
 class Event(Resource):
-    @api.doc('detail')
     @api.expect(detail_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -89,7 +84,6 @@ class Event(Resource):
 
 @api.route('/list/')
 class Event(Resource):
-    @api.doc('list')
     @api.expect(list_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -111,9 +105,8 @@ class Event(Resource):
 
 @api.route('/update/')
 class Event(Resource):
-    @api.doc('update')
     @api.expect(update_query_model)
-    #@jwt_required
+    @jwt_required
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
@@ -122,11 +115,8 @@ class Event(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-            current_user, user_info = "rykahsay@gwu.edu", {}
-            #current_user = get_jwt_identity()
-            #user_info, err_obj, status = get_userinfo(current_user)
-            #if status == 0:
-            #    return err_obj
+            #current_user, user_info = "rykahsay@gwu.edu", {}
+            current_user = get_jwt_identity()
             res_obj = event_update(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -140,9 +130,8 @@ class Event(Resource):
 
 @api.route('/delete/')
 class Event(Resource):
-    @api.doc('delete')
     @api.expect(delete_query_model)
-    #@jwt_required
+    @jwt_required
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
@@ -151,11 +140,8 @@ class Event(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-            current_user, user_info = "rykahsay@gwu.edu", {}
-            #current_user = get_jwt_identity()
-            #user_info, err_obj, status = get_userinfo(current_user)
-            #if status == 0:
-            #    return err_obj
+            #current_user, user_info = "rykahsay@gwu.edu", {}
+            current_user = get_jwt_identity()
             res_obj = event_delete(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())

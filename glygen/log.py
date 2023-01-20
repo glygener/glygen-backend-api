@@ -9,9 +9,6 @@ import time
 import subprocess
 import json
 import bcrypt
-from flask_jwt_extended import (
-    jwt_required, get_jwt_identity
-)
 
 from glygen.log_apilib import log_logging, log_init, log_access, log_grouped
 from glygen.util import trim_object
