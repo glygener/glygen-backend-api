@@ -22,22 +22,57 @@ import traceback
 api = Namespace("event", description="Event APIs")
 
 addnew_query_model = api.model(
-    'Addnew Query', { 'query': fields.String(required=True, default="", description='')})
+    'Event Addnew Query', 
+    {
+        "title":fields.String(required=True, default="some title"),
+        "description":fields.String(required=True, default="some description"),
+        "start_date":fields.String(required=True, default="01/20/2021 23:59:59"),
+        "end_date":fields.String(required=True, default="01/21/2021 07:00:00"),
+        "venue":fields.String(required=True, default="some venue"),
+        "url":fields.String(required=True, default="some url"),
+        "url_name":fields.String(required=True, default="some url name"),
+        "visibility":fields.String(required=True, default="visible")
+    }
+)
+
+
 detail_query_model = api.model(
-    'Detail Query', { 'query': fields.String(required=True, default="", description='')})
+    'Event Detail Query', 
+    {
+        "id":fields.String(required=True, default="")
+    }
+)
+
 list_query_model = api.model(
-    'List Query', { 'query': fields.String(required=True, default="", description='')})
+    'Event List Query', 
+    { 
+        "visibility":fields.String(required=True, default="all"),
+        "status":fields.String(required=True, default="all")
+    }
+)
+
 update_query_model = api.model(
-    'Update Query', { 'query': fields.String(required=True, default="", description='')})
+    'Event Update Query', 
+    {
+        "id":fields.String(required=True, default=""),
+        "visibility":fields.String(required=True, default="visible")
+    }
+)
+
 
 delete_query_model = api.model(
-    'Delete Query', { 'query': fields.String(required=True, default="", description='')})
+    'Event Delete Query', 
+    {
+        "id":fields.String(required=True, default="")
+    }
+)   
 
 
 
 
 @api.route('/addnew/')
 class Event(Resource):
+    @api.doc(False)
     @api.expect(addnew_query_model)
     @jwt_required
     def post(self):
@@ -105,6 +140,7 @@ class Event(Resource):
 
 @api.route('/update/')
 class Event(Resource):
+    @api.doc(False)
     @api.expect(update_query_model)
     @jwt_required
     def post(self):
@@ -130,6 +166,7 @@ class Event(Resource):
 
 @api.route('/delete/')
 class Event(Resource):
+    @api.doc(False)
     @api.expect(delete_query_model)
     @jwt_required
     def post(self):

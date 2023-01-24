@@ -1,0 +1,35 @@
+Traceback (most recent call last):
+  File "run_api_test.py", line 294, in <module>
+    main()
+  File "run_api_test.py", line 284, in main
+    run_from_queries(api_grp)
+  File "run_api_test.py", line 201, in run_from_queries
+    id_dict = get_id_dict()
+  File "run_api_test.py", line 53, in get_id_dict
+    res = requests.post(api_url, json={}, verify=False)
+  File "/usr/local/lib/python3.6/site-packages/requests/api.py", line 117, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "/usr/local/lib/python3.6/site-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/local/lib/python3.6/site-packages/requests/sessions.py", line 529, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/local/lib/python3.6/site-packages/requests/sessions.py", line 645, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/local/lib/python3.6/site-packages/requests/adapters.py", line 450, in send
+    timeout=timeout
+  File "/usr/lib/python3.6/site-packages/urllib3/connectionpool.py", line 672, in urlopen
+    chunked=chunked,
+  File "/usr/lib/python3.6/site-packages/urllib3/connectionpool.py", line 421, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.6/site-packages/urllib3/connectionpool.py", line 416, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib64/python3.6/http/client.py", line 1346, in getresponse
+    response.begin()
+  File "/usr/lib64/python3.6/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib64/python3.6/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib64/python3.6/socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+KeyboardInterrupt

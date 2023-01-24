@@ -22,21 +22,26 @@ import traceback
 api = Namespace("video", description="Video APIs")
 
 addnew_query_model = api.model(
-    'Addnew Query', { 'query': fields.String(required=True, default="", description='')})
+    'Video Addnew Query', 
+    { 
+        "url": fields.String(required=True, default="https://www.youtube.com/embed/xyV5v5nRm6A?rel=0")
+    }
+)
 detail_query_model = api.model(
-    'Detail Query', { 'query': fields.String(required=True, default="", description='')})
-list_query_model = api.model(
-    'List Query', { 'query': fields.String(required=True, default="", description='')})
+    'Video Detail Query', { "id": fields.String(required=True, default="63d04393d634c7d21067b32e")}
+)
+list_query_model = api.model('Video List Query', {})
 delete_query_model = api.model(
-    'Delete Query', { 'query': fields.String(required=True, default="", description='')})
+    'Video Delete Query', { "id": fields.String(required=True, default="63d04393d634c7d21067b32e")}
+)
 
 
 
 @api.route('/addnew/')
 class Video(Resource):
-    @api.doc('addnew')
+    @api.doc(False)
     @api.expect(addnew_query_model)
-    #@jwt_required
+    @jwt_required
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
@@ -45,11 +50,8 @@ class Video(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-            current_user, user_info = "rykahsay@gwu.edu", {}
-            #current_user = get_jwt_identity()
-            #user_info, err_obj, status = get_userinfo(current_user)
-            #if status == 0:
-            #    return err_obj
+            #current_user, user_info = "rykahsay@gwu.edu", {}
+            current_user = get_jwt_identity()
             res_obj = video_addnew(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -62,7 +64,6 @@ class Video(Resource):
 
 @api.route('/detail/')
 class Video(Resource):
-    @api.doc('detail')
     @api.expect(detail_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -83,7 +84,6 @@ class Video(Resource):
 
 @api.route('/list/')
 class Video(Resource):
-    @api.doc('list')
     @api.expect(list_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -104,9 +104,9 @@ class Video(Resource):
 
 @api.route('/delete/')
 class Video(Resource):
-    @api.doc('delete')
+    @api.doc(False)
     @api.expect(delete_query_model)
-    #@jwt_required
+    @jwt_required
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
@@ -115,11 +115,8 @@ class Video(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-            current_user, user_info = "rykahsay@gwu.edu", {}
-            #current_user = get_jwt_identity()
-            #user_info, err_obj, status = get_userinfo(current_user)
-            #if status == 0:
-            #    return err_obj
+            #current_user, user_info = "rykahsay@gwu.edu", {}
+            current_user = get_jwt_identity()
             res_obj = video_delete(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())

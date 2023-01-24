@@ -160,6 +160,8 @@ class Auth(Resource):
             error = None
             if user_doc is None:
                 error = "incorrect-email/password"
+            elif "password" not in user_doc:
+                error = "password does not exist for registerd user"
             else:
                 submitted_password = password.encode('utf-8')
                 #stored_password = user_doc['password'].encode('utf-8')
@@ -196,6 +198,7 @@ class Auth(Resource):
 
 @api.route('/userinfo/')
 class Auth(Resource):
+    @api.doc(False)
     @api.expect(userinfo_query_model)
     @jwt_required
     def post(self):
@@ -272,6 +275,7 @@ class Auth(Resource):
 
 @api.route('/contactlist/')
 class Auth(Resource):
+    @api.doc(False)
     @api.expect(contactlist_query_model)
     @jwt_required
     def post(self):
@@ -296,6 +300,7 @@ class Auth(Resource):
 
 @api.route('/contactupdate/')
 class Auth(Resource):
+    @api.doc(False)
     @api.expect(contactupdate_query_model)
     @jwt_required
     def post(self):
@@ -320,6 +325,7 @@ class Auth(Resource):
 
 @api.route('/contactdelete/')
 class Auth(Resource):
+    @api.doc(False)
     @api.expect(contactdelete_query_model)
     @jwt_required
     def post(self):

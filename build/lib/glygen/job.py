@@ -9,9 +9,6 @@ import time
 import subprocess
 import json
 import bcrypt
-from flask_jwt_extended import (
-    jwt_required, get_jwt_identity
-)
 
 from glygen.job_apilib import job_addnew, job_detail, job_update, job_list, job_delete,job_clean, job_results, job_status, job_queue, job_init
 
@@ -23,32 +20,60 @@ import traceback
 
 api = Namespace("job", description="Job APIs")
 
+PARAMS = api.model(
+    "PARAMS",
+    {
+        "seq":fields.String(required=True, default="MSIQENISSLQLRSWVSKSQRDLAKSILIGAPGGPAGYLRRASVAQLTQELGTAFFQQQQLPAAMADTFLEHLCLLDIDSEPVAARSTSIIATIGPASRSVERLKEMIKAGMNIARLNFSQHAIAREAEAAVYHRQLFEELRRAAPLSRDPTEVTAIGAVEAAFKCCAAAIIVLTTT"),
+        "targetdb":fields.String(required=True, default="canonicalsequences_all"),
+        "num_alignments":fields.Integer(required=True, default=3),
+        "evalue":fields.Float(required=True, default=1e-3)
+    }
+)
+
 addnew_query_model = api.model(
-    'Addnew Query', { 'query': fields.String(required=True, default="", description='')})
+    'Job Addnew Query', 
+    { 
+        "jobtype":fields.String(required=True, default="blastp"),
+        "parameters":fields.Nested(PARAMS)
+    }
+)
 detail_query_model = api.model(
-    'Detail Query', { 'query': fields.String(required=True, default="", description='')})
+    'Job Detail Query', 
+    { 'jobid': fields.Integer(required=True, default=1)}
+)
+
 list_query_model = api.model(
-    'List Query', { 'query': fields.String(required=True, default="", description='')})
+    'Job List Query', 
+    {
+        "visibility":fields.String(required=True, default="all")
+    }
+)
 update_query_model = api.model(
-    'Update Query', { 'query': fields.String(required=True, default="", description='')})
+    'Job Update Query', 
+    {
+    }
+)
 delete_query_model = api.model(
-    'Delete Query', { 'query': fields.String(required=True, default="", description='')})
-clean_query_model = api.model(
-    'Clean Query', { 'query': fields.String(required=True, default="", description='')})
+    'Job Delete Query', 
+    { 'jobid': fields.Integer(required=True, default=1)}
+)   
 results_query_model = api.model(
-    'Results Query', { 'query': fields.String(required=True, default="", description='')})
+    'Job Results Query', 
+    { 'jobid': fields.Integer(required=True, default=1)}
+)
+
 status_query_model = api.model(
-    'Status Query', { 'query': fields.String(required=True, default="", description='')})
-queue_query_model = api.model(
-    'Queue Query', { 'query': fields.String(required=True, default="", description='')})
-init_query_model = api.model(
-    'Init Query', { 'query': fields.String(required=True, default="", description='')})
+    'Job Status Query',
+    { 'jobid': fields.Integer(required=True, default=1)}
+)   
+clean_query_model = api.model('Job Clean Query', {})
+queue_query_model = api.model('Job Queue Query', {})
+init_query_model = api.model('Job Init Query', {})
 
 
 
 @api.route('/init/')
 class Job(Resource):
-    @api.doc('init')
     @api.expect(init_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -71,7 +96,6 @@ class Job(Resource):
 
 @api.route('/addnew/')
 class Job(Resource):
-    @api.doc('addnew')
     @api.expect(addnew_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -94,7 +118,6 @@ class Job(Resource):
 
 @api.route('/detail/')
 class Job(Resource):
-    @api.doc('detail')
     @api.expect(detail_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -116,7 +139,6 @@ class Job(Resource):
 
 @api.route('/list/')
 class Job(Resource):
-    @api.doc('list')
     @api.expect(list_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -138,7 +160,7 @@ class Job(Resource):
 
 @api.route('/update/')
 class Job(Resource):
-    @api.doc('update')
+    @api.doc(False)
     @api.expect(update_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -161,7 +183,6 @@ class Job(Resource):
 
 @api.route('/delete/')
 class Job(Resource):
-    @api.doc('delete')
     @api.expect(delete_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -184,7 +205,6 @@ class Job(Resource):
 
 @api.route('/results/')
 class Job(Resource):
-    @api.doc('results')
     @api.expect(results_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -206,7 +226,6 @@ class Job(Resource):
 
 @api.route('/status/')
 class Job(Resource):
-    @api.doc('status')
     @api.expect(status_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -229,7 +248,6 @@ class Job(Resource):
 
 @api.route('/queue/')
 class Job(Resource):
-    @api.doc('queue')
     @api.expect(queue_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -252,7 +270,7 @@ class Job(Resource):
 
 @api.route('/clean/')
 class Job(Resource):
-    @api.doc('clean')
+    @api.doc(False)
     @api.expect(clean_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))

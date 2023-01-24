@@ -9,9 +9,6 @@ import subprocess
 import json
 import bcrypt
 import pymongo
-from flask_jwt_extended import (
-    jwt_required, get_jwt_identity
-)
 
 from glygen.db import get_mongodb, log_error
 

@@ -15,10 +15,10 @@
     $ http POST http://localhost:8082/glycan/detail/G12344UQ/
     $ http POST http://localhost:8082/glycan/image/G12344UQ/
 
+    $ http POST http://localhost:8082/auth/userdelete/ < temp/auth_userdelete.json
     $ http POST http://localhost:8082/auth/register/ < temp/auth_register.json
     $ http POST http://localhost:8082/auth/userinfo/ < temp/auth_userinfo.json
     $ http POST http://localhost:8082/auth/userupdate/ < temp/auth_userupdate.json
-    $ http POST http://localhost:8082/auth/userdelete/ < temp/auth_userdelete.json
     $ http POST http://localhost:8082/auth/login/ < temp/auth_login.json
     $ http POST http://localhost:8082/auth/userid/ < temp/auth_userid.json
     $ http POST http://localhost:8082/auth/contact/ < temp/auth_contact.json

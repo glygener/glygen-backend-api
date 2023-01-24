@@ -17,14 +17,52 @@ import traceback
 
 api = Namespace("log", description="Log APIs")
 
-logging_query_model = api.model(
-    'Logging Query', { 'query': fields.String(required=True, default="", description='')})
 init_query_model = api.model(
-    'Init Query', { 'query': fields.String(required=True, default="", description='')})
+    'Log Init Query', 
+    { 
+        "start_date": fields.String(required=True, default="2022-1-1 1:1:1 EDT-0400"),
+        "end_date": fields.String(required=True, default="2022-12-31 1:1:1 EDT-0400")
+    }
+)
+
+logging_query_model = api.model(
+    'Log Logging Query', 
+    {
+        "type":fields.String(required=True, default="error"),
+        "page":fields.String(required=True, default="index.html"),
+        "user":fields.String(required=True, default="some_username"),
+        "id":fields.String(required=True, default=""),
+        "message":fields.String(required=True, default="")
+    }
+)
+
 access_query_model = api.model(
-    'Access Query', { 'query': fields.String(required=True, default="", description='')})
+    'Log Access Query', 
+    { 
+        "start_date": fields.String(required=True, default="2022-1-1 1:1:1 EDT-0400"),
+        "end_date": fields.String(required=True, default="2022-12-31 1:1:1 EDT-0400"),
+        "type":fields.String(required=True, default="error"),
+        "page":fields.String(required=True, default="index.html"),
+        "user":fields.String(required=True, default="some_username"),
+        "order":fields.String(required=True, default="asc"),
+        "offset":fields.Integer(required=True, default=1),
+        "limit":fields.Integer(required=True, default=100)
+    }
+)
+
 grouped_query_model = api.model(
-    'Grouped Query', { 'query': fields.String(required=True, default="", description='')})
+    'Log Grouped Query', 
+    { 
+        "start_date": fields.String(required=True, default="2022-1-1 1:1:1 EDT-0400"),
+        "end_date": fields.String(required=True, default="2022-12-31 1:1:1 EDT-0400"),
+        "type":fields.String(required=True, default="error"),
+        "page":fields.String(required=True, default="index.html"),
+        "user":fields.String(required=True, default="some_username"),
+        "order":fields.String(required=True, default="asc"),
+        "offset":fields.Integer(required=True, default=1),
+        "limit":fields.Integer(required=True, default=100)
+    }
+)
 
 
 

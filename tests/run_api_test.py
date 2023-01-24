@@ -204,6 +204,8 @@ def run_from_queries(api_grp):
                         for p in id_dict[grp]:
                             if p in req_obj:
                                 req_obj[p] = id_dict[grp][p]
+                    #print ("Running ", api_url, req_obj)
+
                     res = requests.post(api_url, json=req_obj, verify=False)
                     #res = requests.get(api_url, json=req_obj, verify=False)
                     #if api_name in ["protein_detail"]:

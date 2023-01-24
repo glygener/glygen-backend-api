@@ -22,18 +22,24 @@ import traceback
 api = Namespace("video", description="Video APIs")
 
 addnew_query_model = api.model(
-    'Addnew Query', { 'query': fields.String(required=True, default="", description='')})
+    'Video Addnew Query', 
+    { 
+        "url": fields.String(required=True, default="https://www.youtube.com/embed/xyV5v5nRm6A?rel=0")
+    }
+)
 detail_query_model = api.model(
-    'Detail Query', { 'query': fields.String(required=True, default="", description='')})
-list_query_model = api.model(
-    'List Query', { 'query': fields.String(required=True, default="", description='')})
+    'Video Detail Query', { "id": fields.String(required=True, default="63d04393d634c7d21067b32e")}
+)
+list_query_model = api.model('Video List Query', {})
 delete_query_model = api.model(
-    'Delete Query', { 'query': fields.String(required=True, default="", description='')})
+    'Video Delete Query', { "id": fields.String(required=True, default="63d04393d634c7d21067b32e")}
+)
 
 
 
 @api.route('/addnew/')
 class Video(Resource):
+    @api.doc(False)
     @api.expect(addnew_query_model)
     @jwt_required
     def post(self):
@@ -98,6 +104,7 @@ class Video(Resource):
 
 @api.route('/delete/')
 class Video(Resource):
+    @api.doc(False)
     @api.expect(delete_query_model)
     @jwt_required
     def post(self):
