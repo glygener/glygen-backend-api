@@ -9,10 +9,6 @@ import time
 import subprocess
 import json
 import bcrypt
-from flask_jwt_extended import (
-    jwt_required, get_jwt_identity
-)
-
 
 from glygen.supersearch_apilib import search_init, search
 from glygen.util import trim_object, get_cached_records_indirect
