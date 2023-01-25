@@ -87,7 +87,8 @@ class Job(Resource):
             res_obj = job_init(config_obj, os.environ["DATA_PATH"])
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -110,7 +111,9 @@ class Job(Resource):
             res_obj = job_addnew(req_obj, config_obj, data_path, server)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
     
     @api.doc(False)
     def get(self):
@@ -131,7 +134,8 @@ class Job(Resource):
             res_obj = job_detail(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -152,7 +156,9 @@ class Job(Resource):
             res_obj = job_list(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
         
     @api.doc(False)
     def get(self):
@@ -174,7 +180,8 @@ class Job(Resource):
             res_obj = job_update(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -196,7 +203,8 @@ class Job(Resource):
             res_obj = job_delete(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -218,7 +226,9 @@ class Job(Resource):
             res_obj = job_results(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -239,7 +249,9 @@ class Job(Resource):
             res_obj = job_status(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -261,7 +273,9 @@ class Job(Resource):
             res_obj = job_queue(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -283,7 +297,9 @@ class Job(Resource):
             res_obj = job_clean(data_path, server)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):

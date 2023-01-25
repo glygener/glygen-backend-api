@@ -1,0 +1,1410 @@
+{
+    "id": "HAKXHA",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 221, in post\n    user_info, err_obj, status = get_userinfo(current_user)\nNameError: name 'get_userinfo' is not defined\n",
+    "ts": "2023-01-20 12:46:14 EST-0500"
+}
+{
+    "id": "YYQCB4",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 211, in post\n    user_info, err_obj, status = get_userinfo(current_user)\nNameError: name 'get_userinfo' is not defined\n",
+    "ts": "2023-01-20 13:17:38 EST-0500"
+}
+{
+    "id": "EMAFQS",
+    "log": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.6/site-packages/werkzeug/wrappers/json.py\", line 119, in get_json\n    rv = self.json_module.loads(data)\n  File \"/usr/local/lib/python3.6/site-packages/flask/json/__init__.py\", line 253, in loads\n    return _json.loads(s, **kwargs)\n  File \"/usr/local/lib/python3.6/json/__init__.py\", line 367, in loads\n    return cls(**kw).decode(s)\n  File \"/usr/local/lib/python3.6/json/decoder.py\", line 339, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n  File \"/usr/local/lib/python3.6/json/decoder.py\", line 357, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 207, in post\n    req_obj = request.json\n  File \"/usr/local/lib/python3.6/site-packages/werkzeug/local.py\", line 347, in __getattr__\n    return getattr(self._get_current_object(), name)\n  File \"/usr/local/lib/python3.6/site-packages/werkzeug/wrappers/json.py\", line 69, in json\n    return self.get_json()\n  File \"/usr/local/lib/python3.6/site-packages/werkzeug/wrappers/json.py\", line 128, in get_json\n    rv = self.on_json_loading_failed(e)\n  File \"/usr/local/lib/python3.6/site-packages/flask/wrappers.py\", line 27, in on_json_loading_failed\n    raise BadRequest()\nwerkzeug.exceptions.BadRequest: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.\n",
+    "ts": "2023-01-20 13:31:14 EST-0500"
+}
+{
+    "id": "JY0M4G",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 211, in post\n    res_obj = auth_userinfo(current_user, req_obj, config_obj)\n  File \"/app/glygen/auth_apilib.py\", line 192, in auth_userinfo\n    res_obj.pop(\"password\")\nKeyError: 'password'\n",
+    "ts": "2023-01-20 13:35:04 EST-0500"
+}
+{
+    "id": "CCKKJZ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 208, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 13:42:20 EST-0500"
+}
+{
+    "id": "5QDEYL",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 166, in post\n    stored_password = user_doc['password']\nKeyError: 'password'\n",
+    "ts": "2023-01-20 14:05:35 EST-0500"
+}
+{
+    "id": "MTZ3G3",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 166, in post\n    stored_password = user_doc['password']\nKeyError: 'password'\n",
+    "ts": "2023-01-20 14:08:05 EST-0500"
+}
+{
+    "id": "BHG6E3",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/supersearch.py\", line 112, in post\n    res_obj = search(req_obj, config_obj, False, False)\n  File \"/app/glygen/supersearch_apilib.py\", line 334, in search\n    initial_hit_dict, empty_search_flag, ignore_dict, reason_dict)\n  File \"/app/glygen/supersearch_apilib.py\", line 680, in load_network_type_III\n    for src_record_id in edge_dict[src_record_type]:\nKeyError: 'species'\n",
+    "ts": "2023-01-20 14:09:58 EST-0500"
+}
+{
+    "id": "FB7RX5",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/supersearch.py\", line 112, in post\n    res_obj = search(req_obj, config_obj, False, False)\n  File \"/app/glygen/supersearch_apilib.py\", line 334, in search\n    initial_hit_dict, empty_search_flag, ignore_dict, reason_dict)\n  File \"/app/glygen/supersearch_apilib.py\", line 680, in load_network_type_III\n    for src_record_id in edge_dict[src_record_type]:\nKeyError: 'species'\n",
+    "ts": "2023-01-20 14:10:06 EST-0500"
+}
+{
+    "id": "SIABXP",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/supersearch.py\", line 112, in post\n    res_obj = search(req_obj, config_obj, False, False)\n  File \"/app/glygen/supersearch_apilib.py\", line 334, in search\n    initial_hit_dict, empty_search_flag, ignore_dict, reason_dict)\n  File \"/app/glygen/supersearch_apilib.py\", line 680, in load_network_type_III\n    for src_record_id in edge_dict[src_record_type]:\nKeyError: 'species'\n",
+    "ts": "2023-01-20 14:10:14 EST-0500"
+}
+{
+    "id": "QFDM4K",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/supersearch.py\", line 112, in post\n    res_obj = search(req_obj, config_obj, False, False)\n  File \"/app/glygen/supersearch_apilib.py\", line 334, in search\n    initial_hit_dict, empty_search_flag, ignore_dict, reason_dict)\n  File \"/app/glygen/supersearch_apilib.py\", line 680, in load_network_type_III\n    for src_record_id in edge_dict[src_record_type]:\nKeyError: 'species'\n",
+    "ts": "2023-01-20 14:10:22 EST-0500"
+}
+{
+    "id": "38Y7TQ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 166, in post\n    stored_password = user_doc['password']\nKeyError: 'password'\n",
+    "ts": "2023-01-20 14:10:49 EST-0500"
+}
+{
+    "id": "OVERX8",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/supersearch.py\", line 112, in post\n    res_obj = search(req_obj, config_obj, False, False)\n  File \"/app/glygen/supersearch_apilib.py\", line 334, in search\n    initial_hit_dict, empty_search_flag, ignore_dict, reason_dict)\n  File \"/app/glygen/supersearch_apilib.py\", line 680, in load_network_type_III\n    for src_record_id in edge_dict[src_record_type]:\nKeyError: 'species'\n",
+    "ts": "2023-01-20 14:12:42 EST-0500"
+}
+{
+    "id": "CSLPQQ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/supersearch.py\", line 112, in post\n    res_obj = search(req_obj, config_obj, False, False)\n  File \"/app/glygen/supersearch_apilib.py\", line 334, in search\n    initial_hit_dict, empty_search_flag, ignore_dict, reason_dict)\n  File \"/app/glygen/supersearch_apilib.py\", line 680, in load_network_type_III\n    for src_record_id in edge_dict[src_record_type]:\nKeyError: 'species'\n",
+    "ts": "2023-01-20 14:12:51 EST-0500"
+}
+{
+    "id": "OXJSYT",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/supersearch.py\", line 112, in post\n    res_obj = search(req_obj, config_obj, False, False)\n  File \"/app/glygen/supersearch_apilib.py\", line 334, in search\n    initial_hit_dict, empty_search_flag, ignore_dict, reason_dict)\n  File \"/app/glygen/supersearch_apilib.py\", line 680, in load_network_type_III\n    for src_record_id in edge_dict[src_record_type]:\nKeyError: 'species'\n",
+    "ts": "2023-01-20 14:12:59 EST-0500"
+}
+{
+    "id": "YVBGSV",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/supersearch.py\", line 112, in post\n    res_obj = search(req_obj, config_obj, False, False)\n  File \"/app/glygen/supersearch_apilib.py\", line 334, in search\n    initial_hit_dict, empty_search_flag, ignore_dict, reason_dict)\n  File \"/app/glygen/supersearch_apilib.py\", line 680, in load_network_type_III\n    for src_record_id in edge_dict[src_record_type]:\nKeyError: 'species'\n",
+    "ts": "2023-01-20 14:13:07 EST-0500"
+}
+{
+    "id": "N1M9WW",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/supersearch.py\", line 112, in post\n    res_obj = search(req_obj, config_obj, False, False)\n  File \"/app/glygen/supersearch_apilib.py\", line 334, in search\n    initial_hit_dict, empty_search_flag, ignore_dict, reason_dict)\n  File \"/app/glygen/supersearch_apilib.py\", line 680, in load_network_type_III\n    for src_record_id in edge_dict[src_record_type]:\nKeyError: 'species'\n",
+    "ts": "2023-01-20 14:13:33 EST-0500"
+}
+{
+    "id": "6Q15D0",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 166, in post\n    stored_password = user_doc['password']\nKeyError: 'password'\n",
+    "ts": "2023-01-20 14:13:34 EST-0500"
+}
+{
+    "id": "KSROIG",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 15:13:59 EST-0500"
+}
+{
+    "id": "2S8W5H",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 15:13:59 EST-0500"
+}
+{
+    "id": "I7MHS7",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 15:13:59 EST-0500"
+}
+{
+    "id": "JU0K67",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 15:13:59 EST-0500"
+}
+{
+    "id": "ZWD3W6",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 15:14:44 EST-0500"
+}
+{
+    "id": "MX2TOB",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 15:14:44 EST-0500"
+}
+{
+    "id": "44OUC2",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 15:14:44 EST-0500"
+}
+{
+    "id": "2W99I0",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 15:14:44 EST-0500"
+}
+{
+    "id": "4PT0MO",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 15:41:26 EST-0500"
+}
+{
+    "id": "YOE45C",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 15:41:26 EST-0500"
+}
+{
+    "id": "L90LAJ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 15:41:26 EST-0500"
+}
+{
+    "id": "GQ3QF1",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 15:41:26 EST-0500"
+}
+{
+    "id": "XJLIAE",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:11 EST-0500"
+}
+{
+    "id": "7Y75AB",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:11 EST-0500"
+}
+{
+    "id": "4SLUZA",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:11 EST-0500"
+}
+{
+    "id": "7GQ7M2",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:11 EST-0500"
+}
+{
+    "id": "AMOZHG",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:14 EST-0500"
+}
+{
+    "id": "1FBMJP",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:14 EST-0500"
+}
+{
+    "id": "3VBSL8",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:14 EST-0500"
+}
+{
+    "id": "LN1VFU",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:15 EST-0500"
+}
+{
+    "id": "A3S158",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:22 EST-0500"
+}
+{
+    "id": "2R0Q79",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:22 EST-0500"
+}
+{
+    "id": "59GOE2",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:22 EST-0500"
+}
+{
+    "id": "2PA4CX",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:22 EST-0500"
+}
+{
+    "id": "K1XH4K",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:28 EST-0500"
+}
+{
+    "id": "RFX01A",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:28 EST-0500"
+}
+{
+    "id": "63QI3V",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:28 EST-0500"
+}
+{
+    "id": "BESQ8R",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:51:28 EST-0500"
+}
+{
+    "id": "4QX6FY",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:52:27 EST-0500"
+}
+{
+    "id": "RZXLJ8",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:52:27 EST-0500"
+}
+{
+    "id": "YTW4YI",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:52:28 EST-0500"
+}
+{
+    "id": "BFYAQI",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:52:28 EST-0500"
+}
+{
+    "id": "I8P8NM",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:52:38 EST-0500"
+}
+{
+    "id": "VPYYTK",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:52:38 EST-0500"
+}
+{
+    "id": "WWVRBO",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:52:38 EST-0500"
+}
+{
+    "id": "WU0QJU",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:53:55 EST-0500"
+}
+{
+    "id": "CLC5OL",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:53:55 EST-0500"
+}
+{
+    "id": "1RPDT2",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:53:55 EST-0500"
+}
+{
+    "id": "GJXBAG",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:54:01 EST-0500"
+}
+{
+    "id": "94VA2T",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:54:01 EST-0500"
+}
+{
+    "id": "R1RJSR",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:54:01 EST-0500"
+}
+{
+    "id": "OP9AGX",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:54:03 EST-0500"
+}
+{
+    "id": "IBKMJK",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:54:03 EST-0500"
+}
+{
+    "id": "B4E83C",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-20 16:54:03 EST-0500"
+}
+{
+    "id": "YFIDLJ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-22 18:56:16 EST-0500"
+}
+{
+    "id": "TX9DNI",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-22 18:56:16 EST-0500"
+}
+{
+    "id": "16EFHX",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-22 18:56:17 EST-0500"
+}
+{
+    "id": "A9CONL",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-22 18:56:18 EST-0500"
+}
+{
+    "id": "QDVB9N",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 09:47:21 EST-0500"
+}
+{
+    "id": "JWQ9XT",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 09:47:21 EST-0500"
+}
+{
+    "id": "4886NA",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 09:47:21 EST-0500"
+}
+{
+    "id": "KRNUD6",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 09:47:21 EST-0500"
+}
+{
+    "id": "K3J30S",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 09:47:26 EST-0500"
+}
+{
+    "id": "MSLJR0",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 09:47:26 EST-0500"
+}
+{
+    "id": "QKK7Q8",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 09:47:27 EST-0500"
+}
+{
+    "id": "8W64GK",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 09:47:27 EST-0500"
+}
+{
+    "id": "356WNF",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 09:48:39 EST-0500"
+}
+{
+    "id": "JPBOT0",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 09:48:39 EST-0500"
+}
+{
+    "id": "CKIA3R",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 09:48:39 EST-0500"
+}
+{
+    "id": "Q3JG2K",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 09:48:39 EST-0500"
+}
+{
+    "id": "JBT886",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:33:47 EST-0500"
+}
+{
+    "id": "LWG0V1",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:33:47 EST-0500"
+}
+{
+    "id": "WJ8N4S",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:33:47 EST-0500"
+}
+{
+    "id": "NCUZ0X",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:33:47 EST-0500"
+}
+{
+    "id": "Q5T775",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:33:56 EST-0500"
+}
+{
+    "id": "9GF5CY",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:33:56 EST-0500"
+}
+{
+    "id": "BXISC4",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:33:56 EST-0500"
+}
+{
+    "id": "5G1353",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:33:56 EST-0500"
+}
+{
+    "id": "K2OG4Q",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:34:45 EST-0500"
+}
+{
+    "id": "DYH187",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:34:45 EST-0500"
+}
+{
+    "id": "35HJ53",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:35:09 EST-0500"
+}
+{
+    "id": "D0OIPQ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:35:09 EST-0500"
+}
+{
+    "id": "E9ECJO",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:38:33 EST-0500"
+}
+{
+    "id": "ZRTHNT",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:38:57 EST-0500"
+}
+{
+    "id": "YC919R",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:41:19 EST-0500"
+}
+{
+    "id": "0M00ZR",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:41:19 EST-0500"
+}
+{
+    "id": "NPQOKM",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:41:19 EST-0500"
+}
+{
+    "id": "GYG29Z",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:41:19 EST-0500"
+}
+{
+    "id": "75FTMW",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:41:25 EST-0500"
+}
+{
+    "id": "UJID1G",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:41:25 EST-0500"
+}
+{
+    "id": "SX72PE",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:41:25 EST-0500"
+}
+{
+    "id": "CJP1JI",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 45, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:41:26 EST-0500"
+}
+{
+    "id": "BTETZ2",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:42:21 EST-0500"
+}
+{
+    "id": "ASVY4P",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/pages.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 183, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:42:48 EST-0500"
+}
+{
+    "id": "82PV3Y",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:44:09 EST-0500"
+}
+{
+    "id": "9VXCPS",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:44:09 EST-0500"
+}
+{
+    "id": "B6TZRU",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:47:52 EST-0500"
+}
+{
+    "id": "GWJNTN",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:47:52 EST-0500"
+}
+{
+    "id": "XMKUIC",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:47:56 EST-0500"
+}
+{
+    "id": "CZG1W3",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:47:56 EST-0500"
+}
+{
+    "id": "9D6AG7",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:47:58 EST-0500"
+}
+{
+    "id": "8TT4G6",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:47:58 EST-0500"
+}
+{
+    "id": "831P2O",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:48:09 EST-0500"
+}
+{
+    "id": "T1M0RX",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:48:09 EST-0500"
+}
+{
+    "id": "8YHBV5",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:51:09 EST-0500"
+}
+{
+    "id": "5XIWZD",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 10:51:09 EST-0500"
+}
+{
+    "id": "HZ7PCS",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:46 EST-0500"
+}
+{
+    "id": "Q9B09K",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:46 EST-0500"
+}
+{
+    "id": "C58RVL",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:49 EST-0500"
+}
+{
+    "id": "JXS1GZ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/protein.py\", line 96, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:53 EST-0500"
+}
+{
+    "id": "TL1ILH",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:53 EST-0500"
+}
+{
+    "id": "8URD56",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:53 EST-0500"
+}
+{
+    "id": "SAFOVX",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:53 EST-0500"
+}
+{
+    "id": "10G63L",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/protein.py\", line 119, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:53 EST-0500"
+}
+{
+    "id": "SDG6B8",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:53 EST-0500"
+}
+{
+    "id": "5MTFCQ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:56 EST-0500"
+}
+{
+    "id": "FRR6JQ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/protein.py\", line 119, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:56 EST-0500"
+}
+{
+    "id": "CXGI7W",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:56 EST-0500"
+}
+{
+    "id": "RSIYR1",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:56 EST-0500"
+}
+{
+    "id": "PPWXC8",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:19:59 EST-0500"
+}
+{
+    "id": "IWOA75",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/protein.py\", line 73, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:20:04 EST-0500"
+}
+{
+    "id": "W4Y7FU",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:20:04 EST-0500"
+}
+{
+    "id": "GH3TTH",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:20:04 EST-0500"
+}
+{
+    "id": "UPDFW2",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:20:04 EST-0500"
+}
+{
+    "id": "CT21JN",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/protein.py\", line 119, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:20:05 EST-0500"
+}
+{
+    "id": "OR0EW4",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:20:05 EST-0500"
+}
+{
+    "id": "IO5BKP",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:35:38 EST-0500"
+}
+{
+    "id": "3XH1IK",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:35:47 EST-0500"
+}
+{
+    "id": "XR9JB3",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:35:47 EST-0500"
+}
+{
+    "id": "6QB51X",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:40:35 EST-0500"
+}
+{
+    "id": "01UVNR",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:40:35 EST-0500"
+}
+{
+    "id": "4TV99C",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:40:37 EST-0500"
+}
+{
+    "id": "ECBZ71",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/globalsearch.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:40:37 EST-0500"
+}
+{
+    "id": "PHMX25",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:40:37 EST-0500"
+}
+{
+    "id": "08EGU6",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:40:37 EST-0500"
+}
+{
+    "id": "XQR5FR",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:40:37 EST-0500"
+}
+{
+    "id": "VUG4WN",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 11:40:37 EST-0500"
+}
+{
+    "id": "ZW0044",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:18:30 EST-0500"
+}
+{
+    "id": "GMJ9L9",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:18:30 EST-0500"
+}
+{
+    "id": "YWPIBX",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:18:33 EST-0500"
+}
+{
+    "id": "SBE4MY",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:18:35 EST-0500"
+}
+{
+    "id": "8JVUGH",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 90, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:18:35 EST-0500"
+}
+{
+    "id": "L98Q64",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:18:35 EST-0500"
+}
+{
+    "id": "IJUCOA",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:18:35 EST-0500"
+}
+{
+    "id": "H8E2GS",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 113, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:18:35 EST-0500"
+}
+{
+    "id": "W86UN5",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:18:35 EST-0500"
+}
+{
+    "id": "89KQBC",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:23:43 EST-0500"
+}
+{
+    "id": "61AEWC",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:23:43 EST-0500"
+}
+{
+    "id": "VQHKA6",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:23:49 EST-0500"
+}
+{
+    "id": "GDM68V",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:23:52 EST-0500"
+}
+{
+    "id": "LPAKVR",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:23:54 EST-0500"
+}
+{
+    "id": "569R2J",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 90, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:23:55 EST-0500"
+}
+{
+    "id": "HHCIRP",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:23:55 EST-0500"
+}
+{
+    "id": "CJAL4S",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:23:55 EST-0500"
+}
+{
+    "id": "V5I7O1",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 113, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:23:55 EST-0500"
+}
+{
+    "id": "2G0MYH",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:23:55 EST-0500"
+}
+{
+    "id": "TF6FTZ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:24:53 EST-0500"
+}
+{
+    "id": "G7V6EU",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:24:56 EST-0500"
+}
+{
+    "id": "0UOX3N",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 90, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:24:56 EST-0500"
+}
+{
+    "id": "ZMGY5S",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:24:56 EST-0500"
+}
+{
+    "id": "FLNJNJ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:24:57 EST-0500"
+}
+{
+    "id": "FS2T6I",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 113, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:24:57 EST-0500"
+}
+{
+    "id": "G1QVTZ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 12:24:57 EST-0500"
+}
+{
+    "id": "7JFCVU",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 14:29:24 EST-0500"
+}
+{
+    "id": "4H4B47",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 14:29:24 EST-0500"
+}
+{
+    "id": "FQTX7L",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 14:29:32 EST-0500"
+}
+{
+    "id": "L8CZLZ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 14:29:32 EST-0500"
+}
+{
+    "id": "BRQZPF",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 90, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 14:29:34 EST-0500"
+}
+{
+    "id": "W8VFI1",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 14:29:34 EST-0500"
+}
+{
+    "id": "5T3CGB",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 14:29:34 EST-0500"
+}
+{
+    "id": "TIYQZU",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 14:29:34 EST-0500"
+}
+{
+    "id": "1ZHOAE",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 113, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 14:29:35 EST-0500"
+}
+{
+    "id": "SUM03B",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 14:29:35 EST-0500"
+}
+{
+    "id": "2VXEQY",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 14:29:42 EST-0500"
+}
+{
+    "id": "RUVLBO",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 15:49:10 EST-0500"
+}
+{
+    "id": "O3QBKR",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 15:49:11 EST-0500"
+}
+{
+    "id": "Y4DV10",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-23 15:49:15 EST-0500"
+}
+{
+    "id": "YI4IBC",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 10:36:40 EST-0500"
+}
+{
+    "id": "GUZ1WG",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 10:36:40 EST-0500"
+}
+{
+    "id": "IHTRQV",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 10:36:47 EST-0500"
+}
+{
+    "id": "9ZP701",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 11:41:55 EST-0500"
+}
+{
+    "id": "NTWN8L",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 11:41:55 EST-0500"
+}
+{
+    "id": "UMNNX4",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 14:50:51 EST-0500"
+}
+{
+    "id": "B2FRUW",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 14:50:51 EST-0500"
+}
+{
+    "id": "5S6PLH",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 14:50:56 EST-0500"
+}
+{
+    "id": "YWBA46",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/job.py\", line 83, in post\n    res_obj = job_addnew(req_obj, config_obj, data_path, server)\n  File \"/app/glygen/job_apilib.py\", line 79, in job_addnew\n    validation_obj, error_list = validate_input(query_obj, config_obj, release_dir)\n  File \"/app/glygen/job_apilib.py\", line 608, in validate_input\n    if query_obj[\"jobtype\"] not in config_obj[\"jobinfo\"]:\nKeyError: 'jobtype'\n",
+    "ts": "2023-01-24 14:50:56 EST-0500"
+}
+{
+    "id": "9R2TTD",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 14:50:56 EST-0500"
+}
+{
+    "id": "E2OMMB",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 14:51:24 EST-0500"
+}
+{
+    "id": "60S6D2",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 14:51:34 EST-0500"
+}
+{
+    "id": "2FOOID",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/job.py\", line 83, in post\n    res_obj = job_addnew(req_obj, config_obj, data_path, server)\n  File \"/app/glygen/job_apilib.py\", line 79, in job_addnew\n    validation_obj, error_list = validate_input(query_obj, config_obj, release_dir)\n  File \"/app/glygen/job_apilib.py\", line 608, in validate_input\n    if query_obj[\"jobtype\"] not in config_obj[\"jobinfo\"]:\nKeyError: 'jobtype'\n",
+    "ts": "2023-01-24 14:51:34 EST-0500"
+}
+{
+    "id": "YCQ745",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 14:51:34 EST-0500"
+}
+{
+    "id": "MSCIWN",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 14:51:41 EST-0500"
+}
+{
+    "id": "QWA3SI",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/job.py\", line 83, in post\n    res_obj = job_addnew(req_obj, config_obj, data_path, server)\n  File \"/app/glygen/job_apilib.py\", line 79, in job_addnew\n    validation_obj, error_list = validate_input(query_obj, config_obj, release_dir)\n  File \"/app/glygen/job_apilib.py\", line 608, in validate_input\n    if query_obj[\"jobtype\"] not in config_obj[\"jobinfo\"]:\nKeyError: 'jobtype'\n",
+    "ts": "2023-01-24 14:51:41 EST-0500"
+}
+{
+    "id": "YZQ9JC",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 14:51:41 EST-0500"
+}
+{
+    "id": "C8T8IZ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 14:53:38 EST-0500"
+}
+{
+    "id": "431D4Z",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/job.py\", line 83, in post\n    res_obj = job_addnew(req_obj, config_obj, data_path, server)\n  File \"/app/glygen/job_apilib.py\", line 79, in job_addnew\n    validation_obj, error_list = validate_input(query_obj, config_obj, release_dir)\n  File \"/app/glygen/job_apilib.py\", line 608, in validate_input\n    if query_obj[\"jobtype\"] not in config_obj[\"jobinfo\"]:\nKeyError: 'jobtype'\n",
+    "ts": "2023-01-24 14:53:38 EST-0500"
+}
+{
+    "id": "7BXDY1",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 14:53:38 EST-0500"
+}
+{
+    "id": "EC5GSJ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:05 EST-0500"
+}
+{
+    "id": "RISOI2",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:05 EST-0500"
+}
+{
+    "id": "FHYNFU",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:07 EST-0500"
+}
+{
+    "id": "HGUD87",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:11 EST-0500"
+}
+{
+    "id": "PAG3HA",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 90, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:11 EST-0500"
+}
+{
+    "id": "CHQXU2",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:11 EST-0500"
+}
+{
+    "id": "N6UGQE",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 113, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:11 EST-0500"
+}
+{
+    "id": "RVS3OX",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:11 EST-0500"
+}
+{
+    "id": "DTNES1",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:11 EST-0500"
+}
+{
+    "id": "EBJO3G",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:40 EST-0500"
+}
+{
+    "id": "HIWG8N",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:46 EST-0500"
+}
+{
+    "id": "Q91AOL",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 90, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:46 EST-0500"
+}
+{
+    "id": "K4RWGO",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:46 EST-0500"
+}
+{
+    "id": "WIY8C4",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:46 EST-0500"
+}
+{
+    "id": "UNJUTX",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 113, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:46 EST-0500"
+}
+{
+    "id": "SA5406",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:04:46 EST-0500"
+}
+{
+    "id": "SAIFWQ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:09:23 EST-0500"
+}
+{
+    "id": "8U9J8W",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 68, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:09:23 EST-0500"
+}
+{
+    "id": "80VHXE",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:09:23 EST-0500"
+}
+{
+    "id": "WDCRSH",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:09:23 EST-0500"
+}
+{
+    "id": "Z3U3TQ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 113, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:09:23 EST-0500"
+}
+{
+    "id": "7CT9F0",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:09:23 EST-0500"
+}
+{
+    "id": "FS8F0T",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:09:42 EST-0500"
+}
+{
+    "id": "Y9TVQ8",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 68, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:10:07 EST-0500"
+}
+{
+    "id": "HHNOOY",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:10:07 EST-0500"
+}
+{
+    "id": "T43HLV",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:10:07 EST-0500"
+}
+{
+    "id": "M0CCVD",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:10:07 EST-0500"
+}
+{
+    "id": "UK50M1",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/glycan.py\", line 113, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:10:07 EST-0500"
+}
+{
+    "id": "NJ99O7",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 42, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:10:07 EST-0500"
+}
+{
+    "id": "43X5RP",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 166, in post\n    stored_password = user_doc['password']\nKeyError: 'password'\n",
+    "ts": "2023-01-24 15:23:16 EST-0500"
+}
+{
+    "id": "G3FHCM",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 166, in post\n    stored_password = user_doc['password']\nKeyError: 'password'\n",
+    "ts": "2023-01-24 15:28:02 EST-0500"
+}
+{
+    "id": "ABLJR4",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 166, in post\n    stored_password = user_doc['password']\nKeyError: 'password'\n",
+    "ts": "2023-01-24 15:29:47 EST-0500"
+}
+{
+    "id": "XDUXPE",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/auth.py\", line 166, in post\n    stored_password = user_doc['password']\nKeyError: 'password'\n",
+    "ts": "2023-01-24 15:30:13 EST-0500"
+}
+{
+    "id": "V6L445",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:43:29 EST-0500"
+}
+{
+    "id": "6C0RWM",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/globalsearch.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:43:29 EST-0500"
+}
+{
+    "id": "J2YHO6",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:43:29 EST-0500"
+}
+{
+    "id": "9CAVAX",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:43:29 EST-0500"
+}
+{
+    "id": "7LYVNY",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:43:29 EST-0500"
+}
+{
+    "id": "LHUNH0",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:43:44 EST-0500"
+}
+{
+    "id": "4QIQAN",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:52:47 EST-0500"
+}
+{
+    "id": "H2X5LY",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:52:47 EST-0500"
+}
+{
+    "id": "PJWG0B",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:53:05 EST-0500"
+}
+{
+    "id": "RQEAOO",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:53:06 EST-0500"
+}
+{
+    "id": "VHJ3U2",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/globalsearch.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:53:07 EST-0500"
+}
+{
+    "id": "GUX9RD",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:53:07 EST-0500"
+}
+{
+    "id": "PGWFK6",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:53:07 EST-0500"
+}
+{
+    "id": "QVYEV7",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-24 15:53:07 EST-0500"
+}
+{
+    "id": "TAHRNY",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 10:13:36 EST-0500"
+}
+{
+    "id": "NA1IWD",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 10:13:37 EST-0500"
+}
+{
+    "id": "WLNAJK",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 10:13:37 EST-0500"
+}
+{
+    "id": "P8QIPO",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 10:13:45 EST-0500"
+}
+{
+    "id": "JTM0XY",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 12:18:52 EST-0500"
+}
+{
+    "id": "OB4L9F",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 12:18:52 EST-0500"
+}
+{
+    "id": "2G479U",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 12:18:59 EST-0500"
+}
+{
+    "id": "TYF1M7",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 12:19:00 EST-0500"
+}
+{
+    "id": "8B6ACP",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 12:19:00 EST-0500"
+}
+{
+    "id": "E4UI1T",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/globalsearch.py\", line 37, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 12:19:00 EST-0500"
+}
+{
+    "id": "N3MMIP",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 12:19:00 EST-0500"
+}
+{
+    "id": "0HEYLT",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 12:19:00 EST-0500"
+}
+{
+    "id": "C3SCZX",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 12:32:59 EST-0500"
+}
+{
+    "id": "SOIUTF",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 12:32:59 EST-0500"
+}
+{
+    "id": "60FGL9",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:26:19 EST-0500"
+}
+{
+    "id": "I6RAQQ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:26:19 EST-0500"
+}
+{
+    "id": "MPVGSE",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:37:55 EST-0500"
+}
+{
+    "id": "7UABBO",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:37:55 EST-0500"
+}
+{
+    "id": "NLSL5T",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:48:43 EST-0500"
+}
+{
+    "id": "FPGSYG",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:48:44 EST-0500"
+}
+{
+    "id": "JLDHT8",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:50:44 EST-0500"
+}
+{
+    "id": "CGYGDV",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:50:44 EST-0500"
+}
+{
+    "id": "14VYWO",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:51:16 EST-0500"
+}
+{
+    "id": "I00NW0",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:51:16 EST-0500"
+}
+{
+    "id": "23VD1F",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:51:19 EST-0500"
+}
+{
+    "id": "KBHZCH",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:51:19 EST-0500"
+}
+{
+    "id": "IKPVOR",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:54:59 EST-0500"
+}
+{
+    "id": "HK6VKK",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:54:59 EST-0500"
+}
+{
+    "id": "X09WII",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:58:32 EST-0500"
+}
+{
+    "id": "5187IZ",
+    "log": "Traceback (most recent call last):\n  File \"/app/glygen/log.py\", line 80, in post\n    trim_object(req_obj)\n  File \"/app/glygen/util.py\", line 182, in trim_object\n    for key in obj:\nTypeError: 'NoneType' object is not iterable\n",
+    "ts": "2023-01-25 13:58:32 EST-0500"
+}

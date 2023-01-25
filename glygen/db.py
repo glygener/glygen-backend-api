@@ -40,10 +40,9 @@ def log_error(error_log):
         error_id = get_random_string(6)
         error_obj = {"id":error_id, "log":error_log, "ts":ts}
         res = mongo_dbh["c_log"].insert_one(error_obj)
-        return {"status":0, "error":"exception-error-" + error_id}
+        return {"error_list":[{"error_code": "exception-error-" + error_id}]}
     except Exception as e:
-        return {"status":0, "error":"Unable to log error!"}
-
+        return {"error_list":[{"error_code": "Unable to log error!"}]}
 
 
 def get_random_string(size=6, chars=string.ascii_uppercase + string.digits):

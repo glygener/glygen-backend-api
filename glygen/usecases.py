@@ -74,7 +74,8 @@ class Usecases(Resource):
             res_obj = search_init(config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -97,7 +98,8 @@ class Usecases(Resource):
             res_obj = glycan_to_biosynthesis_enzymes(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self, tax_id, glytoucan_ac):
@@ -120,7 +122,8 @@ class Usecases(Resource):
             res_obj = glycan_to_glycoproteins(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
     
     @api.doc(False)
     def get(self, tax_id, glytoucan_ac):
@@ -144,7 +147,8 @@ class Usecases(Resource):
             res_obj = glycan_to_enzyme_gene_loci(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self, tax_id, glytoucan_ac):
@@ -169,7 +173,8 @@ class Usecases(Resource):
             res_obj = biosynthesis_enzyme_to_glycans(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self, tax_id, uniprot_canonical_ac):
@@ -190,7 +195,9 @@ class Usecases(Resource):
             res_obj = protein_to_orthologs(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self, uniprot_canonical_ac):
@@ -212,7 +219,8 @@ class Usecases(Resource):
             res_obj = protein_to_glycosequons(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self, uniprot_canonical_ac):
@@ -234,7 +242,8 @@ class Usecases(Resource):
             res_obj = species_to_glycosyltransferases(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self, tax_id):
@@ -254,7 +263,8 @@ class Usecases(Resource):
             res_obj = species_to_glycohydrolases(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
     
     @api.doc(False)
     def get(self, tax_id):
@@ -274,7 +284,8 @@ class Usecases(Resource):
             res_obj = species_to_glycoproteins(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self, tax_id, evidence_type):
@@ -295,7 +306,8 @@ class Usecases(Resource):
             res_obj = disease_to_glycosyltransferases(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -317,7 +329,8 @@ class Usecases(Resource):
             res_obj = genelocus_list(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -340,7 +353,8 @@ class Usecases(Resource):
             res_obj = genelocus_list(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -363,7 +377,8 @@ class Usecases(Resource):
             res_obj = ortholog_list(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -386,7 +401,8 @@ class Usecases(Resource):
             res_obj = glycosequon_list(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
     
     @api.doc(False)
     def get(self):
