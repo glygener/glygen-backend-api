@@ -87,7 +87,7 @@ class Auth(Resource):
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -108,7 +108,7 @@ class Auth(Resource):
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -133,7 +133,7 @@ class Auth(Resource):
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -184,9 +184,8 @@ class Auth(Resource):
                 res_obj = {"error_list":[{"error_code":error}]}
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
-            
-        #http_code = 500 if "error_list" in res_obj else 200
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -215,7 +214,7 @@ class Auth(Resource):
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -239,9 +238,9 @@ class Auth(Resource):
             res_obj = auth_userupdate(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
-        http_code = 500 if "error_list" in res_obj else 200
         
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -265,8 +264,7 @@ class Auth(Resource):
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
-
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -292,7 +290,7 @@ class Auth(Resource):
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -317,7 +315,7 @@ class Auth(Resource):
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -342,7 +340,7 @@ class Auth(Resource):
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):

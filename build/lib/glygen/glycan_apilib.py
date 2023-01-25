@@ -86,7 +86,7 @@ def glycan_search(query_obj, config_obj):
 
 
     #Clean query object
-    key_list = query_obj.keys()
+    key_list = list(query_obj.keys())
     for key in key_list:
         flag_list = []
         #flag_list.append(key in ["query_type", "operation"])

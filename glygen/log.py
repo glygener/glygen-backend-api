@@ -82,7 +82,9 @@ class Log(Resource):
             res_obj = log_logging(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -106,7 +108,8 @@ class Log(Resource):
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -129,7 +132,8 @@ class Log(Resource):
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -153,7 +157,8 @@ class Log(Resource):
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
 
     @api.doc(False)

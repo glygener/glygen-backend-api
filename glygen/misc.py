@@ -39,7 +39,8 @@ class Misc(Resource):
             res_obj["initobj"] = init_obj
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
 
 @api.route('/validate/')
@@ -57,7 +58,8 @@ class Misc(Resource):
             res_obj = validate(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
 @api.route('/propertylist/')
 class Misc(Resource):
@@ -74,7 +76,8 @@ class Misc(Resource):
             res_obj = propertylist(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
 
 @api.route('/pathlist/')
@@ -92,7 +95,8 @@ class Misc(Resource):
             res_obj = pathlist(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
 @api.route('/messagelist/')
 class Misc(Resource):
@@ -109,7 +113,8 @@ class Misc(Resource):
             res_obj = messagelist(config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
 
 @api.route('/verlist/')
@@ -127,7 +132,8 @@ class Misc(Resource):
             res_obj = verlist(config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
 
 @api.route('/gtclist/')
@@ -145,7 +151,8 @@ class Misc(Resource):
             res_obj = gtclist(config_obj,data_path)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
 @api.route('/bcolist/')
 class Misc(Resource):
@@ -162,7 +169,8 @@ class Misc(Resource):
             res_obj = bcolist(config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
 
 @api.route('/lastid/')
@@ -194,7 +202,8 @@ class Misc(Resource):
                     break
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
-        return res_obj
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
 
 

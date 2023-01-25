@@ -53,7 +53,7 @@ class Protein(Resource):
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200 
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -75,7 +75,7 @@ class Protein(Resource):
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200 
-        return res_obj
+        return res_obj, http_code
     
     @api.doc(False)
     def get(self):
@@ -98,7 +98,7 @@ class Protein(Resource):
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -121,7 +121,7 @@ class Protein(Resource):
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
@@ -144,7 +144,7 @@ class Protein(Resource):
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self, uniprot_canonical_ac):
@@ -167,7 +167,7 @@ class Protein(Resource):
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
-        return res_obj
+        return res_obj, http_code
 
     @api.doc(False)
     def get(self):
