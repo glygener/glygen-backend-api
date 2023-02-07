@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.motif_apilib import motif_detail
-from glygen.util import trim_object, get_cached_motif_records_direct
+from glygen.util import get_req_obj, get_cached_motif_records_direct
 import traceback
 
 
@@ -46,8 +46,7 @@ class Motif(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = motif_detail(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -70,8 +69,7 @@ class Motif(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = get_cached_motif_records_direct(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())

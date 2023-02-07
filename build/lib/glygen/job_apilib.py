@@ -130,7 +130,7 @@ def job_addnew(query_obj, config_obj, data_path, server):
             job_lbl = "%s_%s" % (query_obj["jobtype"], query_obj["jobid"])
             cmd = "%s -E -L %s %s" % (config_obj["jobinfo"]["tspath"],job_lbl, query_obj["cmd"])
             
-
+            query_obj["cmdin"] = cmd
             cmdout = subprocess.getoutput(cmd)
             query_obj["cmdout"] = cmdout
             query_obj["tsid"] = cmdout.split(" ")[0]
@@ -193,6 +193,7 @@ def job_results(query_obj, config_obj):
         job_info = json.loads(open(in_file, "r").read())
         job_type = job_info["jobtype"]
         status_obj = get_job_status(job_info["tsid"] , config_obj)
+
         out_file = job_dir + config_obj["jobinfo"][job_type]["output_files"][0]["name"]
         res_obj = {"list_id":""}
         if status_obj["status"] == "finished":
@@ -238,13 +239,16 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
         if row[1] == True:
             record_list.append(row[0])
 
+
+
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     cache_coll = "c_cache"
     list_id = ""
     record_type = "glycan"
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(job_info))
+        hash_str = record_type + "_" + json.dumps(job_info)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":job_info,
@@ -654,7 +658,7 @@ def validate_input(query_obj, config_obj, release_dir):
 
 def get_job_status(ts_id, config_obj):
 
-    obj = {}
+    obj = {"tsid":ts_id}
     cmd = "%s -s %s" % (config_obj["jobinfo"]["tspath"], ts_id)
     obj["status"] = subprocess.getoutput(cmd).split(" ")[0]
     cmd = "%s -i %s" % (config_obj["jobinfo"]["tspath"], ts_id)
@@ -662,13 +666,13 @@ def get_job_status(ts_id, config_obj):
         k = line.split(":")[0].replace(" ", "_").lower()
         obj[k] = ":".join(line.split(":")[1:])
         obj[k] = obj[k].strip()
-   
+        
+
     if obj["status"] == "finished" and obj["exit_status"] != "died with exit code 0":
         obj["status"] = "died"
         obj.pop("exit_status")
         cmd = "%s -t %s" % (config_obj["jobinfo"]["tspath"], ts_id)
         obj["error"] = subprocess.getoutput(cmd)
-
 
     return obj
 

@@ -20,21 +20,23 @@ def main():
 
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
+    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
     parser.add_option("-v","--dataversion",action="store",dest="dataversion",help="2.0.2/2.0.3 ...")
     parser.add_option("-m","--mode",action="store",dest="mode",help="partial/full")
         
     (options,args) = parser.parse_args()
 
-    for key in ([options.dataversion, options.mode]):
+    for key in ([options.server, options.dataversion, options.mode]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
+    server = options.server
     ver = options.dataversion
     mode = options.mode
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
-    mongo_port = config_obj["dbinfo"]["port"]
+    mongo_port = config_obj["dbinfo"]["port"][server]
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
 
     jsondb_dir = config_obj["data_path"] + "/releases/data/v-%s/jsondb/" % (ver)

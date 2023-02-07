@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.publication_apilib import publication_detail
-from glygen.util import trim_object
+from glygen.util import get_req_obj
 import traceback
 
 
@@ -33,8 +33,7 @@ class Publication(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = publication_detail(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())

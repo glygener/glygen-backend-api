@@ -16,8 +16,20 @@ __status__ = "Dev"
 ###############################
 def main():
 
+    usage = "\n%prog  [options]"
+    parser = OptionParser(usage,version="%prog version___")
+    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
+    (options,args) = parser.parse_args()
+
+    for key in ([options.server]):
+        if not (key):
+            parser.print_help()
+            sys.exit(0)
+
+    server = options.server
+
     config_obj = json.loads(open("./conf/config.json", "r").read())
-    mongo_port = config_obj["dbinfo"]["port"]
+    mongo_port = config_obj["dbinfo"]["port"][server]
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
     
     admin_user, admin_pass = config_obj["dbinfo"]["admin"]["user"], config_obj["dbinfo"]["admin"]["password"]
@@ -25,6 +37,7 @@ def main():
 
     glydb_user, glydb_pass = config_obj["dbinfo"]["glydb"]["user"], config_obj["dbinfo"]["glydb"]["password"]
     glydb_db =  config_obj["dbinfo"]["glydb"]["db"]
+
 
     try:
         client_one = pymongo.MongoClient(host,

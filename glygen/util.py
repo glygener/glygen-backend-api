@@ -15,6 +15,27 @@ from glygen.db import get_mongodb
 
 
 
+def get_req_obj(request):
+
+    query_str, arg = None, "query"
+    if request.method == "GET":
+        if request.args.get(arg):
+            query_str = request.args.get(arg)
+    elif request.method == "POST":
+        if arg in request.values:
+            if request.values[arg]:
+                query_str = request.values[arg]
+    
+    req_obj = {}
+    if query_str == None:
+        req_obj = request.json
+    else:
+        req_obj = json.loads(query_str)
+    trim_object(req_obj)
+    return  req_obj
+
+
+
 
 def get_random_string(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))

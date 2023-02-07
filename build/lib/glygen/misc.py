@@ -13,7 +13,7 @@ import pymongo
 from glygen.db import get_mongodb, log_error
 
 from glygen.misc_apilib import validate, propertylist, pathlist, messagelist, verlist, gtclist, bcolist
-from glygen.util import trim_object
+from glygen.util import get_req_obj
 import traceback
 
 
@@ -52,8 +52,7 @@ class Misc(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = validate(req_obj, config_obj)
         except Exception as e:
@@ -70,8 +69,7 @@ class Misc(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = propertylist(req_obj, config_obj)
         except Exception as e:
@@ -89,8 +87,7 @@ class Misc(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = pathlist(req_obj, config_obj)
         except Exception as e:
@@ -107,8 +104,7 @@ class Misc(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = messagelist(config_obj)
         except Exception as e:
@@ -126,8 +122,7 @@ class Misc(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = verlist(config_obj)
         except Exception as e:
@@ -145,8 +140,7 @@ class Misc(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = gtclist(config_obj,data_path)
         except Exception as e:
@@ -163,8 +157,7 @@ class Misc(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = bcolist(config_obj)
         except Exception as e:
@@ -182,7 +175,7 @@ class Misc(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
+            req_obj = get_req_obj(request)
             dbh, error_obj = get_mongodb()
             if error_obj != {}:
                 return error_obj

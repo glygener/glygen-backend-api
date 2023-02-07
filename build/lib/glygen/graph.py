@@ -10,7 +10,7 @@ import json
 import bcrypt
 
 from glygen.graph_apilib import getdata
-from glygen.util import trim_object
+from glygen.util import get_req_obj
 import traceback
 
 api = Namespace("graph", description="Graph APIs")
@@ -29,8 +29,7 @@ class GRaph(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = getdata(req_obj, config_obj)
         except Exception as e:
