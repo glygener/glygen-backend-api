@@ -10,7 +10,7 @@ import json
 import bcrypt
 
 from glygen.typeahead_apilib import glycan_typeahead, protein_typeahead, global_typeahead, categorized_typeahead
-from glygen.util import trim_object, get_cached_records_direct
+from glygen.util import get_req_obj, get_cached_records_direct
 import traceback
 
 
@@ -44,8 +44,7 @@ class Typeahead(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             field_list_one = ["glytoucan_ac", "motif_name", "enzyme_uniprot_canonical_ac", 
                     "glycan_pmid", "enzyme"]
@@ -87,8 +86,7 @@ class Typeahead(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             tmp_obj = categorized_typeahead(req_obj, config_obj)
             if "error_list" in tmp_obj:
                 res_obj = tmp_obj
@@ -113,8 +111,7 @@ class Typeahead(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             tmp_obj = global_typeahead(req_obj, config_obj)
             if "error_list" in tmp_obj:
                 res_obj = tmp_obj

@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.protein_apilib import protein_search_init, protein_search, protein_search_simple, protein_detail, protein_alignment
-from glygen.util import get_cached_records_indirect, trim_object
+from glygen.util import get_cached_records_indirect, get_req_obj
 import traceback
 
 
@@ -69,8 +69,7 @@ class Protein(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = protein_search(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -92,8 +91,7 @@ class Protein(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = protein_search_simple(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -115,8 +113,7 @@ class Protein(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = get_cached_records_indirect(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -161,8 +158,7 @@ class Protein(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = protein_alignment(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())

@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.supersearch_apilib import search_init, search
-from glygen.util import trim_object, get_cached_records_indirect
+from glygen.util import get_req_obj, get_cached_records_indirect
 import traceback
 
 
@@ -104,8 +104,7 @@ class Supersearch(Resource):
 
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = search(req_obj, config_obj, False, False)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -132,8 +131,7 @@ class Supersearch(Resource):
 
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = search(req_obj, config_obj, True, False)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -161,8 +159,7 @@ class Supersearch(Resource):
 
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = get_cached_records_indirect(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())

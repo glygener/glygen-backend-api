@@ -28,7 +28,7 @@ from glygen.usecases_apilib import (
         glycosequon_list
     )
 
-from glygen.util import trim_object
+from glygen.util import get_req_obj
 import traceback
 
 
@@ -300,8 +300,7 @@ class Usecases(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = disease_to_glycosyltransferases(req_obj, config_obj)
         except Exception as e:
@@ -323,8 +322,7 @@ class Usecases(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = genelocus_list(req_obj, config_obj)
         except Exception as e:
@@ -347,8 +345,7 @@ class Usecases(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = genelocus_list(req_obj, config_obj)
         except Exception as e:
@@ -371,8 +368,7 @@ class Usecases(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = ortholog_list(req_obj, config_obj)
         except Exception as e:
@@ -395,8 +391,7 @@ class Usecases(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = glycosequon_list(req_obj, config_obj)
         except Exception as e:

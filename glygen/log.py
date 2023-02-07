@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.log_apilib import log_logging, log_init, log_access, log_grouped
-from glygen.util import trim_object
+from glygen.util import get_req_obj
 import traceback
 
 
@@ -76,8 +76,7 @@ class Log(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = log_logging(req_obj, config_obj)
         except Exception as e:
@@ -101,8 +100,7 @@ class Log(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = log_init(req_obj, config_obj)
         except Exception as e:
@@ -125,8 +123,7 @@ class Log(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = log_access(req_obj, config_obj)
         except Exception as e:
@@ -150,8 +147,7 @@ class Log(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = log_grouped(req_obj, config_obj)
         except Exception as e:

@@ -19,7 +19,7 @@ from flask_jwt_extended import (
 
 from glygen.auth_apilib import auth_userid, auth_contact, auth_register, auth_login,  auth_userinfo, auth_userupdate, auth_userdelete, auth_contactlist, auth_contactupdate, auth_contactdelete
 
-from glygen.util import trim_object
+from glygen.util import get_req_obj
 import traceback
 
 
@@ -81,8 +81,7 @@ class Auth(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = auth_userid(config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
@@ -102,8 +101,7 @@ class Auth(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = auth_contact(req_obj, config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
@@ -124,11 +122,10 @@ class Auth(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
+            req_obj = get_req_obj(request)
             req_obj["status"], req_obj["access"], req_obj["role"] = 0, "readonly", ""
             if req_obj["email"] in config_obj["admin_list"]:
                 req_obj["status"], req_obj["access"], req_obj["role"] = 1, "write", "admin"
-            trim_object(req_obj)
             res_obj = auth_register(req_obj, config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
@@ -149,8 +146,7 @@ class Auth(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             username = req_obj["email"]
             password = req_obj["password"]
             mongo_dbh, error_obj = get_mongodb()
@@ -206,8 +202,7 @@ class Auth(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
             res_obj = auth_userinfo(current_user, req_obj, config_obj)
@@ -231,8 +226,7 @@ class Auth(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
             res_obj = auth_userupdate(current_user, req_obj, config_obj)
@@ -256,8 +250,7 @@ class Auth(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
             res_obj = auth_userdelete(current_user, req_obj, config_obj)
@@ -282,8 +275,7 @@ class Auth(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
             res_obj = auth_contactlist(current_user, req_obj, config_obj)
@@ -307,8 +299,7 @@ class Auth(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
             res_obj = auth_contactupdate(current_user, req_obj, config_obj)
@@ -332,8 +323,7 @@ class Auth(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
             res_obj = auth_contactdelete(current_user, req_obj, config_obj)

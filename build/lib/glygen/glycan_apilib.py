@@ -45,7 +45,7 @@ def glycan_search_simple(query_obj, config_obj):
 
 
     mongo_query = get_simple_mongo_query(query_obj)
-    #return mongo_query
+    #return {"error_list":[{"error":mongo_query}]}
     #mongo_query = {"byonic": {"$options": "i", "$regex": "Hex\(5\)"}}
     
     collection = "c_glycan"
@@ -301,7 +301,8 @@ def glycan_image(query_obj, data_path):
 def get_simple_mongo_query(query_obj):
 
 
-    query_term = "\"%s\"" % (query_obj["term"])
+    #query_term = "\"%s\"" % (query_obj["term"])
+    query_term = query_obj["term"]
 
     cond_objs = []
     if query_obj["term_category"] == "any":

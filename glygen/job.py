@@ -12,7 +12,7 @@ import bcrypt
 
 from glygen.job_apilib import job_addnew, job_detail, job_update, job_list, job_delete,job_clean, job_results, job_status, job_queue, job_init
 
-from glygen.util import trim_object
+from glygen.util import get_req_obj
 import traceback
 
 
@@ -82,8 +82,7 @@ class Job(Resource):
         config_obj["server"] = os.environ["SERVER"]
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = job_init(config_obj, os.environ["DATA_PATH"])
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -105,8 +104,7 @@ class Job(Resource):
         config_obj["server"] = os.environ["SERVER"]
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path, server = os.environ["DATA_PATH"],os.environ["SERVER"]
             res_obj = job_addnew(req_obj, config_obj, data_path, server)
         except Exception as e:
@@ -129,8 +127,7 @@ class Job(Resource):
         config_obj["server"] = os.environ["SERVER"]
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = job_detail(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -151,8 +148,7 @@ class Job(Resource):
         config_obj["server"] = os.environ["SERVER"]
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = job_list(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -175,8 +171,7 @@ class Job(Resource):
         config_obj["server"] = os.environ["SERVER"]
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = job_update(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -198,8 +193,7 @@ class Job(Resource):
         config_obj["server"] = os.environ["SERVER"]
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = job_delete(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -221,8 +215,7 @@ class Job(Resource):
         config_obj["server"] = os.environ["SERVER"]
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = job_results(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -244,8 +237,7 @@ class Job(Resource):
         config_obj["server"] = os.environ["SERVER"]
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = job_status(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -268,8 +260,7 @@ class Job(Resource):
         config_obj["server"] = os.environ["SERVER"]
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             res_obj = job_queue(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())

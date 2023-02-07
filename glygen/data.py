@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.data_apilib import data_download
-from glygen.util import trim_object
+from glygen.util import get_req_obj
 import traceback
 
 
@@ -37,8 +37,7 @@ class Data(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = data_download(req_obj, config_obj, data_path)
         except Exception as e:
