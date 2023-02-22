@@ -40,12 +40,12 @@ def main():
     e_params = "-e MONGO_INITDB_ROOT_USERNAME=%s -e MONGO_INITDB_ROOT_PASSWORD=%s" % (u, p)
 
     cmd_list = []
+    cmd_list.append("sudo systemctl stop docker-glygen-mongo-%s.service" % (server))
     for c in [mongo_container, api_container, substructure_container]:
         cmd = "docker ps --all |grep %s" % (c)
         container_id = subprocess.getoutput(cmd).split(" ")[0].strip()
         if container_id.strip() != "":
             cmd_list.append("docker rm -f %s " % (container_id))
-
 
 
     cmd = "docker network ls| grep %s" % (mongo_network)
@@ -56,7 +56,7 @@ def main():
     
     cmd_list.append("docker network create -d bridge %s" % (mongo_network))
     cmd = "docker create --name %s --network %s -p 127.0.0.1:%s:27017" % (mongo_container, mongo_network,mongo_port)
-    cmd += " -v /data/shared/glygen/db:/data/shared/glygen/db/%s %s mongo" % (server, e_params)
+    cmd += " -v /data/shared/glygen/mongodump/%s:/data/shared/glygen/mongodump -v /data/shared/glygen/db/%s:/data/shared/glygen/db %s mongo" % (server, server, e_params)
     cmd_list.append(cmd)
 
     for cmd in cmd_list:

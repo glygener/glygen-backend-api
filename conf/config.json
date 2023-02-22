@@ -30,6 +30,11 @@
             "db":"glydb",
             "user":"glydbadmin",
             "password":"glydbpass"
+        },
+        "tmpdb":{
+            "db":"tmpdb",
+            "user":"glydbadmin",
+            "password":"glydbpass"
         }
     },
     "downloads":{

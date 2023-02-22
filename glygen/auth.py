@@ -173,13 +173,13 @@ class Auth(Resource):
                 res_obj["refresh_csrf"] = get_csrf_token(refresh_token)
                 res_obj["username"] = user_doc["email"]
                 session['email'] = user_doc["email"]
-                res_obj = jsonify(res_obj)
-                set_access_cookies(res_obj, access_token)
-                set_refresh_cookies(res_obj, refresh_token)
+                set_access_cookies(jsonify(res_obj), access_token)
+                set_refresh_cookies(jsonify(res_obj), refresh_token)
             else:
                 res_obj = {"error_list":[{"error_code":error}]}
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
+        
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 

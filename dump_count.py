@@ -51,12 +51,8 @@ def main():
         )
         client.server_info()
         dbh = client[db_name]
-        q = {}
-        for doc in dbh[coll].find(q):
-            for p in ["_id", "password"]:
-                if p in doc:
-                    doc.pop(p)
-            print (json.dumps(doc, indent=4))
+        n = dbh[coll].count_documents({})
+        print (coll, n)
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

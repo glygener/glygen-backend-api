@@ -102,10 +102,12 @@ class Supersearch(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/edgerules.json")
         config_obj["ignored_edges"] = json.load(open(json_url))
 
+        
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = search(req_obj, config_obj, False, False)
+            empty_search_flag = True if "empty_search_flag" in req_obj else False
+            res_obj = search(req_obj, config_obj, False, empty_search_flag)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

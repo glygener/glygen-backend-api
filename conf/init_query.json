@@ -1,0 +1,13 @@
+{
+    "empty_search_flag":true,
+    "concept_query_list": [
+        {"query": {}, "concept": "glycan"},
+        {"query": {}, "concept": "motif"},
+        {"query": {}, "concept": "protein"},
+        {"query": {}, "concept": "site"},
+        {"query": {}, "concept": "gene"},
+        {"query": {}, "concept": "enzyme"},
+        {"query": {}, "concept": "species"},
+        {"query": {}, "concept": "disease"}
+    ]
+}
