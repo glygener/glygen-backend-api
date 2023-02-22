@@ -45,16 +45,18 @@ def main():
 
     conn_str = "mongodb://%s:%s@%s:27017/?authSource=%s" % (mongo_user, mongo_password, mongo_container, mongo_db)
     cmd_list = []
+    cmd_list.append("sudo systemctl stop docker-glygen-api-%s.service" % (server))
+        
     if os.path.isdir(data_path) == False:
         cmd_list.append("mkdir -p %s" % (data_path))
 
     cmd_list.append("python3 setup.py bdist_wheel")
     cmd_list.append("docker build --network=host -t %s ." % (image))
     for c in [api_container]:
-        cmd = "docker ps |grep %s" % (c)
-        x = subprocess.getoutput(cmd).split(" ")[-1].strip()
-        if x == c:
-            cmd_list.append("docker rm -f %s " % (c))
+        cmd = "docker ps --all |grep %s" % (c)
+        container_id = subprocess.getoutput(cmd).split(" ")[0].strip()
+        if container_id.strip() != "":
+            cmd_list.append("docker rm -f %s " % (container_id))
 
     cmd = "docker create --name %s --network %s -p 127.0.0.1:%s:80" % (api_container, network, port)
     cmd += " -v %s:%s -e MONGODB_CONNSTRING=%s -e DB_NAME=%s " % (data_path, data_path, conn_str, mongo_db)

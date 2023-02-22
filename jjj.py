@@ -49,26 +49,11 @@ def main():
         )
         client_one.server_info()
 
-        #create user for glydb
-        client_one.glydb.command('createUser', glydb_user, pwd=glydb_pass, 
-            roles=[{'role': 'readWrite', 'db': glydb_db}])
         
         #create user for tmpdb
         client_one.tmpdb.command('createUser', glydb_user, pwd=glydb_pass, 
             roles=[{'role': 'readWrite', 'db': 'tmpdb'}])
 
-        client_two = pymongo.MongoClient(host,
-            username=glydb_user,
-            password=glydb_pass,
-            authSource=glydb_db,
-            authMechanism='SCRAM-SHA-1',
-            serverSelectionTimeoutMS=10000
-        )
-        client_two.server_info()
-        dbh = client_two[glydb_db]
-        for c in ["c_cache", "c_users", "c_video", "c_event", "c_message", "c_userid", "c_version", "c_userlog"]:
-            res = dbh[c].insert_one({})
-    
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

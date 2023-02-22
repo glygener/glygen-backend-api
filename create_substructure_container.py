@@ -21,6 +21,7 @@ def main():
     container_name = "running_substructure"
 
     cmd_list = []
+    cmd_list.append("sudo systemctl stop docker-glygen-substructure.service") 
     cmd = "docker create --name %s --network %s -p %s:%s" % (container_name, network, port, port)
     cmd += " -e WEBSERVICE_BASIC_PORT=%s -e WEBSERVICE_BASIC_MAX_CPU_CORE=3 %s " % (port, image)
     cmd_list.append(cmd)

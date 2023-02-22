@@ -1,36 +1,26 @@
-import os,sys
-import string
-from optparse import OptionParser
-import glob
+import sys,os
 import json
-from bson import json_util
+import string
+import csv
+import traceback
+import requests
+from optparse import OptionParser
 import pymongo
 from pymongo import MongoClient
-import datetime
 
 
-__version__="1.0"
-__status__ = "Dev"
-
-
-
-###############################
 def main():
-
 
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
-    parser.add_option("-c","--coll",action="store",dest="coll",help="") 
     (options,args) = parser.parse_args()
-
-    for key in ([options.server, options.coll]):
+    for key in ([options.server]):
         if not (key):
             parser.print_help()
             sys.exit(0)
-
+                                         
     server = options.server
-    coll = options.coll
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     mongo_port = config_obj["dbinfo"]["port"][server]
@@ -51,12 +41,16 @@ def main():
         )
         client.server_info()
         dbh = client[db_name]
-        q = {}
-        for doc in dbh[coll].find(q):
-            for p in ["_id", "password"]:
-                if p in doc:
-                    doc.pop(p)
-            print (json.dumps(doc, indent=4))
+        res_obj = {}
+        # call this and get json as res_obj
+        url = "http://localhost:8082/supersearch/search/"
+        req_obj = json.loads(open("conf/init_query.json", "r").read())
+
+        res = requests.post(url, json=req_obj, allow_redirects=True)
+        res_obj = json.loads(res.content)
+        q_obj = {}
+        update_obj = {"supersearch_init":res_obj["results_summary"]}
+        res = dbh["c_searchinit"].update_one(q_obj, {'$set':update_obj}, upsert=True)
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:
@@ -64,5 +58,12 @@ def main():
 
 
 
+
+
 if __name__ == '__main__':
     main()
+
+
+
+
+

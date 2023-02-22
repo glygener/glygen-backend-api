@@ -36,7 +36,8 @@ def home_init(config_obj, data_path):
     res_obj = {"version":[], "statistics":[]}
     for doc in dbh["c_version"].find({}):
         doc.pop("_id")
-        res_obj["version"].append(doc)
+        if doc != {}:
+            res_obj["version"].append(doc)
 
     species_obj = {}
     init_obj = dbh["c_init"].find_one({})
