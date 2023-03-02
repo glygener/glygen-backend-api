@@ -116,7 +116,7 @@ update the collection "c_searchinit"
 
   ```
   python3 update-search-init.py -s tst
-
+  ```
 
 ## Step-6: Creating and docker container for substructure search tool
 Run the python script given to build and create the API container:

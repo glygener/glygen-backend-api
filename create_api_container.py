@@ -34,6 +34,7 @@ def main():
     mongo_container = "running_glygen_mongo_%s" %(server)
     port = config_obj["api_port"][server]
     data_path = config_obj["data_path"]
+    downloads_path = config_obj["downloads_path"]
     network = config_obj["dbinfo"]["bridge_network"]
     mongo_user = config_obj["dbinfo"]["glydb"]["user"]
     mongo_password = config_obj["dbinfo"]["glydb"]["password"]
@@ -59,8 +60,8 @@ def main():
             cmd_list.append("docker rm -f %s " % (container_id))
 
     cmd = "docker create --name %s --network %s -p 127.0.0.1:%s:80" % (api_container, network, port)
-    cmd += " -v %s:%s -e MONGODB_CONNSTRING=%s -e DB_NAME=%s " % (data_path, data_path, conn_str, mongo_db)
-    cmd += " -e MAIL_SERVER=%s -e MAIL_PORT=%s -e MAIL_SENDER=%s -e DATA_PATH=%s -e SERVER=%s %s" % (mail_server, mail_port, mail_sender, data_path, server, image) 
+    cmd += " -v %s:%s -v %s:%s -e MONGODB_CONNSTRING=%s -e DB_NAME=%s " % (downloads_path, downloads_path, data_path, data_path, conn_str, mongo_db)
+    cmd += " -e MAIL_SERVER=%s -e MAIL_PORT=%s -e MAIL_SENDER=%s -e DATA_PATH=%s -e DOWNLOADS_PATH=%s -e SERVER=%s %s" % (mail_server, mail_port, mail_sender, data_path, downloads_path, server, image) 
     
     cmd_list.append(cmd)
 

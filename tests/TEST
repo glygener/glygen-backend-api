@@ -12,8 +12,9 @@
     $ http POST http://localhost:8082/glycan/search_simple/ < temp/glycan_search_simple.json
     $ http POST http://localhost:8082/glycan/search/ < temp/glycan_search.json
     $ http POST http://localhost:8082/glycan/list/ < temp/glycan_list.json
-    $ http POST http://localhost:8082/glycan/detail/G12344UQ/
-    $ http POST http://localhost:8082/glycan/image/G12344UQ/
+    $ http POST http://localhost:8082/glycan/detail/G17689DH/
+    $ http POST http://localhost:8082/glycan/image/G17689DH/
+    $ http POST http://localhost:8082/glycan/pdb/G17689DH/
 
     $ http POST http://localhost:8082/auth/userdelete/ < temp/auth_userdelete.json
     $ http POST http://localhost:8082/auth/register/ < temp/auth_register.json

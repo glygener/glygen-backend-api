@@ -11,6 +11,7 @@ import json
 import bcrypt
 
 from glygen.glycan_apilib import glycan_search_init, glycan_search, glycan_search_simple, glycan_detail, glycan_image
+
 from glygen.util import get_cached_records_indirect, get_req_obj
 import traceback
 
@@ -160,8 +161,35 @@ class Glycan(Resource):
         return res_obj, http_code
 
     @api.doc(False)
-    def get(self):
+    def get(self, glytoucan_ac):
         return self.post(glytoucan_ac)
+
+
+
+@api.route('/pdb/<glytoucan_ac>/')
+@api.doc(params={"glytoucan_ac": {"in": "query", "default": "G17689DH"}})
+class Glycan(Resource):
+    @api.doc('pdb')
+    def post(self, glytoucan_ac):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            downloads_path = os.environ["DOWNLOADS_PATH"]
+            pdb_file = downloads_path + "glycam_3d/glycan/current/%s.pdb" % (glytoucan_ac)
+            if os.path.isfile(pdb_file) == False:
+                return {"error_list":[{"error_code":"non-existent-record"}]}
+            return send_file(pdb_file, mimetype='plain/text')
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
+    @api.doc(False)
+    def get(self, glytoucan_ac):
+        return self.post(glytoucan_ac)
+
 
 
 
