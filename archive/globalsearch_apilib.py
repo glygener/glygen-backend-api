@@ -3,35 +3,34 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 from collections import OrderedDict
 from bson import json_util, ObjectId
 
 
-import errorlib
-import util
-import protein_apilib
+from glygen.protein_apilib import get_protein_list_object
 
+from glygen.db import get_mongodb
+from glygen.util import order_obj, order_list, get_errors_in_query,get_cached_motif_records_direct, get_cached_records_direct,                        get_cached_records_indirect, get_random_string, cache_record_list
 
 
 def globalsearch_search(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("globalsearch_search", query_obj, config_obj)
+    error_list = get_errors_in_query("globalsearch_search", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
-    
     #Load search config and plug in values
-    search_obj = json.loads(open("./conf/global_search.json", "r").read())
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "conf/global_search.json")
+    search_obj = json.loads(open(json_url, "r").read())
     query_obj["term"] = query_obj["term"].replace("(", "\\(").replace(")", "\\)")
 
     for obj in search_obj:
@@ -95,7 +94,7 @@ def globalsearch_search(query_obj, config_obj):
             doc.pop("_id")
             record_type, record_id, record_name = "", "", ""
             if target_collection == "c_protein":
-                list_obj = protein_apilib.get_protein_list_object(doc)
+                list_obj = get_protein_list_object(doc)
                 #results_dict[key_one][key_two].append(list_obj)
                 #results_dict[key_one]["all"].append(list_obj)
                 #results.append(list_obj)
@@ -134,16 +133,17 @@ def globalsearch_search(query_obj, config_obj):
             record_type = key_one
             record_type = "protein" if record_type == "glycoprotein" else record_type
             ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S %Z%z")
-            random_string = util.get_random_string(128)
-            hash_obj = hashlib.md5(random_string)
+            random_string = get_random_string(128)
+            hash_obj = hashlib.md5(random_string.encode('utf-8'))
             list_id = hash_obj.hexdigest()
             res = dbh[cache_collection].delete_many({"list_id":list_id})
             result_count = len(results_dict[key_one][key_two])
-            partition_count = result_count/config_obj["cache_batch_size"]
-            for i in xrange(0,partition_count+1):
+            partition_count = int(result_count/config_obj["cache_batch_size"])
+            for i in range(0,partition_count+1):
                 start = i*config_obj["cache_batch_size"]
                 end = start + config_obj["cache_batch_size"]
                 end = result_count if end > result_count else end
+                query_obj["term"] = query_obj["term"].replace("\\(", "(").replace("\\)",")")
                 if start < result_count:
                     results_part = results_dict[key_one][key_two][start:end]
                     cache_info = {
@@ -152,7 +152,7 @@ def globalsearch_search(query_obj, config_obj):
                         "record_type":record_type,
                         "search_type":"search"
                         }
-                    util.cache_record_list(dbh,list_id,results_part,cache_info,
+                    cache_record_list(dbh,list_id,results_part,cache_info,
                             cache_collection,config_obj)
             #hit_count = len(results_dict[key_one][key_two])
             hit_count = len(set(results_dict[key_one][key_two]))

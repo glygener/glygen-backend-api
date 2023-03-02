@@ -46,10 +46,10 @@ def validate_response(res_obj, schema_file):
 
 
 
-def get_id_dict(base_url):
+def get_id_dict():
 
     id_dict = {}
-    api_url = base_url + "/misc/lastid"
+    api_url = config_obj["base_url"] + "/misc/lastid"
     res = requests.post(api_url, json={}, verify=False)
     res_obj = json.loads(res.content)
     for coll in res_obj:
@@ -61,24 +61,17 @@ def get_id_dict(base_url):
 
 
 
-def run_exhaustive(server, api_grp):
+def run_exhaustive(api_grp):
 
-    data_dir = "/data/shared/glygen/"
-    base_url = "http://localhost:8082"
-    if server == "dev":
-        data_dir =  "/Volumes/disk2/data/shared/glygen/"
-        base_url = "http://localhost:5000"
-
-    api_url = base_url + "/misc/info"
+    api_url = config_obj["base_url"] + "/misc/info"
     res = requests.post(api_url, json={}, verify=False)
     info_obj =  json.loads(res.content)
     data_version = info_obj["initobj"]["dataversion"]
 
+    jsondb_dir = config_obj["data_path"] + "releases/data/v-%s/jsondb/" % (data_version)
+    log_dir = config_obj["data_path"]  + "/logs/"
 
-    jsondb_dir = data_dir + "releases/data/v-%s/jsondb/" % (data_version)
-    log_dir = data_dir + "logs/"
-
-    api_url = base_url + "/misc/info"
+    api_url = config_obj["base_url"] + "/misc/info"
     res = requests.post(api_url, json={}, verify=False)
     info_obj =  json.loads(res.content)
     data_version = info_obj["initobj"]["dataversion"]
@@ -90,18 +83,21 @@ def run_exhaustive(server, api_grp):
                                     
 
     file_list = glob.glob(jsondb_dir + "%sdb/*.json" % (api_grp))
-    file_list = file_list[0:10]
     try:
-        summary_file = log_dir + "test_summary_%s_mode_2.csv" % (api_grp)
+        summary_file = log_dir + "%s_test_summary_%s_mode_2.csv" % (user_name,api_grp)
         FW = open(summary_file, "w")
                        
 
         for in_file in file_list:
-            main_id = in_file.split("/")[-1].split(".")[0]
-            api_url = base_url + "/%s/detail/%s/" % (api_grp, main_id)
+            main_id = in_file.split("/")[-1].replace(".json", "")
+            api_url = config_obj["base_url"] + "/%s/detail/%s/" % (api_grp, main_id)
+            req_obj = {}
+            if api_grp in ["motif"]:
+                api_url = config_obj["base_url"] + "/%s/detail/" % (api_grp)
+                req_obj = {"motif_ac":main_id}
 
             o = {"bad_respose":False, "url":api_url}
-            res = requests.post(api_url, json={}, verify=False)
+            res = requests.post(api_url, json=req_obj, verify=False)
             o["status_code"] = res.status_code
             if is_valid_json(res.content) == False:
                 o["bad_respose"] = True
@@ -125,7 +121,7 @@ def run_exhaustive(server, api_grp):
             FW.write("%s\n" % (",".join(row)))
 
             if flags != "success":
-                out_file = log_dir + "failure_log_%s_detail.%s.json" % (api_grp, main_id)
+                out_file = log_dir + "%s_failure_log_%s_detail.%s.json" % (user_name, api_grp, main_id)
                 with open(out_file, "w") as FL:
                     FL.write("%s\n" % (json.dumps(o, indent=4)))
         FW.close()
@@ -137,13 +133,9 @@ def run_exhaustive(server, api_grp):
     return
 
 
-def run_from_queries(server, api_grp):
+def run_from_queries(api_grp):
     
-    log_dir = "/data/shared/glygen/logs/"
-    base_url = "http://localhost:8082"
-    if server == "dev":
-        log_dir = "/Volumes/disk2/data/shared/glygen/logs/"
-        base_url = "http://localhost:5000"
+    log_dir = config_obj["data_path"] + "/logs/"
 
     file_list = glob.glob("queries/*.json")
     if api_grp != "all":
@@ -159,7 +151,7 @@ def run_from_queries(server, api_grp):
     out_obj_list = []
     last_list_id = ""
     try:
-        summary_file = log_dir + "test_summary_%s_mode_1.csv" % (api_grp)        
+        summary_file = log_dir + "%s_test_summary_%s_mode_1.csv" % (user_name,api_grp)        
         FW = open(summary_file, "w")
        
         for in_file in file_list:
@@ -173,7 +165,7 @@ def run_from_queries(server, api_grp):
                 x = subprocess.getoutput(cmd)
                 t_obj = t_obj_dict[api_name]
                 t_obj["url"] += "/" if t_obj["url"][-1] != "/" else ""
-                api_url = base_url + t_obj["url"]
+                api_url = config_obj["base_url"] + t_obj["url"]
                 req_obj_list = []
                 if "querylist" in t_obj:
                     if api_name.find("supersearch") != -1:
@@ -200,7 +192,7 @@ def run_from_queries(server, api_grp):
                         api_url += t_obj["query"] + "/"
                         req_obj = {}
                    
-                    id_dict = get_id_dict(base_url)
+                    id_dict = get_id_dict()
                     grp = api_name.split("_")[0]
                     if grp in id_dict:
                         for p in id_dict[grp]:
@@ -234,7 +226,7 @@ def run_from_queries(server, api_grp):
                     row = [o["name"], "query-"+str(idx), flags]
                     FW.write("%s\n" % (",".join(row)))
                     if flags != "success":
-                        out_file = log_dir + "failure_log_%s.%s.json" % (o["name"], idx)
+                        out_file = log_dir + "%s_failure_log_%s.%s.json" % (user_name, o["name"], idx)
                         with open(out_file, "w") as FL:
                             FL.write("%s\n" % (json.dumps(o, indent=4)))
                     flg_file = "logs/failure_log_%s.%s.json" % (o["name"], idx)
@@ -253,25 +245,30 @@ def main():
    
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
-    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
     parser.add_option("-m","--mode",action="store",dest="mode",help="1 (using example queries), 2 (exhaustive detail API calls)")
     parser.add_option("-g","--group",action="store",dest="group",help="all/protein/glycan/...")
         
 
     (options,args) = parser.parse_args()
-    for key in ([options.server, options.group, options.mode]):
+    for key in ([options.group, options.mode]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
-    server = options.server
     api_grp = options.group
     mode = int(options.mode)
 
+    global config_obj
+    global user_name
+
+    config_obj = json.loads(open("../conf/config.json", "r").read())
+        
+    user_name = os.getlogin()
+
     if mode == 2:
-        run_exhaustive(server, api_grp)
+        run_exhaustive(api_grp)
     else:
-        run_from_queries(server, api_grp)
+        run_from_queries(api_grp)
 
     return
 

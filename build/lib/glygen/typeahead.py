@@ -50,7 +50,7 @@ class Typeahead(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-            data_path = current_app.config["DATA_PATH"]
+            data_path = os.environ["DATA_PATH"]
             field_list_one = ["glytoucan_ac", "motif_name", "enzyme_uniprot_canonical_ac", 
                     "glycan_pmid", "enzyme"]
             field_list_two = ["uniprot_canonical_ac", "uniprot_id", "refseq_ac", 

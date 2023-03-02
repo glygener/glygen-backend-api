@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/misc.py", line 221, in post
+    res_obj = testurls(req_obj, config_obj)
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/misc_apilib.py", line 101, in testurls
+    mongo_query = {id_field:{"$in":query_obj["idlist"]}}
+KeyError: 'idlist'

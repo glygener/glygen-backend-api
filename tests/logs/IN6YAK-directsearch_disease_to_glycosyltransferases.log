@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/directsearch.py", line 300, in post
+    res_obj = disease_to_glycosyltransferases(req_obj, config_obj)
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/directsearch_apilib.py", line 456, in disease_to_glycosyltransferases
+    mongo_query = get_usecases_mongo_query("disease_to_glycosyltransferases", query_obj)
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/usecases_apilib.py", line 927, in get_mongo_query
+    if query_obj["do_name"] > 0:
+TypeError: '>' not supported between instances of 'str' and 'int'

@@ -1,2 +1,21 @@
-cp misc_apilib.py /var/www/cgi-bin/api/; cp conf/integrity.conf /var/www/cgi-bin/api/conf/; cp html/test/* /var/www/html/api/test/
+server="tst"
+image="glygen_"$server"_api"
+container="running_"$image
+port="8082"
+#port="8882" #for beta
+
+if [ ! -d "/data/shared/glygen" ] 
+then
+    mkdir -p /data/shared/glygen 
+fi
+
+python3 setup.py bdist_wheel 
+
+docker build --network=host -t $image .
+
+docker rm -f $container
+
+#docker run -dit --name $container -p 127.0.0.1:$port:80 -v /data/shared/glygen:/data/shared/glygen $image
+docker run -dit --name $container -p 127.0.0.1:$port:80 -v /data/shared/glygen:/data/shared/glygen -e MONGODB_CONNSTRING=mongodb://localhost:27017:superadmin@superpass $image
+
 

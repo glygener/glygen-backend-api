@@ -4,7 +4,6 @@ import json
 
 
 
-
 def load_species_info(species_obj, in_file):
 
     data_frame = {}
@@ -50,13 +49,13 @@ def load_sheet_as_dict(sheet_obj, in_file, separator, anchor_field):
             row_count += 1
             if row_count == 1:
                 f_list = row
-                for j in xrange(0, len(row)):
+                for j in range(0, len(row)):
                     if row[j] == anchor_field:
                         continue
                     sheet_obj["fields"].append(row[j].strip().replace("\"", ""))
             else:
                 new_row = []
-                for j in xrange(0, len(row)):
+                for j in range(0, len(row)):
                     if f_list[j] == anchor_field:
                         continue
                     new_row.append(row[j].strip())
@@ -82,11 +81,11 @@ def load_sheet(sheet_obj, in_file, separator):
             seen[json.dumps(row)] = True
             row_count += 1
             if row_count == 1:
-                for j in xrange(0, len(row)):
+                for j in range(0, len(row)):
                     sheet_obj["fields"].append(row[j].strip().replace("\"", ""))
             else:
                 new_row = []
-                for j in xrange(0, len(row)):
+                for j in range(0, len(row)):
                     new_row.append(row[j].strip())
                 sheet_obj["data"].append(new_row)
     return
@@ -105,13 +104,13 @@ def load_workbook(workbook_obj, fileset_objlist, separator):
 def left_join_tables(tbl_a, tbl_b):
 
     map_dict = {}
-    for i in xrange(0, len(tbl_b)):
+    for i in range(0, len(tbl_b)):
         if tbl_b[i][0] not in map_dict:
             map_dict[tbl_b[i][0]] = []
         map_dict[tbl_b[i][0]].append(i)
 
     empty_row = []
-    for j in xrange(1, len(tbl_b[0])):
+    for j in range(1, len(tbl_b[0])):
         empty_row.append("")
 
     tbl_c = [tbl_a[0] + tbl_b[0][1:]]

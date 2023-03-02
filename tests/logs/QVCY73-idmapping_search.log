@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/idmapping.py", line 74, in post
+    res_obj = search(req_obj, config_obj)
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/idmapping_apilib.py", line 132, in search
+    hash_obj = hashlib.md5(record_type + "_" + ",".join(query_obj["input_idlist"]).strip())
+TypeError: Unicode-objects must be encoded before hashing

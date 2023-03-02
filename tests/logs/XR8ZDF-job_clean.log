@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/job.py", line 249, in post
+    res_obj = job_clean(data_path, server)
+NameError: name 'job_clean' is not defined

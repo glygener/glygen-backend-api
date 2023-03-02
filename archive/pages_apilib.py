@@ -3,7 +3,6 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 import pymongo
@@ -14,21 +13,21 @@ from collections import OrderedDict
 import smtplib
 from email.mime.text import MIMEText
 
-import errorlib
-import util
-import libgly
+from glygen.libgly import load_species_info
+
+from glygen.db import get_mongodb
+from glygen.util import cache_record_list,  extract_name, get_errors_in_query, order_obj
 
 
 
-def home_init(config_obj):
+def home_init(config_obj, data_path):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("pages_home_init",{}, config_obj)
+    error_list = get_errors_in_query("pages_home_init",{}, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -39,11 +38,10 @@ def home_init(config_obj):
         doc.pop("_id")
         res_obj["version"].append(doc)
 
-    path_obj  =  config_obj[config_obj["server"]]["pathinfo"]
     species_obj = {}
-    in_file = path_obj["datareleasespath"]
-    in_file += "data/v-%s/misc/species_info.csv" % (config_obj["datarelease"])
-    libgly.load_species_info(species_obj, in_file)
+    init_obj = dbh["c_init"].find_one({})
+    in_file = data_path + "/releases/data/v-%s/misc/species_info.csv" % (init_obj["dataversion"])
+    load_species_info(species_obj, in_file)
     tax_id_list = []
     for k in species_obj:
         obj = species_obj[k]
@@ -58,21 +56,42 @@ def home_init(config_obj):
     for doc in dbh["c_stat"].find({}):
         doc.pop("_id")
         for tax_id in list(set(tax_id_list)):
-            res_obj["statistics"].append(doc["oldstat"][tax_id])
+            if tax_id in doc["oldstat"]:
+                res_obj["statistics"].append(doc["oldstat"][tax_id])
 
         #uncomment this when the frontend is ready to consume new stat format
         #res_obj["statistics"] = doc["newstat"]
 
     res_obj["events"] = []
-    doc_list = dbh["c_event"].find({"visibility":"visible"}).sort('createdts', pymongo.DESCENDING)
+    cond_list = []
+    cond_list.append({"visibility":{"$eq":"visible"}})
+    now = datetime.datetime.now()
+    cond_list.append({"start_date":{"$lte":now}})
+    cond_list.append({"end_date":{"$gte":now}})
+    q_obj = {"$and":cond_list}
+    doc_list = dbh["c_event"].find(q_obj).sort('createdts', pymongo.DESCENDING)
     for doc in doc_list:
         doc["id"] = str(doc["_id"])
         doc.pop("_id")
-        for k in ["createdts", "updatedts"]:
+        for k in ["createdts", "updatedts", "start_date", "end_date"]:
             if k not in doc:
                 continue
             doc[k] = doc[k].strftime('%Y-%m-%d %H:%M:%S %Z%z')
         res_obj["events"].append(doc)
+
+
+    res_obj["video"] = {}
+    doc = dbh["c_video"].find_one({})
+    if doc != None:
+        doc.pop("_id")
+        for k in ["createdts"]:
+            if k not in doc:
+                continue
+            doc[k] = doc[k].strftime('%Y-%m-%d %H:%M:%S %Z%z').strip()
+        res_obj["video"] = doc
+
+
+
 
     return res_obj 
 
@@ -228,8 +247,8 @@ def get_data_statistics(config_obj):
 
 
 
+    dbh, error_obj = get_mongodb()
 
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
     for doc in dbh["c_glycan"].find({}):
         for o in doc["classification"]:
             g_type = o["type"]["name"].lower()
