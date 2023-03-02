@@ -70,7 +70,7 @@ that the container will start on server reboot.
  Run the command given below to create the "glydb" database and glydb user
 (this should be done only one time). 
    ```
-   python3 init_mongodb.py`
+   python3 init_mongodb.py
    ```
 You can populate collections using the following commands:
    ```
@@ -78,7 +78,7 @@ You can populate collections using the following commands:
    ```
 To update a single collection, you can use:
    ```
-   python3 populate_one_collection.py -s $DEP -v $VER -c $COLL`
+   python3 populate_one_collection.py -s $DEP -v $VER -c $COLL
    ```
 where the variable $COLL is collection name (e.g., c_glycan)
 
@@ -166,10 +166,8 @@ that the container will start on server reboot.
 
 ## Step-7: Testing APIs
 The script tests/run_api_test.py is a wrapper outside of the container 
-that allows you to test APIs in an automated manner. 
-
-Before running, you will need to set some paramters in the 
-conf/config.json file.
+that allows you to test APIs in an automated manner. Before running, you will 
+need to set some paramters in the conf/config.json file.
 
 ### API tests using example queries
 To test a group of APIs using the example queries given in 
@@ -179,10 +177,10 @@ tests/queries/protein.json, run:
    ```
 where $grp can one of [protein, glycan, motif ...]. This will produce 
 the following log files ($username is your ssh login user name):
-
-$DATA_PATH/logs/$username_test_summary_$grp_mode_1.csv (status of each call)
-$DATA_PATH/logs/$username_failure_log_$grp*.json (details for failed calls)
-
+   ```
+   $DATA_PATH/logs/$username_test_summary_$grp_mode_1.csv (status of each call)
+   $DATA_PATH/logs/$username_failure_log_$grp*.json (details for failed calls)
+   ```
 
 ### Exhaustive tests for record/detail APIs
 Some of our APIs are called "detail APIs" because the return detailed
@@ -192,10 +190,10 @@ information about a given record. To test such APIs for a given API group:
    ```
 where $grp can one of [protein, glycan, motif ...]. This will produce 
 the following log files ($username is your ssh login user name):
-
-$DATA_PATH/logs/$username_test_summary_$grp_mode_2.csv (status of each call)
-$DATA_PATH/logs/$username_failure_log_$grp_detail.*.json (details for failed calls)
-
+   ```
+   $DATA_PATH/logs/$username_test_summary_$grp_mode_2.csv (status of each call)
+   $DATA_PATH/logs/$username_failure_log_$grp_detail.*.json (details for failed calls)
+   ```
 
 
 
