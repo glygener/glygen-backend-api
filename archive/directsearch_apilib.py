@@ -3,23 +3,32 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 from collections import OrderedDict
 
 
-import errorlib
-import util
+from glygen.db import get_mongodb
+from glygen.util import get_errors_in_query
 
-import protein_apilib
-import glycan_apilib
-import usecases_apilib
+from glygen.protein_apilib import get_mongo_query as get_protein_mongo_query
+from glygen.glycan_apilib import get_mongo_query as get_glycan_mongo_query
+from glygen.usecases_apilib import get_mongo_query as get_usecases_mongo_query
+
+def get_paging_info(query_obj, config_obj):
+
+    max_batch_size = config_obj["max_batch_size"]
+    batch_size = query_obj["limit"] if "limit" in query_obj else max_batch_size
+    batch_size = max_batch_size if batch_size > max_batch_size else batch_size
+    offset = query_obj["offset"] - 1 if "offset" in query_obj else 0
+    skips = batch_size * offset
+
+    return batch_size, skips
+
 
 def protein(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -30,18 +39,19 @@ def protein(query_obj, config_obj):
                 return {"error_list":[{"error_code":"invalid-parameter-value", "field":"glycan.relation"}]}
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("protein_search_direct", query_obj,config_obj)
+    error_list = get_errors_in_query("protein_search_direct", query_obj,config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
-    mongo_query = protein_apilib.get_mongo_query(query_obj)
+    mongo_query = get_protein_mongo_query(query_obj)
     #return mongo_query
     
     collection = "c_protein"
     main_id = "uniprot_canonical_ac"
     results_dict = {}
     i = 0
-    for obj in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         i += 1
         if i > config_obj["max_results_count"]["protein"]:
             break
@@ -56,24 +66,24 @@ def protein(query_obj, config_obj):
 
 def gene(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("gene_search_direct", query_obj,config_obj)
+    error_list = get_errors_in_query("gene_search_direct", query_obj,config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
-    mongo_query = protein_apilib.get_mongo_query(query_obj)
+    mongo_query = get_protein_mongo_query(query_obj)
     #return mongo_query
     
     collection = "c_protein"
     main_id = "uniprot_canonical_ac"
     results_dict = {}
     i = 0
-    for obj in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         i += 1
         if i > config_obj["max_results_count"]["protein"]:
             break
@@ -114,8 +124,7 @@ def get_results_batch(results_dict, query_obj, config_obj):
 
 def glycan(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -132,13 +141,13 @@ def glycan(query_obj, config_obj):
             query_obj.pop(key)
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("glycan_search_direct", query_obj, config_obj)
+    error_list = get_errors_in_query("glycan_search_direct", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
 
     residue_list = []
-    for o in dbh["c_searchinit"].find_one({})["glycan"]["composition"]:
+    for o in dbh["c_searchinit"].find_one({}, {"_id":0})["glycan"]["composition"]:
         residue_list.append(o["residue"])
 
 
@@ -160,15 +169,15 @@ def glycan(query_obj, config_obj):
         
 
 
-    mongo_query = glycan_apilib.get_mongo_query(query_obj)
-
+    mongo_query = get_glycan_mongo_query(query_obj)
     #return mongo_query
    
     collection = "c_glycan"
     main_id = "glytoucan_ac"
     results_dict = {}
     i = 0
-    for obj in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         i += 1
         if i > config_obj["max_results_count"]["glycan"]:
             break
@@ -183,22 +192,21 @@ def glycan(query_obj, config_obj):
 
 
 def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
-    
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+   
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("glycan_to_biosynthesis_enzymes_direct", query_obj, config_obj)
+    error_list = get_errors_in_query("glycan_to_biosynthesis_enzymes_direct", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
     
     collection = "c_glycan"    
     results = []
     
-    mongo_query = usecases_apilib.get_mongo_query("glycan_to_biosynthesis_enzymes",  query_obj)
-    obj_one = dbh[collection].find_one(mongo_query)
+    mongo_query = get_usecases_mongo_query("glycan_to_biosynthesis_enzymes",  query_obj)
+    obj_one = dbh[collection].find_one(mongo_query, {"_id":0})
     if obj_one == None:
         error_list.append({"error_code":"non-existent-record"})
         return {"error_list":error_list}
@@ -212,7 +220,7 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
     for o in obj_one["enzyme"]:
         canon = o[main_id]
         if canon not in seen:
-            obj_two = dbh[collection].find_one({main_id:canon})
+            obj_two = dbh[collection].find_one({main_id:canon}, {"_id":0})
             seen[canon] = True
             i += 1
             if i > config_obj["max_results_count"]["protein"]:
@@ -225,20 +233,19 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
 
 def glycan_to_glycoproteins(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("glycan_to_glycoproteins_direct", query_obj, config_obj)
+    error_list = get_errors_in_query("glycan_to_glycoproteins_direct", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
     collection = "c_glycan"
     results = []
-    mongo_query = usecases_apilib.get_mongo_query("glycan_to_glycoproteins",  query_obj)
-    obj_one = dbh[collection].find_one(mongo_query)
+    mongo_query = get_usecases_mongo_query("glycan_to_glycoproteins",  query_obj)
+    obj_one = dbh[collection].find_one(mongo_query, {"_id":0})
     if obj_one == None:
         error_list.append({"error_code":"non-existent-record"})
         return {"error_list":error_list}
@@ -252,7 +259,7 @@ def glycan_to_glycoproteins(query_obj, config_obj):
     for o in obj_one["glycoprotein"]:
         canon = o[main_id]
         if canon not in seen:
-            obj_two = dbh[collection].find_one({main_id:canon})
+            obj_two = dbh[collection].find_one({main_id:canon}, {"_id":0})
             seen[canon] = True
             i += 1
             if i > config_obj["max_results_count"]["protein"]:
@@ -267,24 +274,24 @@ def glycan_to_glycoproteins(query_obj, config_obj):
 
 def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("biosynthesis_enzyme_to_glycans_direct", query_obj, config_obj)
+    error_list = get_errors_in_query("biosynthesis_enzyme_to_glycans_direct", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
     collection = "c_glycan"
     results = []
-    mongo_query = usecases_apilib.get_mongo_query("biosynthesis_enzyme_to_glycans", query_obj)
+    mongo_query = get_usecases_mongo_query("biosynthesis_enzyme_to_glycans", query_obj)
     results_dict = {}
     i = 0
     collection = "c_glycan"
     main_id = "glytoucan_ac"
-    for obj_two in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj_two in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         if main_id not in obj_two:
             continue
         glytoucan_ac = obj_two[main_id]
@@ -299,13 +306,12 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
 
 def protein_to_homologs(query_obj, config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("protein_to_homologs_direct", query_obj, config_obj)
+    error_list = get_errors_in_query("protein_to_homologs_direct", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -321,10 +327,11 @@ def protein_to_homologs(query_obj, config_obj):
     i = 0
     collection = "c_protein"
     main_id = "uniprot_canonical_ac"
-    for obj_one in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj_one in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         for o in obj_one["orthologs"]:
             canon = o[main_id]
-            obj_two = dbh[collection].find_one({"uniprot_canonical_ac":canon})
+            obj_two = dbh[collection].find_one({"uniprot_canonical_ac":canon}, {"_id":0})
             i += 1
             if i > config_obj["max_results_count"]["protein"]:
                 break
@@ -336,25 +343,25 @@ def protein_to_homologs(query_obj, config_obj):
 
 def species_to_glycosyltransferases(query_obj, config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("species_to_glycosyltransferases_direct", query_obj, config_obj)
+    error_list = get_errors_in_query("species_to_glycosyltransferases_direct", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
     collection = "c_protein"
     results = []
-    mongo_query = usecases_apilib.get_mongo_query("species_to_glycosyltransferases", query_obj)
+    mongo_query = get_usecases_mongo_query("species_to_glycosyltransferases", query_obj)
         
     results_dict = {}
     i = 0
     collection = "c_protein"
     main_id = "uniprot_canonical_ac"
-    for obj_one in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj_one in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         canon = obj_one[main_id]
         i += 1
         if i > config_obj["max_results_count"]["protein"]:
@@ -370,24 +377,24 @@ def species_to_glycosyltransferases(query_obj, config_obj):
 
 def species_to_glycohydrolases(query_obj, config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("species_to_glycohydrolases_direct", query_obj, config_obj)
+    error_list = get_errors_in_query("species_to_glycohydrolases_direct", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
     collection = "c_protein"
     results = []
-    mongo_query = usecases_apilib.get_mongo_query("species_to_glycohydrolases", query_obj)
+    mongo_query = get_usecases_mongo_query("species_to_glycohydrolases", query_obj)
     results_dict = {}
     i = 0
     collection = "c_protein"
     main_id = "uniprot_canonical_ac"
-    for obj_one in dbh[collection].find(mongo_query):
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj_one in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         canon = obj_one[main_id]
         i += 1
         if i > config_obj["max_results_count"]["protein"]:
@@ -402,24 +409,26 @@ def species_to_glycohydrolases(query_obj, config_obj):
 
 def species_to_glycoproteins(query_obj, config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("species_to_glycoproteins_direct", query_obj, config_obj)
+    error_list = get_errors_in_query("species_to_glycoproteins_direct", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
     collection = "c_protein"
     results = []
-    mongo_query = usecases_apilib.get_mongo_query("species_to_glycoproteins", query_obj)
+    mongo_query = get_usecases_mongo_query("species_to_glycoproteins", query_obj)
     results_dict = {}
     i = 0
     collection = "c_protein"
     main_id = "uniprot_canonical_ac"
-    for obj_one in dbh[collection].find(mongo_query):
+
+
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj_one in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         canon = obj_one[main_id]
         i += 1
         if i > config_obj["max_results_count"]["protein"]:
@@ -433,24 +442,25 @@ def species_to_glycoproteins(query_obj, config_obj):
 
 def disease_to_glycosyltransferases(query_obj, config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("disease_to_glycosyltransferases_direct", query_obj, config_obj)
+    error_list = get_errors_in_query("disease_to_glycosyltransferases_direct", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
     collection = "c_protein"
     results = []
-    mongo_query = usecases_apilib.get_mongo_query("disease_to_glycosyltransferases", query_obj)
+    mongo_query = get_usecases_mongo_query("disease_to_glycosyltransferases", query_obj)
     results_dict = {}
     i = 0
     collection = "c_protein"
     main_id = "uniprot_canonical_ac"
-    for obj_one in dbh[collection].find(mongo_query):
+
+    batch_size, skips = get_paging_info (query_obj, config_obj)
+    for obj_one in dbh[collection].find(mongo_query, {"_id":0}).limit(batch_size).skip(skips):
         canon = obj_one[main_id]
         i += 1
         if i > config_obj["max_results_count"]["protein"]:

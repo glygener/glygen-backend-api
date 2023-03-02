@@ -3,27 +3,25 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 from pytz import timezone
 from bson import json_util, ObjectId
 
-import errorlib
-import util
+from glygen.db import get_mongodb
+from glygen.util import get_errors_in_query, sort_objects, order_obj, extract_name, cache_record_list
 
-import protein_apilib
+from glygen.protein_apilib import get_protein_list_object
 
 
 def search_init(config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("usecases_search_init",{}, config_obj)
+    error_list = get_errors_in_query("usecases_search_init",{}, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -39,13 +37,12 @@ def search_init(config_obj):
 
 def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("usecases_group_one", query_obj, config_obj)
+    error_list = get_errors_in_query("usecases_group_one", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
     
@@ -82,7 +79,8 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -90,7 +88,7 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
     
     
@@ -100,13 +98,12 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
 
 def glycan_to_glycoproteins(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("usecases_group_one", query_obj, config_obj)
+    error_list = get_errors_in_query("usecases_group_one", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -141,7 +138,8 @@ def glycan_to_glycoproteins(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -149,7 +147,7 @@ def glycan_to_glycoproteins(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
 
@@ -158,13 +156,12 @@ def glycan_to_glycoproteins(query_obj, config_obj):
 
 def glycan_to_enzyme_gene_loci(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("usecases_group_one", query_obj, config_obj)
+    error_list = get_errors_in_query("usecases_group_one", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -195,7 +192,8 @@ def glycan_to_enzyme_gene_loci(query_obj, config_obj):
         res_obj = {"list_id":""}
     else:
         ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
-        hash_obj = hashlib.md5(json.dumps(query_obj))
+        hash_str = json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         search_results_obj = {}
         search_results_obj["list_id"] = list_id
@@ -216,13 +214,12 @@ def glycan_to_enzyme_gene_loci(query_obj, config_obj):
 
 def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("usecases_group_two", query_obj, config_obj)
+    error_list = get_errors_in_query("usecases_group_two", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -250,7 +247,8 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -258,7 +256,7 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -266,13 +264,12 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
 
 def protein_to_glycosequons(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
  
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("usecases_group_seven", query_obj, config_obj)
+    error_list = get_errors_in_query("usecases_group_seven", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -302,7 +299,8 @@ def protein_to_glycosequons(query_obj, config_obj):
         res_obj = {"list_id":""}
     else:
         ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
-        hash_obj = hashlib.md5(json.dumps(query_obj))
+        hash_str = json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         search_results_obj = {}
         search_results_obj["list_id"] = list_id
@@ -324,13 +322,12 @@ def protein_to_glycosequons(query_obj, config_obj):
 
 def protein_to_orthologs(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
  
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("usecases_group_three", query_obj, config_obj)
+    error_list = get_errors_in_query("usecases_group_three", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -357,7 +354,8 @@ def protein_to_orthologs(query_obj, config_obj):
         res_obj = {"list_id":""}
     else:
         ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
-        hash_obj = hashlib.md5(json.dumps(query_obj))
+        hash_str = json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         search_results_obj = {}
         search_results_obj["list_id"] = list_id
@@ -379,14 +377,13 @@ def protein_to_orthologs(query_obj, config_obj):
 
 def species_to_glycosyltransferases(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("usecases_group_four", query_obj, config_obj)
+    error_list = get_errors_in_query("usecases_group_four", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -411,7 +408,8 @@ def species_to_glycosyltransferases(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -419,7 +417,7 @@ def species_to_glycosyltransferases(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -427,13 +425,12 @@ def species_to_glycosyltransferases(query_obj, config_obj):
 
 def species_to_glycohydrolases(query_obj, config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("usecases_group_four", query_obj, config_obj)
+    error_list = get_errors_in_query("usecases_group_four", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -459,7 +456,8 @@ def species_to_glycohydrolases(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -467,7 +465,7 @@ def species_to_glycohydrolases(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -476,13 +474,12 @@ def species_to_glycohydrolases(query_obj, config_obj):
 
 def species_to_glycoproteins(query_obj, config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("usecases_group_five", query_obj, config_obj)
+    error_list = get_errors_in_query("usecases_group_five", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -499,7 +496,6 @@ def species_to_glycoproteins(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query, config_obj["projectedfields"][collection]):
         record_list.append(obj["uniprot_canonical_ac"])
 
-
     query_obj["organism"] = {"id":query_obj["tax_id"], "name":config_obj["taxid2name"][str(query_obj["tax_id"])]}
     query_obj.pop("tax_id")
 
@@ -509,7 +505,8 @@ def species_to_glycoproteins(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -517,7 +514,7 @@ def species_to_glycoproteins(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -525,13 +522,12 @@ def species_to_glycoproteins(query_obj, config_obj):
 
 def disease_to_glycosyltransferases(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
  
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("usecases_group_six", query_obj, config_obj)
+    error_list = get_errors_in_query("usecases_group_six", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
     
@@ -558,7 +554,8 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -566,7 +563,7 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -575,8 +572,7 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
 
 def genelocus_list(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -630,7 +626,7 @@ def genelocus_list(query_obj, config_obj):
     if len(cached_obj["results"]) == 0:
         return {}
     if int(query_obj["offset"]) < 1 or int(query_obj["offset"]) > len(cached_obj["results"]):
-	return {"error_code":"invalid-parameter-value"}
+	    return {"error_code":"invalid-parameter-value"}
 
     start_index = int(query_obj["offset"]) - 1
     stop_index = start_index + int(query_obj["limit"])
@@ -638,7 +634,7 @@ def genelocus_list(query_obj, config_obj):
 
     for obj_id in sorted_id_list[start_index:stop_index]:
         obj = cached_obj["results"][obj_id]
-        res_obj["results"].append(util.order_obj(obj, config_obj["objectorder"]["protein"]))
+        res_obj["results"].append(order_obj(obj, config_obj["objectorder"]["protein"]))
 
     res_obj["pagination"] = {"offset":query_obj["offset"], "limit":query_obj["limit"],
         "total_length":len(cached_obj["results"]), "sort":query_obj["sort"], "order":query_obj["order"]}
@@ -648,8 +644,7 @@ def genelocus_list(query_obj, config_obj):
 
 def glycosequon_list(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
     cache_collection = "c_cache"
@@ -707,7 +702,7 @@ def glycosequon_list(query_obj, config_obj):
 
     for obj_id in sorted_id_list[start_index:stop_index]:
         obj = cached_obj["results"][obj_id]
-        res_obj["results"].append(util.order_obj(obj, config_obj["objectorder"]["protein"]))
+        res_obj["results"].append(order_obj(obj, config_obj["objectorder"]["protein"]))
 
     res_obj["pagination"] = {"offset":query_obj["offset"], "limit":query_obj["limit"],
         "total_length":len(cached_obj["results"]), "sort":query_obj["sort"], "order":query_obj["order"]}
@@ -718,8 +713,7 @@ def glycosequon_list(query_obj, config_obj):
 
 def ortholog_list(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
     cache_collection = "c_cache"
@@ -769,7 +763,7 @@ def ortholog_list(query_obj, config_obj):
     if len(cached_obj["results"]) == 0:
         return {}
     if int(query_obj["offset"]) < 1 or int(query_obj["offset"]) > len(cached_obj["results"]):
-	return {"error_code":"invalid-parameter-value"}
+	    return {"error_code":"invalid-parameter-value"}
 
     start_index = int(query_obj["offset"]) - 1
     stop_index = start_index + int(query_obj["limit"])
@@ -777,7 +771,7 @@ def ortholog_list(query_obj, config_obj):
 
     for obj_id in sorted_id_list[start_index:stop_index]:
         obj = cached_obj["results"][obj_id]
-        res_obj["results"].append(util.order_obj(obj, config_obj["objectorder"]["protein"]))
+        res_obj["results"].append(order_obj(obj, config_obj["objectorder"]["protein"]))
 
     res_obj["pagination"] = {"offset":query_obj["offset"], "limit":query_obj["limit"],
         "total_length":len(cached_obj["results"]), "sort":query_obj["sort"], "order":query_obj["order"]}
@@ -788,7 +782,7 @@ def get_protein_list_fields(dbh, uniprot_canonical_ac):
 
     collection = "c_protein"
     obj = dbh[collection].find_one({"uniprot_canonical_ac":uniprot_canonical_ac})
-    plist_obj = protein_apilib.get_protein_list_object(obj)
+    plist_obj = get_protein_list_object(obj)
     return plist_obj, obj["species"][0]["taxid"]
 
 def get_glycan_list_fields(dbh, glytoucan_ac):
@@ -821,7 +815,10 @@ def get_genelocus_list_fields(dbh, uniprot_canonical_ac):
 
     collection = "c_protein"
     obj = dbh[collection].find_one({"uniprot_canonical_ac":uniprot_canonical_ac})
-    protein_name = util.extract_name(obj["protein_names"], "recommended", "UniProtKB")
+    if obj == None:
+        return {}, -1
+
+    protein_name = extract_name(obj["protein_names"], "recommended", "UniProtKB")
     gene_name = obj["gene"][0]["name"] if obj["gene"] != [] else ""
     organism = obj["species"][0]["name"] if obj["species"] != [] else ""
     tax_id = obj["species"][0]["taxid"] if obj["species"] != [] else 0
@@ -917,18 +914,13 @@ def get_mongo_query(svc_name, query_obj):
                 #cond_objs.append({"species.taxid": {'$eq': query_obj["tax_id"]}})
             if query_obj["evidence_type"] == "predicted":
                 cond_objs.append({"glycosylation": {'$gt':[]}})
-                #cond_objs.append({"glycosylation.evidence.database": {'$eq':"UniProtKB"}})
-                #cond_objs.append({"glycosylation.evidence": {'$size': 1}})
-                cond_objs.append({"glycosylation.evidence.database": {'$ne':"UniCarbKB"}})
-                cond_objs.append({"glycosylation.evidence.database": {'$ne':"PDB"}})
-                cond_objs.append({"glycosylation.evidence.database": {'$ne':"PubMed"}})
+                cond_objs.append({"glycosylation.site_category":{"$regex":"predicted","$options":"i"}})
+                #cond_objs.append({"glycosylation": {'$gt':[]}})
+                #cond_objs.append({"glycosylation.site_category": {'$ne':"reported"}})
+                #cond_objs.append({"glycosylation.site_category": {'$ne':"reported_with_glycan"}})
             elif query_obj["evidence_type"] == "reported":
-                or_list = [
-                    {"glycosylation.evidence.database": {'$eq':"UniCarbKB"}}
-                    ,{"glycosylation.evidence.database": {'$eq':"PubMed"}}
-                    ,{"glycosylation.evidence.database": {'$eq':"PDB"}}
-                ]
-                cond_objs.append({'$or':or_list})
+                cond_objs.append({"glycosylation": {'$gt': []}})
+                cond_objs.append({"glycosylation.site_category":{"$regex":"reported","$options":"i"}})
             elif query_obj["evidence_type"] == "both":
                 cond_objs.append({"glycosylation": {'$gt': []}})
             elif query_obj["evidence_type"] == "none":
@@ -945,7 +937,7 @@ def get_mongo_query(svc_name, query_obj):
                 }
                 cond_objs.append(tax_id_q_obj)
                 #cond_objs.append({"species.taxid": {'$eq': query_obj["tax_id"]}})
-            if query_obj["do_name"] > 0:
+            if query_obj["do_name"].strip() !=  "":
                 q_one = {"disease.recommended_name.name": {'$regex': query_obj["do_name"], '$options': 'i'}}
                 q_two = {"disease.synonyms.name": {'$regex': query_obj["do_name"], '$options': 'i'}}
                 cond_objs.append({"$or":[q_one, q_two]})
@@ -979,7 +971,7 @@ def sort_objects(obj_list, field_name, order_type):
         ,"organism":[]
         ,"tax_id":[]
     }
-    for i in xrange(0, len(obj_list)):
+    for i in range(0, len(obj_list)):
         obj = obj_list[i]
         grid_obj[field_name].append({"index":i, field_name:obj[field_name]})
 

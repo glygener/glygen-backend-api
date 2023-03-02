@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/job.py", line 59, in post
+    res_obj = job_init(config_obj)
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/job_apilib.py", line 48, in job_init
+    load_species_info(species_obj, in_file)
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/libgly.py", line 10, in load_species_info
+    load_sheet(data_frame, in_file, ",")
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/libgly.py", line 75, in load_sheet
+    with open(in_file, 'r') as FR:
+FileNotFoundError: [Errno 2] No such file or directory: '/data/shared/glygen/releases/data/v-2.0.2/misc/species_info.csv'

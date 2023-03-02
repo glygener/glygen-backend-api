@@ -37,7 +37,7 @@ class Pages(Resource):
         try:
             req_obj = request.json
             trim_object(req_obj)
-            data_path = current_app.config["DATA_PATH"]
+            data_path = os.environ["DATA_PATH"]
             res_obj = home_init(config_obj, data_path)
         except Exception as e:
             log_path = current_app.config["LOG_PATH"] 

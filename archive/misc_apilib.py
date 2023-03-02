@@ -3,17 +3,15 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 import glob
 from collections import OrderedDict
 import collections
+import subprocess
 
-import jsonref
 from jsonschema import validate, Draft7Validator
 import jsonschema
-import simplejson
 
 
 from flask import Flask, request, jsonify, Response, stream_with_context
@@ -23,25 +21,25 @@ import gzip
 import struct           
 
 
-import smtplib
-from email.mime.text import MIMEText
-import errorlib
-import util
-
 from Bio import SeqIO
 
-import protein_apilib
-import glycan_apilib
-import motif_apilib
+from glygen.db import get_mongodb
+from glygen.util import get_errors_in_query, sort_objects, cache_record_list
 
-import libgly
+from glygen.protein_apilib import protein_detail
+from glygen.glycan_apilib import glycan_detail
+
+from glygen.libgly import load_sheet, load_sheet_as_dict, load_species_info
+
+
 
 
 def verlist(config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+    
     out_obj = []
     for coll in dbh.collection_names():
         if coll.find("c_bco_v-") != -1:
@@ -52,9 +50,9 @@ def verlist(config_obj):
 
 def messagelist(config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
 
     out_obj = []
     import pymongo
@@ -74,14 +72,14 @@ def messagelist(config_obj):
 
 def bcolist(config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
-    
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
     out_obj = {}
     for doc in dbh["c_bco"].find({}):
-        if "bco_id" in doc:
-            bco_id = doc["bco_id"]
+        if "object_id" in doc:
+            bco_id = doc["object_id"].split("/")[3]
             if "io_domain" in doc:
                 if "output_subdomain" in doc["io_domain"]:
                     if doc["io_domain"]["output_subdomain"] != []:
@@ -93,10 +91,10 @@ def bcolist(config_obj):
 
 def testurls (query_obj, config_obj):
       
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
-    
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
     coll = query_obj["coll"]
     group_dict = config_obj["urltest"][coll]["groups"]
     id_field = config_obj["urltest"][coll]["idfield"]
@@ -196,26 +194,25 @@ def testurls (query_obj, config_obj):
 
     return res_obj
 
-def testrecords (query_obj, config_obj):
+def testrecords (query_obj, config_obj, data_path):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
 
     record_id, record_type = query_obj["recordid"], query_obj["recordtype"]
 
 
-
     
     integ_json = json.loads(open("conf/integrity.conf", "r").read())
-
     sec_info = integ_json[record_type]
-
 
     stat_obj = {"api":{}, "ds":{}}
     get_recordinfo_from_api(sec_info, query_obj, stat_obj, config_obj)
-    get_recordinfo_from_ds(sec_info, query_obj,stat_obj, path_obj)
+    
+    get_recordinfo_from_ds(sec_info, query_obj,stat_obj, data_path)
 
+    
     row_list_one, row_list_two = [], []
     for combo_id in list(set(stat_obj["api"].keys() + stat_obj["ds"].keys())):
         api_flag = combo_id in stat_obj["api"]
@@ -223,7 +220,7 @@ def testrecords (query_obj, config_obj):
         flag = [api_flag, ds_flag] == [True, True]
         row = [combo_id, str(api_flag), str(ds_flag), str(flag)]
         if flag == False:
-            for i in xrange(0, len(row)):
+            for i in range(0, len(row)):
                 if row[i] != "True":
                     row[i] = '<font color=red>' + row[i] + '</font>';
             row_list_one.append(row)
@@ -243,14 +240,12 @@ def testrecords (query_obj, config_obj):
 
 
 
-def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
- 
+def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, data_path): 
     sec = query_obj["section"]
     record_id = query_obj["recordid"]
     record_type = query_obj["recordtype"]
     
-    masterlist_file = path_obj["datareleasespath"]
-    masterlist_file += "data/v-%s/misc/dataset-masterlist.json" % (query_obj["datarelease"])
+    masterlist_file = data_path + "releases/data/v-%s/misc/dataset-masterlist.json" % (query_obj["datarelease"])
     master_list = get_filename_list(masterlist_file)
 
 
@@ -258,9 +253,8 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
     
     data_frame = {}
     xrefkey2badge = {}
-    in_file = path_obj["datareleasespath"] 
-    in_file += "data/v-%s/misc/xref_info.csv" % (query_obj["datarelease"])
-    libgly.load_sheet_as_dict(data_frame, in_file, ",", "xref_key")
+    in_file = data_path + "releases/data/v-%s/misc/xref_info.csv" % (query_obj["datarelease"])
+    load_sheet_as_dict(data_frame, in_file, ",", "xref_key")
     f_list = data_frame["fields"]
     for xref_key in data_frame["data"]:
         for row in data_frame["data"][xref_key]:
@@ -270,19 +264,18 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
 
     species_obj = {}
     seen = {}
-    in_file = path_obj["datareleasespath"]
-    in_file += "data/v-%s/misc/species_info.csv" % (query_obj["datarelease"])
-    libgly.load_species_info(species_obj, in_file)
+    in_file = data_path
+    in_file += "releases/data/v-%s/misc/species_info.csv" % (query_obj["datarelease"])
+    load_species_info(species_obj, in_file)
 
 
-
-    reviewed_dir = path_obj["datareleasespath"] + "data/v-%s/reviewed/" 
+    reviewed_dir = data_path + "releases/data/v-%s/reviewed/" 
     reviewed_dir = reviewed_dir % (query_obj["datarelease"])
 
     seen_glycan = {}
     in_file = reviewed_dir + "/glycan_masterlist.csv"
     sheet_obj = {}
-    libgly.load_sheet_as_dict(sheet_obj, in_file, ",", "glytoucan_ac")
+    load_sheet_as_dict(sheet_obj, in_file, ",", "glytoucan_ac")
     tmp_fl = sheet_obj["fields"]
     for glytoucan_ac in sheet_obj["data"]:
         if glytoucan_ac not in seen_glycan:
@@ -290,7 +283,7 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
 
 
     cmd = "grep ^'\"%s\"' " % (record_id) + reviewed_dir + "*_protein_masterlist.csv" 
-    species = commands.getoutput(cmd).split("\n")[0].split(":")[0].split("/")[-1].split("_")[0]
+    species = subprocess.getoutput(cmd).split("\n")[0].split(":")[0].split("/")[-1].split("_")[0]
 
     uniprotkb_ac = record_id.split("-")[0]
     if record_type == "protein" and sec == "species":
@@ -303,17 +296,16 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
         return
     
     if record_type == "glycan" and sec == "composition":
-        in_file = path_obj["datareleasespath"]
-        in_file += "data/v-%s/reviewed/glycan_monosaccharide_composition.csv"
+        in_file = data_path + "/releases/data/v-%s/reviewed/glycan_monosaccharide_composition.csv"
         in_file = in_file % (query_obj["datarelease"])
         data_frame = {}
-        libgly.load_sheet_as_dict(data_frame, in_file, ",", "glytoucan_ac")
+        load_sheet_as_dict(data_frame, in_file, ",", "glytoucan_ac")
         f_list = data_frame["fields"]
         for row in data_frame["data"][record_id]:
             for f in f_list[:-1]:
                 if row[f_list.index(f)] == "0":
                     continue
-                id_list = [record_id, f.lower(), row[f_list.index(f)]]
+                id_list = [record_id.lower(), f.lower(), row[f_list.index(f)]]
                 combo_id = "|".join(id_list)
                 stat_obj["ds"][combo_id] = True
         return
@@ -327,9 +319,9 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
             if f.find(".stat.csv") == -1:
                 file_list.append(f)
 
+
     seq_hash = {}
-    in_file = path_obj["datareleasespath"]
-    in_file += "data/v-%s/reviewed/%s_protein_allsequences.fasta"
+    in_file = data_path + "releases/data/v-%s/reviewed/%s_protein_allsequences.fasta"
     in_file = in_file % (query_obj["datarelease"], species)
     if sec in ["sequence", "isoforms"]:
         for record in SeqIO.parse(in_file, "fasta"):
@@ -344,13 +336,12 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
         return
 
 
-    
+
     if sec == "orthologs":
-        in_file = path_obj["datareleasespath"]
-        in_file += "data/v-%s/reviewed/protein_homolog_clusters.csv" 
+        in_file = data_path + "releases/data/v-%s/reviewed/protein_homolog_clusters.csv" 
         in_file = in_file % (query_obj["datarelease"])
         data_frame = {}
-        libgly.load_sheet(data_frame, in_file, ",")
+        load_sheet(data_frame, in_file, ",")
         f_list = data_frame["fields"]
         cls_list = []
         for row in data_frame["data"]:
@@ -376,11 +367,10 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
 
     canon2ensemblegeneid = {}
     if sec == "expression_tissue":
-        in_file = path_obj["datareleasespath"]
-        in_file += "data/v-%s/reviewed/%s_protein_xref_bgee.csv"
+        in_file = data_path + "releases/data/v-%s/reviewed/%s_protein_xref_bgee.csv"
         in_file = in_file % (query_obj["datarelease"], species)
         data_frame = {}
-        libgly.load_sheet_as_dict(data_frame, in_file, ",", "uniprotkb_canonical_ac")
+        load_sheet_as_dict(data_frame, in_file, ",", "uniprotkb_canonical_ac")
         f_list = data_frame["fields"]
         for row in data_frame["data"][record_id]:
             xref_id = row[f_list.index("xref_id")]
@@ -390,9 +380,8 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
     if sec == "expression_disease":
         uberonid2doid = {}
         data_frame = {}
-        in_file = path_obj["datareleasespath"]
-        in_file += "data/v-%s/misc/doid2uberonid-mapping.csv" % (query_obj["datarelease"])
-        libgly.load_sheet_as_dict(data_frame, in_file, ",", "uberon_id")
+        in_file = data_path + "releases/data/v-%s/misc/doid2uberonid-mapping.csv" % (query_obj["datarelease"])
+        load_sheet_as_dict(data_frame, in_file, ",", "uberon_id")
         f_list = data_frame["fields"]
         for uberon_id in data_frame["data"]:
             if uberon_id not in uberonid2doid:
@@ -403,25 +392,33 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
                     uberonid2doid[uberon_id].append(do_id)
 
 
-        in_file = path_obj["datareleasespath"]
-        in_file += "data/v-%s/reviewed/%s_protein_expression_normal.csv"
+        in_file = data_path + "releases/data/v-%s/reviewed/%s_protein_expression_normal.csv"
         in_file = in_file % (query_obj["datarelease"], species)
         if os.path.isfile(in_file):
             data_frame = {}
-            libgly.load_sheet_as_dict(data_frame, in_file, ",", "uniprotkb_canonical_ac")
+            load_sheet_as_dict(data_frame, in_file, ",", "uniprotkb_canonical_ac")
             f_list = data_frame["fields"]
             for row in data_frame["data"][record_id]:
-                uberon_id = row[f_list.index("uberon_anatomy_id")].split(":")[1]
+                uberon_id = row[f_list.index("uberon_anatomical_id")].split(":")[1]
                 if uberon_id in uberonid2doid:
                     for do_id in uberonid2doid[uberon_id]:
                         seen_doid[do_id] = True
 
     main_id_name = "uniprotkb_canonical_ac"
+    if sec in ["reactions","reaction_enzymes"]:
+        main_id_name = "participant_id"
+
     if query_obj["recordtype"] == "glycan":
         main_id_name = "glytoucan_ac"
-        if sec == "glycoprotein":
+        if sec in ["glycoprotein", "interactions", "expression"]:
             main_id_name = "saccharide"
 
+
+    heirarchy_dict = {}
+    if sec == "subsumption":
+        in_file = data_path + "releases/data/v-%s/reviewed/glycan_subsumption.csv"
+        in_file = in_file % (query_obj["datarelease"])
+        heirarchy_dict = load_subsumption_heirarchy(in_file)
 
 
 
@@ -430,12 +427,71 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
         file_name = in_file.split("/")[-1]
         if file_name.split(".")[0] not in master_list:
             continue
-        data_frame = {}
-        libgly.load_sheet_as_dict(data_frame, in_file, ",", main_id_name)
-        f_list = data_frame["fields"]
 
+        data_frame = {}
+        load_sheet_as_dict(data_frame, in_file, ",", main_id_name)
+        f_list = data_frame["fields"]
         if record_id in data_frame["data"]:
             for row in data_frame["data"][record_id]:
+                if sec in ["interactions"] and record_type == "protein":
+                    if row[f_list.index("saccharide")].strip() == "":
+                        continue
+                    if row[f_list.index("saccharide")].strip() not in seen_glycan:
+                        continue
+                if sec in ["expression_tissue"]:
+                    f = "uberon_anatomical_id"
+                    row[f_list.index(f)] =  row[f_list.index(f)].replace("UBERON:","")
+                if sec in ["mutagenesis"]:
+                    if row[f_list.index("ann_type")] not in ["Mutagenesis_Annotation"]:
+                        continue
+                if sec in ["reactions", "reaction_enzymes"]:
+                    if row[f_list.index("role")] not in ["enzyme"]:
+                        continue
+
+                if sec in ["subsumption"]:
+                    related_accession = row[f_list.index("related_accession")]
+                    relationship = row[f_list.index("relationship")].lower()
+                    glytoucan_type = row[f_list.index("glytoucan_type")].lower()
+                    gt_list = ["topology", "composition", "basecomposition"]
+                    rl_list = ["ancestor", "descendant"]
+                    cond_one = record_id != related_accession
+                    cond_two = glytoucan_type == relationship
+                    cond_three = glytoucan_type in gt_list
+                    cond = cond_one and cond_two and cond_three
+                    if cond == False:
+                        continue
+
+                    rl = ""
+                    if record_id in heirarchy_dict:
+                        if related_accession in heirarchy_dict[record_id]:
+                            rl = heirarchy_dict[record_id][related_accession]
+                    row[f_list.index("relationship")] = rl
+
+                if sec in ["expression"]:
+                    if row[f_list.index("glycosylation_site_uniprotkb")] == "":
+                        continue
+                    abundance, tissue_name, uberon_id = "", "", ""
+                    if "source_tissue_uberon_id" in f_list:
+                        tissue_name = row[f_list.index("source_tissue_name")]
+                        uberon_id = row[f_list.index("source_tissue_uberon_id")]
+                    if "abundance" in f_list:
+                        abundance = row[f_list.index("abundance")]
+                    cl_name, cl_id = "", ""
+                    if "source_cell_line_cellosaurus_id" in f_list:
+                        cl_name = row[f_list.index("source_cell_line_name")]
+                        cl_id = row[f_list.index("source_cell_line_cellosaurus_id")]
+                    if "cellosaurus_id" in f_list:
+                        cl_name = row[f_list.index("cellosuaurus_cell_line_name")]
+                        cl_id = row[f_list.index("cellosaurus_id")]
+
+                    src_xref_key = row[f_list.index("src_xref_key")]
+                    if src_xref_key == "protein_xref_glyconnect":
+                        row[f_list.index("src_xref_key")] = "glycan_xref_glyconnect"
+                        row[f_list.index("src_xref_id")] = row[f_list.index("structure_id")]
+
+
+
+
                 id_list_one = [record_id]
                 evdn_list_one, evdn_list_two = [], []
                 if file_name.find("_xref_") != -1:
@@ -451,6 +507,11 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
                         xref_badge = xrefkey2badge[xref_key]
                         id_list_one.append(xref_badge)
                         id_list_one.append(xref_id)
+                elif sec in ["reactions"]:
+                    src = in_file.split("_")[-1].split(".")[0]
+                    id_list_one.append(row[f_list.index(sec_info[sec]["dsfieldlist"][0])])
+                    id_list_one.append(src)
+                    id_list_one.append(row[f_list.index(sec_info[sec]["dsfieldlist"][0])])
                 else:
                     for f in sec_info[sec]["dsfieldlist"]:
                         if f.find(":md5") != -1:
@@ -463,17 +524,17 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
                             v = ""
                             if f == "aa_pos" and f not in f_list:
                                 v = row[f_list.index("begin_aa_pos")]
-                            elif f == "saccharide":
-                                v = row[f_list.index(f)]
-                                v = v if v in seen_glycan else ""
+                            elif f.find("CONSTANT_") != -1:
+                                v = f.split("_")[1]
                             elif f in f_list:
                                 v = row[f_list.index(f)]
-
-                            if f in ["glycan_mass", "glycan_permass"]:
+                            if f in ["glycan_mass", "glycan_permass"] and v != "":
                                 v = str(round(float(v),2))
-                            v = v.split(":")[1] if f == "uberon_anatomy_id" else v
-                            v = xrefkey2badge[v] if f == "xref_key" else v
-                            v = xrefkey2badge[v] if f == "src_xref_key" else v
+                            v = xrefkey2badge[v] if f == "xref_key" and v in xrefkey2badge else v
+                            v = xrefkey2badge[v] if f == "src_xref_key" and v in xrefkey2badge else v
+                        if f in ["missing_score"] and v.strip() == "":
+                            v = "0"
+
                         v = str(float(v)) if f == "uniprotkb_protein_mass" else v
                         if f == "do_id" and v == "":
                             v = "None"
@@ -487,7 +548,7 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
                                 #seq = seq_hash[v].lower()
                                 id_list_one.append(v)
                                 #id_list_one.append(seq)
-                        elif f in ["xref_key", "xref_id"]:
+                        elif f in ["xref_key", "xref_id","source_id"]:
                             evdn_list_one.append(v)
                         elif f in ["src_xref_key", "src_xref_id"]:
                             evdn_list_two.append(v)
@@ -496,6 +557,8 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
                                 v = "EC-%s"%(v)
                             id_list_one.append(v)
 
+                #print "Robel", sec_info[sec]["dsfieldlist"]
+                #print "Robel", id_list_one
                 if record_type == "protein" and sec == "snv":
                     #id_list_one += ["BioMuta", uniprotkb_ac]
                     xref_key = row[f_list.index("xref_key")]
@@ -525,21 +588,19 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
                     name_type = "recommended" if in_file.find("recnames") != -1 else "synonym"
                     resource = "refseq" if in_file.find("refseq") != -1 else "uniprotkb"
                     id_list_one = [id_list_one[0], name_type,resource] +  list(set(id_list_one[1:]))
-
                     if "" in id_list_one:
                         id_list_one.remove("")
                     for tmp_id in id_list_one[3:]:
                         if tmp_id[0:3] == "EC-":
-                            id_list_one[1] = "synonym"
-                            combo_id = "|".join(id_list_one[0:3] + [tmp_id[3:]])
+                            out_list = [id_list_one[0],"synonym",id_list_one[2]] + [tmp_id[3:]]
+                            combo_id = "|".join(out_list)
                         else:
                             combo_id = "|".join(id_list_one[0:3] + [tmp_id])
                         combo_id = combo_id.lower()
                         stat_obj["ds"][combo_id] = True
-
                 elif sec == "gene_names" and len(id_list_one) > 1:
                     resource = "refseq" if in_file.find("refseq") != -1 else "uniprotkb"
-                    for j in xrange(1, len(id_list_one)):
+                    for j in range(1, len(id_list_one)):
                         name_type = "recommended" if j == 1 else "synonym"
                         name = id_list_one[j]
                         if name == "":
@@ -551,6 +612,7 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
                 else:
                     if "" in id_list_one:
                         id_list_one.remove("")
+
                     if "doid:None" in id_list_one:
                         id_list_one.remove("doid:None")
                     else:
@@ -564,15 +626,21 @@ def get_recordinfo_from_ds(sec_info, query_obj, stat_obj, path_obj):
                         tmp_list = id_list_one + evdn_list_one
                         combo_id = "|".join(tmp_list).lower().replace("mondoid", "mondo")
                         stat_obj["ds"][combo_id] = True
+                        #print "DS-1:Robel", id_list_one, evdn_list_one
                     if evdn_list_two != []:
                         tmp_list = id_list_one + evdn_list_two
                         combo_id = "|".join(tmp_list).lower().replace("mondoid", "mondo")
                         stat_obj["ds"][combo_id] = True
+                        #print "DS-2:Robel", id_list_one, evdn_list_two
+
                     if evdn_list_one == [] and evdn_list_two == []:
+                        if len(id_list_one) == 1:
+                            return
                         tmp_list = id_list_one 
                         combo_id = "|".join(tmp_list).lower().replace("mondoid", "mondo")
                         stat_obj["ds"][combo_id] = True
-
+                        #print "DS-3:Robel", id_list_one
+                        
 
     return
 
@@ -587,13 +655,16 @@ def get_recordinfo_from_api(sec_info, query_obj, stat_obj, config_obj):
     doc = {}
     if record_type == "protein":
         q_obj = {"uniprot_canonical_ac":record_id}
-        doc = protein_apilib.protein_detail(q_obj, config_obj)
+        doc = protein_detail(q_obj, config_obj)
     elif record_type == "glycan":
         q_obj = {"glytoucan_ac":record_id}
-        doc = glycan_apilib.glycan_detail(q_obj, config_obj)
+        doc = glycan_detail(q_obj, config_obj)
+
 
 
     if sec not in doc:
+        #combo_id = record_id.lower() + "|"
+        #stat_obj["api"][combo_id] = True
         return
 
 
@@ -601,7 +672,7 @@ def get_recordinfo_from_api(sec_info, query_obj, stat_obj, config_obj):
     if sec in sec_info:
         obj_list = doc[sec]
         if type(obj_list) is not list:
-            if type(obj_list) in [float, unicode]:
+            if type(obj_list) in [int, float, str]:
                 obj_list = [{sec:doc[sec]}]
             else:
                 obj_list = [doc[sec]]
@@ -623,7 +694,6 @@ def get_recordinfo_from_api(sec_info, query_obj, stat_obj, config_obj):
                     v = str(obj[f]) if f in obj else ""
                     v = v.split(";")[0] if sec in ["gene"] else v
                     id_list_one.append(str(v))
-
             if record_type == "protein" and sec in ["protein_names", "gene_names"]:
                 v = "%s|%s|%s" % (obj["type"], obj["resource"],obj["name"])
                 id_list_one.append(v)
@@ -633,7 +703,9 @@ def get_recordinfo_from_api(sec_info, query_obj, stat_obj, config_obj):
                 id_list_one.append(d_id)
             elif record_type in ["protein", "glycan"] and sec == "publication":
                 for o in obj["reference"]:
-                    id_list_one += [o["id"]]
+                    id_list_one += [o["type"],o["id"]]
+                    #print "Robel-1", o
+
             elif record_type == "protein" and sec == "snv" and "disease" in obj:
                 for o in obj["disease"]:
                     d_id = o["recommended_name"]["id"] if "recommended_name" in o else ""
@@ -664,19 +736,24 @@ def get_recordinfo_from_api(sec_info, query_obj, stat_obj, config_obj):
                     gly_type = obj["type"]["name"]
                 if "subtype" in obj:
                     gly_subtype = obj["subtype"]["name"]
-                id_list_one += [gly_type, gly_subtype]
+                if gly_type.lower() not in ["other"] and gly_subtype.lower() not in ["other"]:
+                    id_list_one += [gly_type, gly_subtype]
+
 
             if "" in id_list_one:
                 id_list_one.remove("")
 
-            if "evidence" in obj:
+
+            if sec not in ["publication"] and "evidence" in obj:
                 for ev_obj in obj["evidence"]:
                     id_list_two = []
-                    id_list_two.append(ev_obj["database"])
-                    id_list_two.append(str(ev_obj["id"]))
+                    if "id" in ev_obj:
+                        id_list_two.append(ev_obj["database"])
+                        id_list_two.append(str(ev_obj["id"]))
                     combo_id = "|".join(id_list_one + id_list_two)
                     combo_id = combo_id.lower()
                     stat_obj["api"][combo_id] = True
+                    #print "Robel", combo_id
             elif "go_terms" in obj:
                 for term_obj in obj["go_terms"]:
                     id_list_two = []
@@ -686,9 +763,14 @@ def get_recordinfo_from_api(sec_info, query_obj, stat_obj, config_obj):
                     combo_id = combo_id.lower()
                     stat_obj["api"][combo_id] = True
             else:
+                if sec in ["reaction_enzymes"]:
+                    id_list_one = [id_list_one[0],id_list_one[0].split("-")[0]]
+                if len(id_list_one) == 1:
+                    return
                 combo_id = "|".join(id_list_one)
                 combo_id = combo_id.lower()
                 stat_obj["api"][combo_id] = True
+                #print "Robel", id_list_one
 
     return 
 
@@ -731,7 +813,7 @@ def pathlist(query_obj, config_obj):
     seen = {}
     load_properity_lineage(api_doc, "", seen)
     out_json = []
-    for k in sorted(seen.keys()):
+    for k in sorted(list(seen.keys())):
         out_json.append(k)
 
     return out_json
@@ -742,10 +824,10 @@ def pathlist(query_obj, config_obj):
 def propertylist(query_obj, config_obj):
 
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
-   
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
 
     coll = "c_%s" % (query_obj["recordtype"])
     seen = {"api":{}, "docstore":{}}
@@ -767,7 +849,7 @@ def propertylist(query_obj, config_obj):
 
 
     seen["apinew"] = {}
-    for k in seen["api"].keys():
+    for k in list(seen["api"].keys()):
         k = k.replace("{", "").replace("}", "").replace("[0]", "")
         k = k.replace("enzymes.", "enzyme.")
         if k.find(" dict") != -1 or k.find(" list") != -1:
@@ -777,7 +859,7 @@ def propertylist(query_obj, config_obj):
     out_json = {
         "in_api":[], "in_docstore":[],
         "in_api_only":[], "in_docstore_only":[], "in_api_and_docstore":[]}
-    key_list = list(set(seen["docstore"].keys() + seen["apinew"].keys()))
+    key_list = list(set(list(seen["docstore"].keys()) + list(seen["apinew"].keys())))
     for k in sorted(key_list):
         tv = [k in seen["docstore"].keys(), k in  seen["apinew"].keys()]
         #o = {"path":k.split("{")[0], "type":k.split("{")[1]} 
@@ -814,12 +896,12 @@ def load_properity_lineage(in_obj, in_key, seen):
     elif type(in_obj) is list:
         k = "%s {list}" % (in_key)
         seen[k] = True
-        for idx in xrange(0, len(in_obj)):
+        for idx in range(0, len(in_obj)):
             if idx > 0:
                 continue
             idx_key = in_key + "[%s]" % (idx) 
             load_properity_lineage(in_obj[idx], idx_key, seen)
-    elif type(in_obj) in [unicode, int, float]:
+    elif type(in_obj) in [str, int, float]:
         value_type = str(type(in_obj)).replace("<type ", "").replace("'", "").replace(">", "")
         in_key += " {%s}" % (value_type)
         seen[in_key] = True
@@ -851,29 +933,54 @@ def get_filename_list(masterlist_file):
     return file_name_list
 
 
-def gtclist(config_obj):
-
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
+def gtclist(config_obj, data_path):
 
     url = "https://api.glygen.org//misc/verlist/"
     cmd = "curl -s -k %s" % (url)
-    res = commands.getoutput(cmd)
+    res = subprocess.getoutput(cmd)
     release_list = sorted(json.loads(res))
 
 
     seen = {}
     for rel in release_list:
-        reviewed_dir = path_obj["datareleasespath"] + "data/v-%s/reviewed/" % (rel)
+        reviewed_dir = data_path + "/releases/data/v-%s/reviewed/" % (rel)
         file_list = glob.glob(reviewed_dir + "/glycan_masterlist.csv")
         file_list += glob.glob(reviewed_dir + "/*_glycan_idmapping.csv")
         file_list += glob.glob(reviewed_dir + "/*_glycan_properties.csv")
         for in_file in file_list:
             sheet_obj = {}
-            libgly.load_sheet_as_dict(sheet_obj, in_file, ",", "glytoucan_ac")
+            load_sheet_as_dict(sheet_obj, in_file, ",", "glytoucan_ac")
             tmp_fl = sheet_obj["fields"]
             for glytoucan_ac in sheet_obj["data"]:
                 seen[glytoucan_ac] = True
 
-    return seen.keys()
+    return list(seen.keys())
+
+
+
+
+
+def load_subsumption_heirarchy(in_file):
+
+    heirarchy_dict = {}
+    data_frame = {}
+    load_sheet_as_dict(data_frame, in_file, ",", "glytoucan_ac")
+    tmp_fl = data_frame["fields"]
+    for main_id in data_frame["data"]:
+        for tmp_row in data_frame["data"][main_id]:
+            related_accession = tmp_row[tmp_fl.index("related_accession")]
+            relationship = tmp_row[tmp_fl.index("relationship")].lower()
+            glytoucan_type = tmp_row[tmp_fl.index("glytoucan_type")].lower()
+            gt_list = ["topology", "composition", "basecomposition"]
+            rl_list = ["ancestor", "descendant"]
+            if relationship in rl_list:
+                if main_id not in heirarchy_dict:
+                    heirarchy_dict[main_id] = {}
+                if related_accession not in heirarchy_dict[main_id]:
+                    heirarchy_dict[main_id][related_accession] = {}
+                heirarchy_dict[main_id][related_accession] = relationship
+
+    return heirarchy_dict
+
 
 

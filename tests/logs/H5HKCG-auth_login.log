@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/auth.py", line 146, in post
+    res_obj["fullname"] = user_doc["fname"] + " " + user_doc["lname"]
+KeyError: 'fname'

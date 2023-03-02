@@ -3,19 +3,19 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 from collections import OrderedDict
 
 
-import errorlib
-import util
+from glygen.db import get_mongodb
+from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query
+
+
 
 def site_search_init(config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -31,13 +31,12 @@ def site_search_init(config_obj):
 
 def site_detail(query_obj, config_obj):
      
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("site_detail", query_obj, config_obj)
+    error_list = get_errors_in_query("site_detail", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -62,6 +61,8 @@ def site_detail(query_obj, config_obj):
     if site_doc == None:
         post_error_list.append({"error_code":"non-existent-record"})
         return {"error_list":post_error_list}
+    if "_id" in site_doc:
+        site_doc.pop("_id")
 
 
     url = config_obj["urltemplate"]["uniprot"] % (canon_doc["uniprot_canonical_ac"])

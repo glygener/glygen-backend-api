@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases.py", line 185, in post
+    res_obj = protein_to_orthologs(req_obj, config_obj)
+  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases_apilib.py", line 352, in protein_to_orthologs
+    hash_obj = hashlib.md5(json.dumps(query_obj))
+TypeError: Unicode-objects must be encoded before hashing

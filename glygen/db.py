@@ -16,17 +16,11 @@ from flask.cli import with_appcontext
 def get_mongodb():
 
     ret_obj, error_obj = {}, {}
-    try: #Connect to mongodb
-        client = pymongo.MongoClient(
-            current_app.config["DB_HOST"],
-            authSource=current_app.config["DB_NAME"],
-            username=current_app.config["DB_USERNAME"],
-            password=current_app.config["DB_PASSWORD"],
-            authMechanism='SCRAM-SHA-1',
-            serverSelectionTimeoutMS=10000
-        )
+    try: 
+        conn_str, db_name = os.environ['MONGODB_CONNSTRING'], os.environ['DB_NAME']
+        client = pymongo.MongoClient(conn_str)
         client.server_info()
-        ret_obj = client[current_app.config["DB_NAME"]]
+        ret_obj = client[db_name]
     except pymongo.errors.ServerSelectionTimeoutError as err:
         error_obj = {"status":0, "error":"Connection to MongoDB failed", "details":err.details}
     except pymongo.errors.OperationFailure as err:

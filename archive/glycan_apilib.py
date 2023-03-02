@@ -3,25 +3,23 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 from collections import OrderedDict
 from bson import json_util, ObjectId
 
+from glygen.db import get_mongodb
+from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, order_obj
 
-import errorlib
-import util
 
 
 def glycan_search_init(config_obj):
    
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
-    error_list = errorlib.get_errors_in_query("glycan_searchinit",{}, config_obj)
+    error_list = get_errors_in_query("glycan_searchinit",{}, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -35,21 +33,21 @@ def glycan_search_init(config_obj):
 
 def glycan_search_simple(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("glycan_search_simple", query_obj, config_obj)
+    error_list = get_errors_in_query("glycan_search_simple", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
 
     mongo_query = get_simple_mongo_query(query_obj)
     #return mongo_query
-
+    #mongo_query = {"byonic": {"$options": "i", "$regex": "Hex\(5\)"}}
+    
     collection = "c_glycan"
     record_list = []
     record_type = "glycan"
@@ -63,7 +61,8 @@ def glycan_search_simple(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -71,7 +70,7 @@ def glycan_search_simple(query_obj, config_obj):
             "record_type":record_type,
             "search_type":"search_simple"
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -81,8 +80,7 @@ def glycan_search_simple(query_obj, config_obj):
 
 def glycan_search(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
@@ -99,7 +97,7 @@ def glycan_search(query_obj, config_obj):
             query_obj.pop(key)
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("glycan_search", query_obj, config_obj)
+    error_list = get_errors_in_query("glycan_search", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -130,7 +128,6 @@ def glycan_search(query_obj, config_obj):
                 o = {"residue":res, "min":default_min, "max":default_max}
                 query_obj["composition"].append(o)
         
-
     mongo_query = get_mongo_query(query_obj)
     #return mongo_query
 
@@ -139,13 +136,17 @@ def glycan_search(query_obj, config_obj):
 
     i = 0
     results = []
-    prj_obj = {"glytoucan_ac":1, "subsumption":1, "composition":1, "glycan_identifier":1}
+    prj_obj = {"glytoucan_ac":1, "subsumption":1, "composition":1,"composition_expanded":1, "glycan_identifier":1,"crossref.id":1}
     doc_list = []
     for doc in dbh[collection].find(mongo_query,prj_obj):
-        if "composition" in query_obj:
-            if query_obj["composition"] != []:
-                if passes_composition_filter(doc["composition"], query_obj) == False:
-                    continue
+        comp_flag_list = []
+        for k in ["composition", "composition_expanded"]:
+            if k in query_obj:
+                if query_obj[k] != []:
+                    flag = passes_composition_filter(doc["glytoucan_ac"], doc[k],k, query_obj)
+                    comp_flag_list.append(flag)
+        if False in comp_flag_list:
+            continue
         doc_list.append(doc)
 
 
@@ -164,8 +165,8 @@ def glycan_search(query_obj, config_obj):
                         rel = o["relationship"].lower()
                         tv = rel == rel_type
                         tv = True if rel_type == "any" else tv
-                        if tv and o["id"] not in hit_list:
-                            seen_id[o["id"]] = True
+                        if tv and o["related_accession"] not in hit_list:
+                            seen_id[o["related_accession"]] = True
                 for glytoucan_ac in seen_id.keys():
                     doc = dbh[collection].find_one({"glytoucan_ac":glytoucan_ac},prj_obj)
                     extra_doc_list.append(doc)
@@ -174,23 +175,51 @@ def glycan_search(query_obj, config_obj):
 
     record_list = []
     record_type = "glycan"
+    seen_id = {}
     for doc in doc_list:
+        if doc == None:
+            continue
         record_list.append(doc["glytoucan_ac"])
-    
+        seen_id[doc["glytoucan_ac"]] = True
+        for obj in doc["crossref"]:
+            seen_id[obj["id"]] = True
+
+
+    unmapped_obj_list = []
+    redundancy_dict = {}
+    if "glycan_identifier" in query_obj:
+        if "glycan_id" in query_obj["glycan_identifier"]:
+            qid_list = get_qid_list(query_obj["glycan_identifier"]["glycan_id"])
+            for qid in qid_list:
+                if qid not in seen_id:
+                    unmapped_obj_list.append({"input_id":qid, "reason":"ID not found"})
+                if qid_list.count(qid) > 1:
+                    redundancy_dict[qid] = qid_list.count(qid)
+
+    for qid in redundancy_dict:
+        for i in range(redundancy_dict[qid] - 1):
+            unmapped_obj_list.append({"input_id":qid, "reason":"Duplicate ID"})
+
+
+
+
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
             "ts":ts, 
             "record_type":record_type, 
-            "search_type":"search"
+            "search_type":"search",
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        if unmapped_obj_list != []:
+            cache_info["batch_info"] = {"unmapped":unmapped_obj_list}
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -203,14 +232,13 @@ def glycan_search(query_obj, config_obj):
 
 def glycan_detail(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("glycan_detail", query_obj, config_obj)
+    error_list = get_errors_in_query("glycan_detail", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
     collection = "c_glycan"
@@ -244,24 +272,28 @@ def glycan_detail(query_obj, config_obj):
             tmp_list.append(o)
     obj["composition"] = tmp_list
 
-    util.clean_obj(obj, config_obj["removelist"]["c_glycan"], "c_glycan")
+    clean_obj(obj, config_obj["removelist"]["c_glycan"], "c_glycan")
 
     if "enzyme" in obj:
         for o in obj["enzyme"]:
             if "gene_url" in o:
                 o["gene_link"] = o["gene_url"]
 
-    return util.order_obj(obj, config_obj["objectorder"]["glycan"])
+    return order_obj(obj, config_obj["objectorder"]["glycan"])
 
 
-def glycan_image(query_obj, config_obj):
+def glycan_image(query_obj, data_path):
+  
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
 
-        path_obj  =  config_obj[config_obj["server"]]["pathinfo"]
-        img_path = path_obj["glycanimagespath"] % (config_obj["datarelease"])
-        img_file = img_path +   query_obj["glytoucan_ac"].upper() + ".png"
-        if os.path.isfile(img_file) == False:
-            img_file = img_path +  "G0000000.png"
-        return img_file
+    init_obj = dbh["c_init"].find_one({})
+    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg/" % (init_obj["dataversion"])
+    img_file =  img_path + query_obj["glytoucan_ac"].upper() + ".png"
+    if os.path.isfile(img_file) == False:
+        img_file = img_path +  "G0000000.png"
+    return img_file
 
 
 
@@ -280,6 +312,7 @@ def get_simple_mongo_query(query_obj):
         cond_objs.append({"wurcs":{'$regex': query_obj["term"], '$options': 'i'}})
         cond_objs.append({"glycoct":{'$regex': query_obj["term"], '$options': 'i'}})
         qval = query_obj["term"].replace("(", "\\(").replace(")", "\\)")
+        cond_objs.append({"byonic":{'$regex': qval, '$options': 'i'}})
         cond_objs.append({"names.name": {'$regex': qval,'$options': 'i'}})
     elif query_obj["term_category"] == "protein":
         cond_objs.append({"glycoprotein.uniprot_canonical_ac":{'$regex': query_obj["term"], '$options': 'i'}})
@@ -296,7 +329,15 @@ def get_simple_mongo_query(query_obj):
     return mongo_query
 
 
-
+def get_qid_list(q):
+    q = q.replace("[", "\\[")
+    q = q.replace("[", "\\[")
+    q = q.replace("]", "\\]")
+    q = q.replace("(", "\\(")
+    q = q.replace(")", "\\)")
+    q = q.replace("[", "\\[")
+    qid_list = q.replace(" ", "").split(",")
+    return qid_list
 
 
 def get_mongo_query(query_obj):
@@ -305,13 +346,7 @@ def get_mongo_query(query_obj):
     #glytoucan_ac
     if "glycan_identifier" in query_obj:
         if "glycan_id" in query_obj["glycan_identifier"]:
-            q = query_obj["glycan_identifier"]["glycan_id"]
-            q = q.replace("[", "\\[")
-            q = q.replace("]", "\\]")
-            q = q.replace("(", "\\(")
-            q = q.replace(")", "\\)")
-            q = q.replace("[", "\\[")
-            qid_list = q.replace(" ", "").split(",")
+            qid_list = get_qid_list(query_obj["glycan_identifier"]["glycan_id"])
             #qval = "^%s$" % (q)
             cond_objs.append(
                 {
@@ -430,6 +465,10 @@ def get_mongo_query(query_obj):
     if "pmid" in query_obj:
         cond_objs.append({"publication.reference.id" : {'$regex': query_obj["pmid"], '$options': 'i'}})
 
+    #id_namespace
+    if "id_namespace" in query_obj:
+        cond_objs.append({"crossref.database" : {'$regex': query_obj["id_namespace"], '$options': 'i'}})
+
     #binding_protein_id
     if "binding_protein_id" in query_obj:
         q = {"interactions.interactor_id":{'$regex': query_obj["binding_protein_id"], '$options': 'i'}}
@@ -473,12 +512,11 @@ def get_mongo_query(query_obj):
 
 
 
-def passes_composition_filter(comp_obj, query_obj):
-
+def passes_composition_filter(glytoucan_ac, comp_obj, comp_field, query_obj):
 
     tv = []
     n_cond = 0
-    for q in query_obj["composition"]:
+    for q in query_obj[comp_field]:
         q_res, q_min, q_max = q["residue"], q["min"], q["max"]
         if q_max >= 0:
             n_cond += 1
@@ -487,7 +525,9 @@ def passes_composition_filter(comp_obj, query_obj):
                 if o_res == q_res and o_count >= q_min and o_count <= q_max:
                     tv.append(True)
                     break
-    
-    return len(tv) == n_cond and list(set(tv)) == [True]
+   
+    r_value = len(tv) == n_cond and list(set(tv)) == [True]
+
+    return r_value
 
 

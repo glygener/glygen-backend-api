@@ -3,29 +3,28 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 from collections import OrderedDict
 from bson import json_util, ObjectId
 
 
-import errorlib
-import util
+from glygen.db import get_mongodb
+from glygen.util import get_errors_in_query, sort_objects, order_obj
+
 
 
 
 
 def motif_detail(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("motif_detail", query_obj, config_obj)
+    error_list = get_errors_in_query("motif_detail", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
     collection = "c_motif"
@@ -56,32 +55,43 @@ def motif_detail(query_obj, config_obj):
 
     
     url = config_obj["urltemplate"]["motif"] % (motif_doc["motif_ac"])
+    glytoucan_url = config_obj["urltemplate"]["glytoucan"] % (motif_doc["glytoucan_ac"])
     motif_doc["motif"] = {
         "accession":motif_doc["motif_ac"], 
         "url":url,
-        "glytoucan_ac":motif_doc["glytoucan_ac"]
+        "glytoucan_ac":motif_doc["glytoucan_ac"],
+        "glytoucan_url":glytoucan_url
     }
 
     prop_list = ["motif", "glytoucan","name",  "mass", "publication"]
     prop_list += ["synonym", "crossref","keywords", "reducing_end","aglycon","reducing_end",
-        "alignment_method"
+        "alignment_method", "dictionary", 
+        "iupac","wurcs","glycoct","inchi","smiles_isomeric", "glycam", "byonic", "gwb"
     ]
+
 
     res_obj = {}
     for k in motif_doc:
         if k in prop_list:
             res_obj[k] = motif_doc[k]
 
+    q = {"record_id":{'$eq': motif_doc["glytoucan_ac"].upper()}}
+    history_obj = dbh["c_idtrack"].find_one(q)
+    res_obj["history"] = history_obj["history"] if history_obj != None else []
+
+
     mongo_query = {"motifs.id": {'$eq': motif_doc["motif_ac"]}}
-    doc_list = dbh["c_glycan"].find(mongo_query)
+    doc_list = list(dbh["c_glycan"].find(mongo_query))
+
     results = get_parent_glycans(motif_doc["motif_ac"], doc_list, res_obj)
 
-    sorted_id_list = util.sort_objects(results, config_obj["glycan_list"]["returnfields"], 
+    sorted_id_list = sort_objects(results, config_obj["glycan_list"]["returnfields"], 
                                         query_obj["sort"], query_obj["order"])
+    
     #check for post-access error, error_list should be empty upto this line
     if int(query_obj["offset"]) < 1 or int(query_obj["offset"]) > len(results):
         post_error_list.append({"error_code":"invalid-parameter-value", "field":"offset"})
-        return {"error_list":post_error_list}
+        return {"error_list":post_error_list, "n":len(results)}
 
     start_index = int(query_obj["offset"]) - 1
     stop_index = start_index + int(query_obj["limit"])
@@ -94,7 +104,7 @@ def motif_detail(query_obj, config_obj):
         "total_length":len(results), "sort":query_obj["sort"], "order":query_obj["order"]}
     res_obj["query"] = query_obj
 
-    return util.order_obj(res_obj, config_obj["objectorder"]["glycan"])
+    return order_obj(res_obj, config_obj["objectorder"]["glycan"])
 
 
 

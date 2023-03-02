@@ -3,43 +3,36 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 from collections import OrderedDict
-
 from flask import Flask, request, jsonify, Response, stream_with_context
-
 import zlib
 import gzip
 import struct           
 
-
-import smtplib
-from email.mime.text import MIMEText
-import errorlib
-import util
-
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from Bio.Alphabet import IUPAC
 
-import motif_apilib 
+from glygen.db import get_mongodb
+from glygen.util import cache_record_list,  extract_name, get_errors_in_query, order_obj, order_list, get_cached_motif_records_direct, get_cached_records_direct, get_cached_records_indirect
+from glygen.motif_apilib import get_parent_glycans
 
 
 
+def data_download(query_obj, config_obj, data_path):
 
-def data_download(query_obj, config_obj):
-
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    path_obj = config_obj[config_obj["server"]]["pathinfo"]
-
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
+    init_obj = dbh["c_init"].find_one({})
+    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg/" % (init_obj["dataversion"])
+    gzip_path = "/usr/bin/gzip"
+
+
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("data_download",query_obj, config_obj)
+    error_list = get_errors_in_query("data_download",query_obj, config_obj)
     if error_list != []:
         if error_list[0]["field"] != "id" and query_obj["type"] != "motif_list":
             return {"error_list":error_list}
@@ -56,13 +49,12 @@ def data_download(query_obj, config_obj):
         error_list.append({"error_code":"non-existent-mime-type-for-submitted-format"})
         return {"error_list":error_list}
 
-    img_path = path_obj["glycanimagespath"] % (config_obj["datarelease"])
     img_file = img_path +  "G0000000.png"
     
     format_lc = query_obj["format"].lower()
 
     data_buffer = ""
-    if query_obj["type"] in ["glycan_list", "motif_list","protein_list", 
+    if query_obj["type"] in ["glycan_list", "site_list", "motif_list","protein_list", 
             "genelocus_list", "ortholog_list","idmapping_list_mapped",
             "idmapping_list_unmapped", "idmapping_list_all", "idmapping_list_all_collapsed"]:
         collection = config_obj["downloadtypes"][query_obj["type"]]["cache"]
@@ -72,15 +64,15 @@ def data_download(query_obj, config_obj):
         list_obj = {}
         if query_obj["type"] == "motif_list":
             list_query = {"sort":"glycan_count","order":"desc", "limit":10000000}
-            list_obj = util.get_cached_motif_records_direct(list_query, config_obj)
+            list_obj = get_cached_motif_records_direct(list_query, config_obj)
         else:
             list_query = {"id":query_obj["id"], "limit":10000000}
             if query_obj["type"] in ["idmapping_list_all", "idmapping_list_all_collapsed",
                     "idmapping_list_mapped","idmapping_list_unmapped", 
                     "genelocus_list", "ortholog_list"]:
-                list_obj = util.get_cached_records_direct(list_query, config_obj)
+                list_obj = get_cached_records_direct(list_query, config_obj)
             else:
-                list_obj = util.get_cached_records_indirect(list_query, config_obj)
+                list_obj = get_cached_records_indirect(list_query, config_obj)
 
             if "error_list" in list_obj:
                 return list_obj
@@ -104,7 +96,7 @@ def data_download(query_obj, config_obj):
                
 
                 #print json.dumps(list_obj["results"], indent=4)
-                for j in xrange(0, len(list_obj["results"])):
+                for j in range(0, len(list_obj["results"])):
                     obj = list_obj["results"][j]
                     if query_obj["type"] == "idmapping_list_mapped":
                         if obj["category"] == "unmapped":
@@ -150,13 +142,13 @@ def data_download(query_obj, config_obj):
                     list_obj["results"] = new_list_obj
 
             if len(list_obj["results"]) > 0:
-                key_list = util.order_list(list_obj["results"][0].keys(), ordr_dict)
+                key_list = order_list(list_obj["results"][0].keys(), ordr_dict)
                 if format_lc == "csv":
                     data_buffer = ",".join(key_list) + "\n"
                 else:
                     data_buffer = "\t".join(key_list) + "\n" 
                 line_list = []
-                for j in xrange(0, len(list_obj["results"])):
+                for j in range(0, len(list_obj["results"])):
                     obj = list_obj["results"][j]
                     row = []
                     for k in key_list:
@@ -165,6 +157,8 @@ def data_download(query_obj, config_obj):
                             val_k = obj[k]["sequence"]
                         if query_obj["type"] == "ortholog_list" and k == "evidence":
                             val_k = obj[k][0]["url"]
+                        #if query_obj["type"] == "site_list" and k in ["glycosylation", "mutagenesis", "snv","site_annotation"]:
+                        #val_k = "yes" if len(obj[k]) > 0 else "no"
                         row.append(val_k)
                     line = "\"" +  "\"\t\"".join(row) + "\"\n"
                     if format_lc == "csv":
@@ -172,10 +166,26 @@ def data_download(query_obj, config_obj):
                     line_list.append(line)
                 data_buffer += "".join(line_list)
                 #print data_buffer
-        elif format_lc in ["iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct"]:
-            for j in xrange(0, len(list_obj["results"])):
+        elif format_lc in ["iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic", "grits"]:
+            res_count = len(list_obj["results"])
+            seen_byonic = {}
+            seq_lines = []
+            for j in range(0, res_count):
                 obj = list_obj["results"][j]
-                data_buffer += "%s,%s\n" % (obj["glytoucan_ac"], obj[format_lc])
+                if format_lc == "byonic":
+                    if obj[format_lc] not in seen_byonic and obj[format_lc].strip() != "":
+                        seq_lines.append("%s" % (obj[format_lc]))
+                        seen_byonic[obj[format_lc]] = True
+                elif format_lc == "grits":
+                    seq_lines.append("<glycan GWBSequence=\"%s\" id=\"%s\"/>" % (obj["gwb"],obj["glytoucan_ac"]))
+                else:
+                    seq_lines.append("%s,%s" % (obj["glytoucan_ac"], obj[format_lc]))
+            if format_lc == "grits":
+                seq_lines = [
+                    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>",
+                    "<database description=\"GlyGen\" name=\"GlyGen\" structureCount=\"%s\" version=\"1.0\">" % (res_count)
+                ] + seq_lines + ["</database>"]
+            data_buffer += "\n".join(seq_lines)
         elif format_lc in ["fasta"]:
             seq_list = []
             ac_list = []
@@ -188,29 +198,29 @@ def data_download(query_obj, config_obj):
                     continue
                 if "sequence" not in protein_obj["sequence"]:
                     continue
-                desc = util.extract_name(protein_obj["protein_names"],"recommended","UniProtKB")
+                desc = extract_name(protein_obj["protein_names"],"recommended","UniProtKB")
                 seq_obj = SeqRecord(
-                    Seq(protein_obj["sequence"]["sequence"], IUPAC.protein),
-                    id=obj["uniprot_canonical_ac"], 
+                    Seq(protein_obj["sequence"]["sequence"]),
+                    id=protein_obj["uniprot_canonical_ac"], 
                     description=desc
                 )
                 seq_list.append(seq_obj.format("fasta") + "\n\n")
             data_buffer += "".join(seq_list)
     elif query_obj["type"] in ["glycan_image"]:
         data_buffer = "xxxx"
-        img_path = path_obj["glycanimagespath"] % (config_obj["datarelease"])
         img_file = img_path + query_obj["id"].upper() + ".png"
         if os.path.isfile(img_file) == False:
             img_file = img_path +  "G0000000.png"
         data_buffer = open(img_file, "rb").read()
-    elif query_obj["type"] in ["glycan_detail", "motif_detail", "protein_detail","protein_detail_isoformset","protein_detail_homologset", "site_detail"]:
+    elif query_obj["type"] in ["glycan_detail", "motif_detail", "protein_detail","protein_detail_isoformset","protein_detail_homologset", "site_detail", "publication_detail"]:
         collection = config_obj["downloadtypes"][query_obj["type"]]["cache"]
         main_id = "uniprot_canonical_ac" 
         main_id = "glytoucan_ac" if query_obj["type"] == "glycan_detail" else main_id
         main_id = "motif_ac" if query_obj["type"] == "motif_detail" else main_id 
         main_id = "id" if query_obj["type"] == "site_detail" else main_id
-
-        mongo_query = {main_id:query_obj["id"]}
+        main_id = "record_id" if query_obj["type"] == "publication_detail" else main_id
+    
+        mongo_query = {main_id:{"$regex":query_obj["id"], "$options":"i"}}
         record_obj = dbh[collection].find_one(mongo_query)
         if record_obj == None:
             return {"error_list":{"error_code":"non-existent-record"}}
@@ -227,7 +237,7 @@ def data_download(query_obj, config_obj):
                 record_obj.pop("uniprot_canonical_ac")
                 record_obj.pop("uniprot_id")
                 data_buffer = json.dumps(record_obj,  indent=4)
-            elif query_obj["type"] == "site_detail":
+            elif query_obj["type"] in ["site_detail", "publication_detail"]:
                 data_buffer = json.dumps(record_obj,  indent=4)
             elif query_obj["type"] in ["glycan_detail", "motif_detail"]:
                 url = config_obj["urltemplate"]["glytoucan"] % (record_obj["glytoucan_ac"])
@@ -237,7 +247,7 @@ def data_download(query_obj, config_obj):
                 }
                 m_query = {"motifs.id": {'$eq': record_obj["glytoucan_ac"]}}
                 doc_list = dbh["c_glycan"].find(m_query)
-                record_obj["results"] = motif_apilib.get_parent_glycans(record_obj["glytoucan_ac"], doc_list, record_obj)
+                record_obj["results"] = get_parent_glycans(record_obj["glytoucan_ac"], doc_list, record_obj)
                 record_obj.pop("glytoucan_ac")
                 data_buffer = json.dumps(record_obj,  indent=4)
         elif format_lc in ["csv"] and query_obj["type"] in ["motif_detail"]:
@@ -247,7 +257,7 @@ def data_download(query_obj, config_obj):
             for o in dbh["c_glycan"].find(m_query):
                 row = [o["glytoucan_ac"]]
                 data_buffer += "\"" +  "\",\"".join(row) + "\"\n"
-        elif format_lc in ["iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct"] and query_obj["type"] in ["glycan_detail"]:
+        elif format_lc in ["iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic"] and query_obj["type"] in ["glycan_detail"]:
             data_buffer += record_obj[format_lc]
         elif query_obj["format"].lower() in ["fasta"]:
             if query_obj["type"] in ["protein_detail"]:
@@ -259,7 +269,7 @@ def data_download(query_obj, config_obj):
                             id_lbl = parts[0]
                             desc = " ".join(parts[1:])
                         seq_obj = SeqRecord(
-                            Seq(record_obj["sequence"]["sequence"], IUPAC.protein),
+                            Seq(record_obj["sequence"]["sequence"]),
                             id=id_lbl,
                             description=desc
                         )
@@ -277,7 +287,6 @@ def data_download(query_obj, config_obj):
                     data_buffer += get_fasta_sequence(dbh, seq_id, seq_id, "canonical")
         elif query_obj["format"].lower() in ["png"] and query_obj["type"] in ["motif_detail"]:
             data_buffer = "xxxx"
-            img_path = path_obj["glycanimagespath"] % (config_obj["datarelease"])
             glytoucan_ac = record_obj["glytoucan_ac"]
             img_file = img_path + glytoucan_ac.upper() + ".png"
             if os.path.isfile(img_file) == False:
@@ -291,7 +300,7 @@ def data_download(query_obj, config_obj):
         out_file = "/tmp/glygen-download-%s" % (fname)
         with open(out_file, "w") as FW:
             FW.write(data_buffer)
-        cmd = path_obj["gzip"] + " -c %s " % (out_file)
+        cmd = gzip_path + " -c %s " % (out_file)
         c_data_buffer = commands.getoutput(cmd)
         res_stream = Response(c_data_buffer, mimetype='application/gzip')
         res_stream.headers['Content-Disposition'] = 'attachment; filename=%s.gz' % (fname)
@@ -308,7 +317,6 @@ def data_download(query_obj, config_obj):
 
 def generate_gzip(data_buffer):
     
-
     # Yield a gzip file header first.
     yield (
         '\037\213\010\000' + # Gzip file, deflate, no filename
@@ -323,16 +331,20 @@ def generate_gzip(data_buffer):
     length = 0
 
     lines = data_buffer.split("\n")
-    for i in xrange(0,len(lines)):
+    for i in range(0,len(lines)):
         chunk = compressor.compress(lines[i])
         if chunk:
             yield chunk
-        crc = zlib.crc32(lines[i], crc) & 0xffffffffL
+
+        #Fix this xxxxxxxxxxxx
+        #crc = zlib.crc32(lines[i], crc) & 0xffffffffL
         length += len(lines[i])
 
     # Finishing off, send remainder of the compressed data, and CRC and length
     yield compressor.flush()
-    yield struct.pack("<2L", crc, length & 0xffffffffL)
+    
+    #Fix this xxxxxxxxxxxx
+    #yield struct.pack("<2L", crc, length & 0xffffffffL)
 
 
 
@@ -352,7 +364,7 @@ def get_fasta_sequence(dbh, canon, isoform_ac, seq_type):
                 break
     seq_str = sec_doc["sequence"]
     seq_header = sec_doc["header"]
-    seq_obj = SeqRecord(Seq(seq_str,IUPAC.protein),id="x",description="xxx")
+    seq_obj = SeqRecord(Seq(seq_str),id="x",description="xxx")
     seq_lines = seq_obj.format("fasta").split("\n")
     seq_lines = [">"+seq_header] + seq_lines[1:]
     seq = "\n".join(seq_lines) + "\n"

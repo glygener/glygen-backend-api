@@ -3,25 +3,22 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 from collections import OrderedDict
 
 
-import errorlib
-import util
-
+from glygen.db import get_mongodb
+from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query
 
 def protein_search_init(config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("protein_searchinit",{}, config_obj)
+    error_list = get_errors_in_query("protein_searchinit",{}, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -36,19 +33,18 @@ def protein_search_init(config_obj):
 
 def protein_search_simple(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
+
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("protein_search_simple", query_obj,config_obj)
+    error_list = get_errors_in_query("protein_search_simple", query_obj,config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
     mongo_query = get_simple_mongo_query(query_obj)
-    #print mongo_query
-
+    #return mongo_query
 
     collection = "c_protein"
     record_list = []
@@ -62,7 +58,8 @@ def protein_search_simple(query_obj, config_obj):
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -70,7 +67,7 @@ def protein_search_simple(query_obj, config_obj):
             "record_type":record_type,
             "search_type":"search_simple"
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -81,13 +78,12 @@ def protein_search_simple(query_obj, config_obj):
 def protein_search(query_obj, config_obj):
 
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("protein_search", query_obj,config_obj)
+    error_list = get_errors_in_query("protein_search", query_obj,config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -100,20 +96,45 @@ def protein_search(query_obj, config_obj):
     #cmd = "%s -db %s -query %s -evalue %s -outfmt %s"
     #cmd = cmd % (path_obj["blastp"], blast_db,"tmp/q.fasta", 0.1, 7)
 
-
     collection = "c_protein"
     record_list = []
     record_type = "protein"
-    prj_obj = {"uniprot_canonical_ac":1}
+    prj_obj = {"uniprot_canonical_ac":1, "uniprot_ac":1, "uniprot_id":1, 
+            "isoforms.isoform_ac":1}
+    seen_id = {}
     for obj in dbh[collection].find(mongo_query,prj_obj):
         record_list.append(obj["uniprot_canonical_ac"])
+        seen_id[obj["uniprot_canonical_ac"]] = True
+        seen_id[obj["uniprot_ac"]] = True
+        seen_id[obj["uniprot_id"]] = True
+        for o in obj["isoforms"]:
+            seen_id[o["isoform_ac"]] = True
+
+
+    unmapped_obj_list = []
+    redundancy_dict = {}
+    if "uniprot_canonical_ac" in query_obj:
+        qid_list = query_obj["uniprot_canonical_ac"].replace(" ", "").split(",")
+        qid_list = [qid.split("-")[0] for qid in qid_list]
+        for qid in qid_list:
+            if qid not in seen_id:
+                unmapped_obj_list.append({"input_id":qid, "reason":"ID not found"})
+            if qid_list.count(qid) > 1:
+                redundancy_dict[qid] = qid_list.count(qid)
+
+    for qid in redundancy_dict:
+        for i in range(redundancy_dict[qid] - 1):
+            unmapped_obj_list.append({"input_id":qid, "reason":"Duplicate ID"})
+
+
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     cache_coll = "c_cache"
     list_id = ""
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(query_obj))
+        hash_str = record_type + "_" + json.dumps(query_obj)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
@@ -121,7 +142,9 @@ def protein_search(query_obj, config_obj):
             "record_type":record_type,
             "search_type":"search"
         }
-        util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        if unmapped_obj_list != []:
+            cache_info["batch_info"] = {"unmapped":unmapped_obj_list}
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -132,23 +155,27 @@ def protein_search(query_obj, config_obj):
 def protein_alignment(query_obj, config_obj):
 
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("protein_alignment", query_obj, config_obj)
+    error_list = get_errors_in_query("protein_alignment", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
     collection = "c_cluster"
-    mongo_query = {"uniprot_canonical_ac":query_obj["uniprot_canonical_ac"]}
+    #mongo_query = {"uniprot_canonical_ac":query_obj["uniprot_canonical_ac"]}
+    mongo_query = {"uniprot_canonical_ac":{'$regex':query_obj["uniprot_canonical_ac"], 
+        '$options': 'i'}} 
     obj = dbh[collection].find_one(mongo_query)
+    if obj == None:
+        return {"error_list":[{"error_code":"non-existent-cluster for cluster type=%s, uniprot_canonical_ac=%s" % (query_obj["cluster_type"], query_obj["uniprot_canonical_ac"])}]}
 
 
     selected_cls_id = ""
     for cls_id in obj["clusterlist"]:
+        
         if cls_id.find(query_obj["cluster_type"]) != -1:
             selected_cls_id = cls_id
             break
@@ -176,18 +203,34 @@ def protein_alignment(query_obj, config_obj):
 
     #If the object has a property that is not in the specs, remove it
     
-    util.clean_obj(obj, config_obj["removelist"]["c_alignment"], "c_alignment")
+    clean_obj(obj, config_obj["removelist"]["c_alignment"], "c_alignment")
    
     #make canoncal sequence first in the list
     new_list_one = []
     new_list_two = []
+    canon_list = []
     for o in obj["sequences"]:
+        canon_list.append(o["uniprot_ac"])
         if o["uniprot_ac"] == query_obj["uniprot_canonical_ac"]:
             new_list_one.append(o)
         else:
             new_list_two.append(o)
     obj["sequences"] = new_list_one + new_list_two
     new_obj = obj
+
+    obj["details"] = []
+    sec_list = [
+        "uniprot_canonical_ac",
+        "ptm_annotation", "glycation", "snv", "site_annotation", "glycosylation",
+        "site_annotation", "glycosylation", "mutagenesis", "phosphorylation"
+    ]
+    collection = "c_protein"
+    mongo_query = {"uniprot_canonical_ac":{"$in": canon_list}}
+    for canon_obj in  dbh[collection].find(mongo_query):
+        tmp_obj = {}
+        for sec in sec_list:
+            tmp_obj[sec] = canon_obj[sec]
+        obj["details"].append(tmp_obj)
 
     return obj
 
@@ -198,13 +241,12 @@ def protein_alignment(query_obj, config_obj):
 
 def protein_detail(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("protein_detail", query_obj, config_obj)
+    error_list = get_errors_in_query("protein_detail", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -218,7 +260,11 @@ def protein_detail(query_obj, config_obj):
         ]
     }
     obj = dbh[collection].find_one(mongo_query)
-    q = {"record_id":{'$regex': query_obj["uniprot_canonical_ac"].upper(), "$options":"i"}}
+    q = {"$or":[
+            {"record_id":{'$regex': query_obj["uniprot_canonical_ac"].upper(), "$options":"i"}},
+            {"recordid":{'$regex': query_obj["uniprot_canonical_ac"].upper(), "$options":"i"}}
+        ]}
+
     history_obj = dbh["c_idtrack"].find_one(q)
 
 
@@ -246,9 +292,8 @@ def protein_detail(query_obj, config_obj):
     #    if len(obj["synonyms"]["gene"]["uniprotkb"]) > 1:
     #        o["name"] += "; " + "; ".join(obj["synonyms"]["gene"]["uniprotkb"][1:]) + ";"
     truncate_go_terms(obj)
-    util.clean_obj(obj, config_obj["removelist"]["c_protein"], "c_protein")
+    clean_obj(obj, config_obj["removelist"]["c_protein"], "c_protein")
 
-    #return util.order_obj(obj, config_obj["objectorder"]["protein"])
     return obj
 
 
@@ -376,6 +421,7 @@ def get_mongo_query(query_obj):
             if query_obj["organism"]["id"] > 0:
                 cond_objs.append({"species.taxid": {'$eq': query_obj["organism"]["id"]}})
 
+
     #gene_name
     if "gene_name" in query_obj:
         cond_objs.append({"gene_names.name" : {'$regex': query_obj["gene_name"], '$options': 'i'}})
@@ -392,9 +438,21 @@ def get_mongo_query(query_obj):
     if "pmid" in query_obj:
         cond_objs.append({"publication.reference.id" : {'$regex': query_obj["pmid"], '$options': 'i'}})
 
-    #glycosylation_type
+    #glycosylation_type and glycosylation_subtype
     if "glycosylation_type" in query_obj:
-        cond_objs.append({"glycosylation.type" : {'$regex': query_obj["glycosylation_type"], '$options': 'i'}})
+        if "glycosylation_subtype" in query_obj:
+            cond_objs.append({
+                "glycosylation": {            
+                    "$elemMatch": {             
+                        "type": {'$regex': query_obj["glycosylation_type"], '$options': 'i'},
+                        "subtype": {'$regex': query_obj["glycosylation_subtype"], '$options': 'i'}
+                    }
+                }
+            })
+        else:
+            cond_objs.append({"glycosylation.type" : {'$regex': query_obj["glycosylation_type"], '$options': 'i'}})
+    elif "glycosylation_subtype" in query_obj:
+        cond_objs.append({"glycosylation.subtype" : {'$regex': query_obj["glycosylation_subtype"], '$options': 'i'}})
 
     #attached_glycan_id
     if "attached_glycan_id" in query_obj:
@@ -427,17 +485,12 @@ def get_mongo_query(query_obj):
     #glycosylation_evidence
     if "glycosylation_evidence" in query_obj:
         if query_obj["glycosylation_evidence"] == "predicted":
-            cond_objs.append({"glycosylation": {'$gt':[]}})
-            cond_objs.append({"glycosylation.evidence.database": {'$ne':"UniCarbKB"}})
-            cond_objs.append({"glycosylation.evidence.database": {'$ne':"PDB"}})
-            cond_objs.append({"glycosylation.evidence.database": {'$ne':"PubMed"}})
+            cond_objs.append({"glycosylation": {'$gt': []}})
+            cond_objs.append({"glycosylation.site_category": {'$ne':"reported"}})
+            cond_objs.append({"glycosylation.site_category": {'$ne':"reported_with_glycan"}})
         elif query_obj["glycosylation_evidence"] == "reported":
-            or_list = [
-                {"glycosylation.evidence.database": {'$eq':"UniCarbKB"}}
-                ,{"glycosylation.evidence.database": {'$eq':"PubMed"}}
-                ,{"glycosylation.evidence.database": {'$eq':"PDB"}}
-            ]
-            cond_objs.append({'$or':or_list})
+            cond_objs.append({"glycosylation": {'$gt': []}})
+            cond_objs.append({"glycosylation.site_category":{"$regex":"reported","$options":"i"}})
         elif query_obj["glycosylation_evidence"] == "both":
             cond_objs.append({"glycosylation": {'$gt': []}})
 
@@ -479,12 +532,9 @@ def get_mongo_query(query_obj):
     #sequence
     if "sequence" in query_obj:
         if "aa_sequence" in query_obj["sequence"]:
-            cond_objs.append({"sequence.sequence": {'$regex': query_obj["sequence"]["aa_sequence"],
-                                                        '$options': 'i'}})
-        #if "type" in query_obj["sequence"]:
-        #    cond_objs.append({"sequence.type": {'$regex': query_obj["sequence"]["type"],
-        #                                            '$options': 'i'}})
-
+            val = query_obj["sequence"]["aa_sequence"]
+            val = val.replace("X", "[A-Z]{1}")
+            cond_objs.append({"sequence.sequence": {'$regex':val,'$options': 'i'}})
     
 
     operation = query_obj["operation"].lower() if "operation" in query_obj else "and"
@@ -517,9 +567,9 @@ def get_protein_list_object(obj):
        
     protein_name, protein_names_uniprotkb, protein_names_refseq = "", "", ""
     if "protein_names" in obj:
-        protein_name = util.extract_name(obj["protein_names"], "recommended", "UniProtKB")
-        protein_names_uniprotkb = util.extract_name(obj["protein_names"], "all", "UniProtKB")
-        protein_names_refseq = util.extract_name(obj["protein_names"], "all", "RefSeq")
+        protein_name = extract_name(obj["protein_names"], "recommended", "UniProtKB")
+        protein_names_uniprotkb = extract_name(obj["protein_names"], "all", "UniProtKB")
+        protein_names_refseq = extract_name(obj["protein_names"], "all", "RefSeq")
 
 
     refseq_ac, refseq_name = "", ""
@@ -529,9 +579,9 @@ def get_protein_list_object(obj):
 
     gene_name, gene_names_uniprotkb, gene_names_refseq = "", "", ""
     if "gene_names" in obj:
-        gene_name = util.extract_name(obj["gene_names"], "recommended", "UniProtKB")
-        gene_names_uniprotkb = util.extract_name(obj["gene_names"], "all", "UniProtKB")
-        gene_names_refseq = util.extract_name(obj["gene_names"], "all", "RefSeq")
+        gene_name = extract_name(obj["gene_names"], "recommended", "UniProtKB")
+        gene_names_uniprotkb = extract_name(obj["gene_names"], "all", "UniProtKB")
+        gene_names_refseq = extract_name(obj["gene_names"], "all", "RefSeq")
 
 
 

@@ -19,7 +19,9 @@
             "glycosylation_flag":{"targetlist":["glycosylation"]},
             "snv_flag":{"targetlist":["snv"]},
             "mutagenesis_flag":{"targetlist":["mutagenesis"]},
-            "list_fields":["glycosylation", "snv", "mutagenesis"]
+            "phosphorylation_flag":{"targetlist":["phosphorylation"]},
+            "glycation_flag":{"targetlist":["glycation"]},
+            "list_fields":["glycosylation", "snv", "mutagenesis", "phosphorylation", "glycation"]
         },
         "glycan":{
         },
@@ -30,7 +32,8 @@
             "name":{"targetlist":["common_name", "name"]}
         },
         "disease":{
-            "name":{"targetlist":["recommended_name.name", "synonyms.name"]}
+            "name":{"targetlist":["recommended_name.name", "synonyms.name"]},
+            "disease_id":{"targetlist":["disease_id", "synonyms.id"]}
         }
     },
     "ignored_path_list":{ 
@@ -178,7 +181,6 @@
             "publication.evidence.database",
             "publication.evidence.id",
             "publication.journal",
-            "publication.reference.id",
             "publication.reference.type",
             "publication.title",
             "refseq.summary",
@@ -299,7 +301,6 @@
             "names.domain",
             "publication.evidence.database",
             "publication.evidence.id",
-            "publication.reference.id",
             "publication.reference.type",
             "publication.title",
             "residues.attachedby",
@@ -436,7 +437,6 @@
             "publication.evidence.database",
             "publication.evidence.id",
             "publication.reference.type",
-            "publication.reference.id",
             "publication.title",
             "refseq.name",
             "refseq.summary",

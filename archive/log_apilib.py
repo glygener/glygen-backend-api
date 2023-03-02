@@ -3,29 +3,26 @@ import string
 import random
 import hashlib
 import json
-import commands
 import datetime,time
 import pytz
 from collections import OrderedDict
 
+from bson import json_util
 
+from glygen.db import get_mongodb
+from glygen.util import get_errors_in_query, sort_objects
 
-import smtplib
-from email.mime.text import MIMEText
-import errorlib
-import util
 
 
 
 def log_logging(query_obj, config_obj):
     
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("log_logging",query_obj, config_obj)
+    error_list = get_errors_in_query("log_logging",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -43,13 +40,12 @@ def log_logging(query_obj, config_obj):
 
 def log_init(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("log_init",query_obj, config_obj)
+    error_list = get_errors_in_query("log_init",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -114,13 +110,12 @@ def log_init(query_obj, config_obj):
 
 def log_access(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("log_access",query_obj, config_obj)
+    error_list = get_errors_in_query("log_access",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -152,6 +147,8 @@ def log_access(query_obj, config_obj):
         doc["page"] = doc["page"] if "page" in doc else ""
         doc["message"] = doc["message"] if "message" in doc else ""
         doc["ts"] = doc["ts"] if "ts" in doc else ""
+        doc["ts"] = doc["ts"].strftime('%Y-%m-%d %H:%M:%S %Z%z') if "ts" in doc else ""
+
         obj = {"type":doc["type"], "user":doc["user"], "page":doc["page"], 
                 "id":doc["id"],"message":doc["message"], "created":doc["ts"]}
         obj_list.append(obj)
@@ -164,7 +161,7 @@ def log_access(query_obj, config_obj):
     query_obj["order"] = query_obj["order"] if "order" in query_obj else "asc"
 
 
-    sorted_id_list = util.sort_objects(obj_list, config_obj["log_access"]["returnfields"],
+    sorted_id_list = sort_objects(obj_list, config_obj["log_access"]["returnfields"],
                                                   "created", query_obj["order"])
 
 
@@ -184,7 +181,7 @@ def log_access(query_obj, config_obj):
 
     #res_obj["pagination"] = {"offset":query_obj["offset"], "limit":query_obj["limit"],
     #    "total_length":len(obj_list), "sort":query_obj["sort"], "order":query_obj["order"]}
-
+    #res_obj = json.loads(json.dumps(res_obj, indent=4, default=json_util.default))
     return res_obj 
 
 
@@ -192,13 +189,12 @@ def log_access(query_obj, config_obj):
 
 def log_grouped(query_obj, config_obj):
 
-    db_obj = config_obj[config_obj["server"]]["dbinfo"]
-    dbh, error_obj = util.connect_to_mongodb(db_obj) #connect to mongodb
+    dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
 
     #Collect errors 
-    error_list = errorlib.get_errors_in_query("log_grouped",query_obj, config_obj)
+    error_list = get_errors_in_query("log_grouped",query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
     
@@ -236,7 +232,7 @@ def log_grouped(query_obj, config_obj):
     query_obj["limit"] = query_obj["limit"] if "limit" in query_obj else 100
     query_obj["order"] = query_obj["order"] if "order" in query_obj else "asc"
 
-    sorted_id_list = util.sort_objects(obj_list, config_obj["log_grouped"]["returnfields"],
+    sorted_id_list = sort_objects(obj_list, config_obj["log_grouped"]["returnfields"],
                                                   "count", query_obj["order"])
 
     #check for post-access error, error_list should be empty upto this line
