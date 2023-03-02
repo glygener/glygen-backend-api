@@ -12,6 +12,12 @@ conf/config.json. Make sure you are in the branch for the given release.
 For example, you are trying to deploy release 2.0, use the following 
 commands to be in the right branch.
 
+    ```
+    git checkout 2.0
+    git branch
+    ```
+the second command should show that you are are in 2.0 branch.
+
 
 
 ## Step-1: Data download
