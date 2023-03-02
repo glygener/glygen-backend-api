@@ -8,7 +8,10 @@ The following python modules must be available on your server:
 
 ## Setting config parameters
 After cloning this repo, you will need to set the paramters given in
-conf/config.json
+conf/config.json. Make sure you are in the branch for the given release.
+For example, you are trying to deploy release 2.0, use the following 
+commands to be in the right branch.
+
 
 
 ## Step-1: Data download
