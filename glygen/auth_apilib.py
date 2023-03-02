@@ -188,8 +188,9 @@ def auth_userinfo(logged_user, query_obj, config_obj):
     res_obj = dbh["c_users"].find_one(q_obj)
     if res_obj == None:
         return {"error_list":[{"error_code":"user-does-not-exist"}]}
-    res_obj.pop("_id")
-    res_obj.pop("password")
+    for k in ["_id", "password"]:
+        if k in res_obj:
+            res_obj.pop(k)
 
     return res_obj
 

@@ -10,7 +10,7 @@ import json
 import bcrypt
 
 from glygen.graph_apilib import getdata
-from glygen.util import get_error_obj, trim_object
+from glygen.util import get_req_obj
 import traceback
 
 api = Namespace("graph", description="Graph APIs")
@@ -24,20 +24,18 @@ class GRaph(Resource):
     @api.doc('getdata')
     @api.expect(getdata_query_model)
     def post(self):
-        api_name = "graph_getdata"
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = request.json
-            trim_object(req_obj)
+            req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             res_obj = getdata(req_obj, config_obj)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"]
-            res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
-        return res_obj
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
 
 
 
