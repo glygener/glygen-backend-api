@@ -11,10 +11,10 @@ After cloning this repo, you will need to set the paramters given in
 conf/config.json. Make sure you are in the branch for the given release.
 For example, you are trying to deploy release 2.0, use the following 
 commands to be in the right branch.
-    ```
-    git checkout 2.0
-    git branch
-    ```
+   ```
+   git checkout 2.0
+   git branch
+   ```
 the second command should show that you are are in 2.0 branch.
 
 
@@ -24,9 +24,9 @@ Visit https://data.glygen.org/ftp/ to see what data release/version $VER you wan
 download (for example 2.0.2), and run the python script given to download from
 that release. Since this will take long, use nohup as shown below.
 
-    ```
-    nohup python3 download_data.py -v $VER > logfile.log & 
-    ```
+   ```
+   nohup python3 download_data.py -v $VER > logfile.log & 
+   ```
 
 
 ## Step-2: Creating and starting docker container for mongodb
