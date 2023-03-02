@@ -8,6 +8,7 @@
     },
     "base_url":"http://localhost:8082",
     "data_path":"/data/shared/glygen/",
+    "downloads_path":"/data/shared/glyds/downloads/",
     "mail":{
         "server":"172.17.0.1", 
         "port":"25",

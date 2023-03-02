@@ -298,6 +298,8 @@ def glycan_image(query_obj, data_path):
 
 
 
+
+
 def get_simple_mongo_query(query_obj):
 
 
