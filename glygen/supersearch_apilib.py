@@ -277,7 +277,6 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
     dump_debug_timer("flag-1 running concept queries", DEBUG_FLAG)
 
-
     #return mongo_query
 
 
@@ -302,6 +301,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
         #prj_obj = {record_id_field:1}
         prj_obj = {record_id_field:1, "down_seq":1, "up_seq":1, "site_seq":1,}
         doc_list = list(dbh[coll].find(q_obj["query"],prj_obj))
+
         #agg_query = [{"$project":{record_id_field:1, "result":{ "$not": [ q_obj["query"] ] }}}]
         #doc_list = list(dbh[coll].aggregate(agg_query))
         #print  record_type, len(doc_list)
@@ -321,6 +321,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
             add_reason(reason_dict, record_type, record_id, "self", record_id)  
 
 
+
     dump_debug_timer("flag-2 loading network", DEBUG_FLAG)
 
     record_type_list = list(config_obj["record_type_info"].keys())
@@ -336,6 +337,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
         conn_dict = load_conn_dict(doc_list)
 
 
+
     #After imposing edge constraints, some hits cannot be traced
     #these untraceable hits should be removed from final_hit_dict
     impose_edge_constraints_type_I(initial_hit_dict, final_hit_dict, final_hit_dict_split, reason_dict, ignore_dict)
@@ -348,7 +350,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     if empty_search_flag == True:
         query_obj["concept_query_list"] = []
 
-    
+
 
     res_obj = {"query":query_obj, "results_summary":{}}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
@@ -410,7 +412,8 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
             bylinkage_obj[src_record_type] = {"list_id":list_id, "result_count":n_from_src}
         res_obj["results_summary"][dst_record_type]["bylinkage"] = bylinkage_obj
 
-   
+    
+
     id_list = []
     for dst_record_type in res_obj["results_summary"]:
         list_id = res_obj["results_summary"][dst_record_type]["list_id"]

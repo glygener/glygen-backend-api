@@ -32,6 +32,7 @@ def globalsearch_search(query_obj, config_obj):
     json_url = os.path.join(SITE_ROOT, "conf/global_search.json")
     search_obj = json.loads(open(json_url, "r").read())
     query_obj["term"] = query_obj["term"].replace("(", "\\(").replace(")", "\\)")
+    query_obj["term"] = query_obj["term"].replace("[", "\\[").replace("]", "\\]")
 
     for obj in search_obj:
         if "$text" in obj["mongoquery"]:
@@ -144,6 +145,7 @@ def globalsearch_search(query_obj, config_obj):
                 end = start + config_obj["cache_batch_size"]
                 end = result_count if end > result_count else end
                 query_obj["term"] = query_obj["term"].replace("\\(", "(").replace("\\)",")")
+                query_obj["term"] = query_obj["term"].replace("\\[", "[").replace("\\]","]")
                 if start < result_count:
                     results_part = results_dict[key_one][key_two][start:end]
                     cache_info = {

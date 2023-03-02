@@ -13,13 +13,16 @@
 		  "glycan":100000
 		,"protein":100000
 	}
+        ,"admin_list":[
+            "rykahsay@gwu.edu"
+         ]
         ,"jobinfo":{
             "tspath":"/usr/local/bin/ts",
             "maxjobs":5,
 	    "structure_search":{
                 "incmdflag":"-i",
                 "outcmdflag":"-o",
-                "path":"/usr/bin/python3 /app/job_submitters/structure_search.py",
+                "path":"python /app/job_submitters/structure_search.py",
                 "input_files":[
                     {"name":"input.json", "format":"json"}
                 ],
@@ -35,7 +38,7 @@
                 "incmdflag":"-query",
                 "outcmdflag":"-out",
                 "max_input_records":10,
-                "path":"/usr/bin/python3 /app/job_submitters/blastp.py",
+                "path":"python /app/job_submitters/blastp.py",
                 "input_files":[
                     {"name":"input.fasta", "format":"fasta"}
                 ],
