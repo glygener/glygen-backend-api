@@ -175,7 +175,6 @@
                 },
                 "required": [
                     "evidence",
-                    "gene_name",
                     "protein_name",
                     "tax_id",
                     "tax_name",
