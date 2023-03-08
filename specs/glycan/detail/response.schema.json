@@ -653,8 +653,6 @@
     },
     "required": [
         "classification",
-        "composition",
-        "composition_expanded",
         "crossref",
         "glycoct",
         "glytoucan",
