@@ -18,7 +18,6 @@ from glygen.video_apilib import video_addnew, video_detail, video_list, video_de
 from glygen.util import get_req_obj
 import traceback
 
-
 api = Namespace("video", description="Video APIs")
 
 addnew_query_model = api.model(
@@ -27,6 +26,9 @@ addnew_query_model = api.model(
         "url": fields.String(required=True, default="https://www.youtube.com/embed/xyV5v5nRm6A?rel=0")
     }
 )
+
+
+
 detail_query_model = api.model(
     'Video Detail Query', { "id": fields.String(required=True, default="63d04393d634c7d21067b32e")}
 )
@@ -39,7 +41,6 @@ delete_query_model = api.model(
 
 @api.route('/addnew/')
 class Video(Resource):
-    @api.doc(False)
     @api.expect(addnew_query_model)
     @jwt_required
     def post(self):
@@ -104,7 +105,7 @@ class Video(Resource):
 
 @api.route('/delete/')
 class Video(Resource):
-    @api.doc(False)
+    #@api.doc(False)
     @api.expect(delete_query_model)
     @jwt_required
     def post(self):

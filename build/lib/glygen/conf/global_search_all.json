@@ -113,7 +113,7 @@
                     {"list_id":{"$eq": "xx"}},
                     {"$or":[
                         {"expression_tissue.tissue.name":{"$regex":"query_term", "$options": "i"}},
-                        {"expression_tissue.tissue.uberon":{"$regex":"query_term", "$options": "i"}}
+                        {"expression_tissue.tissue.id":{"$regex":"query_term", "$options": "i"}}
                     ]
                     }
                 ]
@@ -304,7 +304,7 @@
                     {"list_id":{"$eq": "xx"}},
                     {"$or":[
                         {"expression_tissue.tissue.name":{"$regex":"query_term", "$options": "i"}},
-                        {"expression_tissue.tissue.uberon":{"$regex":"query_term", "$options": "i"}}
+                        {"expression_tissue.tissue.id":{"$regex":"query_term", "$options": "i"}}
                     ]
                     },
                     {"glycosylation": {"$gt":[]}}

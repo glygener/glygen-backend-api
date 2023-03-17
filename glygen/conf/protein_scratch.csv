@@ -27,7 +27,7 @@ expression_tissue.evidence.id {unicode}
 expression_tissue.evidence.url {unicode}
 expression_tissue.present {unicode}
 expression_tissue.tissue.name {unicode}
-expression_tissue.tissue.uberon {unicode}
+expression_tissue.tissue.id {unicode}
 expression_tissue.tissue.url {unicode}
 function.annotation {unicode}
 function.evidence.database {unicode}

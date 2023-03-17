@@ -719,8 +719,8 @@ def get_recordinfo_from_api(sec_info, query_obj, stat_obj, config_obj):
                         do_id = o["recommended_name"]["id"]
                         id_list_one.append(do_id)
             elif record_type == "protein" and sec == "expression_tissue" and "tissue" in obj:
-                if "uberon" in obj["tissue"]:
-                    id_list_one.append(obj["tissue"]["uberon"])
+                if "id" in obj["tissue"]:
+                    id_list_one.append(obj["tissue"]["id"])
                     id_list_one.append(obj["tissue"]["name"].lower())
             elif record_type == "protein" and sec == "gene" and "locus" in obj:
                 id_list_one.append(str(obj["locus"]["chromosome"]))

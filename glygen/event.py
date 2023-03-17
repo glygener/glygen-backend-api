@@ -72,7 +72,7 @@ delete_query_model = api.model(
 
 @api.route('/addnew/')
 class Event(Resource):
-    @api.doc(False)
+    #@api.doc(False)
     @api.expect(addnew_query_model)
     @jwt_required
     def post(self):
@@ -141,7 +141,7 @@ class Event(Resource):
 
 @api.route('/update/')
 class Event(Resource):
-    @api.doc(False)
+    #@api.doc(False)
     @api.expect(update_query_model)
     @jwt_required
     def post(self):
@@ -167,7 +167,7 @@ class Event(Resource):
 
 @api.route('/delete/')
 class Event(Resource):
-    @api.doc(False)
+    #@api.doc(False)
     @api.expect(delete_query_model)
     @jwt_required
     def post(self):

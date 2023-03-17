@@ -244,7 +244,12 @@ def glycan_detail(query_obj, config_obj):
     collection = "c_glycan"
 
 
-    q = {"record_id":{'$eq': query_obj["glytoucan_ac"].upper()}}
+    q = {
+        "$and":[ 
+            {"record_id":{'$eq': query_obj["glytoucan_ac"].upper()}},
+            {"recordtype":{"$eq": "glycan"}}
+        ]
+    }
     history_obj = dbh["c_idtrack"].find_one(q)
 
     mongo_query = {"glytoucan_ac":{'$eq': query_obj["glytoucan_ac"].upper()}}
@@ -256,13 +261,15 @@ def glycan_detail(query_obj, config_obj):
         post_error_list.append({"error_code":"non-existent-record"})
         res_obj = {"error_list":post_error_list}
         if history_obj != None:
-            res_obj["reason"] = history_obj["history"]
+            res_obj["reason"] = history_obj["history"][-1]
+        else:
+            res_obj["reason"] = {"type":"invalid","description": "Invalid Accession"}
         return res_obj
+
 
     url = config_obj["urltemplate"]["glytoucan"] % (obj["glytoucan_ac"])
     obj["glytoucan"] = {"glytoucan_ac":obj["glytoucan_ac"], "glytoucan_url":url}
     obj["history"] = history_obj["history"] if history_obj != None else []
-
 
 
     #Remove 0 count residues
