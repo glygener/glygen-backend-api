@@ -445,7 +445,9 @@ def get_result_count(job_type, out_file):
 
     n = 0
     if job_type in ["structure_search"]:
-        n = len(json.loads(open(out_file, "r").read()))
+        doc = json.loads(open(out_file, "r").read())
+        if "result" in doc:
+            n = len(doc["result"])
     elif job_type == "blastp":
         cmd = "grep \"Score =\" %s | wc" % (out_file)
         n = int(subprocess.getoutput(cmd).strip().split(" ")[0])

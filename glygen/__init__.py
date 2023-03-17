@@ -38,7 +38,10 @@ def create_app():
     #CORS(app)
 
     api = Api(app, version='1.0', title='GlyGen APIs', description='Documentation for the GlyGen APIs',)
-    
+        
+
+
+
     api.add_namespace(glycan_api)
     api.add_namespace(motif_api)
     api.add_namespace(protein_api)
@@ -75,8 +78,10 @@ def create_app():
 
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=1)
     app.config["JWT_REFRESH_TOKEN_EXPIRES"] = datetime.timedelta(days=30)
+    app.config['PROPAGATE_EXCEPTIONS'] = True
 
     jwt = JWTManager(app)
+
 
 
 

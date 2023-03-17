@@ -85,11 +85,11 @@ def main():
         tmpdb_dbh = tmpdb_client[tmpdb_name]
 
         #drop all existing collections
-        write_progress_msg("\n ... dropping old collections", "a")
-        for c in tmpdb_dbh.list_collection_names():
-            write_progress_msg(" ... dropping tmpdb.%s" % (c), "a")
-            tmpdb_dbh[c].drop()
-            tmpdb_dbh[c].drop_indexes()
+        write_progress_msg("\n ... dropping old collection", "a")
+        write_progress_msg(" ... dropping tmpdb.%s" % (coll), "a")
+        tmpdb_dbh[coll].drop()
+        if coll in indexed_colls:
+            tmpdb_dbh[coll].drop_indexes()
 
 
         for d in dir_list:

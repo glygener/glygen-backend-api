@@ -260,13 +260,18 @@ def protein_detail(query_obj, config_obj):
         ]
     }
     obj = dbh[collection].find_one(mongo_query)
-    q = {"$or":[
-            {"record_id":{'$regex': query_obj["uniprot_canonical_ac"].upper(), "$options":"i"}},
-            {"recordid":{'$regex': query_obj["uniprot_canonical_ac"].upper(), "$options":"i"}}
-        ]}
-
+    q = {
+        "$and":[
+            {"recordtype":{"$eq": "protein"}},
+            {
+                "$or":[
+                    {"record_id":{'$regex': query_obj["uniprot_canonical_ac"].upper(), "$options":"i"}},
+                    {"recordid":{'$regex': query_obj["uniprot_canonical_ac"].upper(), "$options":"i"}}
+                ]
+            }
+        ]
+    }
     history_obj = dbh["c_idtrack"].find_one(q)
-
 
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
@@ -274,7 +279,12 @@ def protein_detail(query_obj, config_obj):
         post_error_list.append({"error_code":"non-existent-record"})
         res_obj = {"error_list":post_error_list}
         if history_obj != None:
-            res_obj["reason"] = history_obj["history"]
+            res_obj["reason"] = history_obj["history"][-1]
+            if res_obj["reason"]["type"] == "discontinued":
+                if res_obj["reason"]["description"].find("was in GlyGen") != -1:
+                    res_obj["reason"]["type"] = "discontinued_in_glygen"
+        else:
+            res_obj["reason"] = {"type":"invalid","description": "Invalid Accession"}
         return res_obj
 
 

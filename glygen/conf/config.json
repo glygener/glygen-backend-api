@@ -58,7 +58,7 @@
                         "cmdflag":"-evalue"
                     },
                     {
-                        "id":"num_alignments", "label":"Max number of hits", "type":"int", "value":250, "cmdflag":"-num_alignments"
+                        "id":"num_alignments", "label":"Max number of hits (Proteins)", "type":"int", "value":250, "cmdflag":"-num_alignments"
                     }
                 ]
             }

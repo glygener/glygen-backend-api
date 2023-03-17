@@ -37,8 +37,8 @@ def validate_response(res_obj, schema_file):
     error_list = sorted(v.iter_errors(res_obj), key=str)
     res = {"error_list":[]}
     for error in error_list:
-        res["error_list"].append(error.message)
-        #res["error_list"].append(error)
+        if error.message not in res["error_list"]:
+            res["error_list"].append(error.message)
 
     res["status"] = "passed" if res["error_list"] == [] else "failed"
 
@@ -66,29 +66,26 @@ def run_exhaustive(api_grp):
     api_url = config_obj["base_url"] + "/misc/info"
     res = requests.post(api_url, json={}, verify=False)
     info_obj =  json.loads(res.content)
+    print (info_obj.keys())
+
     data_version = info_obj["initobj"]["dataversion"]
 
     jsondb_dir = config_obj["data_path"] + "releases/data/v-%s/jsondb/" % (data_version)
     log_dir = config_obj["data_path"]  + "/logs/"
 
-    api_url = config_obj["base_url"] + "/misc/info"
-    #res = requests.post(api_url, json={}, verify=False)
-    res = requests.get(api_url, json={}, verify=False)
-
-    info_obj =  json.loads(res.content)
-    data_version = info_obj["initobj"]["dataversion"]
 
 
     cmd = "rm -f " + log_dir + "failure_log_%s_detail.*" % (api_grp)
     x = subprocess.getoutput(cmd)
 
-                                    
 
     file_list = glob.glob(jsondb_dir + "%sdb/*.json" % (api_grp))
     try:
         summary_file = log_dir + "%s_test_summary_%s_mode_2.csv" % (user_name,api_grp)
-        FW = open(summary_file, "w")
-                       
+        row = ["api_grp", "main_id", "flags"]
+        with open(summary_file, "w") as FW:
+            FW.write("%s\n" % (",".join(row)))
+
 
         for in_file in file_list:
             main_id = in_file.split("/")[-1].replace(".json", "")
@@ -124,13 +121,13 @@ def run_exhaustive(api_grp):
                     flag_list.append("schema_validation_failed")
             flags = "success" if flag_list == [] else "failed:" + ";".join(flag_list)
             row = [api_grp, main_id, flags]
-            FW.write("%s\n" % (",".join(row)))
+            with open(summary_file, "a") as FW:
+                FW.write("%s\n" % (",".join(row)))
 
             if flags != "success":
                 out_file = log_dir + "%s_failure_log_%s_detail.%s.json" % (user_name, api_grp, main_id)
                 with open(out_file, "w") as FL:
                     FL.write("%s\n" % (json.dumps(o, indent=4)))
-        FW.close()
         print ("\nSummary output file: %s\n" %(summary_file))
     except Exception as e:
         print (traceback.format_exc())
