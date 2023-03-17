@@ -175,7 +175,6 @@
                 },
                 "required": [
                     "evidence",
-                    "gene_name",
                     "protein_name",
                     "tax_id",
                     "tax_name",
@@ -654,8 +653,6 @@
     },
     "required": [
         "classification",
-        "composition",
-        "composition_expanded",
         "crossref",
         "glycoct",
         "glytoucan",
