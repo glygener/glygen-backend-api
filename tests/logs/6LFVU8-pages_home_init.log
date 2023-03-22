@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/pages.py", line 40, in post
-    res_obj = home_init(req_obj, config_obj)
-TypeError: home_init() takes 1 positional argument but 2 were given

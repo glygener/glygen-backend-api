@@ -10,6 +10,7 @@ from flask import Flask, request, jsonify, Response, stream_with_context
 import zlib
 import gzip
 import struct           
+import subprocess
 
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
@@ -28,8 +29,6 @@ def data_download(query_obj, config_obj, data_path):
 
     init_obj = dbh["c_init"].find_one({})
     img_path = data_path + "/releases/data/v-%s/glycanimages_snfg/" % (init_obj["dataversion"])
-    gzip_path = "/usr/bin/gzip"
-
 
     #Collect errors 
     error_list = get_errors_in_query("data_download",query_obj, config_obj)
@@ -221,6 +220,8 @@ def data_download(query_obj, config_obj, data_path):
         main_id = "record_id" if query_obj["type"] == "publication_detail" else main_id
     
         mongo_query = {main_id:{"$regex":query_obj["id"], "$options":"i"}}
+        #return {"error_list":mongo_query}
+
         record_obj = dbh[collection].find_one(mongo_query)
         if record_obj == None:
             return {"error_list":{"error_code":"non-existent-record"}}
@@ -297,15 +298,24 @@ def data_download(query_obj, config_obj, data_path):
     #Now that we have data_buffer, let's worry about compression
     if query_obj["compressed"] == True:
         fname = "%s.%s" % (query_obj["id"], query_obj["format"])
-        out_file = "/tmp/glygen-download-%s" % (fname)
-        with open(out_file, "w") as FW:
-            FW.write(data_buffer)
-        cmd = gzip_path + " -c %s " % (out_file)
-        c_data_buffer = commands.getoutput(cmd)
+        tmp_dir = data_path + "/tmp/"
+        if os.path.isdir(tmp_dir) == False:
+            cmd = "mkdir -p " + tmp_dir
+        #out_file = tmp_dir + "glygen-download-%s" % (fname)
+        #with open(out_file, "w") as FW:
+        #    FW.write(data_buffer)
+        #cmd = "/bin/gzip -c %s " % (out_file)
+        #c_data_buffer = subprocess.getoutput(cmd)
+        out_file = tmp_dir + "glygen-download-%s.gz" % (fname)
+        with gzip.open(out_file, 'wb') as FW:
+            FW.write(data_buffer.encode())
+        c_data_buffer = ""
+        with gzip.open(out_file, 'rb') as FR:
+            c_data_buffer = FR.read()
         res_stream = Response(c_data_buffer, mimetype='application/gzip')
         res_stream.headers['Content-Disposition'] = 'attachment; filename=%s.gz' % (fname)
         cmd = " rm -f  %s " % (out_file)
-        x = commands.getoutput(cmd)
+        x = subprocess.getoutput(cmd)
     else:
         res_stream = Response(data_buffer, mimetype=config_obj["mimetypes"][query_obj["format"]])
 

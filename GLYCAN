@@ -6,17 +6,9 @@
                     "was replaced by $NEW_AC",
                     "$NEW_AC is in glygen"
                 ],
-                "example":{
-                    "request":"https://api.tst.glygen.org/glycan/detail/G00318GT/",
-                    "response":{
-                        "error_list": [{"error_code": "non-existent-record"}],
-                        "reason": {
-                            "description": "replaced by G63349UI in data release 1.10.6",
-                            "replacement_id": "G63349UI",
-                            "type": "replacement_in_glygen"
-                        }
-                    }
-                }
+                "examples":[
+                    "https://api.tst.glygen.org/glycan/detail/G00318GT/"
+                ]
             },
             "discontinued_in_glygen":{
                 "conditions":[ 
@@ -24,47 +16,26 @@
                     "was in GlyGen", 
                     "was discontinued"
                 ],
-                "example":{
-                    "request":"https://api.tst.glygen.org/glycan/detail/G04307DP/",
-                    "response":{
-                        "error_list": [{"error_code": "non-existent-record"}],
-                        "reason": {
-                            "description": "was in GlyGen but discontinued in data release 1.10.6",
-                            "type": "discontinued"
-                        }
-                    }
-                }
+                "examples":[
+                    "https://api.tst.glygen.org/glycan/detail/G04307DP/"
+                ]
             },
             "never_in_glygen":{
                 "conditions":[
                     "$QRY_AC was a valid GlyTouCan accession",
                     "was never in GlyGen"
                 ],
-                "example":{
-                    "request":"https://api.tst.glygen.org/glycan/detail/G00001LE/",
-                    "response":{
-                        "error_list": [{"error_code": "non-existent-record"}],
-                        "reason": {
-                            "description": "Valid current GlyTouCan accession",
-                            "type": "never_in_glygen"
-                        }
-                    }
-                }
+                "examples":[
+                    "https://api.tst.glygen.org/glycan/detail/G00001LE/"
+                ]
             },
         },
         "invalid":{
             "conditions":[
                 "$QRY_AC is an invalid accession"
             ],
-            "example":{
-                "request":"https://api.tst.glygen.org/glycan/detail/Q9CXB8/",
-                "response":{
-                    "error_list": [{"error_code": "non-existent-record"}],
-                    "reason": {
-                        "description": "Invalid Accession",
-                        "type": "invalid"
-                    }
-                }
-            }
+            "examples":[
+                "https://api.tst.glygen.org/glycan/detail/Q9CXB8/"
+            ]
         },  
     }

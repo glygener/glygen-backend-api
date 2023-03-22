@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/data.py", line 40, in post
-    res_obj = data_download(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/data_apilib.py", line 30, in data_download
-    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg/" % (init_obj["dataversion"])
-NameError: name 'data_path' is not defined

@@ -3,7 +3,7 @@
         "query": {
             "uniprot_canonical_ac": "P14210"
         },
-        "ts": "2022-11-17 13:21:08 EST-0500",
+        "ts": "2023-03-20 11:27:34 EDT-0400",
         "record_type": "protein",
         "search_type": "search"
     },
@@ -120,28 +120,28 @@
             "tax_id": 9606,
             "disease": "autosomal recessive nonsyndromic deafness 39 (Disease Ontology:DOID:0110497)",
             "pathway": " (hsa:3082); Platelet degranulation (R-HSA-114608); PIP3 activates AKT signaling (R-HSA-1257604); Interleukin-7 signaling (R-HSA-1266695); Constitutive Signaling by Aberrant PI3K in Cancer (R-HSA-2219530); RAF/MAP kinase cascade (R-HSA-5673001); Interleukin-4 and Interleukin-13 signaling (R-HSA-6785807); MET Receptor Activation (R-HSA-6806942); Negative regulation of MET activity (R-HSA-6807004); PI5P, PP2A and IER3 Regulate PI3K/AKT Signaling (R-HSA-6811558); MET activates RAS signaling (R-HSA-8851805); MET activates PI3K/AKT signaling (R-HSA-8851907); MET activates PTPN11 (R-HSA-8865999); MET activates PTK2 signaling (R-HSA-8874081); MET interacts with TNS proteins (R-HSA-8875513); MET activates RAP1 and RAC1 (R-HSA-8875555); MET receptor recycling (R-HSA-8875656); MET activates STAT3 (R-HSA-8875791); Drug-mediated inhibition of MET activation (R-HSA-9734091)",
-            "publication_count": 26,
-            "function": "14-3-3 Sigma Protein Contributes to Hepatocyte Growth Factor-mediated Cell Proliferation and Invasion via Matrix Metalloproteinase-1 Regulation in Human Gastric Cancer., [RefSeq, PubMed]; Associations of the cerebrospinal fluid hepatocyte growth factor with Alzheimer's disease pathology and cognitive function. Publication Status: Online-Only, [RefSeq, PubMed]; MiR-204 suppresses the progression of acute myeloid leukemia through HGF/c-Met pathway., [RefSeq, PubMed]; Potent mitogen for mature parenchymal hepatocyte cells, seems to be a hepatotrophic factor, and acts as a growth factor for a broad spectrum of tissues and cell types. Activating ligand for the receptor tyrosine kinase MET by binding to it and promoting its dimerization., [UniProtKB, PubMed, PubMed]; This gene encodes a protein that binds to the hepatocyte growth factor receptor to regulate cell growth, cell motility and morphogenesis in numerous cell and tissue types. Alternative splicing results in multiple transcript variants, at least one of which encodes a preproprotein that is proteolytically processed to generate alpha and beta chains, which form the mature heterodimer. This protein is secreted by mesenchymal cells and acts as a multi-functional cytokine on cells of mainly epithelial origin. This protein also plays a role in angiogenesis, tumorogenesis, and tissue regeneration. Although the encoded protein is a member of the peptidase S1 family of serine proteases, it lacks peptidase activity. Mutations in this gene are associated with nonsyndromic hearing loss. [provided by RefSeq, Nov 2015]., [RefSeq]; Three subtypes of lung cancer fibroblasts define distinct therapeutic paradigms., [RefSeq, PubMed]",
+            "publication_count": 24,
+            "function": "Elevated G-CSF, IL8, and HGF in patients with definite Meniere's disease may indicate the role of NET formation in triggering autoimmunity and autoinflammation. Publication Status: Online-Only, [RefSeq, PubMed]; Hepatocyte growth factor is associated with greater risk of extracoronary calcification: results from the multiethnic study of atherosclerosis., [RefSeq, PubMed]; MiR-144-3p inhibits the proliferation and metastasis of lung cancer A549 cells via targeting HGF. Publication Status: Online-Only, [RefSeq, PubMed]; Potent mitogen for mature parenchymal hepatocyte cells, seems to be a hepatotrophic factor, and acts as a growth factor for a broad spectrum of tissues and cell types. Activating ligand for the receptor tyrosine kinase MET by binding to it and promoting its dimerization., [UniProtKB, PubMed, PubMed]; This gene encodes a protein that binds to the hepatocyte growth factor receptor to regulate cell growth, cell motility and morphogenesis in numerous cell and tissue types. Alternative splicing results in multiple transcript variants, at least one of which encodes a preproprotein that is proteolytically processed to generate alpha and beta chains, which form the mature heterodimer. This protein is secreted by mesenchymal cells and acts as a multi-functional cytokine on cells of mainly epithelial origin. This protein also plays a role in angiogenesis, tumorogenesis, and tissue regeneration. Although the encoded protein is a member of the peptidase S1 family of serine proteases, it lacks peptidase activity. Mutations in this gene are associated with nonsyndromic hearing loss. [provided by RefSeq, Nov 2015]., [RefSeq]; Transglutaminase 2 enhances hepatocyte growth factor signaling to drive the mesothelioma cancer cell phenotype., [RefSeq, PubMed]",
             "predicted_glycosites": 0,
             "predicted_n_glycosites": 0,
             "predicted_o_glycosites": 0,
             "reported_n_glycosites": 4,
             "reported_o_glycosites": 1,
-            "reported_n_glycosites_with_glycan": 9,
-            "reported_o_glycosites_with_glycan": 1,
-            "total_reported_n_glycosites": 13,
-            "total_reported_o_glycosites": 2,
-            "total_n_glycosites": 13,
-            "total_o_glycosites": 2,
+            "reported_n_glycosites_with_glycan": 51,
+            "reported_o_glycosites_with_glycan": 2,
+            "total_reported_n_glycosites": 55,
+            "total_reported_o_glycosites": 3,
+            "total_n_glycosites": 55,
+            "total_o_glycosites": 3,
             "reported_fully_resolved_glycans": 2,
             "reported_phosphosites": 0,
             "reported_mutagensis": 1,
             "reported_glycation": 0,
-            "reported_snv": 22,
+            "reported_snv": 45,
             "reported_interactions": 1,
             "missing_score": 0,
             "record_type": "protein",
-            "hit_score": 85.54,
+            "hit_score": 85.95,
             "score_info": {
                 "contributions": [
                     {
@@ -162,12 +162,12 @@
                     {
                         "c": "protein_reported_n_glycosites_with_glycan",
                         "w": 5.0,
-                        "f": 9.0
+                        "f": 51.0
                     },
                     {
                         "c": "protein_reported_o_glycosites_with_glycan",
                         "w": 5.0,
-                        "f": 1.0
+                        "f": 2.0
                     },
                     {
                         "c": "protein_reported_n_glycosites",
@@ -187,7 +187,7 @@
                     {
                         "c": "protein_publication_count",
                         "w": 2.0,
-                        "f": 26.0
+                        "f": 24.0
                     }
                 ],
                 "formula": "sum(w + 0.01*f)",

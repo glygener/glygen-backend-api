@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/video.py", line 48, in post
-    res_obj = video_addnew(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/video_apilib.py", line 32, in video_addnew
-    user_info = dbh["c_users"].find_one({'email' : res_obj["email"].lower()})
-UnboundLocalError: local variable 'res_obj' referenced before assignment
