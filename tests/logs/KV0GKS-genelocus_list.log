@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases.py", line 298, in post
-    res_obj = genelocus_list(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases_apilib.py", line 623, in genelocus_list
-    sorted_id_list = sort_objects(cached_obj["results"], query_obj["sort"], query_obj["order"])
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases_apilib.py", line 974, in sort_objects
-    for i in xrange(0, len(obj_list)):
-NameError: name 'xrange' is not defined

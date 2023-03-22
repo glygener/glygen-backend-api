@@ -2,21 +2,15 @@
     "query": {
         "concept_query_list": [
             {
-                "concept": "site",
+                "concept": "glycan",
                 "query": {
                     "aggregator": "$and",
                     "unaggregated_list": [
                         {
                             "order": 1,
-                            "path": "site_annotation.annotation",
+                            "path": "glytoucan_ac",
                             "operator": "$eq",
-                            "string_value": "n_glycosylation_sequon"
-                        },
-                        {
-                            "order": 2,
-                            "path": "glycosylation",
-                            "operator": "$exists",
-                            "string_value": "false"
+                            "string_value": "G17689DH"
                         }
                     ],
                     "aggregated_list": []
@@ -26,69 +20,78 @@
     },
     "results_summary": {
         "protein": {
-            "list_id": "",
-            "result_count": 0,
+            "list_id": "ef16dbb676191ca3650b8dbdbe4cd36b",
+            "result_count": 41,
             "bylinkage": {
+                "glycan": {
+                    "list_id": "07e12e5d048adc56b0a94ffd63dca1ec",
+                    "result_count": 29
+                },
                 "site": {
-                    "list_id": "",
-                    "result_count": 0
+                    "list_id": "fc4225847780fa9af6d7f0a7afc78bba",
+                    "result_count": 12
                 }
             }
         },
         "enzyme": {
             "list_id": "",
-            "result_count": 0,
-            "bylinkage": {}
+            "result_count": 29,
+            "bylinkage": {
+                "glycan": {
+                    "list_id": "",
+                    "result_count": 29
+                }
+            }
         },
         "gene": {
             "list_id": "",
-            "result_count": 0,
+            "result_count": 41,
             "bylinkage": {
                 "protein": {
                     "list_id": "",
-                    "result_count": 0
+                    "result_count": 41
                 }
             }
         },
         "glycan": {
-            "list_id": "",
-            "result_count": 0,
-            "bylinkage": {
-                "site": {
-                    "list_id": "",
-                    "result_count": 0
-                }
-            }
+            "list_id": "731054a12035f1a7ccd1dc65fa9e50f0",
+            "result_count": 1,
+            "bylinkage": {}
         },
         "motif": {
             "list_id": "",
-            "result_count": 0,
-            "bylinkage": {}
+            "result_count": 2,
+            "bylinkage": {
+                "glycan": {
+                    "list_id": "",
+                    "result_count": 2
+                }
+            }
         },
         "disease": {
             "list_id": "",
             "result_count": 0,
-            "bylinkage": {
-                "site": {
-                    "list_id": "",
-                    "result_count": 0
-                }
-            }
+            "bylinkage": {}
         },
         "species": {
             "list_id": "",
-            "result_count": 0,
+            "result_count": 2,
             "bylinkage": {
-                "protein": {
+                "glycan": {
                     "list_id": "",
-                    "result_count": 0
+                    "result_count": 2
                 }
             }
         },
         "site": {
-            "list_id": "",
-            "result_count": 0,
-            "bylinkage": {}
+            "list_id": "cadcf90b21c68994bba1d722bcaf4c45",
+            "result_count": 30,
+            "bylinkage": {
+                "glycan": {
+                    "list_id": "81b2c2da972598522d52a4899f0d3e0c",
+                    "result_count": 30
+                }
+            }
         }
     }
 }

@@ -1333,6 +1333,7 @@
         "mass",
         "sequence",
         "species",
-        "uniprot"
+        "uniprot",
+        "publication"
     ]
 }

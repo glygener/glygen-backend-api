@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/supersearch.py", line 82, in post
-    res_obj = search(req_obj, config_obj, False, False)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/supersearch_apilib.py", line 333, in search
-    final_hit_dict,final_hit_dict_split, conn_dict = load_network_type_III(doc_list,
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/supersearch_apilib.py", line 661, in load_network_type_III
-    record_type_list.append(record_type)
-AttributeError: 'dict_keys' object has no attribute 'append'

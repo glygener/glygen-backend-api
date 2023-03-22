@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases.py", line 142, in post
-    res_obj = glycan_to_enzyme_gene_loci(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases_apilib.py", line 178, in glycan_to_enzyme_gene_loci
-    plist_obj,tax_id = get_genelocus_list_fields(dbh, o["uniprot_canonical_ac"])
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases_apilib.py", line 818, in get_genelocus_list_fields
-    protein_name = extract_name(obj["protein_names"], "recommended", "UniProtKB")
-TypeError: 'NoneType' object is not subscriptable

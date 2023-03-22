@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases.py", line 103, in post
-    res_obj = glycan_to_biosynthesis_enzymes(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases_apilib.py", line 91, in glycan_to_biosynthesis_enzymes
-    util.cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
-NameError: name 'util' is not defined

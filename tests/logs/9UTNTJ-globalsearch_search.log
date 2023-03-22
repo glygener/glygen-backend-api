@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/globalsearch.py", line 41, in post
-    res_obj = globalsearch_search(req_obj, config_obj, data_path)
-TypeError: globalsearch_search() takes 2 positional arguments but 3 were given

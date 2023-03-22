@@ -548,7 +548,10 @@
                             "name": {
                                 "type": "string"
                             },
-                            "uberon": {
+                            "namespace": {
+                                "type": "string"
+                            },
+                            "id": {
                                 "type": "string"
                             },
                             "url": {
@@ -557,7 +560,8 @@
                         },
                         "required": [
                             "name",
-                            "uberon",
+                            "namespace",
+                            "id",
                             "url"
                         ]
                     },

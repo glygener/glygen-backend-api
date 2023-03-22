@@ -32,6 +32,7 @@
             "required": [
                 "ac",
                 "name",
+                "summary",
                 "url"
             ]
         },
@@ -57,11 +58,11 @@
                     }
                 },
                 "required": [
+                    "id",
                     "name",
                     "resource",
                     "type",
-                    "url",
-                    "id"
+                    "url"
                 ]
             }
         },
@@ -87,11 +88,11 @@
                     }
                 },
                 "required": [
+                    "id",
                     "name",
                     "resource",
                     "type",
-                    "url",
-                    "id"
+                    "url"
                 ]
             }
         },
@@ -127,6 +128,8 @@
                     }
                 },
                 "required": [
+                    "annotation",
+                    "evidence"
                 ]
             }
         },
@@ -158,6 +161,7 @@
                             }
                         },
                         "required": [
+                            "description",
                             "id",
                             "name",
                             "resource",
@@ -187,9 +191,9 @@
                             },
                             "required": [
                                 "id",
+                                "name",
                                 "resource",
-                                "url",
-                                "name"
+                                "url"
                             ]
                         }
                     },
@@ -218,7 +222,9 @@
                 },
                 "required": [
                     "disease_id",
-                    "recommended_name"
+                    "evidence",
+                    "recommended_name",
+                    "synonyms"
                 ]
             }
         },
@@ -326,9 +332,9 @@
                                     },
                                     "required": [
                                         "id",
+                                        "name",
                                         "resource",
-                                        "url",
-                                        "name"
+                                        "url"
                                     ]
                                 },
                                 "synonyms": {
@@ -354,29 +360,33 @@
                                         },
                                         "required": [
                                             "id",
+                                            "name",
                                             "resource",
-                                            "url",
-                                            "name"
+                                            "url"
                                         ]
                                     }
                                 }
                             },
                             "required": [
                                 "disease_id",
-                                "recommended_name"
+                                "recommended_name",
+                                "synonyms"
                             ]
                         }
                     }
                 },
                 "required": [
-                    "evidence",
-                    "start_pos",
-                    "end_pos",
-                    "sequence_org",
-                    "ref_nt",
                     "alt_nt",
                     "chr_id",
-                    "keywords"
+                    "chr_pos",
+                    "comment",
+                    "end_pos",
+                    "evidence",
+                    "keywords",
+                    "ref_nt",
+                    "sequence_mut",
+                    "sequence_org",
+                    "start_pos"
                 ]
             }
         },
@@ -427,6 +437,7 @@
                     "comment",
                     "end_pos",
                     "evidence",
+                    "sequence_mut",
                     "sequence_org",
                     "start_pos"
                 ]
@@ -564,10 +575,11 @@
                                         }
                                     },
                                     "required": [
+                                        "description",
                                         "id",
+                                        "name",
                                         "resource",
-                                        "url",
-                                        "name"
+                                        "url"
                                     ]
                                 },
                                 "synonyms": {
@@ -593,16 +605,17 @@
                                         },
                                         "required": [
                                             "id",
+                                            "name",
                                             "resource",
-                                            "url",
-                                            "name"
+                                            "url"
                                         ]
                                     }
                                 }
                             },
                             "required": [
                                 "disease_id",
-                                "recommended_name"
+                                "recommended_name",
+                                "synonyms"
                             ]
                         }
                     }
@@ -721,6 +734,9 @@
                     }
                 },
                 "required": [
+                    "locus",
+                    "name",
+                    "url"
                 ]
             }
         },
@@ -906,10 +922,16 @@
                     }
                 },
                 "required": [
-                    "type",
+                    "end_aa",
+                    "end_pos",
                     "evidence",
+                    "relation",
+                    "residue",
                     "site_category",
-                    "relation"
+                    "site_seq",
+                    "start_aa",
+                    "start_pos",
+                    "type"
                 ]
             }
         },
@@ -952,7 +974,6 @@
                                 }
                             },
                             "required": [
-                                "id",
                                 "database",
                                 "url"
                             ]
@@ -1083,6 +1104,7 @@
                 "required": [
                     "common_name",
                     "evidence",
+                    "gene_name",
                     "organism",
                     "protein_name",
                     "sequence",
@@ -1265,6 +1287,7 @@
                 },
                 "required": [
                     "evidence",
+                    "interaction_name",
                     "interaction_type",
                     "interactor_id"
                 ]
@@ -1324,14 +1347,38 @@
                     }
                 },
                 "required": [
+                    "description",
                     "type"
                 ]
             }
         }
     },
     "required": [
+        "cluster_types",
+        "crossref",
+        "disease",
+        "expression_disease",
+        "expression_tissue",
+        "function",
+        "gene",
+        "gene_names",
+        "glycosylation",
+        "go_annotation",
+        "history",
+        "interactions",
+        "isoforms",
+        "keywords",
         "mass",
+        "mutagenesis",
+        "orthologs",
+        "pathway",
+        "pro_annotation",
+        "protein_names",
+        "publication",
+        "refseq",
         "sequence",
+        "site_annotation",
+        "snv",
         "species",
         "uniprot"
     ]

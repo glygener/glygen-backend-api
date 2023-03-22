@@ -1,0 +1,51 @@
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.A0A0G2JY58-1.json
+  ["'description' is a required property", "'summary' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.A0A8I6A8Q1-1.json
+  ["'publication' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.A0A0N4SUH6-1.json
+  ["'description' is a required property", "'publication' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.A0A8I6ALX9-1.json
+  ["'publication' is a required property", "'summary' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.A0A0G2JYV2-1.json
+  ["'description' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.P12955-1.json
+  ["'description' is a required property", "'residue' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.P12428-1.json
+  ["'summary' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.P12830-1.json
+  ["'description' is a required property", "'id' is a required property", "'residue' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.A0A0J9YY99-1.json
+  ["'gene_names' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.A0A0G2QC64-1.json
+  ["'description' is a required property", "'publication' is a required property", "'summary' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.Q9BZV3-1.json
+  ["'description' is a required property", "'id' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.P97629-1.json
+  ["'description' is a required property", "'id' is a required property", "'summary' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.Q99KK2-1.json
+  ["'description' is a required property", "'residue' is a required property", "'summary' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.P0C7V7-1.json
+  ["'id' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.E5RJ46-1.json
+  ["'id' is a required property", "'publication' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.P14131-1.json
+  ["'residue' is a required property", "'summary' is a required property"]
+
+> /data/shared/glygen/logs/rykahsay_failure_log_protein_detail.P0C880-1.json
+  ["'residue' is a required property"]

@@ -1,69 +1,65 @@
-/auth/contact
-/auth/register
-/auth/login
-/auth/tokenstatus
-/auth/userinfo
-/auth/userupdate
-/auth/contactlist
-/auth/contactupdate
-/auth/contactdelete
+http POST http://localhost:8082/protein/detail/Q69ZH5/
+{
+    "error_list": [{"error_code": "non-existent-record"}],
+    "reason": {
+        "description": "Valid old UniProtKB accession replaced by Q9CXB8",
+        "replacement_id": "Q9CXB8-1",
+        "type": "replacement_in_glygen"
+    }
+}
 
-/data/download
 
-/event/addnew
-/event/update
-/event/detail
-/event/list
-/event/delete
+http POST http://localhost:8082/protein/detail/G3X9Q5/
+{
+    "error_list": [{"error_code": "non-existent-record"}],
+    "reason": {
+        "description": "Valid old UniProtKB accession replaced by O55074",
+        "replacement_id": "O55074",
+        "type": "replacement_not_in_glygen"
+    }
+}
 
-/globalsearch/search
 
-/glycan/search_simple
-/glycan/search
-/glycan/list
+http POST http://localhost:8082/protein/detail/B1AXE0/
+{
+    "error_list": [{"error_code": "non-existent-record"}],
+    "reason": {
+        "description": "Valid current UniProtKB accession discontinued in GlyGen 1.5.11",
+        "type": "discontinued_in_glygen"
+    }
+}
 
-/idmapping/list
 
-/job/results
-/job/addnew_old
-/job/status
-/job/queue
-/job/update
-/job/detail
-/job/list
-/job/delete
+http POST http://localhost:8082/protein/detail/A0A161SEP9/
+{
+    "error_list": [{"error_code": "non-existent-record"}],
+    "reason": {
+        "description": "Valid current UniProtKB accession never been in GlyGen",
+        "type": "never_in_glygen_current_in_uniprotkb"
+    }
+}
 
-/log/logging
-/log/init
-/log/access
-/log/grouped
 
-/motif/detail
-/motif/list
+http POST http://localhost:8082/protein/detail/A0A008XH72/
+{
+    "error_list": [{"error_code": "non-existent-record"}],
+    "reason": {
+        "description": "Valid discontinued UniProtKB accession never been in GlyGen",
+        "type": "never_in_glygen_discontinued_in_uniprotkb"
+    }
+}
 
-/protein/search_simple
-/protein/search
-/protein/list
-/protein/alignment
 
-/publication/detail
-/publication/list
+>http POST http://localhost:8082/protein/detail/G00002CF/
+{
+    "error_list": [
+        {
+            "error_code": "non-existent-record"
+        }
+    ],
+    "reason": {
+        "description": "Invalid Accession",
+        "type": "invalid"
+    }
+}
 
-/seqmapping/search
-
-/supersearch/search
-/supersearch/list
-
-/typeahead/typeahead
-/typeahead/categorized_typeahead
-/typeahead/global_typeahead
-
-/usecases/disease_to_glycosyltransferases
-/usecases/genelocus_list
-/usecases/ortholog_list
-/usecases/glycosequon_list
-
-/video/addnew
-/video/list
-/video/detail
-/video/delete

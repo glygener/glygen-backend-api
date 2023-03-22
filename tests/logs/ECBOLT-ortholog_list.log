@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases.py", line 338, in post
-    res_obj = ortholog_list(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases_apilib.py", line 760, in ortholog_list
-    sorted_id_list = sort_objects(cached_obj["results"], query_obj["sort"], query_obj["order"])
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/usecases_apilib.py", line 976, in sort_objects
-    grid_obj[field_name].append({"index":i, field_name:obj[field_name]})
-KeyError: 'id'

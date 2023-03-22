@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/supersearch.py", line 82, in post
-    res_obj = search(req_obj, config_obj, False, False)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/supersearch_apilib.py", line 205, in search
-    error_list = get_errors_in_superquery(query_obj["concept_query_list"],config_obj)
-NameError: name 'get_errors_in_superquery' is not defined

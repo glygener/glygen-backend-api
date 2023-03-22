@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/misc.py", line 181, in post
-    res_obj = gtclist(config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/misc_apilib.py", line 947, in gtclist
-    reviewed_dir = data_path + "releases/data/v-%s/reviewed/" % (rel)
-NameError: name 'data_path' is not defined

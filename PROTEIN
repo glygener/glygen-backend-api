@@ -6,17 +6,10 @@
                     "was replaced by $NEW_AC",
                     "$NEW_AC is in glygen"
                 ],
-                "example":{
-                    "request":"https://api.tst.glygen.org/protein/detail/Q69ZH5/",
-                    "response":{
-                        "error_list": [{"error_code": "non-existent-record"}],
-                        "reason":{
-                            "description": "Valid old UniProtKB accession which was replaced by Q9CXB8",
-                            "replacement_id": "Q9CXB8-1",
-                            "type": "replacement_in_glygen"
-                        }
-                    }
-                }
+                "examples":[
+                    "https://api.tst.glygen.org/protein/detail/Q69ZH5/",
+                    "https://api.tst.glygen.org/protein/detail/Q13065/"
+                ]
             },
             "replacement_not_in_glygen":{
                 "conditions":[
@@ -24,17 +17,9 @@
                     "was replaced by $NEW_AC",
                     "$NEW_AC is not in glygen"
                 ],
-                "example":{
-                    "request":"https://api.tst.glygen.org/protein/detail/G3X9Q5/",
-                    "response":{
-                        "error_list": [{"error_code": "non-existent-record"}],
-                        "reason":{
-                            "description": "Valid old UniProtKB accession which was replaced by O55074",
-                            "replacement_id": "O55074",
-                            "type": "replacement_not_in_glygen"
-                        }
-                    }
-                }
+                "examples":[
+                    "https://api.tst.glygen.org/protein/detail/G3X9Q5/"
+                ]
             },
             "discontinued_in_glygen":{
                 "conditions":[ 
@@ -42,47 +27,37 @@
                     "was in GlyGen", 
                     "was discontinued"
                 ],
-                "example":{
-                    "request":"https://api.tst.glygen.org/protein/detail/B1AXE0/",
-                    "response":{
-                        "error_list": [{"error_code": "non-existent-record"}],
-                        "reason": {
-                            "description": "was in GlyGen but discontinued in data release 1.5.11",
-                            "type": "discontinued_in_glygen"
-                        }
-                    }
-                }
+                "examples":[
+                    "https://api.tst.glygen.org/protein/detail/B1AXE0/"
+                ]
             },
-            "never_in_glygen":{
+            "never_in_glygen_current_in_uniprotkb":{
                 "conditions":[
-                    "$QRY_AC was a valid UniProtKB accession",
+                    "$QRY_AC is a valid UniProtKB accession",
                     "was never in GlyGen"
                 ],
-                "example":{
-                    "request":"https://api.tst.glygen.org/protein/detail/E9PWH1/",
-                    "response":{
-                        "error_list": [{"error_code": "non-existent-record"}],
-                        "reason": {
-                            "description": "Valid current UniProtKB accession",
-                            "type": "never_in_glygen"
-                        }
-                    }
-                }
+                "examples":[
+                    "https://api.tst.glygen.org/protein/detail/A0A161SEP9/"
+                ]
             },
+            "never_in_glygen_discontinued_in_uniprotkb":{
+                "conditions":[
+                    "$QRY_AC was a valid UniProtKB accession",
+                    "was never in GlyGen",
+                    "discontinued in UniProtKB"
+                ],
+                "examples":[
+                    "https://api.tst.glygen.org/protein/detail/A0A008XH72/"
+                ]
+            }
+
         },
         "invalid":{
             "conditions":[
                 "$QRY_AC is an invalid accession"
             ],
-            "example":{
-                "request":"https://api.tst.glygen.org/protein/detail/G00002CF/",
-                "response":{
-                    "error_list": [{"error_code": "non-existent-record"}],
-                    "reason": {
-                        "description": "Invalid Accession",
-                        "type": "invalid"
-                    }
-                }
-            }
+            "examples":[
+                "https://api.tst.glygen.org/protein/detail/G00002CF/"
+            ]
         },  
     }

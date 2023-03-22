@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/job.py", line 120, in post
-    res_obj = job_list(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/job_apilib.py", line 487, in job_list
-    error_list = errorlib.get_errors_in_query("job_list",query_obj, config_obj)
-NameError: name 'errorlib' is not defined
