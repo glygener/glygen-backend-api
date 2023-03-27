@@ -43,7 +43,7 @@ def main():
         dbh = client[db_name]
         res_obj = {}
         # call this and get json as res_obj
-        url = "http://localhost:8082/supersearch/search/"
+        url = config_obj["base_url"][server ] + "/supersearch/search/"
         req_obj = json.loads(open("conf/init_query.json", "r").read())
 
         res = requests.post(url, json=req_obj, allow_redirects=True)

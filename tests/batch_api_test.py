@@ -15,16 +15,17 @@ def main():
    
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
-
+    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
     parser.add_option("-r","--recordtype",action="store",dest="recordtype",help="protein/glycan/...")
     parser.add_option("-b","--batch",action="store",dest="batch",help="1/2/3")
     
     (options,args) = parser.parse_args()
-    for key in ([options.recordtype, options.batch]):
+    for key in ([options.server, options.recordtype, options.batch]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
+    server = options.server
     record_type = options.recordtype
     batch = options.batch
 
@@ -34,7 +35,7 @@ def main():
 
     config_obj = json.loads(open("../conf/config.json", "r").read())
    
-    api_url = config_obj["base_url"] + "/misc/info"
+    api_url = config_obj["base_url"][server] + "/misc/info"
     res = requests.post(api_url, json={}, verify=False)
     info_obj =  json.loads(res.content)
     data_version = info_obj["initobj"]["dataversion"]
@@ -45,7 +46,7 @@ def main():
     if os.path.isfile(in_file):
         cmd = "rm -f " + log_dir + "failure_log_%s_detail.*" % (record_type)
         x = subprocess.getoutput(cmd)
-        test_lib.run_exhaustive(in_file, record_type, config_obj)
+        test_lib.run_exhaustive(in_file, record_type, config_obj, server)
 
     return
 

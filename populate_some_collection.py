@@ -138,8 +138,7 @@ def main():
             cmd += "%s/tmpdb --drop "
             cmd = cmd % (server, glydb_user, glydb_pass, glydb_name, dump_dir)
             x = subprocess.getoutput(cmd)
-            write_progress_msg(" ... finished", "a")
-
+            
 
 
 

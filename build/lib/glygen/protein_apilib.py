@@ -262,7 +262,7 @@ def protein_detail(query_obj, config_obj):
     obj = dbh[collection].find_one(mongo_query)
     c_a = {"recordtype":{"$eq": "protein"}}
     c_b = {"record_id":{'$regex':query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
-    c_c = {"accessions":{'$regex':query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
+    c_c = {"accessions":{'$regex':","+query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
 
     q_one = {"$and":[c_a, c_b]}
     history_obj_one = dbh["c_idtrack"].find_one(q_one)
@@ -282,25 +282,25 @@ def protein_detail(query_obj, config_obj):
         elif history_obj_two != None:
             if history_obj_two["status"] == "primary":
                 res_obj["reason"] = {
-                    "description":"Valid current UniProtKB accession never been in GlyGen",
+                    "description":"Current UniProtKB accession never been in GlyGen",
                     "type":"never_in_glygen_current_in_uniprotkb"
                 }
             elif history_obj_two["status"] == "discontinued":
                 res_obj["reason"] = {
-                    "description":"Valid discontinued UniProtKB accession never been in GlyGen",
+                    "description":"Discontinued UniProtKB accession never been in GlyGen",
                     "type":"never_in_glygen_discontinued_in_uniprotkb"
                 }
             elif history_obj_two["status"] == "secondary":
                 q_ac = query_obj["uniprot_canonical_ac"].upper() + ":"
                 t_list = history_obj_two["accessions"].split(q_ac)[1].split(",")[0].split(";")
-                desc = "Valid old UniProtKB accession replaced by %s" % (", ".join(t_list))
+                desc = "Old UniProtKB accession replaced by %s" % (", ".join(t_list))
                 res_obj["reason"] = {
                     "description":desc, 
                     "replacement_id_list": t_list,
                     "type":"replacement_not_in_glygen"
                 }
         else:
-            res_obj["reason"] = {"type":"invalid","description": "Invalid Accession"}
+            res_obj["reason"] = {"type":"invalid","description": "Invalid accession"}
         return res_obj
 
 

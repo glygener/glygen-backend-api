@@ -263,7 +263,7 @@ def glycan_detail(query_obj, config_obj):
         if history_obj != None:
             res_obj["reason"] = history_obj["history"][-1]
         else:
-            res_obj["reason"] = {"type":"invalid","description": "Invalid Accession"}
+            res_obj["reason"] = {"type":"invalid","description": "Invalid accession"}
         return res_obj
 
 
