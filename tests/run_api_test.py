@@ -15,15 +15,18 @@ def main():
    
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
+    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
     parser.add_option("-m","--mode",action="store",dest="mode",help="1 (using example queries), 2 (exhaustive detail API calls)")
     parser.add_option("-g","--group",action="store",dest="group",help="all/protein/glycan/...")
         
 
     (options,args) = parser.parse_args()
-    for key in ([options.group, options.mode]):
+    for key in ([options.server, options.group, options.mode]):
         if not (key):
             parser.print_help()
             sys.exit(0)
+
+    server = options.server
 
     api_grp = options.group
     mode = int(options.mode)
@@ -36,7 +39,7 @@ def main():
     config_obj = json.loads(open("../conf/config.json", "r").read())
     user_name = os.getlogin()
    
-    api_url = config_obj["base_url"] + "/misc/info"
+    api_url = config_obj["base_url"][server] + "/misc/info"
     res = requests.post(api_url, json={}, verify=False)
     info_obj =  json.loads(res.content)
     data_version = info_obj["initobj"]["dataversion"]
@@ -52,9 +55,9 @@ def main():
             x = subprocess.getoutput(cmd)
             file_list = glob.glob(jsondb_dir + "testdb/%s.*.json" % (record_type))
             for in_file in sorted(file_list):
-                test_lib.run_exhaustive(in_file, record_type, config_obj)
+                test_lib.run_exhaustive(in_file, record_type, config_obj, server)
     else:
-        test_lib.run_from_queries(api_grp, config_obj)
+        test_lib.run_from_queries(api_grp, config_obj, server)
 
     return
 

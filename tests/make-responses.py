@@ -33,9 +33,7 @@ def main():
     in_file = "queries/qlist/supersearch_querylist.json"
     supersearch_qlist = json.loads(open(in_file, "r").read())
     
-    
     out_obj_list = []
-    #base_url = "https://api.dev.glygen.org"
     base_url = "http://localhost:8082/"
 
 

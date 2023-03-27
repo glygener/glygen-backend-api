@@ -44,10 +44,9 @@ def validate_response(res_obj, schema_file):
 
 
 
-def get_id_dict(config_obj):
+def get_id_dict(api_url):
 
     id_dict = {}
-    api_url = config_obj["base_url"] + "/misc/lastid"
     res = requests.post(api_url, json={}, verify=False)
     res_obj = json.loads(res.content)
     for coll in res_obj:
@@ -59,7 +58,7 @@ def get_id_dict(config_obj):
 
 
 
-def run_exhaustive(in_file, record_type, config_obj):
+def run_exhaustive(in_file, record_type, config_obj, server):
 
     user_name = os.getlogin()
     batch_idx = in_file.split(".")[-2]
@@ -71,10 +70,10 @@ def run_exhaustive(in_file, record_type, config_obj):
 
     main_id_list = json.loads(open(in_file, "r").read())
     for main_id in main_id_list:
-        api_url = config_obj["base_url"] + "/%s/detail/%s/" % (record_type, main_id)
+        api_url = config_obj["base_url"][server] + "/%s/detail/%s/" % (record_type, main_id)
         req_obj = {}
         if record_type in ["motif"]:
-            api_url = config_obj["base_url"] + "/%s/detail/" % (record_type)
+            api_url = config_obj["base_url"][server] + "/%s/detail/" % (record_type)
             req_obj = {"motif_ac":main_id}
         o = {"bad_respose":False, "url":api_url}
         res = requests.get(api_url, json=req_obj, verify=False)
@@ -111,8 +110,10 @@ def run_exhaustive(in_file, record_type, config_obj):
     return
 
 
-def run_from_queries(api_grp, config_obj):
-    
+def run_from_queries(api_grp, config_obj, server): 
+
+    last_id_api_url = config_obj["base_url"][server] + "/misc/lastid"
+        
     user_name = os.getlogin()
     log_dir = config_obj["data_path"] + "/logs/"
     file_list = glob.glob("queries/*.json")
@@ -143,7 +144,7 @@ def run_from_queries(api_grp, config_obj):
                 x = subprocess.getoutput(cmd)
                 t_obj = t_obj_dict[api_name]
                 t_obj["url"] += "/" if t_obj["url"][-1] != "/" else ""
-                api_url = config_obj["base_url"] + t_obj["url"]
+                api_url = config_obj["base_url"][server] + t_obj["url"]
                 req_obj_list = []
                 if "querylist" in t_obj:
                     if api_name.find("supersearch") != -1:
@@ -170,7 +171,7 @@ def run_from_queries(api_grp, config_obj):
                         api_url += t_obj["query"] + "/"
                         req_obj = {}
                    
-                    id_dict = get_id_dict(config_obj)
+                    id_dict = get_id_dict(last_id_api_url)
                     grp = api_name.split("_")[0]
                     if grp in id_dict:
                         for p in id_dict[grp]:

@@ -21,7 +21,8 @@ def main():
 
     config_obj = json.loads(open("../conf/config.json", "r").read())
    
-    api_url = config_obj["base_url"] + "/misc/info"
+    server = "tst"
+    api_url = config_obj["base_url"][server] +  "/misc/info"
     res = requests.post(api_url, json={}, verify=False)
     info_obj =  json.loads(res.content)
     data_version = info_obj["initobj"]["dataversion"]
@@ -32,7 +33,7 @@ def main():
     if os.path.isfile(in_file):
         cmd = "rm -f " + log_dir + "failure_log_%s_detail.*" % (record_type)
         x = subprocess.getoutput(cmd)
-        test_lib.run_exhaustive(in_file, record_type, config_obj)
+        test_lib.run_exhaustive(in_file, record_type, config_obj, server)
 
     return
 

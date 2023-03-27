@@ -6,7 +6,12 @@
         "tst":"8082",
         "dev":"8082"
     },
-    "base_url":"http://localhost:8082",
+    "base_url":{
+        "prd":"http://localhost:4042",
+        "beta":"http://localhost:4442",
+        "tst":"http://localhost:8082",
+        "dev":"http://localhost:8082"
+    },
     "data_path":"/data/shared/glygen/",
     "downloads_path":"/data/shared/glyds/downloads/",
     "mail":{
@@ -44,13 +49,10 @@
             ,"glycandb" 
             ,"proteindb"
             ,"alignmentdb"
-            ,"bcodb"
             ,"clusterdb"
             ,"diseasedb"
-            ,"extractdb"
             ,"glytoucandb"
             ,"historydb"
-            ,"htmldb"
             ,"idtrackdb"
             ,"listdb"
             ,"motifdb"
