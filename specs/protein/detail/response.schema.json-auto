@@ -32,6 +32,7 @@
             "required": [
                 "ac",
                 "name",
+                "summary",
                 "url"
             ]
         },
@@ -57,11 +58,11 @@
                     }
                 },
                 "required": [
+                    "id",
                     "name",
                     "resource",
                     "type",
-                    "url",
-                    "id"
+                    "url"
                 ]
             }
         },
@@ -87,11 +88,11 @@
                     }
                 },
                 "required": [
+                    "id",
                     "name",
                     "resource",
                     "type",
-                    "url",
-                    "id"
+                    "url"
                 ]
             }
         },
@@ -127,6 +128,8 @@
                     }
                 },
                 "required": [
+                    "annotation",
+                    "evidence"
                 ]
             }
         },
@@ -151,9 +154,6 @@
                                 "type": "string"
                             },
                             "name": {
-                                "type": "string"
-                            },
-                            "description": {
                                 "type": "string"
                             }
                         },
@@ -187,9 +187,9 @@
                             },
                             "required": [
                                 "id",
+                                "name",
                                 "resource",
-                                "url",
-                                "name"
+                                "url"
                             ]
                         }
                     },
@@ -218,7 +218,9 @@
                 },
                 "required": [
                     "disease_id",
-                    "recommended_name"
+                    "evidence",
+                    "recommended_name",
+                    "synonyms"
                 ]
             }
         },
@@ -325,10 +327,11 @@
                                         }
                                     },
                                     "required": [
+                                        "description",
                                         "id",
+                                        "name",
                                         "resource",
-                                        "url",
-                                        "name"
+                                        "url"
                                     ]
                                 },
                                 "synonyms": {
@@ -347,36 +350,38 @@
                                             },
                                             "name": {
                                                 "type": "string"
-                                            },
-                                            "description": {
-                                                "type": "string"
                                             }
                                         },
                                         "required": [
                                             "id",
+                                            "name",
                                             "resource",
-                                            "url",
-                                            "name"
+                                            "url"
                                         ]
                                     }
                                 }
                             },
                             "required": [
                                 "disease_id",
-                                "recommended_name"
+                                "recommended_name",
+                                "synonyms"
                             ]
                         }
                     }
                 },
                 "required": [
-                    "evidence",
-                    "start_pos",
-                    "end_pos",
-                    "sequence_org",
-                    "ref_nt",
                     "alt_nt",
                     "chr_id",
-                    "keywords"
+                    "chr_pos",
+                    "comment",
+                    "end_pos",
+                    "evidence",
+                    "glycoeffect",
+                    "keywords",
+                    "ref_nt",
+                    "sequence_mut",
+                    "sequence_org",
+                    "start_pos"
                 ]
             }
         },
@@ -427,6 +432,7 @@
                     "comment",
                     "end_pos",
                     "evidence",
+                    "sequence_mut",
                     "sequence_org",
                     "start_pos"
                 ]
@@ -564,10 +570,11 @@
                                         }
                                     },
                                     "required": [
+                                        "description",
                                         "id",
+                                        "name",
                                         "resource",
-                                        "url",
-                                        "name"
+                                        "url"
                                     ]
                                 },
                                 "synonyms": {
@@ -593,16 +600,17 @@
                                         },
                                         "required": [
                                             "id",
+                                            "name",
                                             "resource",
-                                            "url",
-                                            "name"
+                                            "url"
                                         ]
                                     }
                                 }
                             },
                             "required": [
                                 "disease_id",
-                                "recommended_name"
+                                "recommended_name",
+                                "synonyms"
                             ]
                         }
                     }
@@ -721,6 +729,9 @@
                     }
                 },
                 "required": [
+                    "locus",
+                    "name",
+                    "url"
                 ]
             }
         },
@@ -898,78 +909,18 @@
                             ]
                         }
                     },
-                    "comment": {
-                        "type": "string"
-                    },
                     "subtype": {
                         "type": "string"
-                    }
-                },
-                "required": [
-                    "type",
-                    "evidence",
-                    "site_category",
-                    "relation"
-                ]
-            }
-        },
-        "keywords": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        },
-        "phosphorylation": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "start_pos": {
-                        "type": "integer"
-                    },
-                    "end_pos": {
-                        "type": "integer"
-                    },
-                    "residue": {
-                        "type": "string"
                     },
                     "comment": {
                         "type": "string"
-                    },
-                    "evidence": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "database": {
-                                    "type": "string"
-                                },
-                                "id": {
-                                    "type": "string"
-                                },
-                                "url": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "database",
-                                "id",
-                                "url"
-                            ]
-                        }
-                    },
-                    "kinase_uniprot_canonical_ac": {
-                        "type": "string"
-                    },
-                    "kinase_gene_name": {
-                        "type": "string"
                     }
                 },
                 "required": [
-                    "end_pos",
                     "evidence",
-                    "residue",
-                    "start_pos"
+                    "relation",
+                    "site_category",
+                    "type"
                 ]
             }
         },
@@ -1020,48 +971,20 @@
                     }
                 },
                 "required": [
+                    "comment",
                     "end_pos",
                     "evidence",
+                    "relation",
                     "residue",
-                    "start_pos"
+                    "start_pos",
+                    "type"
                 ]
             }
         },
-        "ptm_annotation": {
+        "keywords": {
             "type": "array",
             "items": {
-                "type": "object",
-                "properties": {
-                    "annotation": {
-                        "type": "string"
-                    },
-                    "evidence": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "database": {
-                                    "type": "string"
-                                },
-                                "id": {
-                                    "type": "string"
-                                },
-                                "url": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "database",
-                                "id",
-                                "url"
-                            ]
-                        }
-                    }
-                },
-                "required": [
-                    "annotation",
-                    "evidence"
-                ]
+                "type": "string"
             }
         },
         "publication": {
@@ -1097,8 +1020,8 @@
                                 }
                             },
                             "required": [
-                                "id",
                                 "database",
+                                "id",
                                 "url"
                             ]
                         }
@@ -1228,6 +1151,7 @@
                 "required": [
                     "common_name",
                     "evidence",
+                    "gene_name",
                     "organism",
                     "protein_name",
                     "sequence",
@@ -1371,18 +1295,12 @@
                 ]
             }
         },
-        "interactions": {
+        "ptm_annotation": {
             "type": "array",
             "items": {
                 "type": "object",
                 "properties": {
-                    "interactor_id": {
-                        "type": "string"
-                    },
-                    "interaction_name": {
-                        "type": "string"
-                    },
-                    "interaction_type": {
+                    "annotation": {
                         "type": "string"
                     },
                     "evidence": {
@@ -1409,9 +1327,8 @@
                     }
                 },
                 "required": [
-                    "evidence",
-                    "interaction_type",
-                    "interactor_id"
+                    "annotation",
+                    "evidence"
                 ]
             }
         },
@@ -1464,19 +1381,47 @@
                     "type": {
                         "type": "string"
                     },
+                    "inherited_id": {
+                        "type": "string"
+                    },
                     "description": {
                         "type": "string"
                     }
                 },
                 "required": [
+                    "description",
                     "type"
                 ]
             }
         }
     },
     "required": [
+        "cluster_types",
+        "crossref",
+        "disease",
+        "expression_disease",
+        "expression_tissue",
+        "function",
+        "gene",
+        "gene_names",
+        "glycation",
+        "glycosylation",
+        "go_annotation",
+        "history",
+        "isoforms",
+        "keywords",
         "mass",
+        "mutagenesis",
+        "orthologs",
+        "pathway",
+        "pro_annotation",
+        "protein_names",
+        "ptm_annotation",
+        "publication",
+        "refseq",
         "sequence",
+        "site_annotation",
+        "snv",
         "species",
         "uniprot"
     ]
