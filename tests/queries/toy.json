@@ -1,0 +1,10 @@
+{
+    "protein_detail": {
+        "url": "/protein/detail/",
+        "schemafile":"../specs/protein/detail/response.schema.json",
+        "query":"P13987",
+        "semantic":true
+    }
+}
+
+

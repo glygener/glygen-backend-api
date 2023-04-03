@@ -282,7 +282,7 @@ def protein_detail(query_obj, config_obj):
         elif history_obj_two != None:
             if history_obj_two["status"] == "primary":
                 res_obj["reason"] = {
-                    "description":"Current UniProtKB accession never been in GlyGen",
+                    "description":"UniProtKB accession never been in GlyGen",
                     "type":"never_in_glygen_current_in_uniprotkb"
                 }
             elif history_obj_two["status"] == "discontinued":
@@ -302,6 +302,21 @@ def protein_detail(query_obj, config_obj):
         else:
             res_obj["reason"] = {"type":"invalid","description": "Invalid accession"}
         return res_obj
+
+    # Get section objects if record is batched
+    canon = query_obj["uniprot_canonical_ac"].upper()
+    q = {
+        "$and":[
+            {"batchid":{"$eq":1}}, 
+            {"recordid": {"$regex":canon, "$options":"i"}},
+            {"recordtype":{"$eq":"protein"}}
+        ]
+    }
+    batch_doc = dbh["c_batch"].find_one(q)
+    if batch_doc != None:
+        for sec in batch_doc["sections"]:
+            if sec in obj:
+                obj[sec] += batch_doc["sections"][sec]
 
 
     url = config_obj["urltemplate"]["uniprot"] % (obj["uniprot_canonical_ac"])

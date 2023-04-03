@@ -252,7 +252,8 @@ def glycan_detail(query_obj, config_obj):
     }
     history_obj = dbh["c_idtrack"].find_one(q)
 
-    mongo_query = {"glytoucan_ac":{'$eq': query_obj["glytoucan_ac"].upper()}}
+    glytoucan_ac = query_obj["glytoucan_ac"].upper()
+    mongo_query = {"glytoucan_ac":{'$eq': glytoucan_ac}}
     obj = dbh[collection].find_one(mongo_query)
     
     #check for post-access error, error_list should be empty upto this line
@@ -265,6 +266,15 @@ def glycan_detail(query_obj, config_obj):
         else:
             res_obj["reason"] = {"type":"invalid","description": "Invalid accession"}
         return res_obj
+
+   
+    # Get section objects if this record was batched 
+    q = {"batchid": 1, "recordid": glytoucan_ac, "recordtype": "glycan"}
+    batch_doc = dbh["c_batch"].find_one(q)
+    if batch_doc != None:
+        for sec in batch_doc["sections"]:
+            if sec in obj:
+                obj[sec] += batch_doc["sections"][sec]
 
 
     url = config_obj["urltemplate"]["glytoucan"] % (obj["glytoucan_ac"])
