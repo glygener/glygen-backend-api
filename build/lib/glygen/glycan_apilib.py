@@ -274,7 +274,10 @@ def glycan_detail(query_obj, config_obj):
     if batch_doc != None:
         for sec in batch_doc["sections"]:
             if sec in obj:
-                obj[sec] += batch_doc["sections"][sec]
+                if len(batch_doc["sections"][sec]) > 1000:
+                    obj[sec] += batch_doc["sections"][sec][:1000]
+                else:
+                    obj[sec] += batch_doc["sections"][sec]
 
 
     url = config_obj["urltemplate"]["glytoucan"] % (obj["glytoucan_ac"])
@@ -296,6 +299,7 @@ def glycan_detail(query_obj, config_obj):
             if "gene_url" in o:
                 o["gene_link"] = o["gene_url"]
 
+    
     return order_obj(obj, config_obj["objectorder"]["glycan"])
 
 
