@@ -1,6 +1,6 @@
 import os,sys
 from flask_restx import Namespace, Resource, fields
-from flask import (request, current_app, send_file)
+from flask import (request, current_app, send_file, jsonify)
 from glygen.db import log_error
 from glygen.document import get_one, get_many, insert_one, update_one, delete_one, order_json_obj
 from werkzeug.utils import secure_filename
@@ -131,11 +131,12 @@ class Glycan(Resource):
         try:
             req_obj = {"glytoucan_ac":glytoucan_ac}
             res_obj = glycan_detail(req_obj, config_obj)
+            #res_obj = jsonify(res_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
-   
+
     @api.doc(False)
     def get(self, glytoucan_ac):
         return self.post(glytoucan_ac)

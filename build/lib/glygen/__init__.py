@@ -73,12 +73,18 @@ def create_app():
 
     if app.config["ENV"] == "production":
         app.config.from_pyfile('config.py', silent=True)
+        settings = app.config.get('RESTFUL_JSON', {})
+        settings.setdefault('indent', 2)
+        #settings.setdefault('sort_keys', True)
+        app.config['RESTFUL_JSON'] = settings
     else:
         app.config.from_pyfile('config.dev.py', silent=True)
 
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=1)
     app.config["JWT_REFRESH_TOKEN_EXPIRES"] = datetime.timedelta(days=30)
     app.config['PROPAGATE_EXCEPTIONS'] = True
+    #app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+    app.config['JSON_SORT_KEYS'] = False
 
     jwt = JWTManager(app)
 
