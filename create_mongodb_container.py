@@ -32,7 +32,7 @@ def main():
     substructure_container = "running_substructure"
 
     mongo_container = "running_glygen_mongo_%s" % (server)
-    mongo_network = config_obj["dbinfo"]["bridge_network"]
+    mongo_network = config_obj["dbinfo"]["bridge_network"] + "_" + server
     mongo_port = config_obj["dbinfo"]["port"][server] 
 
 

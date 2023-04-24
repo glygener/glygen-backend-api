@@ -6,6 +6,12 @@
         "tst":"8082",
         "dev":"8082"
     },
+    "ss_port":{
+        "prd":"10980",
+        "beta":"10990",
+        "tst":"10980",
+        "dev":"10980"
+    },
     "base_url":{
         "prd":"http://localhost:4042",
         "beta":"http://localhost:4442",

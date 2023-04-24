@@ -74,11 +74,11 @@ that the container will start on server reboot.
    ```
 You can populate collections using the following commands:
    ```
-   python3 populate_all_collections.py -s $DEP -v $VER -m full
+   python3 populate_collections.py -s $DEP -v $VER
    ```
-To update a single collection, you can use:
+To update a few collections, you can use:
    ```
-   python3 populate_some_collection.py -s $DEP -v $VER -c $COLLS
+   python3 populate_collection.py -s $DEP -v $VER -c $COLLS
    ```
 where the variable $COLLS is collection names separated by comma (e.g., c_glycan,c_motif)
 

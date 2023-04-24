@@ -69,7 +69,9 @@ def run_exhaustive(in_file, record_type, config_obj, server):
         FW.write("%s\n" % (",".join(row)))
 
     main_id_list = json.loads(open(in_file, "r").read())
+
     for main_id in main_id_list:
+        print (main_id, in_file)
         api_url = config_obj["base_url"][server] + "/%s/detail/%s/" % (record_type, main_id)
         req_obj = {}
         if record_type in ["motif"]:
@@ -106,6 +108,7 @@ def run_exhaustive(in_file, record_type, config_obj, server):
             out_file = log_dir + "%s_failure_log_%s_detail.%s.json" % (user_name,record_type, main_id)
             with open(out_file, "w") as FL:
                 FL.write("%s\n" % (json.dumps(o, indent=4)))
+    FW.close()
 
     return
 

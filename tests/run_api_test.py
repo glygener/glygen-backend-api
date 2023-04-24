@@ -48,8 +48,8 @@ def main():
 
 
     if mode == 2:
-        #record_type_list = ["glycan", "protein"]
-        record_type_list = ["protein"]
+        record_type_list = ["glycan", "protein"]
+        #record_type_list = ["glycan"]
         for record_type in record_type_list:
             cmd = "rm -f " + log_dir + "failure_log_%s_detail.*" % (record_type)
             x = subprocess.getoutput(cmd)
