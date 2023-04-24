@@ -12,7 +12,19 @@ import test_lib
 
 
 def main():
-   
+
+
+    usage = "\n%prog  [options]"
+    parser = OptionParser(usage,version="%prog version___")
+    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
+
+    (options,args) = parser.parse_args()
+    for key in ([options.server]):
+        if not (key):
+            parser.print_help()
+            sys.exit(0)
+
+    server = options.server
     record_type = "protein"
 
     global config_obj
@@ -21,7 +33,6 @@ def main():
 
     config_obj = json.loads(open("../conf/config.json", "r").read())
    
-    server = "tst"
     api_url = config_obj["base_url"][server] +  "/misc/info"
     res = requests.post(api_url, json={}, verify=False)
     info_obj =  json.loads(res.content)

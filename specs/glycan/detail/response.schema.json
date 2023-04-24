@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/schema#",
     "type": "object",
     "properties": {
-        "glytoucan_ac": {
+        "glytoucan": {
             "type": "object",
             "properties": {
                 "glytoucan_ac": {
@@ -179,7 +179,6 @@
                 "required": [
                     "evidence",
                     "protein_name",
-                    "gene_name",
                     "tax_id",
                     "tax_name",
                     "uniprot_canonical_ac"
@@ -384,8 +383,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     },
@@ -450,8 +448,7 @@
                     "attachedby",
                     "id",
                     "name",
-                    "parentid",
-                    "detachedby"
+                    "parentid"
                 ]
             }
         },
@@ -479,9 +476,7 @@
                 "required": [
                     "count",
                     "name",
-                    "residue",
-                    "cid",
-                    "url"
+                    "residue"
                 ]
             }
         },
@@ -509,9 +504,7 @@
                 "required": [
                     "count",
                     "name",
-                    "residue",
-                    "cid",
-                    "url"
+                    "residue"
                 ]
             }
         },
@@ -535,9 +528,7 @@
                 },
                 "required": [
                     "id",
-                    "name",
-                    "synonym",
-                    "keywords"
+                    "name"
                 ]
             }
         },
@@ -631,7 +622,6 @@
                     }
                 },
                 "required": [
-                    "abundance",
                     "end_pos",
                     "evidence",
                     "residue",
@@ -742,17 +732,12 @@
                 }
             },
             "required": [
-                "definition",
-                "disease_associations",
-                "essentials_of_glycobiology",
                 "evidence",
-                "function",
                 "publication",
                 "synonymns",
                 "term",
                 "term_in_sentence",
-                "term_xref",
-                "wikipedia"
+                "term_xref"
             ]
         },
         "interactions": {
@@ -764,10 +749,10 @@
                         "type": "string"
                     },
                     "interactor_name": {
-                        "type": "integer"
+                        "type": "string"
                     },
                     "interactor_id": {
-                        "type": "integer"
+                        "type": "string"
                     },
                     "evidence": {
                         "type": "array",
@@ -857,18 +842,9 @@
         "classification",
         "crossref",
         "glycoct",
-        "glytoucan_ac",
+        "glytoucan",
         "missing_score",
         "tool_support",
-        "wurcs",
-        "smiles_isomeric",
-        "number_monosaccharides_suffix",
-        "iupac",
-        "inchi",
-        "gwb",
-        "glycan_type",
-        "glycam",
-        "fully_determined",
-        "byonic"
+        "wurcs"
     ]
 }

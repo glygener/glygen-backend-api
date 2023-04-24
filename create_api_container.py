@@ -35,7 +35,8 @@ def main():
     port = config_obj["api_port"][server]
     data_path = config_obj["data_path"]
     downloads_path = config_obj["downloads_path"]
-    network = config_obj["dbinfo"]["bridge_network"]
+    network = config_obj["dbinfo"]["bridge_network"] + "_" + server
+
     mongo_user = config_obj["dbinfo"]["glydb"]["user"]
     mongo_password = config_obj["dbinfo"]["glydb"]["password"]
     mongo_db =  config_obj["dbinfo"]["glydb"]["db"]

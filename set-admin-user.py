@@ -6,7 +6,8 @@ import json
 from bson import json_util
 import pymongo
 from pymongo import MongoClient
-
+import bcrypt
+import base64
 import datetime
 import pytz
 
@@ -56,6 +57,8 @@ def main():
         dbh = client[glydb_db]
         coll = "c_users"
         res = dbh[coll].delete_one({"email":email})
+        
+        password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         obj = {"email":email, "password":password, "access":"write", "status":1}
         res = dbh[coll].insert_one(obj)
     except pymongo.errors.ServerSelectionTimeoutError as err:

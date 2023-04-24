@@ -1,60 +1,429 @@
-dict_keys(['config', 'connection_status', 'initobj'])
-Traceback (most recent call last):
-  File "/usr/lib/python3.6/site-packages/urllib3/connectionpool.py", line 672, in urlopen
-    chunked=chunked,
-  File "/usr/lib/python3.6/site-packages/urllib3/connectionpool.py", line 421, in _make_request
-    six.raise_from(e, None)
-  File "<string>", line 3, in raise_from
-  File "/usr/lib/python3.6/site-packages/urllib3/connectionpool.py", line 416, in _make_request
-    httplib_response = conn.getresponse()
-  File "/usr/lib64/python3.6/http/client.py", line 1346, in getresponse
-    response.begin()
-  File "/usr/lib64/python3.6/http/client.py", line 307, in begin
-    version, status, reason = self._read_status()
-  File "/usr/lib64/python3.6/http/client.py", line 276, in _read_status
-    raise RemoteDisconnected("Remote end closed connection without"
-http.client.RemoteDisconnected: Remote end closed connection without response
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.6/site-packages/requests/adapters.py", line 450, in send
-    timeout=timeout
-  File "/usr/lib/python3.6/site-packages/urllib3/connectionpool.py", line 720, in urlopen
-    method, url, error=e, _pool=self, _stacktrace=sys.exc_info()[2]
-  File "/usr/lib/python3.6/site-packages/urllib3/util/retry.py", line 400, in increment
-    raise six.reraise(type(error), error, _stacktrace)
-  File "/usr/lib/python3.6/site-packages/six.py", line 702, in reraise
-    raise value.with_traceback(tb)
-  File "/usr/lib/python3.6/site-packages/urllib3/connectionpool.py", line 672, in urlopen
-    chunked=chunked,
-  File "/usr/lib/python3.6/site-packages/urllib3/connectionpool.py", line 421, in _make_request
-    six.raise_from(e, None)
-  File "<string>", line 3, in raise_from
-  File "/usr/lib/python3.6/site-packages/urllib3/connectionpool.py", line 416, in _make_request
-    httplib_response = conn.getresponse()
-  File "/usr/lib64/python3.6/http/client.py", line 1346, in getresponse
-    response.begin()
-  File "/usr/lib64/python3.6/http/client.py", line 307, in begin
-    version, status, reason = self._read_status()
-  File "/usr/lib64/python3.6/http/client.py", line 276, in _read_status
-    raise RemoteDisconnected("Remote end closed connection without"
-urllib3.exceptions.ProtocolError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response',))
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "run_api_test.py", line 100, in run_exhaustive
-    res = requests.get(api_url, json=req_obj, verify=False)
-  File "/usr/local/lib/python3.6/site-packages/requests/api.py", line 75, in get
-    return request('get', url, params=params, **kwargs)
-  File "/usr/local/lib/python3.6/site-packages/requests/api.py", line 61, in request
-    return session.request(method=method, url=url, **kwargs)
-  File "/usr/local/lib/python3.6/site-packages/requests/sessions.py", line 529, in request
-    resp = self.send(prep, **send_kwargs)
-  File "/usr/local/lib/python3.6/site-packages/requests/sessions.py", line 645, in send
-    r = adapter.send(request, **kwargs)
-  File "/usr/local/lib/python3.6/site-packages/requests/adapters.py", line 501, in send
-    raise ConnectionError(err, request=request)
-requests.exceptions.ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response',))
-
+G56809FB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G07313GR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G89753YM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G60892SA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G40664HB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G98940EW /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G35588AR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G35068DX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G43061MO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G87841AX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G31019WF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G96914KN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G97216ET /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G10308PQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G50507PS /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G99594LR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G41744NO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G52370OE /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G51744MD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G86000QY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G12243WN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G40193LX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G48465YI /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G81971FM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G23647WB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G45219VT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G94736EY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G15403UN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G13269QI /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G17207FU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G56340GX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G44224KM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G38236XZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G07582KM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G75791QY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G09150LP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G11778OZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G82303RP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G98996UE /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G76702YY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G07392QY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G14888AE /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G03674DU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G90549CF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G39945EK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G50043OB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G40608DF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G58214IQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G03309JT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G88374WZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G29501UT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G46568MX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G51500VV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G61305ZB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G22254MF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G62989HM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G76052RG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G49012OF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G68053UD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G37986HU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G75398ZA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G14801WA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G53193KA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G30035MO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G72291OX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G35459KZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G74090KZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G40086WC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G38946SH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G03127AL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G78106KK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G99931NX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G01034MJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G77740PR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G50451XH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G59277TZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00396IE /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G36749ZK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G16809IL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G72490CF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G25285RC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G17557TG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G06301TU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G22478ZB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G65697SK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G32948PW /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G39188CA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G97268YK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G96596OC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G12396GB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G93860XO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G43553YK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G63384MX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G68140PE /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G29064GI /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G61937QU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G67167QM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G62619LG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G46759WS /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G02945KQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G49204YH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G96741HL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G56014GC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G83204BU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G88185OE /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00053MO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G89941FZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G06210XB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G48201XR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G24216MB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G34723UV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G68008QO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G23232XI /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G71922QL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G22355FZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G79118OO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G59456VR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G92357TM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G87860OU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G10219AA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G20544UR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G30915AU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G47649ZW /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G03228NK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G86537AD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G45395BF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G80291PD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G10756ZZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G64624XQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G09528DL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G64518MK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G46935AJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G54018RP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G31010RQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G94692TX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G25541YH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G99243QF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G18647XP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G57321FI /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G03574QJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G99950SF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G97876DH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G74286KY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G32652KI /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G77608BK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G25098MR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G86419OL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G59432OU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G54173SV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G64581RP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G81436EU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G76104SB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G47447OK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G60994YR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G52428MJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G56549DH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G19865KY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G35503EE /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G45560HM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G86713OE /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G13224CR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G66263GG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G52956BX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G81023KT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G36324QX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G12086GM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G08551YA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G26756UI /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G37442IW /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G93899SO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G63337SS /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G74722FL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G43648DB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00903RX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G28096RS /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00395TQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G93855LZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G82061CN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G29239NH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G50730KL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G81952MV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G38710SX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G60232GL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G45889JQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G04048TK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G92358TX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G27102CT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G14023ZV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G13800FQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G10223RO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G63787RZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G93520OM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G74772YG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G46902YN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G80962OX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G54046EC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G90130AG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G39111QK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G82348BZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G45036WQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G60070LT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G82740LG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G23142MQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G27126ED /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G60284TY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G48872RO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G71569SN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G07262RR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G17756LB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G81410HG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G90987JA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G34368WA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G71146MY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G89098OM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G32156ZV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G63813EJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G75097MF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G63043YQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G57789QC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G46283XF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G88329BN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G26344OO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G85079IJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G03536SO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G74239ZQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G53851IA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G94309NZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G30159WR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G06038KF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G45981GB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G32633LC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G07617FP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G65889KE /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G13381VV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G10614GM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G10425SO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G17264LS /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G84168AG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G75308SV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G74009LP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G01361CV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G30673AC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G80062GG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G94217FB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G16828VN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G78355JG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G72851IY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G05619KO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G06367TC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G46732TY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G41876BL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G02240AO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G70519XK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G66204OA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G17160IJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G99533GU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00706QN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G04416BG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G03036FD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G11115RO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G94435QH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G61334IA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G12323AY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G41720HN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G43702JT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G67561OD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G78368CZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G40943ZI /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G02860WV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G08011QI /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G54792LL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G27058EU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G46415RP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G61114DU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G20512LK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G31601FB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G12849CJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G29086KO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G92709EO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00070MO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G50236GJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G77338BR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G46055MA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G61646LF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G11148DZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G11908FF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G07133YY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G43814TV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G99897FQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G81516LH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G25216QA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00194GV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G71142DF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G74121YX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00066MO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G11460AB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G51352HP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G78166NF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G71146HJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G97138VQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G47681UP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G62894KT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G80333GO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G47180UC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G15021LG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00552RX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G25713RA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G36004BS /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G44617UT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G51114UP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G87356FF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G97908CK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G11870QZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G19603RR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G47318KU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G22587DK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G64468KS /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G50926NK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G75445NA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G70323CJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G64227KZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G98795XC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G19943KG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G27775IZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G72791KH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G42459UQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G29078QN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G86056PA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G64973KT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G85143CH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G36123IU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G25216KM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G81761OR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G06656BE /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G93500PH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G98318PN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G01767JJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G34527RW /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G38624RV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G69812OF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G32802UB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G42264OV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G27745TR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G25140TA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G06898ZN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G70642RS /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G55583HW /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G67988RO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G01614ZM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G33734YD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G67383AR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G06231AO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G31380TD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G93805MV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00406II /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G97345NY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G19059PI /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G90598GO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G27188NC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G07822HH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G76163CP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G70515GS /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G27148YF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G29880MM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G55220VL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00037MO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G07695ZT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G54285KU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G14985NB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G11994QC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G53277CD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G76355TG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G45637XA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G64020XR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G91337ZP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G08371CD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G70994MS /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G55383ZG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G19958IL /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G77442QN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G48954CA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G92383TF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G96091TT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G55052CN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G99858XP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G39089YD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G82364UA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00035MO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G93999ON /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G84349RE /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G56526JU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G39294YF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G26527XD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G79941IJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G78059CC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G16407EV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G60605ZN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G52139TP /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G66696KJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G80858MF /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G69107KE /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G89864BN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G81572SC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G27622TD /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G73361JJ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G75154UG /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G56133NW /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G96881BQ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G00033MO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G64615DY /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G24270KX /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G74961IU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G35599NO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G56682BC /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G06953DR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G47379VH /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G79578JB /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G12398HZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G52809WZ /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G39453SO /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G32149KV /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G53962WT /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G70593HA /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G43005HM /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G28420BK /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G30925QW /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G07483YN /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G59126YU /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json
+G95368PR /data/shared/glygen/releases/data/v-2.0.3/jsondb/testdb/glycan.batch.1.json

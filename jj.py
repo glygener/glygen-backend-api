@@ -13,13 +13,16 @@ import subprocess
 __version__="1.0"
 __status__ = "Dev"
 
-def write_progress_msg(msg, flag):
-    ts = datetime.datetime.now()
-    with open("logs/data_loading_progress.txt", flag) as F:
-        F.write("%s [%s]\n" % (msg, ts))
-    return
-
-            
+def get_coll_list(db_list):
+    coll_list = []
+    for d in db_list:
+        if d[-2:] != "db":
+            continue                                    
+        coll = "c_" + d[:-2]
+        if coll == "c_jumbo":
+            continue                                                                            
+        coll_list.append(coll)
+    return coll_list
 
 ###############################
 def main():
@@ -41,14 +44,17 @@ def main():
     ver = options.dataversion
     mode = "full"
 
-
     config_obj = json.loads(open("./conf/config.json", "r").read())
+    mongo_port = config_obj["dbinfo"]["port"][server]
+    host = "mongodb://127.0.0.1:%s" % (mongo_port)
 
     jsondb_dir = config_obj["data_path"] + "/releases/data/v-%s/jsondb/" % (ver)
+    dump_dir = config_obj["data_path"] + "/mongodump/"
 
-    dir_list = os.listdir(jsondb_dir)
-    print (json.dumps(dir_list, indent=4))
+    db_list = config_obj["downloads"]["jsondb"]
+    coll_list = get_coll_list(db_list)
 
+    print (coll_list)
 
 
 if __name__ == '__main__':

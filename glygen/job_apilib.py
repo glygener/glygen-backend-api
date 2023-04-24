@@ -76,7 +76,7 @@ def job_addnew(query_obj, config_obj, data_path, server):
     init_obj = dbh["c_init"].find_one({})
     release_dir = data_path + "/releases/data/v-%s/" % (init_obj["dataversion"])
 
-    validation_obj, error_list = validate_input(query_obj, config_obj, release_dir)
+    validation_obj, error_list = validate_input(query_obj, config_obj, release_dir, server)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -607,8 +607,7 @@ def validate_protein_seq(seq):
 
 
 
-def validate_input(query_obj, config_obj, release_dir):
-
+def validate_input(query_obj, config_obj, release_dir, server):
     cmd_parts = []
     error_list = []
     if query_obj["jobtype"] not in config_obj["jobinfo"]:
@@ -631,8 +630,10 @@ def validate_input(query_obj, config_obj, release_dir):
                     val = query_obj["parameters"][obj["id"]]
                     cmd_parts.append({"flag":obj["cmdflag"], "value":val, "field":obj["id"]})
 
+        
+    query_obj["cmd"] = "%s" % (config_obj["jobinfo"][query_obj["jobtype"]]["path"][server])
 
-    query_obj["cmd"] = "%s" % (config_obj["jobinfo"][query_obj["jobtype"]]["path"])
+
     for o in cmd_parts:
         if query_obj["jobtype"] == "blastp":
             if o["flag"] == "-db":

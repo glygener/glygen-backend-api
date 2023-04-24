@@ -21,6 +21,21 @@ def write_progress_msg(msg, flag):
 
             
 
+def get_coll_list(db_list):
+    coll_list = ["c_protein","c_glycan"]
+    for d in db_list:
+        if d[-2:] != "db":
+            continue                                    
+        coll = "c_" + d[:-2]
+        if coll in ["c_jumbo", "c_protein","c_glycan"]:
+            continue                                                                            
+        coll_list.append(coll)
+    
+    return coll_list
+
+
+
+
 ###############################
 def main():
 
@@ -29,11 +44,11 @@ def main():
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
     parser.add_option("-v","--dataversion",action="store",dest="dataversion",help="2.0.2/2.0.3 ...")
-    parser.add_option("-c","--coll",action="store",dest="coll",help="c_glycan/c_protein")
+    parser.add_option("-c","--coll",action="store",dest="coll",help="OPTIONAL c_glycan,c_protein ")
         
     (options,args) = parser.parse_args()
 
-    for key in ([options.server, options.dataversion, options.coll]):
+    for key in ([options.server, options.dataversion]):
         if not (key):
             parser.print_help()
             sys.exit(0)
@@ -42,32 +57,27 @@ def main():
 
     server = options.server
     ver = options.dataversion
-    coll = options.coll
 
-    coll_list =  coll.split(",")
 
     
-
-
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     mongo_port = config_obj["dbinfo"]["port"][server]
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
-
     jsondb_dir = config_obj["data_path"] + "/releases/data/v-%s/jsondb/" % (ver)
-    
     dump_dir = config_obj["data_path"] + "/mongodump/"
-
-
     tmpdb_user = config_obj["dbinfo"]["tmpdb"]["user"]
     tmpdb_pass = config_obj["dbinfo"]["tmpdb"]["password"]
     tmpdb_name =  config_obj["dbinfo"]["tmpdb"]["db"] 
-    
     glydb_user = config_obj["dbinfo"]["glydb"]["user"]
     glydb_pass = config_obj["dbinfo"]["glydb"]["password"]
     glydb_name =  config_obj["dbinfo"]["glydb"]["db"]
     indexed_colls = ["c_protein", "c_glycan"]
 
+    db_list = config_obj["downloads"]["jsondb"]
+    coll_list = get_coll_list(db_list)
+    if options.coll != None:
+        coll_list =  options.coll.split(",")
 
 
 
