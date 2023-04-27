@@ -841,14 +841,36 @@
             ,"requiredfields":["value", "limit"]
             ,"collectionlist":[]
         }
-        ,"data_download":{
+        ,"list_download":{
             "field_info":{
-                "type":{"type":"string"}
+                "id":{"type":"string"}
+                ,"download_type":{"type":"string"}
                 ,"format":{"type":"string"}
-                ,"id":{"type":"string"}
                 ,"compressed":{"type":"boolean"}
             }
-            ,"requiredfields":["type","format", "id", "compressed"]
+            ,"requiredfields":["download_type","format", "id", "compressed"]
+            ,"collectionlist":[]
+        }
+        ,"detail_download":{
+            "field_info":{
+                "id":{"type":"string"}
+                ,"download_type":{"type":"string"}
+                ,"format":{"type":"string"}
+                ,"compressed":{"type":"boolean"}
+            }
+            ,"requiredfields":["download_type","format", "id", "compressed"]
+            ,"collectionlist":[]
+        }
+        ,"section_download":{
+            "field_info":{
+                "id":{"type":"string"}
+                ,"download_type":{"type":"string"}
+                ,"section":{"type":"string"}
+                ,"tab":{"type":"string"}
+                ,"format":{"type":"string"}
+                ,"compressed":{"type":"boolean"}
+            }
+            ,"requiredfields":["download_type","format", "id", "section", "compressed"]
             ,"collectionlist":[]
         }
         ,"pages_home_init":{
@@ -989,24 +1011,30 @@
             ,"json":"application/json"
         }
         ,"downloadtypes":{
-            "protein_list":{"cache":"c_cache", "formatlist":["csv","json","fasta"]}
+            "protein_list":{"cache":"c_cache", "formatlist":["csv","tsv","json","fasta"]}
             ,"glycan_list":{"cache":"c_cache", "formatlist":["csv","json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic", "grits"]}
-            ,"motif_list":{"cache":"c_motif", "formatlist":["csv","json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic"]}
-            ,"genelocus_list":{"cache":"c_cache", "formatlist":["csv","json","fasta"]}
-            ,"ortholog_list":{"cache":"c_cache", "formatlist":["csv","json","fasta"]}
-            ,"site_list":{"cache":"c_cache", "formatlist":["csv","json"]}
+            ,"motif_list":{"cache":"c_motif", "formatlist":["csv","tsv","json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic"]}
+            ,"genelocus_list":{"cache":"c_cache", "formatlist":["csv","tsv","json","fasta"]}
+            ,"ortholog_list":{"cache":"c_cache", "formatlist":["csv","tsv","json","fasta"]}
+            ,"site_list":{"cache":"c_cache", "formatlist":["csv","tsv","json"]}
             ,"protein_detail":{"cache":"c_protein", "formatlist":["json","fasta"]}
             ,"glycan_detail":{"cache":"c_glycan", "formatlist":["json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic"]}
-            ,"motif_detail":{"cache":"c_motif", "formatlist":["json", "csv","png"]}
+            ,"motif_detail":{"cache":"c_motif", "formatlist":["json", "csv","tsv", "png"]}
             ,"site_detail":{"cache":"c_site", "formatlist":["json"]}
             ,"publication_detail":{"cache":"c_publication", "formatlist":["json"]}
             ,"protein_detail_isoformset":{"cache":"c_protein", "formatlist":["fasta"]}
             ,"protein_detail_homologset":{"cache":"c_protein", "formatlist":["fasta"]}
             ,"glycan_image":{"cache":"c_glycan", "formatlist":["png"]}
-            ,"idmapping_list_mapped":{"cache":"c_cache", "formatlist":["csv"]}
-            ,"idmapping_list_unmapped":{"cache":"c_cache", "formatlist":["csv"]}
-            ,"idmapping_list_all":{"cache":"c_cache", "formatlist":["csv"]}
-            ,"idmapping_list_all_collapsed":{"cache":"c_cache", "formatlist":["csv"]}
+            ,"idmapping_list_mapped":{"cache":"c_cache", "formatlist":["csv","tsv"]}
+            ,"idmapping_list_unmapped":{"cache":"c_cache", "formatlist":["csv","tsv"]}
+            ,"idmapping_list_all":{"cache":"c_cache", "formatlist":["csv","tsv"]}
+            ,"idmapping_list_all_collapsed":{"cache":"c_cache", "formatlist":["csv","tsv"]}
+            ,"protein_section":{"cache":"c_protein", "formatlist":["csv","tsv"]}
+            ,"site_section":{"cache":"c_site", "formatlist":["csv","tsv"]}
+            ,"glycan_section":{"cache":"c_glycan", "formatlist":["csv","tsv"]}
+            ,"motif_section":{"cache":"c_motif", "formatlist":["csv","tsv"]}
+            ,"publication_section":{"cache":"c_publication", "formatlist":["csv","tsv"]}
+
         }
         ,"dev":{
                 "dbinfo":{

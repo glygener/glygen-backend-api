@@ -44,7 +44,7 @@ def validate_response(res_obj, schema_file):
 
 
 
-def get_id_dict(api_url):
+def get_id_dict_one(api_url):
 
     id_dict = {}
     res = requests.post(api_url, json={}, verify=False)
@@ -54,6 +54,19 @@ def get_id_dict(api_url):
         id_dict[p] = res_obj[coll]
         if "_id" in id_dict[p]:
             id_dict[p]["id"] = id_dict[p]["_id"]
+        
+    return id_dict
+
+
+def get_id_dict_two():
+
+    id_dict = {}
+    doc = json.loads(open("queries/listid/listid.json", "r").read())
+    for grp in doc:
+        id_dict[grp] = {}
+        for k in doc[grp]:
+            id_dict[grp][k] = doc[grp][k]
+
     return id_dict
 
 
@@ -71,7 +84,6 @@ def run_exhaustive(in_file, record_type, config_obj, server):
     main_id_list = json.loads(open(in_file, "r").read())
 
     for main_id in main_id_list:
-        print (main_id, in_file)
         api_url = config_obj["base_url"][server] + "/%s/detail/%s/" % (record_type, main_id)
         req_obj = {}
         if record_type in ["motif"]:
@@ -88,8 +100,11 @@ def run_exhaustive(in_file, record_type, config_obj, server):
                 o["error_list"] = res_obj["error_list"]
             else:
                 schema_file = "../specs/%s/detail/response.schema.json" % (record_type)
-                o["validation"] = validate_response(res_obj,schema_file)
-            
+                if os.path.isfile(schema_file) == True:
+                    o["validation"] = validate_response(res_obj,schema_file)
+                else:
+                    o["validation"] = {"status":"noschema"}
+
         flag_list = []
         if o["bad_respose"] == True:
             flag_list.append("bad_response")
@@ -100,7 +115,12 @@ def run_exhaustive(in_file, record_type, config_obj, server):
                 flag_list.append("schema_validation_failed")
             elif o["validation"]["status"] == "failed":
                 flag_list.append("schema_validation_failed")
-        flags = "success" if flag_list == [] else "failed:" + ";".join(flag_list)
+
+        flags = ""
+        if flag_list != []:
+            flags = "failed:" + ";".join(flag_list)
+        else:
+            flags = "success" 
         row = [main_id, flags]
         with open(summary_file, "a") as FW:
             FW.write("%s\n" % (",".join(row)))
@@ -174,13 +194,23 @@ def run_from_queries(api_grp, config_obj, server):
                         api_url += t_obj["query"] + "/"
                         req_obj = {}
                    
-                    id_dict = get_id_dict(last_id_api_url)
+                    id_dict_one = get_id_dict_one(last_id_api_url)
+                    id_dict_two = get_id_dict_two()
                     grp = api_name.split("_")[0]
-                    if grp in id_dict:
-                        for p in id_dict[grp]:
+                    
+                    if grp in id_dict_one:
+                        for p in id_dict_one[grp]:
                             if p in req_obj:
-                                req_obj[p] = id_dict[grp][p]
+                                req_obj[p] = id_dict_one[grp][p]
+                    
+                    for grp in id_dict_two:
+                        for download_type in id_dict_two[grp]:
+                            if "type" in req_obj:
+                                if download_type == req_obj["type"]:
+                                    req_obj["id"] = id_dict_two[grp][download_type]
 
+
+                    
                     res = requests.post(api_url, json=req_obj, verify=False)
                     #res = requests.get(api_url, json=req_obj, verify=False)
                     #if api_name in ["protein_detail"]:
@@ -200,8 +230,13 @@ def run_from_queries(api_grp, config_obj, server):
                             else:
                                 if "schemafile" in t_obj:
                                     o["validation"] = validate_response(res_obj,t_obj["schemafile"])
+                                else:
+                                    o["validation"] = {"status":"noschema"}
                                 if "list_id" in res_obj:
                                     last_list_id = res_obj["list_id"]
+                    elif "schemafile" not in t_obj:
+                        o["validation"] = {"status":"noschema"}
+
                     flag_list = []
                     if o["bad_respose"] == True:
                         flag_list.append("bad_response")
@@ -212,7 +247,11 @@ def run_from_queries(api_grp, config_obj, server):
                             flag_list.append("schema_validation_failed")
                         elif o["validation"]["status"] == "failed":
                             flag_list.append("schema_validation_failed")
-                    flags = "success" if flag_list == [] else "failed:" + ";".join(flag_list)
+                    flags = ""
+                    if flag_list != []:
+                        flags = "failed:" + ";".join(flag_list)
+                    else:
+                        flags = "success"
                     row = [o["name"], "query-"+str(idx), flags]
                     FW.write("%s\n" % (",".join(row)))
                     if flags != "success":

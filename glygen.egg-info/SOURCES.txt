@@ -59,6 +59,7 @@ glygen/conf/backup-edgerules.json
 glygen/conf/config.json
 glygen/conf/dbinfo.json
 glygen/conf/edgerules.json
+glygen/conf/fieldmap.json
 glygen/conf/global_search.json
 glygen/conf/global_search.json-backup
 glygen/conf/global_search_all.json
@@ -70,6 +71,9 @@ glygen/conf/integrity.conf
 glygen/conf/list_filters.json
 glygen/conf/newedgerules.json
 glygen/conf/protein_scratch.csv
+glygen/conf/section.1.json
+glygen/conf/section.2.json
+glygen/conf/section.json
 glygen/conf/supersearch.json
 glygen/conf/supersearch.json-backup
 glygen/conf/toyglobal_search.json
