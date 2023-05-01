@@ -109,6 +109,11 @@ def main():
             file_list = glob.glob(jsondb_dir + "/" + json_db + "/*.json")
             nrecords = 0
             for in_file in file_list:
+                #debug
+                #if coll == "c_publication" and nrecords > 162000:
+                #    msg = " ... now loading %s" % (in_file)
+                #    write_progress_msg(msg, "a")
+
                 doc = json.loads(open(in_file, "r").read())
                 if "_id" in doc:
                     doc.pop("_id")
@@ -117,7 +122,7 @@ def main():
                 if nrecords != 0 and nrecords%1000 == 0:
                     msg = " ... loaded %s documents to tmpdb.%s" % (nrecords,coll)
                     write_progress_msg(msg, "a")
-
+                
             ts = datetime.datetime.now()
             msg = " ... finished loading %s documents to tmpdb.%s" % (nrecords, coll)
             write_progress_msg(msg, "a")

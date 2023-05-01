@@ -841,6 +841,16 @@
             ,"requiredfields":["value", "limit"]
             ,"collectionlist":[]
         }
+        ,"data_download":{
+            "field_info":{
+                "type":{"type":"string"}
+                ,"format":{"type":"string"}
+                ,"id":{"type":"string"}
+                ,"compressed":{"type":"boolean"}
+            }
+            ,"requiredfields":["type","format", "id", "compressed"]
+            ,"collectionlist":[]
+        } 
         ,"list_download":{
             "field_info":{
                 "id":{"type":"string"}
