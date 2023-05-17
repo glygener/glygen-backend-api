@@ -20,15 +20,16 @@ def main():
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
+    parser.add_option("-c","--coll",action="store",dest="coll",help="") 
     (options,args) = parser.parse_args()
 
-    for key in ([options.server]):
+    for key in ([options.server, options.coll]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     server = options.server
-
+    coll = options.coll
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     mongo_port = config_obj["dbinfo"]["port"][server]
@@ -48,8 +49,7 @@ def main():
         client.server_info()
         dbh = client[glydb_db]
         
-        for coll in ["c_glycan", "c_protein"]:
-            res = dbh[coll].create_index([("$**", pymongo.TEXT)])
+        res = dbh[coll].create_index([("$**", pymongo.TEXT)])
 
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)

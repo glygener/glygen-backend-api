@@ -32,9 +32,11 @@ def main():
     substructure_container = "running_substructure"
 
     mongo_container = "running_glygen_mongo_%s" % (server)
-    mongo_network = config_obj["dbinfo"]["bridge_network"] + "_" + server
     mongo_port = config_obj["dbinfo"]["port"][server] 
 
+    mongo_network = config_obj["dbinfo"]["bridge_network"]
+    if server in ["prd", "beta"]:
+        mongo_network = config_obj["dbinfo"]["bridge_network"] + "_" + server
 
     u, p = config_obj["dbinfo"]["admin"]["user"], config_obj["dbinfo"]["admin"]["password"]
     e_params = "-e MONGO_INITDB_ROOT_USERNAME=%s -e MONGO_INITDB_ROOT_PASSWORD=%s" % (u, p)

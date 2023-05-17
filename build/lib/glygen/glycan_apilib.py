@@ -244,13 +244,6 @@ def glycan_detail(query_obj, config_obj):
     collection = "c_glycan"
 
 
-    q = {
-        "$and":[ 
-            {"record_id":{'$eq': query_obj["glytoucan_ac"].upper()}},
-            {"recordtype":{"$eq": "glycan"}}
-        ]
-    }
-    history_obj = dbh["c_idtrack"].find_one(q)
 
     glytoucan_ac = query_obj["glytoucan_ac"].upper()
     mongo_query = {"glytoucan_ac":{'$eq': glytoucan_ac}}
@@ -258,7 +251,11 @@ def glycan_detail(query_obj, config_obj):
     
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
+    history_obj = None
     if obj == None:
+        q = { "$and":[ {"record_id":{'$eq': query_obj["glytoucan_ac"].upper()}}, {"recordtype":{"$eq": "glycan"}}]}
+        history_obj = dbh["c_idtrack"].find_one(q)
+        
         post_error_list.append({"error_code":"non-existent-record"})
         res_obj = {"error_list":post_error_list}
         if history_obj != None:

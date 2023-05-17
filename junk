@@ -1,99 +1,30 @@
-"GlyTouCan Accession","Type","Start Position","End Position","Start Amino Acid","End Amino Acid","Comment","Source Xref DB","Source Xref ID","Source Xref URL"
-"G43417UB","O-linked","1053","1053","Ser","Ser","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1053","1053","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1120","1120","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G43417UB","O-linked","1129","1129","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G43417UB","O-linked","1148","1148","Ser","Ser","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G53434XO","O-linked","1148","1148","Ser","Ser","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1148","1161","Ser","Arg","Data provided by GlycoDomainViewer","DOI","10.1021/acs.analchem.6b02887","https://glygen.org/publication/DOI/10.1021/acs.analchem.6b02887"
-"G43417UB","O-linked","1150","1150","Ser","Ser","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1184","1184","Thr","Thr","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G57321FI","O-linked","1187","1187","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G57321FI","O-linked","1191","1191","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1194","1194","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1194","1194","Thr","Thr","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G57321FI","O-linked","1196","1196","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1200","1200","Ser","Ser","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G29068FM","O-linked","1202","1202","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G43417UB","O-linked","1202","1202","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G27391WQ","O-linked","1211","1211","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G53434XO","O-linked","1211","1211","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G58001LT","O-linked","1211","1211","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G29068FM","O-linked","1212","1212","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G43417UB","O-linked","1212","1212","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1223","1223","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G57321FI","O-linked","1232","1232","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G53434XO","O-linked","1238","1238","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G43417UB","O-linked","1239","1239","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1239","1239","Thr","Thr","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1263","1263","Ser","Ser","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1263","1263","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1265","1265","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1265","1265","Thr","Thr","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1268","1268","Ser","Ser","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1268","1268","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G57321FI","O-linked","1277","1277","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1284","1284","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G43417UB","O-linked","1290","1290","Ser","Ser","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1290","1290","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1292","1292","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1292","1292","Thr","Thr","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G57321FI","O-linked","1295","1295","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G57321FI","O-linked","1299","1299","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G57321FI","O-linked","1302","1302","Thr","Thr","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G57321FI","O-linked","1304","1304","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1308","1308","Ser","Ser","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1308","1308","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1310","1310","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1310","1310","Thr","Thr","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1313","1313","Ser","Ser","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1313","1313","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G57321FI","O-linked","1322","1322","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1329","1329","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G53434XO","O-linked","1364","1364","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","1398","1398","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G57321FI","O-linked","1403","1403","Thr","Thr","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","1410","1410","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G43417UB","O-linked","1418","1418","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G49108TO","O-linked","1516","1516","Ser","Ser","O-GlcNAcylation","PubMed","29351928","https://glygen.org/publication/PubMed/29351928"
-"G22310AV","N-linked","1559","1559","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G48414YA","N-linked","1698","1698","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G57888GL","N-linked","1698","1698","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G62461SM","N-linked","1698","1698","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G00912UN","N-linked","1703","1703","Asn","Asn","","GPTwiki","P12259@N1703","https://edwardslab.bmcb.georgetown.edu/gptwiki/P12259@N1703"
-"G05933EN","N-linked","1703","1703","Asn","Asn","","GPTwiki","P12259@N1703","https://edwardslab.bmcb.georgetown.edu/gptwiki/P12259@N1703"
-"G31433PN","N-linked","2064","2064","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G39595FH","N-linked","2064","2064","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G37881RL","N-linked","2209","2209","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G48414YA","N-linked","2209","2209","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G78790NZ","N-linked","2209","2209","Asn","Asn","","PubMed","29741879","https://glygen.org/publication/PubMed/29741879"
-"G15169WU","N-linked","297","297","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G22310AV","N-linked","297","297","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G23453IV","N-linked","297","297","Asn","Asn","","PubMed","29671580","https://glygen.org/publication/PubMed/29671580"
-"G57776ZU","N-linked","297","297","Asn","Asn","","PubMed","29671580","https://glygen.org/publication/PubMed/29671580"
-"G84452RH","N-linked","297","297","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G48414YA","N-linked","382","382","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G84452RH","N-linked","382","382","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G22310AV","N-linked","468","468","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G34730YF","N-linked","468","468","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G47748JZ","N-linked","468","468","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G84452RH","N-linked","468","468","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G57321FI","O-linked","786","811","Phe","Arg","Data provided by GlycoDomainViewer","DOI","10.1021/acs.analchem.6b02887","https://glygen.org/publication/DOI/10.1021/acs.analchem.6b02887"
-"G57321FI","O-linked","797","811","Ala","Arg","Data provided by GlycoDomainViewer","DOI","10.1021/acs.analchem.6b02887","https://glygen.org/publication/DOI/10.1021/acs.analchem.6b02887"
-"G53434XO","O-linked","804","804","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","804","804","Thr","Thr","Data provided by GlycoDomainViewer","DOI","10.1038/emboj.2013.79","https://glygen.org/publication/DOI/10.1038/emboj.2013.79"
-"G29068FM","O-linked","805","805","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G43417UB","O-linked","805","805","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","805","805","Thr","Thr","Data provided by GlycoDomainViewer","DOI","10.1038/emboj.2013.79","https://glygen.org/publication/DOI/10.1038/emboj.2013.79"
-"G00912UN","N-linked","821","821","Asn","Asn","","GPTwiki","P12259@N821","https://edwardslab.bmcb.georgetown.edu/gptwiki/P12259@N821"
-"G48414YA","N-linked","821","821","Asn","Asn","","PubMed","29671580","https://glygen.org/publication/PubMed/29671580"
-"G43417UB","O-linked","832","832","Ser","Ser","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","851","851","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","900","900","Ser","Ser","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G06356OH","N-linked","938","938","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G33791AF","N-linked","938","938","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G34617SM","N-linked","938","938","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G84452RH","N-linked","938","938","Asn","Asn","","PubMed","29391424","https://glygen.org/publication/PubMed/29391424"
-"G57321FI","O-linked","985","985","Ser","Ser","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
-"G43417UB","O-linked","986","986","Thr","Thr","","PubMed","30459171","https://glygen.org/publication/PubMed/30459171"
-"G57321FI","O-linked","986","986","Thr","Thr","Data provided by GlycoDomainViewer","DOI","10.1074/mcp.M114.046862","https://glygen.org/publication/DOI/10.1074/mcp.M114.046862"
+[
+    {
+        "Name": "glygen_backend",
+        "Id": "ea1f11d5e34b2c8ce2b69d476e540b39a3076acc631939ef53ef3e9d494c4e0e",
+        "Created": "2023-03-22T13:09:09.25157241-04:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "192.168.176.0/20",
+                    "Gateway": "192.168.176.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {},
+        "Labels": {}
+    }
+]

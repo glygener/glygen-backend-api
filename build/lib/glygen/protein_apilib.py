@@ -251,8 +251,8 @@ def protein_detail(query_obj, config_obj):
         return {"error_list":error_list}
 
 
-    collection = "c_protein"
 
+    collection = "c_protein"
     mongo_query = {
         "$or":[
             {"uniprot_canonical_ac":{'$eq': query_obj["uniprot_canonical_ac"].upper()}},
@@ -260,18 +260,18 @@ def protein_detail(query_obj, config_obj):
         ]
     }
     obj = dbh[collection].find_one(mongo_query)
-    c_a = {"recordtype":{"$eq": "protein"}}
-    c_b = {"record_id":{'$regex':query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
-    c_c = {"accessions":{'$regex':","+query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
-
-    q_one = {"$and":[c_a, c_b]}
-    history_obj_one = dbh["c_idtrack"].find_one(q_one)
-    q_two = {"$and":[c_a, c_c]}
-    history_obj_two = dbh["c_idtrack"].find_one(q_two)
-
+    history_obj_one, history_obj_two = None, None
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
     if obj == None:
+        c_a = {"recordtype":{"$eq": "protein"}}
+        c_b = {"record_id":{'$regex':query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
+        c_c = {"accessions":{'$regex':","+query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
+        q_one = {"$and":[c_a, c_b]}
+        history_obj_one = dbh["c_idtrack"].find_one(q_one)
+        q_two = {"$and":[c_a, c_c]}
+        history_obj_two = dbh["c_idtrack"].find_one(q_two)
+        
         post_error_list.append({"error_code":"non-existent-record"})
         res_obj = {"error_list":post_error_list}
         if history_obj_one != None:
@@ -302,6 +302,7 @@ def protein_detail(query_obj, config_obj):
         else:
             res_obj["reason"] = {"type":"invalid","description": "Invalid accession"}
         return res_obj
+
 
     # Get section objects if record is batched
     canon = query_obj["uniprot_canonical_ac"].upper()
