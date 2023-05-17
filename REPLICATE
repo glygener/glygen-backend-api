@@ -1,0 +1,22 @@
+1) Go to /data/shared/repos/glygen-backend-api
+
+    $ cd /data/shared/repos/glygen-backend-api
+
+
+
+2) Restart  "running_glygen_api_beta" container and look at CPU usage of running_glygen_mongo_beta
+
+    $ sudo systemctl restart docker-glygen-api-beta.service
+    $ docker stats running_glygen_mongo_beta
+
+
+3) Run flood.sh to submit lots of requests and look at CPU usage of running_glygen_mongo_beta again
+
+    $ sh flood.sh
+    $ docker stats running_glygen_mongo_beta
+
+
+
+
+
+
