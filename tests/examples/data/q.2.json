@@ -1,0 +1,9 @@
+{
+    "id": "0e6f1dc7c69f71103450bbf04ff87214",
+    "filters":[{"id":"by_organism","operator":"OR","selected":["Homo sapiens"]}],
+    "download_type": "protein_list",
+    "format": "csv",
+    "compressed": false
+}
+
+

@@ -70,6 +70,7 @@ glygen/conf/integrity.conf
 glygen/conf/list_filters.json
 glygen/conf/newedgerules.json
 glygen/conf/protein_scratch.csv
+glygen/conf/section.json
 glygen/conf/supersearch.json
 glygen/conf/supersearch.json-backup
 glygen/conf/toyglobal_search.json

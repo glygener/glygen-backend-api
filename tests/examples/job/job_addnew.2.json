@@ -1,0 +1,10 @@
+{
+    "jobtype": "blastp",
+    "parameters": {
+        "evalue": 0.001,
+        "num_alignments": 3,
+        "seq": "MSIQENISSLQLRSWVSKSQRDLAKSILIGAPGGPAGYLRRASVAQLTQELGTAFFQQQQLPAAMADTFLEHLCLLDIDSEPVAARSTSIIATIGPASRSVERLKEMIKAGMNIARLNFSQHAIAREAEAAVYHRQLFEELRRAAPLSRDPTEVTAIGAVEAAFKCCAAAIIVLTTTGRS",
+        "targetdb": "canonicalsequences_all"
+    }
+}
+

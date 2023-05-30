@@ -77,7 +77,7 @@ def event_addnew(logged_user, query_obj, config_obj):
 
     res_obj = {}
     try:
-        query_obj["createdts"] = datetime.datetime.now()
+        query_obj["createdts"] = datetime.datetime.now(pytz.timezone('US/Eastern'))
         query_obj["updatedts"] = query_obj["createdts"]
         res = dbh["c_event"].insert_one(query_obj)
         res_obj = {"type":"success"}
@@ -138,7 +138,7 @@ def event_list(query_obj, config_obj):
             cond_list.append({"visibility":{"$eq":query_obj["visibility"]}})
         if "status" in query_obj:
             if query_obj["status"] == "current":
-                now = datetime.datetime.now()
+                now = datetime.datetime.now(pytz.timezone('US/Eastern'))     
                 cond_list.append({"start_date":{"$lte":now}})
                 cond_list.append({"end_date":{"$gte":now}})
         q_obj = {} if cond_list == [] else  {"$and":cond_list}

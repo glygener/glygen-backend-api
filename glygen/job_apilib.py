@@ -321,7 +321,7 @@ def parse_blastp_ouput(out_file, config_obj):
     sec_list = ["ptm_annotation", "glycation", "snv", "site_annotation", "glycosylation",
         "site_annotation", "glycosylation", "mutagenesis", "phosphorylation"        
     ]
-    prj_obj = {"uniprot_canonical_ac":1, "uniprot_id":1, "protein_names":1, "species":1}
+    prj_obj = {"uniprot_canonical_ac":1, "uniprot_id":1, "gene_names":1, "protein_names":1, "species":1}
     for sec in sec_list:
         prj_obj[sec] = 1
 
@@ -335,6 +335,10 @@ def parse_blastp_ouput(out_file, config_obj):
         res_obj_dict[canon]["details"]["species"] = o
         res_obj_dict[canon]["details"]["protein_name"] = doc["protein_names"][0]["name"]
         res_obj_dict[canon]["details"]["uniprot_id"] = doc["uniprot_id"]
+        res_obj_dict[canon]["details"]["gene_name"] = "N/A"
+        if "gene_names" in doc:
+            if len(doc["gene_names"]) != 0:
+                res_obj_dict[canon]["details"]["gene_name"] = doc["gene_names"][0]["name"]
         for o in doc["protein_names"]:
             if o["type"] == "recommended":
                 res_obj_dict[canon]["details"]["protein_name"] = o["name"]
@@ -345,6 +349,7 @@ def parse_blastp_ouput(out_file, config_obj):
 
     for sbj_id in res_obj_dict:
         sbj_name = res_obj_dict[sbj_id]["details"]["protein_name"]
+        sbj_gene_name = res_obj_dict[sbj_id]["details"]["gene_name"]
         sbj_uniprot_id = res_obj_dict[sbj_id]["details"]["uniprot_id"]
         sbj_tax_id = res_obj_dict[sbj_id]["details"]["species"]["tax_id"]
         sbj_tax_name = res_obj_dict[sbj_id]["details"]["species"]["name"]
@@ -368,13 +373,14 @@ def parse_blastp_ouput(out_file, config_obj):
             obj["sequences"] = []
             start_pos, end_pos = q_ranges[0]["s"], q_ranges[-1]["e"]
             o = {"aln":qry, "name":"Submitted query sequence", 
-                    "id":query_id, "uniprot_ac":"","uniprot_id": "", 
+                    "id":query_id, "uniprot_ac":"","uniprot_id": "", "gene_name":"",
                     "tax_name": "", "tax_id":0, "start_pos":start_pos, "end_pos":end_pos}
             obj["sequences"].append(o)
 
             start_pos, end_pos = s_ranges[0]["s"], s_ranges[-1]["e"]
             o = {"aln":sbj, "name":sbj_id,
                     "id":sbj_id, "uniprot_ac":sbj_id,"uniprot_id": sbj_uniprot_id, 
+                    "gene_name":sbj_gene_name,
                     "tax_name": sbj_tax_name, "tax_id":sbj_tax_id,
                     "start_pos":start_pos, "end_pos":end_pos}
             obj["sequences"].append(o)

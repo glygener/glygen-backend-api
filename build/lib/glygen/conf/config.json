@@ -841,14 +841,36 @@
             ,"requiredfields":["value", "limit"]
             ,"collectionlist":[]
         }
-        ,"data_download":{
+        ,"detail_download":{
             "field_info":{
-                "type":{"type":"string"}
+                "download_type":{"type":"string"}
                 ,"format":{"type":"string"}
                 ,"id":{"type":"string"}
                 ,"compressed":{"type":"boolean"}
             }
-            ,"requiredfields":["type","format", "id", "compressed"]
+            ,"requiredfields":["download_type","format", "id", "compressed"]
+            ,"collectionlist":[]
+        }
+        ,"section_download":{
+            "field_info":{
+                "download_type":{"type":"string"}
+                ,"section":{"type":"string"}
+                ,"format":{"type":"string"}
+                ,"id":{"type":"string"}
+                ,"compressed":{"type":"boolean"}
+            }
+            ,"requiredfields":["download_type", "section", "format", "id", "compressed"]
+            ,"collectionlist":[]
+        } 
+        ,"list_download":{
+            "field_info":{
+                "download_type":{"type":"string"}
+                ,"format":{"type":"string"}
+                ,"id":{"type":"string"}
+                ,"compressed":{"type":"boolean"}
+                ,"filters":{"type":"list"}
+            }
+            ,"requiredfields":["download_type","format", "id", "compressed"]
             ,"collectionlist":[]
         }
         ,"pages_home_init":{
@@ -1007,6 +1029,12 @@
             ,"idmapping_list_unmapped":{"cache":"c_cache", "formatlist":["csv"]}
             ,"idmapping_list_all":{"cache":"c_cache", "formatlist":["csv"]}
             ,"idmapping_list_all_collapsed":{"cache":"c_cache", "formatlist":["csv"]}
+            ,"protein_section":{"cache":"c_protein", "formatlist":["csv","tsv"]}
+            ,"site_section":{"cache":"c_site", "formatlist":["csv","tsv"]}
+            ,"glycan_section":{"cache":"c_glycan", "formatlist":["csv","tsv"]}
+            ,"motif_section":{"cache":"c_motif", "formatlist":["csv","tsv"]}
+            ,"publication_section":{"cache":"c_publication", "formatlist":["csv","tsv"]}
+
         }
         ,"dev":{
                 "dbinfo":{

@@ -1,0 +1,5 @@
+CONTAINER ID   NAME                     CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O         PIDS
+4587dce442e4   running_glygen_api_prd   0.01%     59.29MiB / 125.9GiB   0.05%     58.7GB / 5.99GB   37.8MB / 21.5kB   27
+a8210afbec58   running_glygen_api_beta  0.01%     162.6MiB / 125.9GiB   0.13%     6.87GB / 161MB   19.1MB / 0B   4
+
+

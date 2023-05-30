@@ -1,8 +1,8 @@
 {
-        "id": "P14210-1",
-                "download_type": "protein_detail_homologset",
-                        "format": "fasta",
-                                "compressed": false
-                                    }
+    "id": "P14210-1",
+    "download_type": "protein_detail",
+    "format": "json",
+    "compressed": false
+}
 
 

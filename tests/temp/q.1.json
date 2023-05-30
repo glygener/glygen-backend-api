@@ -1,8 +1,3 @@
 {
-    "operation":"AND",
-    "glycan_name":"",
-    "query_type":"search_glycan",
-    "glycan_identifier":{
-        "glycan_id":"G17689DH","subsumption":"none"
-    }
+    "id":"b091a1c7b5f74599e242b2625ce52741"
 }

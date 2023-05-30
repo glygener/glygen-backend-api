@@ -1,0 +1,4 @@
+{
+    "id": "b091a1c7b5f74599e242b2625ce52741",
+    "filters":[{"id":"by_organism","operator":"OR","selected":["Rattus norvegicus"]}]
+}
