@@ -1,0 +1,45 @@
+1|glycan|motifs
+1|glycan|glycoprotein
+1|glycan|interactions
+1|glycan|enzyme
+1|glycan|subsumption_ancestor
+1|glycan|subsumption_descendant
+1|glycan|expression_tissue
+1|glycan|expression_cell_line
+
+1|motif|glycans
+
+1|protein|glycosylation_reported_with_glycans
+1|protein|glycosylation_reported
+1|protein|glycosylation_predicted
+1|protein|glycosylation_automatic_literature_mining
+1|protein|phosphorylation
+1|protein|snv_disease_associated_mutations
+1|protein|snv_non_disease_associated_mutations
+1|protein|glycation --> P13987-1 --> start_pos, end_pos, glytoucan_ac, type, residue, comment, relation
+1|protein|mutagenesis --> P13987-1 --> start_pos, end_pos, sequence_org, sequence_mut, comment
+1|protein|interactions --> P13611-1 --> interactor_id, interaction_name, interaction_type
+1|protein|ptm_annotation --> P13611-1 --> annotation
+1|protein|pro_annotation --> P13611-1 --> name, definition 
+1|protein|synthesized_glycans  --> P15291-1 --> glytoucan_ac, type, subtype
+1|protein|expression_tissue --> P15291-1 --> tissue.name, tissue.url, score, present
+1|protein|expression_disease --> P15291-1 --> significant, trend, disease
+
+1|site|glycosylation
+1|site|phosphorylation
+1|site|glycation
+1|site|snv_disease_associated_mutations
+1|site|snv_non_disease_associated_mutations
+1|site|mutagenesis
+1|publication|glycosylation_reported_with_glycans
+1|publication|glycosylation_reported
+1|publication|glycosylation_automatic_literature_mining
+1|publication|phosphorylation
+1|publication|glycation
+1|publication|mutagenesis
+1|publication|expression_tissue
+1|publication|expression_cell_line
+1|publication|referenced_proteins
+1|publication|referenced_glycans
+
+

@@ -10,7 +10,7 @@ from .protein import api as protein_api
 from .glycan import api as glycan_api
 from .auth import api as auth_api
 from .data import api as data_api
-from .directsearch import api as directsearch_api
+#from .directsearch import api as directsearch_api
 from .globalsearch import api as globalsearch_api
 from .pages import api as pages_api
 from .seqmapping import api as seqmapping_api
@@ -38,7 +38,14 @@ def create_app():
     #CORS(app)
 
     api = Api(app, version='1.0', title='GlyGen APIs', description='Documentation for the GlyGen APIs',)
+<<<<<<< HEAD
     
+=======
+        
+
+
+
+>>>>>>> 2.0
     api.add_namespace(glycan_api)
     api.add_namespace(motif_api)
     api.add_namespace(protein_api)
@@ -47,7 +54,11 @@ def create_app():
     api.add_namespace(usecases_api)
     api.add_namespace(idmapping_api)
     api.add_namespace(seqmapping_api)
+<<<<<<< HEAD
     api.add_namespace(directsearch_api)
+=======
+    #api.add_namespace(directsearch_api)
+>>>>>>> 2.0
     api.add_namespace(supersearch_api)
     api.add_namespace(globalsearch_api)
     api.add_namespace(data_api)
@@ -70,13 +81,21 @@ def create_app():
 
     if app.config["ENV"] == "production":
         app.config.from_pyfile('config.py', silent=True)
+        settings = app.config.get('RESTFUL_JSON', {})
+        settings.setdefault('indent', 2)
+        #settings.setdefault('sort_keys', True)
+        app.config['RESTFUL_JSON'] = settings
     else:
         app.config.from_pyfile('config.dev.py', silent=True)
 
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=1)
     app.config["JWT_REFRESH_TOKEN_EXPIRES"] = datetime.timedelta(days=30)
+    app.config['PROPAGATE_EXCEPTIONS'] = True
+    #app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+    app.config['JSON_SORT_KEYS'] = False
 
     jwt = JWTManager(app)
+
 
 
 

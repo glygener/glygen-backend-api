@@ -20,6 +20,12 @@
                     "glycan_identifier":{"glycan_id":"G17689DH,G01543ZX,G00009BX",
                         "subsumption":"subsumedby"}
                 }
+            },
+            {
+                "label":"Query by GlyTouCan IDs",
+                "query":{
+                    "glycan_identifier":{"glycan_id":"G17689DH","subsumption":"none"}
+                }
             }
         ]
     }

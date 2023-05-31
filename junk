@@ -1,0 +1,30 @@
+[
+    {
+        "Name": "glygen_backend",
+        "Id": "ea1f11d5e34b2c8ce2b69d476e540b39a3076acc631939ef53ef3e9d494c4e0e",
+        "Created": "2023-03-22T13:09:09.25157241-04:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "192.168.176.0/20",
+                    "Gateway": "192.168.176.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {},
+        "Labels": {}
+    }
+]

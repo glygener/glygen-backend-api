@@ -1,0 +1,41 @@
+    {
+        "valid_glytoucan":{
+            "replacement_in_glygen":{
+                "conditions":[
+                    "$QRY_AC was a valid GlyTouCan accession",
+                    "was replaced by $NEW_AC",
+                    "$NEW_AC is in glygen"
+                ],
+                "examples":[
+                    "https://api.tst.glygen.org/glycan/detail/G00318GT/"
+                ]
+            },
+            "discontinued_in_glygen":{
+                "conditions":[ 
+                    "$QRY_AC was a valid GlyTouCan accession",
+                    "was in GlyGen", 
+                    "was discontinued"
+                ],
+                "examples":[
+                    "https://api.tst.glygen.org/glycan/detail/G04307DP/"
+                ]
+            },
+            "never_in_glygen":{
+                "conditions":[
+                    "$QRY_AC was a valid GlyTouCan accession",
+                    "was never in GlyGen"
+                ],
+                "examples":[
+                    "https://api.tst.glygen.org/glycan/detail/G00001LE/"
+                ]
+            },
+        },
+        "invalid":{
+            "conditions":[
+                "$QRY_AC is an invalid accession"
+            ],
+            "examples":[
+                "https://api.tst.glygen.org/glycan/detail/Q9CXB8/"
+            ]
+        },  
+    }

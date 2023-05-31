@@ -47,9 +47,17 @@ def publication_detail(query_obj, config_obj):
         post_error_list.append({"error_code":"non-existent-record"})
         return {"error_list":post_error_list}
 
-    #q_obj = {"uniprot_canonical_ac":{"$in":publication_doc["referenced_proteins"]}}
-    #for protein_doc in dbh["c_protein"].find(q_obj):
-    #    get_section_objects(protein_doc, publication_doc)
+
+    
+    # Get section objects if this record was batched
+    combo_id = "%s.%s" % (query_obj["type"].lower(), query_obj["id"])
+    q = {"batchid": 1, "recordid": combo_id, "recordtype": "publication"}
+    batch_doc = dbh["c_batch"].find_one(q)
+    if batch_doc != None:
+        for sec in batch_doc["sections"]:
+            if sec in publication_doc:
+                publication_doc[sec] += batch_doc["sections"][sec]
+
 
     clean_obj(publication_doc, config_obj["removelist"]["c_publication"], "c_publication")
 

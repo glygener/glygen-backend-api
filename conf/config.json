@@ -1,15 +1,37 @@
 {
     "server":"tst",
-    "api_port":"8082",
-    "base_url":"http://localhost:8082",
+    "api_port":{
+        "prd":"4042",
+        "beta":"4442",
+        "tst":"8082",
+        "dev":"8082"
+    },
+    "ss_port":{
+        "prd":"10980",
+        "beta":"10990",
+        "tst":"10980",
+        "dev":"10980"
+    },
+    "base_url":{
+        "prd":"http://localhost:4042",
+        "beta":"http://localhost:4442",
+        "tst":"http://localhost:8082",
+        "dev":"http://localhost:8082"
+    },
     "data_path":"/data/shared/glygen/",
+    "downloads_path":"/data/shared/glyds/downloads/",
     "mail":{
         "server":"172.17.0.1", 
         "port":"25",
         "sender":"no-reply@glygen.gwu.edu"
     },
     "dbinfo":{
-        "port":"7070",
+        "port":{ 
+            "prd":"4040",
+            "beta":"4440",
+            "tst":"7070",
+            "dev":"7070"
+        },
         "bridge_network":"glygen_backend",
         "admin":{
             "db":"admin",
@@ -20,6 +42,11 @@
             "db":"glydb",
             "user":"glydbadmin",
             "password":"glydbpass"
+        },
+        "tmpdb":{
+            "db":"tmpdb",
+            "user":"glydbadmin",
+            "password":"glydbpass"
         }
     },
     "downloads":{
@@ -28,13 +55,10 @@
             ,"glycandb" 
             ,"proteindb"
             ,"alignmentdb"
-            ,"bcodb"
             ,"clusterdb"
             ,"diseasedb"
-            ,"extractdb"
             ,"glytoucandb"
             ,"historydb"
-            ,"htmldb"
             ,"idtrackdb"
             ,"listdb"
             ,"motifdb"

@@ -244,25 +244,42 @@ def glycan_detail(query_obj, config_obj):
     collection = "c_glycan"
 
 
-    q = {"record_id":{'$eq': query_obj["glytoucan_ac"].upper()}}
-    history_obj = dbh["c_idtrack"].find_one(q)
 
-    mongo_query = {"glytoucan_ac":{'$eq': query_obj["glytoucan_ac"].upper()}}
+    glytoucan_ac = query_obj["glytoucan_ac"].upper()
+    mongo_query = {"glytoucan_ac":{'$eq': glytoucan_ac}}
     obj = dbh[collection].find_one(mongo_query)
     
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
+    history_obj = None
     if obj == None:
+        q = { "$and":[ {"record_id":{'$eq': query_obj["glytoucan_ac"].upper()}}, {"recordtype":{"$eq": "glycan"}}]}
+        history_obj = dbh["c_idtrack"].find_one(q)
+        
         post_error_list.append({"error_code":"non-existent-record"})
         res_obj = {"error_list":post_error_list}
         if history_obj != None:
-            res_obj["reason"] = history_obj["history"]
+            res_obj["reason"] = history_obj["history"][-1]
+        else:
+            res_obj["reason"] = {"type":"invalid","description": "Invalid accession"}
         return res_obj
+
+   
+    # Get section objects if this record was batched 
+    q = {"batchid": 1, "recordid": glytoucan_ac, "recordtype": "glycan"}
+    batch_doc = dbh["c_batch"].find_one(q)
+    if batch_doc != None:
+        for sec in batch_doc["sections"]:
+            if sec in obj:
+                if len(batch_doc["sections"][sec]) > 1000:
+                    obj[sec] += batch_doc["sections"][sec][:1000]
+                else:
+                    obj[sec] += batch_doc["sections"][sec]
+
 
     url = config_obj["urltemplate"]["glytoucan"] % (obj["glytoucan_ac"])
     obj["glytoucan"] = {"glytoucan_ac":obj["glytoucan_ac"], "glytoucan_url":url}
     obj["history"] = history_obj["history"] if history_obj != None else []
-
 
 
     #Remove 0 count residues
@@ -279,6 +296,7 @@ def glycan_detail(query_obj, config_obj):
             if "gene_url" in o:
                 o["gene_link"] = o["gene_url"]
 
+    
     return order_obj(obj, config_obj["objectorder"]["glycan"])
 
 

@@ -1,4 +1,7 @@
+branch="2.0"
+git checkout $branch
 git add -A
 git commit -m "Towards version 2.0"
-git pull 
-git push
+git pull origin $branch
+git push origin $branch
+

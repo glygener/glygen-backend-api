@@ -1,143 +1,122 @@
  
     
-    $ http POST http://localhost:8082/protein/search_init/ < temp/empty.json
-    $ http POST http://localhost:8082/protein/search_simple/ < temp/protein_search_simple.json
-    $ http POST http://localhost:8082/protein/search/ < temp/protein_search.json
-    $ http POST http://localhost:8082/protein/list/ < temp/protein_list.json
-    $ http POST http://localhost:8082/protein/detail/P14210-1/
-    $ http POST http://localhost:8082/protein/alignment/ < temp/protein_alignment.json
+    $ http POST :8082/protein/search_init/ 
+    $ http POST :8082/protein/search_simple/ < examples/protein/protein_search_simple.json
+    $ http POST :8082/protein/search/ < examples/protein/protein_search.json
+    $ http POST :8082/protein/list/ < examples/protein/protein_list.json
+    $ http POST :8082/protein/detail/P14210-1/
+    $ http POST :8082/protein/alignment/ < examples/protein/protein_alignment.json
 
 
-    $ http POST http://localhost:8082/glycan/search_init/ < temp/empty.json
-    $ http POST http://localhost:8082/glycan/search_simple/ < temp/glycan_search_simple.json
-    $ http POST http://localhost:8082/glycan/search/ < temp/glycan_search.json
-    $ http POST http://localhost:8082/glycan/list/ < temp/glycan_list.json
-    $ http POST http://localhost:8082/glycan/detail/G12344UQ/
-    $ http POST http://localhost:8082/glycan/image/G12344UQ/
+    $ http POST :8082/glycan/search_init/ 
+    $ http POST :8082/glycan/search_simple/ < examples/glycan/glycan_search_simple.json
+    $ http POST :8082/glycan/search/ < examples/glycan/glycan_search.json
+    $ http POST :8082/glycan/list/ < examples/glycan/glycan_list.json
+    $ http POST :8082/glycan/detail/G17689DH/
+    $ http POST :8082/glycan/image/G17689DH/
+    $ http POST :8082/glycan/pdb/G17689DH/
 
-    $ http POST http://localhost:8082/auth/register/ < temp/auth_register.json
-    $ http POST http://localhost:8082/auth/userinfo/ < temp/auth_userinfo.json
-    $ http POST http://localhost:8082/auth/userupdate/ < temp/auth_userupdate.json
-    $ http POST http://localhost:8082/auth/userdelete/ < temp/auth_userdelete.json
-    $ http POST http://localhost:8082/auth/login/ < temp/auth_login.json
-    $ http POST http://localhost:8082/auth/userid/ < temp/auth_userid.json
-    $ http POST http://localhost:8082/auth/contact/ < temp/auth_contact.json
-    $ http POST http://localhost:8082/auth/contactlist/ < temp/auth_contactlist.json
-    $ http POST http://localhost:8082/auth/contactupdate/ < temp/auth_contactupdate.json
-    $ http POST http://localhost:8082/auth/contactdelete/ < temp/auth_contactdelete.json
-
-
-    $ http POST http://localhost:8082/data/download/ < temp/data_download.json
-
-  
-    $ http POST :8082/directsearch/protein/ < temp/directsearch_protein.json
-    $ http POST :8082/directsearch/gene/ < temp/directsearch_gene.json
-    $ http POST :8082/directsearch/glycan/ < temp/directsearch_glycan.json
-    $ http POST :8082/directsearch/glycan_to_biosynthesis_enzymes/ < temp/directsearch_glycan_to_biosynthesis_enzymes.json
-    $ http POST :8082/directsearch/glycan_to_glycoproteins/ < temp/directsearch_glycan_to_glycoproteins.json
-    $ http POST :8082/directsearch/biosynthesis_enzyme_to_glycans/ < temp/directsearch_biosynthesis_enzyme_to_glycans.json
-    $ http POST :8082/directsearch/protein_to_homologs/ < temp/directsearch_protein_to_homologs.json
-    $ http POST :8082/directsearch/species_to_glycosyltransferases/ < temp/directsearch_species_to_glycosyltransferases.json
-    $ http POST :8082/directsearch/species_to_glycohydrolases/ < temp/directsearch_species_to_glycohydrolases.json
-    $ http POST :8082/directsearch/species_to_glycoproteins/ < temp/directsearch_species_to_glycoproteins.json
-    $ http POST :8082/directsearch/disease_to_glycosyltransferases/ < temp/directsearch_disease_to_glycosyltransferases.json
+    $ http POST :8082/auth/userdelete/ < examples/auth/auth_userdelete.json
+    $ http POST :8082/auth/register/ < examples/auth/auth_register.json
+    $ http POST :8082/auth/userinfo/ < examples/auth/auth_userinfo.json
+    $ http POST :8082/auth/userupdate/ < examples/auth/auth_userupdate.json
+    $ http POST :8082/auth/login/ < examples/auth/auth_login.json
+    $ http POST :8082/auth/userid/ < examples/auth/auth_userid.json
+    $ http POST :8082/auth/contact/ < examples/auth/auth_contact.json
+    $ http POST :8082/auth/contactlist/ < examples/auth/auth_contactlist.json
+    $ http POST :8082/auth/contactupdate/ < examples/auth/auth_contactupdate.json
+    $ http POST :8082/auth/contactdelete/ < examples/auth/auth_contactdelete.json
 
 
-  $ http POST :8082/globalsearch/search/ < temp/globalsearch_search.json
-  $ http POST :8082/pages/home_init/ < temp/empty.json
-  $ http POST :8082/seqmapping/search/ < temp/seqmapping_search.json
-  $ http POST :8082/publication/detail/ < temp/publication_detail.json
-
-  $ http POST :8082/motif/detail/ < temp/motif_detail.json
-  $ http POST :8082/motif/list/ < temp/motif_list.json
-
-  $ http POST http://localhost:8082/site/search_init/ < temp/empty.json
-  $ http POST http://localhost:8082/site/detail/P02724-1.52.52/
-  
-  $ http POST http://localhost:8082/idmapping/search_init/ < temp/empty.json
-  $ http POST http://localhost:8082/idmapping/search/ < temp/idmapping_search.json
-  $ http POST http://localhost:8082/idmapping/list/ < temp/idmapping_list.json
-
-
-  $ http POST http://localhost:8082/typeahead/typeahead/ < temp/typeahead_typeahead.json
-  $ http POST http://localhost:8082/typeahead/categorized_typeahead/ < temp/typeahead_categorized_typeahead.json
-  $ http POST http://localhost:8082/typeahead/global_typeahead/ < temp/typeahead_global_typeahead.json
-
-
-  $ http POST http://localhost:8082/log/logging/ < temp/log_logging.json
-  $ http POST http://localhost:8082/log/init/ < temp/log_init.json
-  $ http POST http://localhost:8082/log/access/ < temp/log_access.json
-  $ http POST http://localhost:8082/log/grouped/ < temp/log_grouped.json
+    $ http POST :8082/data/list_download < examples/data/list_download.json
+    $ http POST :8082/data/detail_download < examples/data/detail_download.json
+    $ http POST :8082/data/section_download < examples/data/section_download.protein.glycosylation.1.json
 
   
-  $ http POST http://localhost:8082/video/addnew/ < temp/video_addnew.json
-  $ http POST http://localhost:8082/video/list/ < temp/video_list.json
-  $ http POST http://localhost:8082/video/detail/ < temp/video_detail.json
-  $ http POST http://localhost:8082/video/delete/ < temp/video_delete.json
+  $ http POST :8082/globalsearch/search/ < examples/globalsearch/globalsearch_search.json
+  $ http POST :8082/pages/home_init/ 
+  $ http POST :8082/seqmapping/search/ < examples/seqmapping/seqmapping_search.json
+  $ http POST :8082/publication/detail/ < examples/publication/publication_detail.json
 
+  $ http POST :8082/motif/detail/ < examples/motif/motif_detail.json
+  $ http POST :8082/motif/list/ < examples/motif/motif_list.json
 
-  $ http POST http://localhost:8082/supersearch/search_init/ < temp/empty.json
-  $ http POST http://localhost:8082/supersearch/search/ < temp/supersearch_search.json
-  $ http POST http://localhost:8082/supersearch/reason/ < temp/supersearch_reason.json
-  $ http POST http://localhost:8082/supersearch/list/ < temp/supersearch_list.json
-
-  $ http POST http://localhost:8082/event/addnew/ < temp/event_addnew.json
-  $ http POST http://localhost:8082/event/list/ < temp/event_list.json
-  $ http POST http://localhost:8082/event/detail/ < temp/event_detail.json
-  $ http POST http://localhost:8082/event/update/ < temp/event_update.json
-  $ http POST http://localhost:8082/event/delete/ < temp/event_delete.json
-
-
- 
-
-  $ http POST http://localhost:8082/misc/info/ < temp/empty.json
-  $ http POST http://localhost:8082/misc/lastid/ < temp/empty.json
-
-  $ http POST http://localhost:8082/misc/bcolist/ < temp/empty.json
-  $ http POST http://localhost:8082/misc/gtclist/ < temp/empty.json
-  $ http POST http://localhost:8082/misc/verlist/ < temp/empty.json
-  $ http POST http://localhost:8082/misc/messagelist/ < temp/empty.json
-  $ http POST http://localhost:8082/misc/validate/ < temp/misc_validate.json
-  $ http POST http://localhost:8082/misc/propertylist/ < temp/misc_propertylist.json
-  $ http POST http://localhost:8082/misc/pathlist/ < temp/misc_pathlist.json
-
-
-  $ http POST :8082/usecases/search_init/ < temp/empty.json
+  $ http POST :8082/site/search_init/ 
+  $ http POST :8082/site/detail/P02724-1.52.52/
   
+  $ http POST :8082/idmapping/search_init/ 
+  $ http POST :8082/idmapping/search/ < examples/idmapping/idmapping_search.json
+  $ http POST :8082/idmapping/list/ < examples/idmapping/idmapping_list.json
+
+
+  $ http POST :8082/typeahead/typeahead/ < examples/typeahead/typeahead_typeahead.json
+  $ http POST :8082/typeahead/categorized_typeahead/ < examples/typeahead/typeahead_categorized_typeahead.json
+  $ http POST :8082/typeahead/global_typeahead/ < examples/typeahead/typeahead_global_typeahead.json
+
+
+  $ http POST :8082/log/logging/ < examples/log/log_logging.json
+  $ http POST :8082/log/init/ < examples/log/log_init.json
+  $ http POST :8082/log/access/ < examples/log/log_access.json
+  $ http POST :8082/log/grouped/ < examples/log/log_grouped.json
+
+  
+  $ http POST :8082/video/addnew/ < examples/video/video_addnew.json
+  $ http POST :8082/video/list/ < examples/video/video_list.json
+  $ http POST :8082/video/detail/ < examples/video/video_detail.json
+  $ http POST :8082/video/delete/ < examples/video/video_delete.json
+
+
+  $ http POST :8082/supersearch/search_init/ 
+  $ http POST :8082/supersearch/search/ < examples/supersearch/supersearch_search.json
+  $ http POST :8082/supersearch/reason/ < examples/supersearch/supersearch_reason.json
+  $ http POST :8082/supersearch/list/ < examples/supersearch/supersearch_list.json
+
+  $ http POST :8082/event/addnew/ < examples/event/event_addnew.json
+  $ http POST :8082/event/list/ < examples/event/event_list.json
+  $ http POST :8082/event/detail/ < examples/event/event_detail.json
+  $ http POST :8082/event/update/ < examples/event/event_update.json
+  $ http POST :8082/event/delete/ < examples/event/event_delete.json
+
+  $ http POST :8082/misc/info/ 
+  $ http POST :8082/misc/lastid/ 
+
+  $ http POST :8082/misc/bcolist/ 
+  $ http POST :8082/misc/gtclist/ 
+  $ http POST :8082/misc/verlist/ 
+  $ http POST :8082/misc/messagelist/ 
+  $ http POST :8082/misc/validate/ < examples/misc/misc_validate.json
+  $ http POST :8082/misc/propertylist/ < examples/misc/misc_propertylist.json
+  $ http POST :8082/misc/pathlist/ < examples/misc/misc_pathlist.json
+
+
+  $ http POST :8082/usecases/search_init/ 
   $ http POST :8082/usecases/glycan_to_biosynthesis_enzymes/0/G17689DH/ 
   $ http POST :8082/usecases/glycan_to_glycoproteins/0/G17689DH/
   $ http POST :8082/usecases/glycan_to_enzyme_gene_loci/0/G17689DH/
-
   $ http POST :8082/usecases/protein_to_glycosequons/P14210-1/
   $ http POST :8082/usecases/protein_to_orthologs/P14210-1/
   $ http POST :8082/usecases/biosynthesis_enzyme_to_glycans/0/P26572-1/
-
   $ http POST :8082/usecases/species_to_glycohydrolases/0/
   $ http POST :8082/usecases/species_to_glycosyltransferases/0/
   $ http POST :8082/usecases/species_to_glycoproteins/0/reported/
- 
-  $ http POST :8082/usecases/disease_to_glycosyltransferases/ < temp/usecases_disease_to_glycosyltransferases.json
-
-  $ http POST :8082/usecases/genelocus_list/ < temp/usecases_genelocus_list.json
-  $ http POST :8082/usecases/ortholog_list/ < temp/usecases_ortholog_list.json
-  $ http POST :8082/usecases/glycosequon_list/ < temp/usecases_glycosequon_list.json
-
+  $ http POST :8082/usecases/disease_to_glycosyltransferases/ < examples/usecases/usecases_disease_to_glycosyltransferases.json
+  $ http POST :8082/usecases/genelocus_list/ < examples/usecases/usecases_genelocus_list.json
+  $ http POST :8082/usecases/ortholog_list/ < examples/usecases/usecases_ortholog_list.json
+  $ http POST :8082/usecases/glycosequon_list/ < examples/usecases/usecases_glycosequon_list.json
 
 
 
 >> Test this guys on glygen server
-  $ http POST http://localhost:8082/job/init/ < temp/empty.json
-  $ http POST http://localhost:8082/job/clean/ < temp/empty.json
-  $ http POST http://localhost:8082/job/addnew/ < temp/job_addnew.json
-  $ http POST http://localhost:8082/job/list/ < temp/job_list.json
-  $ http POST http://localhost:8082/job/detail/ < temp/job_detail.json
-  $ http POST http://localhost:8082/job/update/ < temp/job_update.json
-  $ http POST http://localhost:8082/job/delete/ < temp/job_delete.json
-  $ http POST http://localhost:8082/job/results/ < temp/job_results.json
-  $ http POST http://localhost:8082/job/status/ < temp/job_status.json
-  $ http POST http://localhost:8082/job/queue/ < temp/job_queue.json
+  $ http POST :8082/job/init/
+  $ http POST :8082/job/clean/
+  $ http POST :8082/job/addnew/ < examples/job/job_addnew.json
+  $ http POST :8082/job/list/ < examples/job/job_list.json
+  $ http POST :8082/job/detail/ < examples/job/job_detail.json
+  $ http POST :8082/job/update/ < examples/job/job_update.json
+  $ http POST :8082/job/delete/ < examples/job/job_delete.json
+  $ http POST :8082/job/results/ < examples/job/job_results.json
+  $ http POST :8082/job/status/ < examples/job/job_status.json
+  $ http POST :8082/job/queue/ < examples/job/job_queue.json
 
-
-  $ http POST http://localhost:8082/graph/getdata/ < temp/graph_getdata.json
 
 

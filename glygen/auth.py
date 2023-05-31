@@ -160,12 +160,13 @@ class Auth(Resource):
                 error = "password does not exist for registerd user"
             else:
                 submitted_password = password.encode('utf-8')
-                #stored_password = user_doc['password'].encode('utf-8')
-                stored_password = user_doc['password']
+                stored_password = user_doc['password'].encode('utf-8')
+                #stored_password = user_doc['password']
                 if bcrypt.hashpw(submitted_password, stored_password) != stored_password:
                     error = "incorrect-email/password"
             res_obj = {"status":1}
             if error is None:
+<<<<<<< HEAD
                 access_token = create_access_token(identity=username, expires_delta=None)
                 refresh_token = create_refresh_token(identity=username)
                 res_obj["access_token"] = access_token
@@ -175,6 +176,20 @@ class Auth(Resource):
                 session['email'] = user_doc["email"]
                 set_access_cookies(jsonify(res_obj), access_token)
                 set_refresh_cookies(jsonify(res_obj), refresh_token)
+=======
+                if user_doc["status"] == 0:
+                    res_obj = {"error_list":[{"error_code":"inactive account"}]}
+                else:
+                    access_token = create_access_token(identity=username, expires_delta=None)
+                    refresh_token = create_refresh_token(identity=username)
+                    res_obj["access_token"] = access_token
+                    res_obj["access_csrf"] = get_csrf_token(access_token)
+                    res_obj["refresh_csrf"] = get_csrf_token(refresh_token)
+                    res_obj["username"] = user_doc["email"]
+                    session['email'] = user_doc["email"]
+                    set_access_cookies(jsonify(res_obj), access_token)
+                    set_refresh_cookies(jsonify(res_obj), refresh_token)
+>>>>>>> 2.0
             else:
                 res_obj = {"error_list":[{"error_code":error}]}
         except Exception as e:

@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/globalsearch.py", line 41, in post
-    res_obj = globalsearch_search(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/globalsearch_apilib.py", line 142, in globalsearch_search
-    for i in range(0,partition_count+1):
-TypeError: 'float' object cannot be interpreted as an integer

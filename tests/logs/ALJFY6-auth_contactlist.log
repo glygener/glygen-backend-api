@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/auth.py", line 237, in post
-    res_obj = auth_contactlist(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/auth_apilib.py", line 243, in auth_contactlist
-    res_obj = auth_tokenstatus({"token":query_obj["token"]}, config_obj)
-NameError: name 'auth_tokenstatus' is not defined

@@ -26,7 +26,7 @@ expression.evidence.url {unicode}
 expression.position {int}
 expression.residue {unicode}
 expression.tissue.name {unicode}
-expression.tissue.uberon_id {unicode}
+expression.tissue.id {unicode}
 expression.tissue.url {unicode}
 expression.uniprot_canonical_ac {unicode}
 glycam {unicode}

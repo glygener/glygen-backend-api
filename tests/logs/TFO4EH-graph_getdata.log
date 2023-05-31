@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/graph.py", line 36, in post
-    res_obj = getdata(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/graph_apilib.py", line 60, in getdata
-    for i in xrange(1, len(concept_list)):
-NameError: name 'xrange' is not defined

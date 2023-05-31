@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/idmapping.py", line 74, in post
-    res_obj = idmapping_search(req_obj, config_obj)
-NameError: name 'idmapping_search' is not defined

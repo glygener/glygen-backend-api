@@ -1,0 +1,14 @@
+{
+    "data":{
+        "protein_list": "13c8348dcbfb67d596c28eb917bcce97"
+        ,"site_list": "b6c014528fa08deb1eb309761e124116"
+        ,"glycan_list": "2316faab272e5ecd9522d547f67c9d82"
+        ,"motif_list": ""
+        ,"genelocus_list": "15dd9e3e1e0c598bb451a52be9ef140e"
+        ,"ortholog_list": "7db9220fe2a58c1b7724ec1a582c08c5"
+        ,"idmapping_list_mapped": "a761ce3b5562f848e7a1000a9bc694be"
+        ,"idmapping_list_unmapped": "a761ce3b5562f848e7a1000a9bc694be"
+        ,"idmapping_list_all": "a761ce3b5562f848e7a1000a9bc694be"
+        ,"idmapping_list_all_collapsed": "a761ce3b5562f848e7a1000a9bc694be"
+    }
+}
