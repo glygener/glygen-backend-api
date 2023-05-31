@@ -647,12 +647,19 @@ def validate_input(query_obj, config_obj, release_dir, server):
         if e_list != []:
             return res_obj, e_list
         res_obj["buffer"] = ">%s\n%s\n" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
-        cmd = "echo %s %s | /usr/bin/md5sum" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
-        query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
+        
+        #cmd = "echo %s %s | /usr/bin/md5sum" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
+        #query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
+        hash_str = "%s %s" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+        query_obj["md5sum"] = hash_obj.hexdigest()
     elif query_obj["jobtype"] in ["structure_search"]:
         res_obj["buffer"] = json.dumps(query_obj["parameters"])
-        cmd = "echo \"%s\" | /usr/bin/md5sum" % (query_obj["parameters"]["seq"])
-        query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
+        #cmd = "echo \"%s\" | /usr/bin/md5sum" % (query_obj["parameters"]["seq"])
+        #query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
+        hash_str = "%s %s" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+        query_obj["md5sum"] = hash_obj.hexdigest()
 
     return res_obj, error_list
 
