@@ -17,7 +17,9 @@ def is_valid_json(myjson):
 def main():
    
 
-    file_list = glob.glob("queries/*.json")
+    #file_list = glob.glob("queries/*.json")
+    file_list = ["queries/toy.json"]
+
     for in_file in file_list:
         if is_valid_json(open(in_file, "r").read()) == False:
             print ("ERROR: invalid json file %s" % (in_file))
@@ -32,7 +34,9 @@ def main():
             if "schemafile" not in test_obj:
                 print ("ERROR: schema path not given for response file %s" % (res_file))
                 continue
-            schema_file = test_obj["schemafile"]
+
+            schema_file = test_obj["schemafile"] + "-auto"
+
             print ("Creating %s ... " % (schema_file))
             res_obj = json.loads(open(res_file,"r").read())
             builder = SchemaBuilder()

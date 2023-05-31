@@ -70,6 +70,7 @@ that the container will start on server reboot.
  Run the command given below to create the "glydb" database and glydb user
 (this should be done only one time). 
    ```
+<<<<<<< HEAD
    python3 init_mongodb.py
    ```
 You can populate collections using the following commands:
@@ -81,6 +82,19 @@ To update a single collection, you can use:
    python3 populate_one_collection.py -s $DEP -v $VER -c $COLL
    ```
 where the variable $COLL is collection name (e.g., c_glycan)
+=======
+   python3 init_mongodb.py -s $DEP
+   ```
+You can populate collections using the following commands:
+   ```
+   python3 populate_collections.py -s $DEP -v $VER
+   ```
+To update a few collections, you can use:
+   ```
+   python3 populate_collection.py -s $DEP -v $VER -c $COLLS
+   ```
+where the variable $COLLS is collection names separated by comma (e.g., c_glycan,c_motif)
+>>>>>>> 2.0
 
 
 

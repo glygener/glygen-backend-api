@@ -1,13 +1,785 @@
 {
-    "data_download": {
-        "url": "/data/download/",
-        "schemafile":"../specs/data/download/response.schema.json",
-        "query": {
-            "compressed": false,
-            "type": "glycan_detail",
-            "format": "json",
-            "id": "G17689DH"
-        }
+    "protein_list": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "protein_list",
+                    "format": "csv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "protein_list",
+                    "format": "tsv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "protein_list",
+                    "format": "json",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "protein_list",
+                    "format": "fasta",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/list_download"
+    },
+    "glycan_list": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "glycan_list",
+                    "format": "csv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "glycan_list",
+                    "format": "json",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "glycan_list",
+                    "format": "iupac",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "glycan_list",
+                    "format": "wurcs",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "glycan_list",
+                    "format": "glycam",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "glycan_list",
+                    "format": "smiles_isomeric",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "glycan_list",
+                    "format": "inchi",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "glycan_list",
+                    "format": "glycoct",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "glycan_list",
+                    "format": "byonic",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "glycan_list",
+                    "format": "grits",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/list_download"
+    },
+    "motif_list": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "motif_list",
+                    "format": "csv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "motif_list",
+                    "format": "tsv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "motif_list",
+                    "format": "json",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "motif_list",
+                    "format": "iupac",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "motif_list",
+                    "format": "wurcs",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "motif_list",
+                    "format": "glycam",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "motif_list",
+                    "format": "smiles_isomeric",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "motif_list",
+                    "format": "inchi",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "motif_list",
+                    "format": "glycoct",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "motif_list",
+                    "format": "byonic",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/list_download"
+    },
+    "genelocus_list": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "genelocus_list",
+                    "format": "csv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "genelocus_list",
+                    "format": "tsv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "genelocus_list",
+                    "format": "json",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "genelocus_list",
+                    "format": "fasta",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/list_download"
+    },
+    "ortholog_list": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "ortholog_list",
+                    "format": "csv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "ortholog_list",
+                    "format": "tsv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "ortholog_list",
+                    "format": "json",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "ortholog_list",
+                    "format": "fasta",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/list_download"
+    },
+    "site_list": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "site_list",
+                    "format": "csv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "site_list",
+                    "format": "tsv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "site_list",
+                    "format": "json",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/list_download"
+    },
+    "protein_detail": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "P14210-1",
+                    "type": "protein_detail",
+                    "format": "json",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "P14210-1",
+                    "type": "protein_detail",
+                    "format": "fasta",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/detail_download"
+    },
+    "glycan_detail": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "G17689DH",
+                    "type": "glycan_detail",
+                    "format": "json",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "G17689DH",
+                    "type": "glycan_detail",
+                    "format": "iupac",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "G17689DH",
+                    "type": "glycan_detail",
+                    "format": "wurcs",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "G17689DH",
+                    "type": "glycan_detail",
+                    "format": "glycam",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "G17689DH",
+                    "type": "glycan_detail",
+                    "format": "smiles_isomeric",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "G17689DH",
+                    "type": "glycan_detail",
+                    "format": "inchi",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "G17689DH",
+                    "type": "glycan_detail",
+                    "format": "glycoct",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "G17689DH",
+                    "type": "glycan_detail",
+                    "format": "byonic",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/detail_download"
+    },
+    "motif_detail": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "GGM.000001",
+                    "type": "motif_detail",
+                    "format": "json",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "GGM.000001",
+                    "type": "motif_detail",
+                    "format": "csv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "GGM.000001",
+                    "type": "motif_detail",
+                    "format": "tsv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "GGM.000001",
+                    "type": "motif_detail",
+                    "format": "png",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/detail_download"
+    },
+    "site_detail": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "P14210-1.294.294",
+                    "type": "site_detail",
+                    "format": "json",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/detail_download"
+    },
+    "publication_detail": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "8407880",
+                    "type": "publication_detail",
+                    "format": "json",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/detail_download"
+    },
+    "protein_detail_isoformset": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "P14210-1",
+                    "type": "protein_detail_isoformset",
+                    "format": "fasta",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/detail_download"
+    },
+    "protein_detail_homologset": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "P14210-1",
+                    "type": "protein_detail_homologset",
+                    "format": "fasta",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/detail_download"
+    },
+    "glycan_image": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "G17689DH",
+                    "type": "glycan_image",
+                    "format": "png",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/detail_download"
+    },
+    "idmapping_list_mapped": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "idmapping_list_mapped",
+                    "format": "csv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "idmapping_list_mapped",
+                    "format": "tsv",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/list_download"
+    },
+    "idmapping_list_unmapped": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "idmapping_list_unmapped",
+                    "format": "csv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "idmapping_list_unmapped",
+                    "format": "tsv",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/list_download"
+    },
+    "idmapping_list_all": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "idmapping_list_all",
+                    "format": "csv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "idmapping_list_all",
+                    "format": "tsv",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/list_download"
+    },
+    "idmapping_list_all_collapsed": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "idmapping_list_all_collapsed",
+                    "format": "csv",
+                    "compressed": false
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "",
+                    "type": "idmapping_list_all_collapsed",
+                    "format": "tsv",
+                    "compressed": false
+                }
+            }
+        ],
+        "url": "/data/list_download"
+    },
+    "protein_section": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "P14210-1",
+                    "type": "protein_section",
+                    "format": "csv",
+                    "compressed": false,
+                    "section": "glycosylation",
+                    "tab": "reported"
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "P14210-1",
+                    "type": "protein_section",
+                    "format": "tsv",
+                    "compressed": false,
+                    "section": "glycosylation",
+                    "tab": "reported"
+                }
+            }
+        ],
+        "url": "/data/section_download"
+    },
+    "site_section": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "P14210-1.294.294",
+                    "type": "site_section",
+                    "format": "csv",
+                    "compressed": false,
+                    "section": "glycosylation",
+                    "tab": "reported"
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "P14210-1.294.294",
+                    "type": "site_section",
+                    "format": "tsv",
+                    "compressed": false,
+                    "section": "glycosylation",
+                    "tab": "reported"
+                }
+            }
+        ],
+        "url": "/data/section_download"
+    },
+    "glycan_section": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "G17689DH",
+                    "type": "glycan_section",
+                    "format": "csv",
+                    "compressed": false,
+                    "section": "glycoprotein",
+                    "tab": "reported"
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "G17689DH",
+                    "type": "glycan_section",
+                    "format": "tsv",
+                    "compressed": false,
+                    "section": "glycoprotein",
+                    "tab": "reported"
+                }
+            }
+        ],
+        "url": "/data/section_download"
+    },
+    "motif_section": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "GGM.000001",
+                    "type": "motif_section",
+                    "format": "csv",
+                    "compressed": false,
+                    "section": "glycans",
+                    "tab": ""
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "GGM.000001",
+                    "type": "motif_section",
+                    "format": "tsv",
+                    "compressed": false,
+                    "section": "glycans",
+                    "tab": ""
+                }
+            }
+        ],
+        "url": "/data/section_download"
+    },
+    "publication_section": {
+        "querylist": [
+            {
+                "label": "",
+                "query": {
+                    "id": "8407880",
+                    "type": "publication_section",
+                    "format": "csv",
+                    "compressed": false,
+                    "section": "glycosylation",
+                    "tab": "reported"
+                }
+            },
+            {
+                "label": "",
+                "query": {
+                    "id": "8407880",
+                    "type": "publication_section",
+                    "format": "tsv",
+                    "compressed": false,
+                    "section": "glycosylation",
+                    "tab": "reported"
+                }
+            }
+        ],
+        "url": "/data/section_download"
     }
 }
-

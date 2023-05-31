@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/motif.py", line 66, in post
-    res_obj = get_cached_motif_records_direct(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/util.py", line 479, in get_cached_motif_records_direct
-    for f in cached_obj["results"][0].keys():
-IndexError: list index out of range

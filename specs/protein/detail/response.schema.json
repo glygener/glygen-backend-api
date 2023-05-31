@@ -32,7 +32,6 @@
             "required": [
                 "ac",
                 "name",
-                "summary",
                 "url"
             ]
         },
@@ -128,8 +127,6 @@
                     }
                 },
                 "required": [
-                    "annotation",
-                    "evidence"
                 ]
             }
         },
@@ -162,10 +159,9 @@
                         },
                         "required": [
                             "id",
-                            "resource",
-                            "url",
                             "name",
-                            "description"
+                            "resource",
+                            "url"
                         ]
                     },
                     "synonyms": {
@@ -193,8 +189,7 @@
                                 "id",
                                 "resource",
                                 "url",
-                                "name",
-                                "description"
+                                "name"
                             ]
                         }
                     },
@@ -248,10 +243,16 @@
                                 }
                             },
                             "required": [
-                                "database ",
+                                "database",
                                 "id",
                                 "url"
                             ]
+                        }
+                    },
+                    "glycoeffect": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
                         }
                     },
                     "start_pos": {
@@ -259,15 +260,6 @@
                     },
                     "end_pos": {
                         "type": "integer"
-                    },
-                    "subjects_tested": {
-                        "type": "string"
-                    },
-                    "subjects_positive": {
-                        "type": "string"
-                    },
-                    "frequency": {
-                        "type": "string"
                     },
                     "sequence_org": {
                         "type": "string"
@@ -288,6 +280,21 @@
                         "type": "string"
                     },
                     "alt_nt": {
+                        "type": "string"
+                    },
+                    "keywords": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "subjects_tested": {
+                        "type": "string"
+                    },
+                    "subjects_positive": {
+                        "type": "string"
+                    },
+                    "frequency": {
                         "type": "string"
                     },
                     "disease": {
@@ -318,13 +325,10 @@
                                         }
                                     },
                                     "required": [
-                                        [
-                                            "id",
-                                            "resource",
-                                            "url",
-                                            "name",
-                                            "evidence"
-                                        ]
+                                        "id",
+                                        "resource",
+                                        "url",
+                                        "name"
                                     ]
                                 },
                                 "synonyms": {
@@ -352,27 +356,15 @@
                                             "id",
                                             "resource",
                                             "url",
-                                            "name",
-                                            "description"
+                                            "name"
                                         ]
                                     }
                                 }
                             },
                             "required": [
+                                "disease_id",
                                 "recommended_name"
                             ]
-                        }
-                    },
-                    "keywords": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "glycoeffect": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
                         }
                     }
                 },
@@ -381,9 +373,8 @@
                     "start_pos",
                     "end_pos",
                     "sequence_org",
-                    "alt_nt",
-                    "sequence_mut",
                     "ref_nt",
+                    "alt_nt",
                     "chr_id",
                     "keywords"
                 ]
@@ -433,9 +424,11 @@
                     }
                 },
                 "required": [
-                    "start_pos",
+                    "comment",
                     "end_pos",
-                    "sequence_org"
+                    "evidence",
+                    "sequence_org",
+                    "start_pos"
                 ]
             }
         },
@@ -450,7 +443,10 @@
                             "name": {
                                 "type": "string"
                             },
-                            "uberon": {
+                            "namespace": {
+                                "type": "string"
+                            },
+                            "id": {
                                 "type": "string"
                             },
                             "url": {
@@ -458,9 +454,10 @@
                             }
                         },
                         "required": [
+                            "id",
                             "name",
-                            "url",
-                            "type"
+                            "namespace",
+                            "url"
                         ]
                     },
                     "score": {
@@ -493,10 +490,10 @@
                     }
                 },
                 "required": [
-                    "tissue",
-                    "score",
+                    "evidence",
                     "present",
-                    "evidence"
+                    "score",
+                    "tissue"
                 ]
             }
         },
@@ -570,8 +567,7 @@
                                         "id",
                                         "resource",
                                         "url",
-                                        "name",
-                                        "evidence"
+                                        "name"
                                     ]
                                 },
                                 "synonyms": {
@@ -599,25 +595,25 @@
                                             "id",
                                             "resource",
                                             "url",
-                                            "name",
-                                            "description"
+                                            "name"
                                         ]
                                     }
                                 }
                             },
                             "required": [
+                                "disease_id",
                                 "recommended_name"
                             ]
                         }
                     }
                 },
                 "required": [
-                    "name",
-                    "trend",
                     "disease",
-                    "url",
                     "evidence",
-                    "disease"
+                    "name",
+                    "significant",
+                    "trend",
+                    "url"
                 ]
             }
         },
@@ -659,10 +655,10 @@
                     }
                 },
                 "required": [
-                    "name",
-                    "taxid",
+                    "common_name",
                     "evidence",
-                    "common_name"
+                    "name",
+                    "taxid"
                 ]
             }
         },
@@ -715,10 +711,17 @@
                                 }
                             }
                         },
-                        "required": []
+                        "required": [
+                            "chromosome",
+                            "end_pos",
+                            "evidence",
+                            "start_pos",
+                            "strand"
+                        ]
                     }
                 },
-                "required": []
+                "required": [
+                ]
             }
         },
         "crossref": {
@@ -737,9 +740,9 @@
                     }
                 },
                 "required": [
+                    "database",
                     "id",
-                    "url",
-                    "database"
+                    "url"
                 ]
             }
         },
@@ -754,8 +757,8 @@
                 }
             },
             "required": [
-                "sequence",
-                "length"
+                "length",
+                "sequence"
             ]
         },
         "isoforms": {
@@ -780,8 +783,8 @@
                             }
                         },
                         "required": [
-                            "sequence",
-                            "length"
+                            "length",
+                            "sequence"
                         ]
                     },
                     "locus": {
@@ -814,17 +817,27 @@
                                             "type": "string"
                                         }
                                     },
-                                    "required": []
+                                    "required": [
+                                        "database",
+                                        "id",
+                                        "url"
+                                    ]
                                 }
                             }
                         },
-                        "required": []
+                        "required": [
+                            "chromosome",
+                            "end_pos",
+                            "evidence",
+                            "start_pos",
+                            "strand"
+                        ]
                     }
                 },
                 "required": [
-                    "isoform",
-                    "url",
-                    "sequence"
+                    "isoform_ac",
+                    "sequence",
+                    "url"
                 ]
             }
         },
@@ -846,9 +859,6 @@
                         "type": "string"
                     },
                     "relation": {
-                        "type": "string"
-                    },
-                    "comment": {
                         "type": "string"
                     },
                     "start_pos": {
@@ -888,6 +898,9 @@
                             ]
                         }
                     },
+                    "comment": {
+                        "type": "string"
+                    },
                     "subtype": {
                         "type": "string"
                     }
@@ -896,9 +909,7 @@
                     "type",
                     "evidence",
                     "site_category",
-                    "residue",
-                    "relation",
-                    "type"
+                    "relation"
                 ]
             }
         },
@@ -906,6 +917,151 @@
             "type": "array",
             "items": {
                 "type": "string"
+            }
+        },
+        "phosphorylation": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "start_pos": {
+                        "type": "integer"
+                    },
+                    "end_pos": {
+                        "type": "integer"
+                    },
+                    "residue": {
+                        "type": "string"
+                    },
+                    "comment": {
+                        "type": "string"
+                    },
+                    "evidence": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "database": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "database",
+                                "id",
+                                "url"
+                            ]
+                        }
+                    },
+                    "kinase_uniprot_canonical_ac": {
+                        "type": "string"
+                    },
+                    "kinase_gene_name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "end_pos",
+                    "evidence",
+                    "residue",
+                    "start_pos"
+                ]
+            }
+        },
+        "glycation": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "start_pos": {
+                        "type": "integer"
+                    },
+                    "end_pos": {
+                        "type": "integer"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "residue": {
+                        "type": "string"
+                    },
+                    "comment": {
+                        "type": "string"
+                    },
+                    "evidence": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "database": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "database",
+                                "id",
+                                "url"
+                            ]
+                        }
+                    },
+                    "relation": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "end_pos",
+                    "evidence",
+                    "residue",
+                    "start_pos"
+                ]
+            }
+        },
+        "ptm_annotation": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "annotation": {
+                        "type": "string"
+                    },
+                    "evidence": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "database": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "database",
+                                "id",
+                                "url"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "annotation",
+                    "evidence"
+                ]
             }
         },
         "publication": {
@@ -941,8 +1097,8 @@
                                 }
                             },
                             "required": [
-                                "database",
                                 "id",
+                                "database",
                                 "url"
                             ]
                         }
@@ -963,20 +1119,20 @@
                                 }
                             },
                             "required": [
-                                "database",
                                 "id",
+                                "type",
                                 "url"
                             ]
                         }
                     }
                 },
                 "required": [
-                    "title",
-                    "journal",
-                    "data",
                     "authors",
+                    "date",
                     "evidence",
-                    "reference"
+                    "journal",
+                    "reference",
+                    "title"
                 ]
             }
         },
@@ -1003,8 +1159,8 @@
                 },
                 "required": [
                     "id",
-                    "url",
-                    "resource"
+                    "resource",
+                    "url"
                 ]
             }
         },
@@ -1039,8 +1195,8 @@
                             }
                         },
                         "required": [
-                            "sequence",
-                            "length"
+                            "length",
+                            "sequence"
                         ]
                     },
                     "evidence": {
@@ -1059,9 +1215,9 @@
                                 }
                             },
                             "required": [
+                                "database",
                                 "id",
-                                "url",
-                                "database"
+                                "url"
                             ]
                         }
                     },
@@ -1070,13 +1226,13 @@
                     }
                 },
                 "required": [
-                    "uniprot_canonical_ac",
-                    "protein_name",
-                    "tax_id",
-                    "organism",
-                    "sequence",
+                    "common_name",
                     "evidence",
-                    "common_name"
+                    "organism",
+                    "protein_name",
+                    "sequence",
+                    "tax_id",
+                    "uniprot_canonical_ac"
                 ]
             }
         },
@@ -1124,29 +1280,26 @@
                                                     }
                                                 },
                                                 "required": [
+                                                    "database",
                                                     "id",
-                                                    "url",
-                                                    "database"
+                                                    "url"
                                                 ]
                                             }
-                                        },
-                                        "pmid": {
-                                            "type": "string"
                                         }
                                     },
                                     "required": [
-                                        "name",
+                                        "evidence",
                                         "id",
-                                        "url",
-                                        "evidence"
+                                        "name",
+                                        "url"
                                     ]
                                 }
                             }
                         },
                         "required": [
+                            "go_terms",
                             "name",
-                            "total",
-                            "go_terms"
+                            "total"
                         ]
                     }
                 }
@@ -1182,17 +1335,17 @@
                                 }
                             },
                             "required": [
+                                "database",
                                 "id",
-                                "url",
-                                "database"
+                                "url"
                             ]
                         }
                     }
                 },
                 "required": [
-                    "name",
                     "definition",
-                    "evidence"
+                    "evidence",
+                    "name"
                 ]
             }
         },
@@ -1212,9 +1365,9 @@
                     }
                 },
                 "required": [
-                    "start_pos",
+                    "annotation",
                     "end_pos",
-                    "annotation"
+                    "start_pos"
                 ]
             }
         },
@@ -1248,17 +1401,17 @@
                                 }
                             },
                             "required": [
+                                "database",
                                 "id",
-                                "url",
-                                "database"
+                                "url"
                             ]
                         }
                     }
                 },
                 "required": [
-                    "interactor_id",
+                    "evidence",
                     "interaction_type",
-                    "evidence"
+                    "interactor_id"
                 ]
             }
         },
@@ -1275,8 +1428,8 @@
                     }
                 },
                 "required": [
-                    "name",
-                    "label"
+                    "label",
+                    "name"
                 ]
             }
         },
@@ -1297,18 +1450,34 @@
                 }
             },
             "required": [
+                "length",
                 "uniprot_canonical_ac",
                 "uniprot_id",
-                "url",
-                "length"
+                "url"
             ]
+        },
+        "history": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "type"
+                ]
+            }
         }
     },
     "required": [
         "mass",
         "sequence",
         "species",
-        "uniprot",
-        "publication"
+        "uniprot"
     ]
 }

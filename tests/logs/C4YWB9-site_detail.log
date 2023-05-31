@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/site.py", line 62, in post
-    res_obj = site_detail(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/site_apilib.py", line 39, in site_detail
-    error_list = errorlib.get_errors_in_query("site_detail", query_obj, config_obj)
-NameError: name 'errorlib' is not defined

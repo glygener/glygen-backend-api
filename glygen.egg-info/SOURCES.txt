@@ -13,7 +13,6 @@ glygen/directsearch_apilib.py
 glygen/document.py
 glygen/event.py
 glygen/event_apilib.py
-glygen/foo.py
 glygen/globalsearch.py
 glygen/globalsearch_apilib.py
 glygen/glycan.py
@@ -50,7 +49,6 @@ glygen/usecases_apilib.py
 glygen/util.py
 glygen/video.py
 glygen/video_apilib.py
-glygen/xxx.py
 glygen.egg-info/PKG-INFO
 glygen.egg-info/SOURCES.txt
 glygen.egg-info/dependency_links.txt
@@ -61,6 +59,7 @@ glygen/conf/backup-edgerules.json
 glygen/conf/config.json
 glygen/conf/dbinfo.json
 glygen/conf/edgerules.json
+glygen/conf/fieldmap.json
 glygen/conf/global_search.json
 glygen/conf/global_search.json-backup
 glygen/conf/global_search_all.json
@@ -72,6 +71,9 @@ glygen/conf/integrity.conf
 glygen/conf/list_filters.json
 glygen/conf/newedgerules.json
 glygen/conf/protein_scratch.csv
+glygen/conf/section.1.json
+glygen/conf/section.2.json
+glygen/conf/section.json
 glygen/conf/supersearch.json
 glygen/conf/supersearch.json-backup
 glygen/conf/toyglobal_search.json

@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/supersearch.py", line 109, in post
-    res_obj = search(req_obj, config_obj, True, False)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/supersearch_apilib.py", line 268, in search
-    t_query,e_list = transform_query(q_obj, concept, seen_path, path_map)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/supersearch_apilib.py", line 897, in transform_query
-    if concept == "site" and "string_value" in obj and obj["string_value"].find("|") != -1:
-AttributeError: 'list' object has no attribute 'find'

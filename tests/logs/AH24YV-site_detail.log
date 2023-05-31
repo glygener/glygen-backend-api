@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/site.py", line 62, in post
-    res_obj = site_detail(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/site_apilib.py", line 68, in site_detail
-    url = config_obj["urltemplate"]["uniprot"] % (canon_doc["uniprot_canonical_ac"])
-TypeError: 'NoneType' object is not subscriptable

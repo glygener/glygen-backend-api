@@ -40,7 +40,7 @@ class Data(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = foo_yyy1(req_obj, config_obj, data_path)
         except Exception as e:
-            log_path = current_app.config["LOG_PATH"] 
+            log_path = os.environ["DATA_PATH"] + "/logs"
             res_obj = get_error_obj(api_name, traceback.format_exc(), log_path)
         return res_obj
 

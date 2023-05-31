@@ -53,6 +53,8 @@ def data_download(query_obj, config_obj, data_path):
     
     format_lc = query_obj["format"].lower()
 
+
+
     data_buffer = ""
     if query_obj["type"] in ["glycan_list", "site_list", "motif_list","protein_list", 
             "genelocus_list", "ortholog_list","idmapping_list_mapped",
@@ -219,9 +221,9 @@ def data_download(query_obj, config_obj, data_path):
         main_id = "motif_ac" if query_obj["type"] == "motif_detail" else main_id 
         main_id = "id" if query_obj["type"] == "site_detail" else main_id
         main_id = "record_id" if query_obj["type"] == "publication_detail" else main_id
-    
         mongo_query = {main_id:{"$regex":query_obj["id"], "$options":"i"}}
         record_obj = dbh[collection].find_one(mongo_query)
+        
         if record_obj == None:
             return {"error_list":{"error_code":"non-existent-record"}}
 
@@ -370,5 +372,4 @@ def get_fasta_sequence(dbh, canon, isoform_ac, seq_type):
     seq = "\n".join(seq_lines) + "\n"
 
     return seq
-
 

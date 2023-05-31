@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/supersearch.py", line 55, in post
-    res_obj = search_init(req_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/supersearch_apilib.py", line 63, in search_init
-    for record_type in config_obj["record_type_info"]:
-KeyError: 'record_type_info'

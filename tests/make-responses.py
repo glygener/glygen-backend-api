@@ -9,7 +9,6 @@ import glob
 import urllib3
 
 import jsonref
-from jsonschema import validate, Draft4Validator
 
 urllib3.disable_warnings()
 
@@ -27,15 +26,18 @@ def is_valid_json(myjson):
 def main():
     
 
-    file_list = glob.glob("queries/*.json")
+    #file_list = glob.glob("queries/*.json")
+    #file_list = ['queries/protein.json']
+    file_list = glob.glob("queries/toy.json")
+
     in_file = "queries/qlist/supersearch_querylist.json"
     supersearch_qlist = json.loads(open(in_file, "r").read())
     
-    
     out_obj_list = []
-    #base_url = "https://api.dev.glygen.org"
-    base_url = "http://localhost:5000"
-    
+    base_url = "http://localhost:8082/"
+
+
+
     last_list_id = ""
     try:
         for in_file in file_list:

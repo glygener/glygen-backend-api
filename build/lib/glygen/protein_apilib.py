@@ -251,8 +251,8 @@ def protein_detail(query_obj, config_obj):
         return {"error_list":error_list}
 
 
-    collection = "c_protein"
 
+    collection = "c_protein"
     mongo_query = {
         "$or":[
             {"uniprot_canonical_ac":{'$eq': query_obj["uniprot_canonical_ac"].upper()}},
@@ -260,22 +260,64 @@ def protein_detail(query_obj, config_obj):
         ]
     }
     obj = dbh[collection].find_one(mongo_query)
-    q = {"$or":[
-            {"record_id":{'$regex': query_obj["uniprot_canonical_ac"].upper(), "$options":"i"}},
-            {"recordid":{'$regex': query_obj["uniprot_canonical_ac"].upper(), "$options":"i"}}
-        ]}
-
-    history_obj = dbh["c_idtrack"].find_one(q)
-
-
+    history_obj_one, history_obj_two = None, None
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
     if obj == None:
+        c_a = {"recordtype":{"$eq": "protein"}}
+        c_b = {"record_id":{'$regex':query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
+        c_c = {"accessions":{'$regex':","+query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
+        q_one = {"$and":[c_a, c_b]}
+        history_obj_one = dbh["c_idtrack"].find_one(q_one)
+        q_two = {"$and":[c_a, c_c]}
+        history_obj_two = dbh["c_idtrack"].find_one(q_two)
+        
         post_error_list.append({"error_code":"non-existent-record"})
         res_obj = {"error_list":post_error_list}
-        if history_obj != None:
-            res_obj["reason"] = history_obj["history"]
+        if history_obj_one != None:
+            res_obj["reason"] = history_obj_one["history"][-1]
+            if res_obj["reason"]["type"] == "discontinued":
+                if res_obj["reason"]["description"].find("was in GlyGen") != -1:
+                    res_obj["reason"]["type"] = "discontinued_in_glygen"
+        elif history_obj_two != None:
+            if history_obj_two["status"] == "primary":
+                res_obj["reason"] = {
+                    "description":"UniProtKB accession never been in GlyGen",
+                    "type":"never_in_glygen_current_in_uniprotkb"
+                }
+            elif history_obj_two["status"] == "discontinued":
+                res_obj["reason"] = {
+                    "description":"Discontinued UniProtKB accession never been in GlyGen",
+                    "type":"never_in_glygen_discontinued_in_uniprotkb"
+                }
+            elif history_obj_two["status"] == "secondary":
+                q_ac = query_obj["uniprot_canonical_ac"].upper() + ":"
+                t_list = history_obj_two["accessions"].split(q_ac)[1].split(",")[0].split(";")
+                desc = "Old UniProtKB accession replaced by %s" % (", ".join(t_list))
+                res_obj["reason"] = {
+                    "description":desc, 
+                    "replacement_id_list": t_list,
+                    "type":"replacement_not_in_glygen"
+                }
+        else:
+            res_obj["reason"] = {"type":"invalid","description": "Invalid accession"}
         return res_obj
+
+
+    # Get section objects if record is batched
+    canon = query_obj["uniprot_canonical_ac"].upper()
+    q = {
+        "$and":[
+            {"batchid":{"$eq":1}}, 
+            {"recordid": {"$regex":canon, "$options":"i"}},
+            {"recordtype":{"$eq":"protein"}}
+        ]
+    }
+    batch_doc = dbh["c_batch"].find_one(q)
+    if batch_doc != None:
+        for sec in batch_doc["sections"]:
+            if sec in obj:
+                obj[sec] += batch_doc["sections"][sec]
 
 
     url = config_obj["urltemplate"]["uniprot"] % (obj["uniprot_canonical_ac"])
@@ -286,7 +328,7 @@ def protein_detail(query_obj, config_obj):
         "url":url,
         "length": obj["sequence"]["length"]
     }
-    obj["history"] = history_obj["history"] if history_obj != None else []
+    obj["history"] = history_obj_one["history"] if history_obj_one != None else []
 
     #for o in obj["gene"]:
     #    if len(obj["synonyms"]["gene"]["uniprotkb"]) > 1:

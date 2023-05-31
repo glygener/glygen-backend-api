@@ -23,6 +23,9 @@
         "number_monosaccharides": {
             "type": "integer"
         },
+        "number_monosaccharides_suffix": {
+            "type": "string"
+        },
         "iupac": {
             "type": "string"
         },
@@ -175,7 +178,6 @@
                 },
                 "required": [
                     "evidence",
-                    "gene_name",
                     "protein_name",
                     "tax_id",
                     "tax_name",
@@ -272,16 +274,40 @@
         "tool_support": {
             "type": "object",
             "properties": {
-                "gnome": {
+                "sandbox": {
                     "type": "string"
                 },
-                "sandbox": {
+                "pdb": {
+                    "type": "string"
+                },
+                "gnome_glygen_oglycans": {
+                    "type": "string"
+                },
+                "gnome_glygen_nglycans": {
+                    "type": "string"
+                },
+                "gnome_glygen": {
+                    "type": "string"
+                },
+                "gnome_glycotree_oglycans": {
+                    "type": "string"
+                },
+                "gnome_glycotree_nglycans": {
+                    "type": "string"
+                },
+                "gnome": {
                     "type": "string"
                 }
             },
             "required": [
-                "gnome",
-                "sandbox"
+                "sandbox",
+                "pdb",
+                "gnome_glygen_oglycans",
+                "gnome_glygen_nglycans",
+                "gnome_glygen",
+                "gnome_glycotree_oglycans",
+                "gnome_glycotree_nglycans",
+                "gnome"
             ]
         },
         "fully_determined": {
@@ -357,8 +383,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     },
@@ -410,6 +435,9 @@
                         "type": "string"
                     },
                     "attachedby": {
+                        "type": "string"
+                    },
+                    "detachedby": {
                         "type": "string"
                     },
                     "parentid": {
@@ -543,13 +571,16 @@
                             ]
                         }
                     },
-                    "tissue": {
+                    "cell_line": {
                         "type": "object",
                         "properties": {
                             "name": {
                                 "type": "string"
                             },
-                            "uberon": {
+                            "namespace": {
+                                "type": "string"
+                            },
+                            "id": {
                                 "type": "string"
                             },
                             "url": {
@@ -558,7 +589,31 @@
                         },
                         "required": [
                             "name",
-                            "uberon",
+                            "namespace",
+                            "id",
+                            "url"
+                        ]
+                    },
+                    "tissue": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "namespace": {
+                                "type": "string"
+                            },
+                            "id": {
+                                "type": "string"
+                            },
+                            "url": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "name",
+                            "namespace",
+                            "id",
                             "url"
                         ]
                     },
@@ -597,6 +652,137 @@
             "type": "array",
             "items": {
                 "type": "string"
+            }
+        },
+        "names": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "domain": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "domain"
+                ]
+            }
+        },
+        "dictionary": {
+            "type": "object",
+            "properties": {
+                "wikipedia": {
+                    "type": "string"
+                },
+                "term_xref": {
+                    "type": "string"
+                },
+                "term_in_sentence": {
+                    "type": "string"
+                },
+                "term": {
+                    "type": "string"
+                },
+                "synonymns": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "publication": {
+                    "type": "string"
+                },
+                "function": {
+                    "type": "string"
+                },
+                "evidence": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "database": {
+                                "type": "string"
+                            },
+                            "id": {
+                                "type": "string"
+                            },
+                            "url": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "database",
+                            "id",
+                            "url"
+                        ]
+                    }
+                },
+                "essentials_of_glycobiology": {
+                    "type": "string"
+                },
+                "disease_associations": {
+                    "type": "string"
+                },
+                "definition": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "evidence",
+                "publication",
+                "synonymns",
+                "term",
+                "term_in_sentence",
+                "term_xref"
+            ]
+        },
+        "interactions": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "interactor_type": {
+                        "type": "string"
+                    },
+                    "interactor_name": {
+                        "type": "string"
+                    },
+                    "interactor_id": {
+                        "type": "string"
+                    },
+                    "evidence": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "database": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "database",
+                                "id",
+                                "url"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "interactor_type",
+                    "interactor_name",
+                    "interactor_id",
+                    "evidence"
+                ]
             }
         },
         "glycotree_pathways": {
@@ -654,8 +840,6 @@
     },
     "required": [
         "classification",
-        "composition",
-        "composition_expanded",
         "crossref",
         "glycoct",
         "glytoucan",

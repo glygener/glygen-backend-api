@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/misc.py", line 232, in post
-    res_obj[coll] = {p:doc_list[0][p]}
-KeyError: 'id'

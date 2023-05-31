@@ -13,13 +13,21 @@
 		  "glycan":100000
 		,"protein":100000
 	}
+        ,"admin_list":[
+            "rykahsay@gwu.edu"
+         ]
         ,"jobinfo":{
             "tspath":"/usr/local/bin/ts",
             "maxjobs":5,
 	    "structure_search":{
                 "incmdflag":"-i",
                 "outcmdflag":"-o",
-                "path":"/usr/bin/python3 /app/job_submitters/structure_search.py",
+                "path":{
+                    "prd":"python /app/job_submitters/structure_search.py",
+                    "beta":"python /app/job_submitters/structure_search_beta.py",
+                    "tst":"python /app/job_submitters/structure_search.py",
+                    "dev":"python /app/job_submitters/structure_search.py"
+                },
                 "input_files":[
                     {"name":"input.json", "format":"json"}
                 ],
@@ -35,7 +43,12 @@
                 "incmdflag":"-query",
                 "outcmdflag":"-out",
                 "max_input_records":10,
-                "path":"/usr/bin/python3 /app/job_submitters/blastp.py",
+                "path":{
+                    "prd":"python /app/job_submitters/blastp.py",
+                    "beta":"python /app/job_submitters/blastp.py",
+                    "tst":"python /app/job_submitters/blastp.py",
+                    "dev":"python /app/job_submitters/blastp.py"
+                },
                 "input_files":[
                     {"name":"input.fasta", "format":"fasta"}
                 ],
@@ -55,7 +68,7 @@
                         "cmdflag":"-evalue"
                     },
                     {
-                        "id":"num_alignments", "label":"Max number of hits", "type":"int", "value":250, "cmdflag":"-num_alignments"
+                        "id":"num_alignments", "label":"Max number of hits (Proteins)", "type":"int", "value":250, "cmdflag":"-num_alignments"
                     }
                 ]
             }
@@ -160,6 +173,12 @@
             ,"9606":"Homo sapiens"
             ,"10090":"Mus musculus"
             ,"10116":"Rattus norvegicus"
+            ,"63746":"Hepatitis C virus (isolate H)"
+            ,"11116":"Hepatitis C virus (isolate Japanese)"
+            ,"694009":"Severe acute respiratory syndrome-related coronavirus"
+            ,"2697049":"Severe acute respiratory syndrome coronavirus 2"
+            ,"7227":"Drosophila melanogaster"
+            ,"6573":"Mizuhopecten yessoensis"
         }
         ,"usecases_search_init":{
             "field_info":{
@@ -831,6 +850,38 @@
             }
             ,"requiredfields":["type","format", "id", "compressed"]
             ,"collectionlist":[]
+        } 
+        ,"list_download":{
+            "field_info":{
+                "id":{"type":"string"}
+                ,"download_type":{"type":"string"}
+                ,"format":{"type":"string"}
+                ,"compressed":{"type":"boolean"}
+            }
+            ,"requiredfields":["download_type","format", "id", "compressed"]
+            ,"collectionlist":[]
+        }
+        ,"detail_download":{
+            "field_info":{
+                "id":{"type":"string"}
+                ,"download_type":{"type":"string"}
+                ,"format":{"type":"string"}
+                ,"compressed":{"type":"boolean"}
+            }
+            ,"requiredfields":["download_type","format", "id", "compressed"]
+            ,"collectionlist":[]
+        }
+        ,"section_download":{
+            "field_info":{
+                "id":{"type":"string"}
+                ,"download_type":{"type":"string"}
+                ,"section":{"type":"string"}
+                ,"tab":{"type":"string"}
+                ,"format":{"type":"string"}
+                ,"compressed":{"type":"boolean"}
+            }
+            ,"requiredfields":["download_type","format", "id", "section", "compressed"]
+            ,"collectionlist":[]
         }
         ,"pages_home_init":{
              "field_info":{}
@@ -970,24 +1021,30 @@
             ,"json":"application/json"
         }
         ,"downloadtypes":{
-            "protein_list":{"cache":"c_cache", "formatlist":["csv","json","fasta"]}
+            "protein_list":{"cache":"c_cache", "formatlist":["csv","tsv","json","fasta"]}
             ,"glycan_list":{"cache":"c_cache", "formatlist":["csv","json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic", "grits"]}
-            ,"motif_list":{"cache":"c_motif", "formatlist":["csv","json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic"]}
-            ,"genelocus_list":{"cache":"c_cache", "formatlist":["csv","json","fasta"]}
-            ,"ortholog_list":{"cache":"c_cache", "formatlist":["csv","json","fasta"]}
-            ,"site_list":{"cache":"c_cache", "formatlist":["csv","json"]}
+            ,"motif_list":{"cache":"c_motif", "formatlist":["csv","tsv","json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic"]}
+            ,"genelocus_list":{"cache":"c_cache", "formatlist":["csv","tsv","json","fasta"]}
+            ,"ortholog_list":{"cache":"c_cache", "formatlist":["csv","tsv","json","fasta"]}
+            ,"site_list":{"cache":"c_cache", "formatlist":["csv","tsv","json"]}
             ,"protein_detail":{"cache":"c_protein", "formatlist":["json","fasta"]}
             ,"glycan_detail":{"cache":"c_glycan", "formatlist":["json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic"]}
-            ,"motif_detail":{"cache":"c_motif", "formatlist":["json", "csv","png"]}
+            ,"motif_detail":{"cache":"c_motif", "formatlist":["json", "csv","tsv", "png"]}
             ,"site_detail":{"cache":"c_site", "formatlist":["json"]}
             ,"publication_detail":{"cache":"c_publication", "formatlist":["json"]}
             ,"protein_detail_isoformset":{"cache":"c_protein", "formatlist":["fasta"]}
             ,"protein_detail_homologset":{"cache":"c_protein", "formatlist":["fasta"]}
             ,"glycan_image":{"cache":"c_glycan", "formatlist":["png"]}
-            ,"idmapping_list_mapped":{"cache":"c_cache", "formatlist":["csv"]}
-            ,"idmapping_list_unmapped":{"cache":"c_cache", "formatlist":["csv"]}
-            ,"idmapping_list_all":{"cache":"c_cache", "formatlist":["csv"]}
-            ,"idmapping_list_all_collapsed":{"cache":"c_cache", "formatlist":["csv"]}
+            ,"idmapping_list_mapped":{"cache":"c_cache", "formatlist":["csv","tsv"]}
+            ,"idmapping_list_unmapped":{"cache":"c_cache", "formatlist":["csv","tsv"]}
+            ,"idmapping_list_all":{"cache":"c_cache", "formatlist":["csv","tsv"]}
+            ,"idmapping_list_all_collapsed":{"cache":"c_cache", "formatlist":["csv","tsv"]}
+            ,"protein_section":{"cache":"c_protein", "formatlist":["csv","tsv"]}
+            ,"site_section":{"cache":"c_site", "formatlist":["csv","tsv"]}
+            ,"glycan_section":{"cache":"c_glycan", "formatlist":["csv","tsv"]}
+            ,"motif_section":{"cache":"c_motif", "formatlist":["csv","tsv"]}
+            ,"publication_section":{"cache":"c_publication", "formatlist":["csv","tsv"]}
+
         }
         ,"dev":{
                 "dbinfo":{

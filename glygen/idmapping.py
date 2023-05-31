@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 import datetime
 import time
 import subprocess
+import cgi
 import json
 import bcrypt
 
@@ -29,6 +30,9 @@ idmapping_search_query_model = api.model(
         "input_idlist": fields.List(fields.String(), required=True, default=["Q9VRR2", "M9PJ12"])
     }
 )
+
+list_query_model = api.model("ID Mapping List Query",{ "id": fields.String(required=True, default="")})
+
 
 list_query_model = api.model("ID Mapping List Query",{ "id": fields.String(required=True, default="")})
 
@@ -64,7 +68,49 @@ class Idmapping(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
+<<<<<<< HEAD
             req_obj = get_req_obj(request)
+=======
+            req_obj_form = request.form
+            req_obj_json = request.json
+            req_obj = {}
+            if req_obj_json != None:
+                req_obj = req_obj_json
+            else:
+                for k in ["recordtype", "input_namespace", "output_namespace"]:
+                    if k in req_obj_form:
+                        #req_obj[k] = req_obj_form[k].value
+                        req_obj[k] = req_obj_form[k]
+
+                if "input_idlist" in req_obj_form:
+                    req_obj["input_idlist"] = []
+                    #tmp_str = req_obj_form["input_idlist"].value.strip()
+                    tmp_str = req_obj_form["input_idlist"].strip()
+                    if tmp_str != "":
+                        for word in tmp_str.split(","):
+                            if word.strip() not in req_obj["input_idlist"]:
+                                req_obj["input_idlist"].append(word.strip())
+                if "userfile" in request.files:
+                    if "input_idlist" not in req_obj:
+                        req_obj["input_idlist"] = []
+                    file_buffer = request.files.get("userfile").read()
+                    file_buffer = file_buffer.decode()
+                    file_buffer = file_buffer.replace("\r", "\n").replace("\n\n", "\n")
+                    line_list = file_buffer.split("\n")
+                    for line in line_list:
+                        if line.strip() != "":
+                            for word in line.strip().split(","):
+                                input_id = word.strip()
+                                if input_id != "" and input_id not in req_obj["input_idlist"]:
+                                    req_obj["input_idlist"].append(input_id)
+
+            error_list = []
+            for k in ["recordtype", "input_namespace", "output_namespace", "input_idlist"]:
+                if k not in req_obj:
+                    error_list.append({"error_code":"missing-parameter","field":k})
+            if error_list != []:
+                return {"error_list":error_list}
+>>>>>>> 2.0
             res_obj = search(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())

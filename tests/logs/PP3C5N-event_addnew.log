@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/event.py", line 57, in post
-    res_obj = event_addnew(current_user, req_obj, config_obj)
-TypeError: event_addnew() takes 2 positional arguments but 3 were given

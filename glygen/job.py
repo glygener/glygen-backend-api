@@ -104,9 +104,14 @@ class Job(Resource):
         config_obj["server"] = os.environ["SERVER"]
         res_obj = {}
         try:
+<<<<<<< HEAD
             req_obj = get_req_obj(request)
+=======
+            req_obj = request.json
+            qry = req_obj["query"] if "query" in req_obj else req_obj
+>>>>>>> 2.0
             data_path, server = os.environ["DATA_PATH"],os.environ["SERVER"]
-            res_obj = job_addnew(req_obj, config_obj, data_path, server)
+            res_obj = job_addnew(qry, config_obj, data_path, server)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         

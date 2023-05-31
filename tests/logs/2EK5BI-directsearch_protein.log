@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/directsearch.py", line 55, in post
-    res_obj = protein(req_obj, config_obj)
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/directsearch_apilib.py", line 41, in protein
-    error_list = get_errors_in_query("protein_search_direct", query_obj,config_obj)
-NameError: name 'get_errors_in_query' is not defined

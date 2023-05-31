@@ -76,7 +76,7 @@ def job_addnew(query_obj, config_obj, data_path, server):
     init_obj = dbh["c_init"].find_one({})
     release_dir = data_path + "/releases/data/v-%s/" % (init_obj["dataversion"])
 
-    validation_obj, error_list = validate_input(query_obj, config_obj, release_dir)
+    validation_obj, error_list = validate_input(query_obj, config_obj, release_dir, server)
     if error_list != []:
         return {"error_list":error_list}
 
@@ -96,7 +96,8 @@ def job_addnew(query_obj, config_obj, data_path, server):
             if p not in ["cmd", "status", "jobid"]:
                 q_obj[p] = query_obj[p]
 
-        old_doc = dbh["c_job"].find_one(q_obj)
+        #old_doc = dbh["c_job"].find_one(q_obj)
+        old_doc = None
         if old_doc != None:
             status_obj = update_job_status(dbh, old_doc, config_obj)
             if "error_list" in status_obj:
@@ -129,7 +130,7 @@ def job_addnew(query_obj, config_obj, data_path, server):
             job_lbl = "%s_%s" % (query_obj["jobtype"], query_obj["jobid"])
             cmd = "%s -E -L %s %s" % (config_obj["jobinfo"]["tspath"],job_lbl, query_obj["cmd"])
             
-
+            query_obj["cmdin"] = cmd
             cmdout = subprocess.getoutput(cmd)
             query_obj["cmdout"] = cmdout
             query_obj["tsid"] = cmdout.split(" ")[0]
@@ -192,6 +193,7 @@ def job_results(query_obj, config_obj):
         job_info = json.loads(open(in_file, "r").read())
         job_type = job_info["jobtype"]
         status_obj = get_job_status(job_info["tsid"] , config_obj)
+
         out_file = job_dir + config_obj["jobinfo"][job_type]["output_files"][0]["name"]
         res_obj = {"list_id":""}
         if status_obj["status"] == "finished":
@@ -237,13 +239,16 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
         if row[1] == True:
             record_list.append(row[0])
 
+
+
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     cache_coll = "c_cache"
     list_id = ""
     record_type = "glycan"
     if len(record_list) != 0:
-        hash_obj = hashlib.md5(record_type + "_" + json.dumps(job_info))
+        hash_str = record_type + "_" + json.dumps(job_info)
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_info = {
             "query":job_info,
@@ -440,7 +445,9 @@ def get_result_count(job_type, out_file):
 
     n = 0
     if job_type in ["structure_search"]:
-        n = len(json.loads(open(out_file, "r").read()))
+        doc = json.loads(open(out_file, "r").read())
+        if "result" in doc:
+            n = len(doc["result"])
     elif job_type == "blastp":
         cmd = "grep \"Score =\" %s | wc" % (out_file)
         n = int(subprocess.getoutput(cmd).strip().split(" ")[0])
@@ -600,8 +607,7 @@ def validate_protein_seq(seq):
 
 
 
-def validate_input(query_obj, config_obj, release_dir):
-
+def validate_input(query_obj, config_obj, release_dir, server):
     cmd_parts = []
     error_list = []
     if query_obj["jobtype"] not in config_obj["jobinfo"]:
@@ -624,8 +630,10 @@ def validate_input(query_obj, config_obj, release_dir):
                     val = query_obj["parameters"][obj["id"]]
                     cmd_parts.append({"flag":obj["cmdflag"], "value":val, "field":obj["id"]})
 
+        
+    query_obj["cmd"] = "%s" % (config_obj["jobinfo"][query_obj["jobtype"]]["path"][server])
 
-    query_obj["cmd"] = "%s" % (config_obj["jobinfo"][query_obj["jobtype"]]["path"])
+
     for o in cmd_parts:
         if query_obj["jobtype"] == "blastp":
             if o["flag"] == "-db":
@@ -639,12 +647,19 @@ def validate_input(query_obj, config_obj, release_dir):
         if e_list != []:
             return res_obj, e_list
         res_obj["buffer"] = ">%s\n%s\n" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
-        cmd = "echo %s %s | /usr/bin/md5sum" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
-        query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
+        
+        #cmd = "echo %s %s | /usr/bin/md5sum" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
+        #query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
+        hash_str = "%s %s" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+        query_obj["md5sum"] = hash_obj.hexdigest()
     elif query_obj["jobtype"] in ["structure_search"]:
         res_obj["buffer"] = json.dumps(query_obj["parameters"])
-        cmd = "echo \"%s\" | /usr/bin/md5sum" % (query_obj["parameters"]["seq"])
-        query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
+        #cmd = "echo \"%s\" | /usr/bin/md5sum" % (query_obj["parameters"]["seq"])
+        #query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
+        hash_str = "%s %s" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+        query_obj["md5sum"] = hash_obj.hexdigest()
 
     return res_obj, error_list
 
@@ -653,7 +668,7 @@ def validate_input(query_obj, config_obj, release_dir):
 
 def get_job_status(ts_id, config_obj):
 
-    obj = {}
+    obj = {"tsid":ts_id}
     cmd = "%s -s %s" % (config_obj["jobinfo"]["tspath"], ts_id)
     obj["status"] = subprocess.getoutput(cmd).split(" ")[0]
     cmd = "%s -i %s" % (config_obj["jobinfo"]["tspath"], ts_id)
@@ -661,13 +676,13 @@ def get_job_status(ts_id, config_obj):
         k = line.split(":")[0].replace(" ", "_").lower()
         obj[k] = ":".join(line.split(":")[1:])
         obj[k] = obj[k].strip()
-   
+        
+
     if obj["status"] == "finished" and obj["exit_status"] != "died with exit code 0":
         obj["status"] = "died"
         obj.pop("exit_status")
         cmd = "%s -t %s" % (config_obj["jobinfo"]["tspath"], ts_id)
         obj["error"] = subprocess.getoutput(cmd)
-
 
     return obj
 

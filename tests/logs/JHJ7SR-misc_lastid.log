@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/glygen/misc.py", line 231, in post
-    p = p_dict["coll"]
-KeyError: 'coll'

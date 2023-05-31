@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/rykahsay/projects/glygen-backend-api/api/glygen/pages.py", line 40, in post
-    res_obj = pages_home_init(req_obj, config_obj)
-NameError: name 'pages_home_init' is not defined
