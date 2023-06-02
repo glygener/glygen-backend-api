@@ -181,7 +181,12 @@ def job_queue(query_obj, config_obj):
 
 def job_results(query_obj, config_obj):
 
-    
+   
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+
     res_obj = {}
     try:
         job_dir = config_obj[config_obj["server"]]["pathinfo"]["userdata"]
@@ -192,7 +197,17 @@ def job_results(query_obj, config_obj):
 
         job_info = json.loads(open(in_file, "r").read())
         job_type = job_info["jobtype"]
-        status_obj = get_job_status(job_info["tsid"] , config_obj)
+        #status_obj = get_job_status(job_info["tsid"] , config_obj)
+       
+        q_obj = {"jobid":query_obj["jobid"]}
+        job_doc = dbh["c_job"].find_one(q_obj)
+        if job_doc == None:
+            return {"error_list":[{"error_code":"job-record-not-found"}]}
+        #update job status
+        status_obj = update_job_status(dbh, job_doc, config_obj)
+        if "error_list" in status_obj:
+            return status_obj
+
 
         out_file = job_dir + config_obj["jobinfo"][job_type]["output_files"][0]["name"]
         res_obj = {"list_id":""}
@@ -201,6 +216,8 @@ def job_results(query_obj, config_obj):
                 res_obj = parse_blastp_ouput(out_file, config_obj)
             elif job_type in ["structure_search"]:
                 res_obj = parse_structure_search_ouput(out_file, config_obj, job_info)
+        
+
         if "error" in status_obj:
             res_obj["error"] = status_obj["error"]
         res_obj["status"] = status_obj["status"] if "error_list" not in res_obj else "error"
@@ -328,6 +345,9 @@ def parse_blastp_ouput(out_file, config_obj):
     for canon in canon_list:
         mongo_query = {"uniprot_canonical_ac":{"$eq": canon}}
         doc  = dbh["c_protein"].find_one(mongo_query,prj_obj)
+        if doc == None:
+            continue
+
         sp_obj = doc["species"][0]
         o = {"tax_id":sp_obj["taxid"], "name":sp_obj["name"],
                 "common_name":sp_obj["common_name"]}
@@ -344,6 +364,8 @@ def parse_blastp_ouput(out_file, config_obj):
 
 
     for sbj_id in res_obj_dict:
+        if "details" not in res_obj_dict[sbj_id]:
+            continue
         sbj_name = res_obj_dict[sbj_id]["details"]["protein_name"]
         sbj_uniprot_id = res_obj_dict[sbj_id]["details"]["uniprot_id"]
         sbj_tax_id = res_obj_dict[sbj_id]["details"]["species"]["tax_id"]
