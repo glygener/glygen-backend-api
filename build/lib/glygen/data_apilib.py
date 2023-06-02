@@ -19,7 +19,6 @@ from glygen.util import cache_record_list,  extract_name, get_errors_in_query, o
 from glygen.motif_apilib import get_parent_glycans
 
 
-
 def data_download(query_obj, config_obj, data_path):
 
     dbh, error_obj = get_mongodb()
@@ -28,7 +27,6 @@ def data_download(query_obj, config_obj, data_path):
 
     init_obj = dbh["c_init"].find_one({})
     img_path = data_path + "/releases/data/v-%s/glycanimages_snfg/" % (init_obj["dataversion"])
-    gzip_path = "/usr/bin/gzip"
 
 
     #Collect errors 
@@ -299,15 +297,9 @@ def data_download(query_obj, config_obj, data_path):
     #Now that we have data_buffer, let's worry about compression
     if query_obj["compressed"] == True:
         fname = "%s.%s" % (query_obj["id"], query_obj["format"])
-        out_file = "/tmp/glygen-download-%s" % (fname)
-        with open(out_file, "w") as FW:
-            FW.write(data_buffer)
-        cmd = gzip_path + " -c %s " % (out_file)
-        c_data_buffer = commands.getoutput(cmd)
+        c_data_buffer = gzip.compress(bytes(data_buffer, 'utf-8'))
         res_stream = Response(c_data_buffer, mimetype='application/gzip')
         res_stream.headers['Content-Disposition'] = 'attachment; filename=%s.gz' % (fname)
-        cmd = " rm -f  %s " % (out_file)
-        x = commands.getoutput(cmd)
     else:
         res_stream = Response(data_buffer, mimetype=config_obj["mimetypes"][query_obj["format"]])
 
