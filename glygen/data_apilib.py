@@ -316,24 +316,24 @@ def section_download(query_obj, config_obj, sec_info, data_path):
     #Now that we have data_buffer, let's worry about compression
     if query_obj["compressed"] == True:
         fname = "%s.%s" % (query_obj["id"], query_obj["format"])
-        tmp_dir = data_path + "/tmp/"
-        if os.path.isdir(tmp_dir) == False:
-            cmd = "mkdir -p " + tmp_dir
-        #out_file = tmp_dir + "glygen-download-%s" % (fname)
-        #with open(out_file, "w") as FW:
-        #    FW.write(data_buffer)
-        #cmd = "/bin/gzip -c %s " % (out_file)
-        #c_data_buffer = subprocess.getoutput(cmd)
-        out_file = tmp_dir + "glygen-download-%s.gz" % (fname)
-        with gzip.open(out_file, 'wb') as FW:
-            FW.write(data_buffer.encode())
-        c_data_buffer = ""
-        with gzip.open(out_file, 'rb') as FR:
-            c_data_buffer = FR.read()
+        c_data_buffer = gzip.compress(bytes(data_buffer, 'utf-8'))
         res_stream = Response(c_data_buffer, mimetype='application/gzip')
         res_stream.headers['Content-Disposition'] = 'attachment; filename=%s.gz' % (fname)
-        cmd = " rm -f  %s " % (out_file)
-        x = subprocess.getoutput(cmd)
+        
+        #fname = "%s.%s" % (query_obj["id"], query_obj["format"])
+        #tmp_dir = data_path + "/tmp/"
+        #if os.path.isdir(tmp_dir) == False:
+        #    cmd = "mkdir -p " + tmp_dir
+        #out_file = tmp_dir + "glygen-download-%s.gz" % (fname)
+        #with gzip.open(out_file, 'wb') as FW:
+        #    FW.write(data_buffer.encode())
+        #c_data_buffer = ""
+        #with gzip.open(out_file, 'rb') as FR:
+        #    c_data_buffer = FR.read()
+        #res_stream = Response(c_data_buffer, mimetype='application/gzip')
+        #res_stream.headers['Content-Disposition'] = 'attachment; filename=%s.gz' % (fname)
+        #cmd = " rm -f  %s " % (out_file)
+        #x = subprocess.getoutput(cmd)
     else:
         res_stream = Response(data_buffer, mimetype=config_obj["mimetypes"][format_lc])
 
