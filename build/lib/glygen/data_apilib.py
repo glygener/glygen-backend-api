@@ -72,19 +72,9 @@ def list_download(query_obj, config_obj, data_path):
     #Now that we have data_buffer, let's worry about compression
     if query_obj["compressed"] == True:
         fname = "%s.%s" % (query_obj["id"], query_obj["format"])
-        tmp_dir = data_path + "/tmp/"
-        if os.path.isdir(tmp_dir) == False:
-            cmd = "mkdir -p " + tmp_dir
-        out_file = tmp_dir + "glygen-download-%s.gz" % (fname)
-        with gzip.open(out_file, 'wb') as FW:
-            FW.write(data_buffer.encode())
-        c_data_buffer = ""
-        with gzip.open(out_file, 'rb') as FR:
-            c_data_buffer = FR.read()
+        c_data_buffer = gzip.compress(bytes(data_buffer, 'utf-8'))
         res_stream = Response(c_data_buffer, mimetype='application/gzip')
         res_stream.headers['Content-Disposition'] = 'attachment; filename=%s.gz' % (fname)
-        cmd = " rm -f  %s " % (out_file)
-        x = subprocess.getoutput(cmd)
     else:
         res_stream = Response(data_buffer, mimetype=config_obj["mimetypes"][format_lc])
     return res_stream
@@ -167,24 +157,9 @@ def detail_download(query_obj, config_obj, data_path):
     #Now that we have data_buffer, let's worry about compression
     if query_obj["compressed"] == True:
         fname = "%s.%s" % (query_obj["id"], query_obj["format"])
-        tmp_dir = data_path + "/tmp/"
-        if os.path.isdir(tmp_dir) == False:
-            cmd = "mkdir -p " + tmp_dir
-        #out_file = tmp_dir + "glygen-download-%s" % (fname)
-        #with open(out_file, "w") as FW:
-        #    FW.write(data_buffer)
-        #cmd = "/bin/gzip -c %s " % (out_file)
-        #c_data_buffer = subprocess.getoutput(cmd)
-        out_file = tmp_dir + "glygen-download-%s.gz" % (fname)
-        with gzip.open(out_file, 'wb') as FW:
-            FW.write(data_buffer.encode())
-        c_data_buffer = ""
-        with gzip.open(out_file, 'rb') as FR:
-            c_data_buffer = FR.read()
+        c_data_buffer = gzip.compress(bytes(data_buffer, 'utf-8'))
         res_stream = Response(c_data_buffer, mimetype='application/gzip')
         res_stream.headers['Content-Disposition'] = 'attachment; filename=%s.gz' % (fname)
-        cmd = " rm -f  %s " % (out_file)
-        x = subprocess.getoutput(cmd)
     else:
         res_stream = Response(data_buffer, mimetype=config_obj["mimetypes"][format_lc])
     #print data_buffer
@@ -316,24 +291,9 @@ def section_download(query_obj, config_obj, sec_info, data_path):
     #Now that we have data_buffer, let's worry about compression
     if query_obj["compressed"] == True:
         fname = "%s.%s" % (query_obj["id"], query_obj["format"])
-        tmp_dir = data_path + "/tmp/"
-        if os.path.isdir(tmp_dir) == False:
-            cmd = "mkdir -p " + tmp_dir
-        #out_file = tmp_dir + "glygen-download-%s" % (fname)
-        #with open(out_file, "w") as FW:
-        #    FW.write(data_buffer)
-        #cmd = "/bin/gzip -c %s " % (out_file)
-        #c_data_buffer = subprocess.getoutput(cmd)
-        out_file = tmp_dir + "glygen-download-%s.gz" % (fname)
-        with gzip.open(out_file, 'wb') as FW:
-            FW.write(data_buffer.encode())
-        c_data_buffer = ""
-        with gzip.open(out_file, 'rb') as FR:
-            c_data_buffer = FR.read()
+        c_data_buffer = gzip.compress(bytes(data_buffer, 'utf-8'))
         res_stream = Response(c_data_buffer, mimetype='application/gzip')
         res_stream.headers['Content-Disposition'] = 'attachment; filename=%s.gz' % (fname)
-        cmd = " rm -f  %s " % (out_file)
-        x = subprocess.getoutput(cmd)
     else:
         res_stream = Response(data_buffer, mimetype=config_obj["mimetypes"][format_lc])
 
@@ -344,39 +304,6 @@ def section_download(query_obj, config_obj, sec_info, data_path):
 
 
 
-
-
-
-def generate_gzip(data_buffer):
-    
-    # Yield a gzip file header first.
-    yield (
-        '\037\213\010\000' + # Gzip file, deflate, no filename
-        struct.pack('<L', long(time.time())) +  # compression start time
-        '\002\377'  # maximum compression, no OS specified
-    )
-
-    # bookkeeping: the compression state, running CRC and total length
-    compressor = zlib.compressobj(
-        9, zlib.DEFLATED, -zlib.MAX_WBITS, zlib.DEF_MEM_LEVEL, 0)
-    crc = zlib.crc32("")
-    length = 0
-
-    lines = data_buffer.split("\n")
-    for i in range(0,len(lines)):
-        chunk = compressor.compress(lines[i])
-        if chunk:
-            yield chunk
-
-        #Fix this xxxxxxxxxxxx
-        #crc = zlib.crc32(lines[i], crc) & 0xffffffffL
-        length += len(lines[i])
-
-    # Finishing off, send remainder of the compressed data, and CRC and length
-    yield compressor.flush()
-    
-    #Fix this xxxxxxxxxxxx
-    #yield struct.pack("<2L", crc, length & 0xffffffffL)
 
 
 
