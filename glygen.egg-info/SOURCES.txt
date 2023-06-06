@@ -55,6 +55,7 @@ glygen.egg-info/dependency_links.txt
 glygen.egg-info/not-zip-safe
 glygen.egg-info/requires.txt
 glygen.egg-info/top_level.txt
+glygen/conf/.nfs00000000121ef1f700000003
 glygen/conf/backup-edgerules.json
 glygen/conf/config.json
 glygen/conf/dbinfo.json

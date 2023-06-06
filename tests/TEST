@@ -28,9 +28,13 @@
     $ http POST http://localhost:8082/auth/contactdelete/ < temp/auth_contactdelete.json
 
 
-    $ http POST http://localhost:8082/data/download/ < temp/data_download.json
+    $ http POST :8082/data/download/ < temp/data_download.json
+    $ http POST :8082/data/section_download/ < tests/examples/data/section_download.protein.snv.1.json
+    $ http POST :8082/data/section_download/ < tests/examples/data/section_download.protein.snv.2.json
+    $ http POST :8082/data/section_download/ < tests/examples/data/section_download.protein.snv.3.json
+        
 
-  
+
     $ http POST :8082/directsearch/protein/ < temp/directsearch_protein.json
     $ http POST :8082/directsearch/gene/ < temp/directsearch_gene.json
     $ http POST :8082/directsearch/glycan/ < temp/directsearch_glycan.json
