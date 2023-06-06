@@ -3,7 +3,7 @@
     "filters":[{"id":"by_organism","operator":"OR","selected":["Rattus norvegicus"]}],
     "download_type": "glycan_list",
     "format": "csv",
-    "compressed": false
+    "compressed": true
 }
 
 
