@@ -10,8 +10,7 @@ import json
 import bcrypt
 import pymongo
 
-from glygen.db import get_mongodb, log_error
-
+from glygen.db import get_mongodb, log_error, log_request
 from glygen.misc_apilib import validate, propertylist, pathlist, messagelist, verlist, gtclist, bcolist
 from glygen.util import get_req_obj
 import traceback
@@ -32,11 +31,12 @@ class Misc(Resource):
             for k in ["SERVER", "DATA_PATH", "DB_NAME", "MAIL_SERVER", "MAIL_PORT", "MAIL_SENDER"]:
                 if k in os.environ:
                     res_obj["config"][k] = os.environ[k]
-            
             init_obj = mongo_dbh["c_init"].find_one({})
             if "_id" in init_obj:
                 init_obj.pop("_id")
-            res_obj["initobj"] = init_obj
+            res_obj = log_request({}, "/misc/info/", request)
+            if "error_list" not in res_obj:
+                res_obj["initobj"] = init_obj
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -54,7 +54,9 @@ class Misc(Resource):
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = validate(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/misc/validate/", request)
+            if "error_list" not in res_obj:
+                res_obj = validate(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -71,7 +73,9 @@ class Misc(Resource):
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = propertylist(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/misc/propertylist/", request)
+            if "error_list" not in res_obj:
+                res_obj = propertylist(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -89,7 +93,9 @@ class Misc(Resource):
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = pathlist(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/misc/pathlist/", request)
+            if "error_list" not in res_obj:
+                res_obj = pathlist(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -106,7 +112,9 @@ class Misc(Resource):
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = messagelist(config_obj)
+            res_obj = log_request(req_obj, "/misc/messagelist/", request)
+            if "error_list" not in res_obj:
+                res_obj = messagelist(config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -124,7 +132,9 @@ class Misc(Resource):
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = verlist(config_obj)
+            res_obj = log_request(req_obj, "/misc/verlist/", request)
+            if "error_list" not in res_obj:
+                res_obj = verlist(config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -142,7 +152,9 @@ class Misc(Resource):
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = gtclist(config_obj,data_path)
+            res_obj = log_request(req_obj, "/misc/gtclist/", request)
+            if "error_list" not in res_obj:
+                res_obj = gtclist(config_obj,data_path)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -159,7 +171,9 @@ class Misc(Resource):
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = bcolist(config_obj)
+            res_obj = log_request(req_obj, "/misc/bcolist/", request)
+            if "error_list" not in res_obj:
+                res_obj = bcolist(config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -176,23 +190,24 @@ class Misc(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            dbh, error_obj = get_mongodb()
-            if error_obj != {}:
-                return error_obj
-            p_dict = {
-                "c_job":"jobid",
-                "c_video":"_id",
-                "c_event":"_id"
-            }
-            res_obj = {}
-            
-            sort_obj = [("_id",pymongo.DESCENDING)]
-            for coll in p_dict:
-                p = p_dict[coll]
-                for doc in dbh[coll].find({}).sort(sort_obj):
-                    val = str(doc[p]) if p == "_id" else doc[p]
-                    res_obj[coll] = {p:val}
-                    break
+            res_obj = log_request(req_obj, "/misc/lastid/", request)
+            if "error_list" not in res_obj:
+                dbh, error_obj = get_mongodb()
+                if error_obj != {}:
+                    return error_obj
+                p_dict = {
+                    "c_job":"jobid",
+                    "c_video":"_id",
+                    "c_event":"_id"
+                }
+                res_obj = {}
+                sort_obj = [("_id",pymongo.DESCENDING)]
+                for coll in p_dict:
+                    p = p_dict[coll]
+                    for doc in dbh[coll].find({}).sort(sort_obj):
+                        val = str(doc[p]) if p == "_id" else doc[p]
+                        res_obj[coll] = {p:val}
+                        break
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
