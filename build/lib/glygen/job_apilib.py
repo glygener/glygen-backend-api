@@ -236,8 +236,8 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
 
     record_list = []
     for row in row_list:
-        if row[1] == True:
-            record_list.append(row[0])
+        #if row[1] == True:
+        record_list.append(row[0])
 
 
 
