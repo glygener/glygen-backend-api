@@ -137,7 +137,7 @@ Run the python script given to build and create the API container:
 where $DEP is your deployment server which can be  dev, tst, beta or prd.
 The last command should list docker all containers and you should see the container
 you created "running_substructure". To start this container, the best way is
-to create a service file (/usr/lib/systemd/system/docker-glygen-substructure.service),
+to create a service file (/usr/lib/systemd/system/docker-glygen-substructure-$DEP.service),
 and place the following content in it. 
    ```
    [Unit]
@@ -158,9 +158,9 @@ This will allow you to start/stop the container with the following commands, and
 that the container will start on server reboot.
    ```
    $ sudo systemctl daemon-reload 
-   $ sudo systemctl enable docker-glygen-substructure.service
-   $ sudo systemctl start docker-glygen-substructure.service
-   $ sudo systemctl stop docker-glygen-substructure.service
+   $ sudo systemctl enable docker-glygen-substructure-$DEP.service
+   $ sudo systemctl start docker-glygen-substructure-$DEP.service
+   $ sudo systemctl stop docker-glygen-substructure-$DEP.service
    ```
 
 

@@ -181,7 +181,12 @@ def job_queue(query_obj, config_obj):
 
 def job_results(query_obj, config_obj):
 
-    
+   
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+
     res_obj = {}
     try:
         job_dir = config_obj[config_obj["server"]]["pathinfo"]["userdata"]
@@ -192,7 +197,17 @@ def job_results(query_obj, config_obj):
 
         job_info = json.loads(open(in_file, "r").read())
         job_type = job_info["jobtype"]
-        status_obj = get_job_status(job_info["tsid"] , config_obj)
+        #status_obj = get_job_status(job_info["tsid"] , config_obj)
+       
+        q_obj = {"jobid":query_obj["jobid"]}
+        job_doc = dbh["c_job"].find_one(q_obj)
+        if job_doc == None:
+            return {"error_list":[{"error_code":"job-record-not-found"}]}
+        #update job status
+        status_obj = update_job_status(dbh, job_doc, config_obj)
+        if "error_list" in status_obj:
+            return status_obj
+
 
         out_file = job_dir + config_obj["jobinfo"][job_type]["output_files"][0]["name"]
         res_obj = {"list_id":""}
@@ -201,6 +216,8 @@ def job_results(query_obj, config_obj):
                 res_obj = parse_blastp_ouput(out_file, config_obj)
             elif job_type in ["structure_search"]:
                 res_obj = parse_structure_search_ouput(out_file, config_obj, job_info)
+        
+
         if "error" in status_obj:
             res_obj["error"] = status_obj["error"]
         res_obj["status"] = status_obj["status"] if "error_list" not in res_obj else "error"
@@ -321,13 +338,16 @@ def parse_blastp_ouput(out_file, config_obj):
     sec_list = ["ptm_annotation", "glycation", "snv", "site_annotation", "glycosylation",
         "site_annotation", "glycosylation", "mutagenesis", "phosphorylation"        
     ]
-    prj_obj = {"uniprot_canonical_ac":1, "uniprot_id":1, "gene_names":1, "protein_names":1, "species":1}
+    prj_obj = {"uniprot_canonical_ac":1, "uniprot_id":1, "protein_names":1, "species":1}
     for sec in sec_list:
         prj_obj[sec] = 1
 
     for canon in canon_list:
         mongo_query = {"uniprot_canonical_ac":{"$eq": canon}}
         doc  = dbh["c_protein"].find_one(mongo_query,prj_obj)
+        if doc == None:
+            continue
+
         sp_obj = doc["species"][0]
         o = {"tax_id":sp_obj["taxid"], "name":sp_obj["name"],
                 "common_name":sp_obj["common_name"]}
@@ -335,10 +355,6 @@ def parse_blastp_ouput(out_file, config_obj):
         res_obj_dict[canon]["details"]["species"] = o
         res_obj_dict[canon]["details"]["protein_name"] = doc["protein_names"][0]["name"]
         res_obj_dict[canon]["details"]["uniprot_id"] = doc["uniprot_id"]
-        res_obj_dict[canon]["details"]["gene_name"] = "N/A"
-        if "gene_names" in doc:
-            if len(doc["gene_names"]) != 0:
-                res_obj_dict[canon]["details"]["gene_name"] = doc["gene_names"][0]["name"]
         for o in doc["protein_names"]:
             if o["type"] == "recommended":
                 res_obj_dict[canon]["details"]["protein_name"] = o["name"]
@@ -348,8 +364,9 @@ def parse_blastp_ouput(out_file, config_obj):
 
 
     for sbj_id in res_obj_dict:
+        if "details" not in res_obj_dict[sbj_id]:
+            continue
         sbj_name = res_obj_dict[sbj_id]["details"]["protein_name"]
-        sbj_gene_name = res_obj_dict[sbj_id]["details"]["gene_name"]
         sbj_uniprot_id = res_obj_dict[sbj_id]["details"]["uniprot_id"]
         sbj_tax_id = res_obj_dict[sbj_id]["details"]["species"]["tax_id"]
         sbj_tax_name = res_obj_dict[sbj_id]["details"]["species"]["name"]
@@ -373,14 +390,13 @@ def parse_blastp_ouput(out_file, config_obj):
             obj["sequences"] = []
             start_pos, end_pos = q_ranges[0]["s"], q_ranges[-1]["e"]
             o = {"aln":qry, "name":"Submitted query sequence", 
-                    "id":query_id, "uniprot_ac":"","uniprot_id": "", "gene_name":"",
+                    "id":query_id, "uniprot_ac":"","uniprot_id": "", 
                     "tax_name": "", "tax_id":0, "start_pos":start_pos, "end_pos":end_pos}
             obj["sequences"].append(o)
 
             start_pos, end_pos = s_ranges[0]["s"], s_ranges[-1]["e"]
             o = {"aln":sbj, "name":sbj_id,
                     "id":sbj_id, "uniprot_ac":sbj_id,"uniprot_id": sbj_uniprot_id, 
-                    "gene_name":sbj_gene_name,
                     "tax_name": sbj_tax_name, "tax_id":sbj_tax_id,
                     "start_pos":start_pos, "end_pos":end_pos}
             obj["sequences"].append(o)
@@ -653,12 +669,19 @@ def validate_input(query_obj, config_obj, release_dir, server):
         if e_list != []:
             return res_obj, e_list
         res_obj["buffer"] = ">%s\n%s\n" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
-        cmd = "echo %s %s | /usr/bin/md5sum" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
-        query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
+        
+        #cmd = "echo %s %s | /usr/bin/md5sum" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
+        #query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
+        hash_str = "%s %s" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+        query_obj["md5sum"] = hash_obj.hexdigest()
     elif query_obj["jobtype"] in ["structure_search"]:
         res_obj["buffer"] = json.dumps(query_obj["parameters"])
-        cmd = "echo \"%s\" | /usr/bin/md5sum" % (query_obj["parameters"]["seq"])
-        query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
+        #cmd = "echo \"%s\" | /usr/bin/md5sum" % (query_obj["parameters"]["seq"])
+        #query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
+        hash_str = "%s %s" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+        query_obj["md5sum"] = hash_obj.hexdigest()
 
     return res_obj, error_list
 

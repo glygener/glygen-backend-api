@@ -29,12 +29,13 @@ def main():
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     image = "glyomics/substructure"
-    network = config_obj["dbinfo"]["bridge_network"] + "_" + server
+    network = config_obj["dbinfo"]["bridge_network"] 
+    if server in ["beta", "prd"]:
+        network = config_obj["dbinfo"]["bridge_network"] + "_" + server
     port = config_obj["ss_port"][server]
     container_name = "running_substructure"
-    if server == "beta":
-        container_name = "running_substructure_%s" % (server)
-
+    if server in ["beta"]:
+        container_name = "running_substructure_%s" % (server)    
 
     cmd_list = []
     cmd_list.append("sudo systemctl stop docker-glygen-substructure-%s.service" % (server)) 
