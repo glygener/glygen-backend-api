@@ -363,6 +363,7 @@ def parse_blastp_ouput(out_file, config_obj):
             res_obj_dict[canon]["details"][sec] = doc[sec]
 
 
+
     for sbj_id in res_obj_dict:
         if "details" not in res_obj_dict[sbj_id]:
             continue
@@ -373,7 +374,8 @@ def parse_blastp_ouput(out_file, config_obj):
         #res_obj_dict[sbj_id].pop("protein_name")
         #res_obj_dict[sbj_id].pop("species")
         #res_obj_dict[sbj_id].pop("uniprot_id")
-        for obj in res_obj_dict[sbj_id]["hsp_list"]:
+        hsp_obj_list = res_obj_dict[sbj_id]["hsp_list"]
+        for obj in hsp_obj_list:
             qry, sbj, matches = "", "", ""
             q_ranges, s_ranges = [], []
             for o in obj["aln"]:
@@ -407,7 +409,9 @@ def parse_blastp_ouput(out_file, config_obj):
             obj["sequences"].append(o)
 
             obj.pop("aln")
-     
+    
+
+    #res_obj = {"by_subject":{}, "raw":raw}
     res_obj = {"by_subject":res_obj_dict, "raw":raw}
 
     return res_obj

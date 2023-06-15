@@ -229,7 +229,7 @@ class Job(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/job/results/", request)
+            #res_obj = log_request(req_obj, "/job/results/", request)
             if "error_list" not in res_obj:
                 res_obj = job_results(req_obj, config_obj)
         except Exception as e:

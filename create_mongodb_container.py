@@ -61,7 +61,7 @@ def main():
 
     for cmd in cmd_list:
         x = subprocess.getoutput(cmd)
-        print (x)
+        #print (cmd)
 
 
 
