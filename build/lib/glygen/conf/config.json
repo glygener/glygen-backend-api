@@ -161,6 +161,14 @@
             }
             
         }
+        ,"projectedfieldsglobalsearch":{
+            "c_glycan":{
+                "glytoucan_ac":1
+            },
+            "c_protein":{
+                "uniprot_canonical_ac":1
+            }
+        }
         ,"removelist":{
             "c_protein":["_id","uniprot_canonical_ac", "uniprot_ac", "uniprot_id",
                 "synonyms"],

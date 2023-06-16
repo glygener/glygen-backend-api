@@ -52,7 +52,29 @@ def main():
         )
         client.server_info()
         dbh = client[db_name]
+        term = "kinase" 
+        #term = "P14210"
         q = {}
+        q = {"$text": {"$search": term}}
+        q = {"function":{"$regex":term, "$options":"i"}}
+        q = {
+                "$and":[
+                    {"$or":[
+                        {"protein_names.name":{"$regex":term, "$options": "i"}},
+                        {"refseq.name":{"$regex":term, "$options": "i"}}
+                    ]
+                    },
+                    {"glycosylation": {"$gt":[]}}
+                ]
+        }
+        q = {"$text": {"$search": term}}
+        tmp_list = list(dbh[coll].find(q, {"uniprot_canonical_ac":-1}))
+        print (len(tmp_list))
+        exit()
+        for doc in dbh[coll].find(q, {"_id":-1}).limit(1000000):
+            print (doc["_id"])
+        exit()
+        #q = {}
         for doc in dbh[coll].find(q):
             for p in ["_id", "password"]:
                 if p in doc:

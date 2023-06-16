@@ -15,6 +15,41 @@ from glygen.db import get_mongodb
 from glygen.util import order_obj, order_list, get_errors_in_query,get_cached_motif_records_direct, get_cached_records_direct,                        get_cached_records_indirect, get_random_string, cache_record_list
 
 
+def get_sublist(doc_list, record_type, sec, term):
+
+    tmp_list = []
+    sec_map  = {
+        "names":["protein_names", "gene_names"],
+        "glycoproteins":["glycoprotein"],
+        "publications":["publication"],
+        "identifiers":["glytoucan_ac", "uniprot_canonical_ac", "uniprot_ac", "uniprot_id",
+            "crossref"]
+    }
+
+    for doc in doc_list:
+        if sec in ["type", "subtype"]:
+            newsec = "classification"
+            if newsec in doc:
+                for obj in doc[newsec]:
+                    sec_str = json.dumps(obj[sec]).lower()
+                    if sec_str.find(term.lower()) != -1:
+                        tmp_list.append(doc)
+                        break
+        elif sec in sec_map:
+            for newsec in sec_map[sec]:
+                if newsec in doc:
+                    sec_str = json.dumps(doc[newsec]).lower()
+                    if sec_str.find(term.lower()) != -1:
+                        tmp_list.append(doc)
+                        break
+        elif sec in doc:
+            sec_str = json.dumps(doc[sec]).lower()
+            if sec_str.find(term.lower()) != -1:
+                tmp_list.append(doc)
+
+    return tmp_list
+
+
 def globalsearch_search(query_obj, config_obj):
 
     dbh, error_obj = get_mongodb()
@@ -30,6 +65,8 @@ def globalsearch_search(query_obj, config_obj):
     #Load search config and plug in values
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "conf/global_search.json")
+    #json_url = os.path.join(SITE_ROOT, "conf/global_search.json-backup")
+
     search_obj = json.loads(open(json_url, "r").read())
     query_obj["term"] = query_obj["term"].replace("(", "\\(").replace(")", "\\)")
     query_obj["term"] = query_obj["term"].replace("[", "\\[").replace("]", "\\]")
@@ -71,8 +108,12 @@ def globalsearch_search(query_obj, config_obj):
         "other_matches": {"total_match_count":0}
     }
     seen_exact_match = {}
-    
+   
+    time_list = []
+    ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
+    time_list.append("A|%s" % (ts))
     results_dict = {}
+    doc_list_dict = {}
     for obj in search_obj:
         key_one, key_two = obj["searchname"].split(".")
         if key_one not in res_obj["other_matches"]:
@@ -85,26 +126,41 @@ def globalsearch_search(query_obj, config_obj):
         target_collection = obj["targetcollection"]
         cache_collection = "c_cache"
         qry_obj = obj["mongoquery"]
-
-        prj_obj = config_obj["projectedfields"][target_collection] 
-
-
-        doc_list = list(dbh[target_collection].find(qry_obj,prj_obj)) if key_two != "all" else []
-
+        #prj_obj = config_obj["projectedfieldsglobalsearch"][target_collection]
+        prj_obj = config_obj["projectedfields"][target_collection]
+        ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
+        time_list.append("A|%s|%s|%s" % (ts,key_one, key_two))
+        doc_list = []
+        if key_two == "all":
+            #n = len(list(dbh[target_collection].find(qry_obj, {"_id":-1})))
+            n = dbh[target_collection].count_documents(qry_obj)
+            if n > 1000:
+                return {"error_list":[{"error_code":"too-many-results"}]}
+            doc_list_dict[key_one] = list(dbh[target_collection].find(qry_obj,prj_obj))
+            doc_list = doc_list_dict[key_one]
+        else:
+            doc_list = get_sublist(doc_list_dict[key_one], key_one, key_two, query_obj["term"])
+        #doc_list = []
+        #if key_two in ["alll"]:
+        #if key_two in ["all", "glycoproteins", "glycosylation"]:
+        #doc_list = list(dbh[target_collection].find(qry_obj,prj_obj))
+        
+        
+        ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
+        time_list.append("B|%s|%s|%s" % (ts, key_one, key_two))
         for doc in doc_list:
-            doc.pop("_id")
+            if "_id" in doc:
+                doc.pop("_id")
             record_type, record_id, record_name = "", "", ""
             if target_collection == "c_protein":
-                list_obj = get_protein_list_object(doc)
-                #results_dict[key_one][key_two].append(list_obj)
-                #results_dict[key_one]["all"].append(list_obj)
-                #results.append(list_obj)
                 record_type, record_id = "protein", doc["uniprot_canonical_ac"]
-                record_name = list_obj["protein_name"]
                 canon, ac = record_id, record_id.split("-")[0]
+                #list_obj = get_protein_list_object(doc)
+                #record_name = list_obj["protein_name"]
+                record_name = canon
+
                 record_id_list = [canon]
                 record_id_list_lower = [canon.lower(), ac.lower()]
-
                 results_dict[key_one]["all"] += record_id_list
                 results_dict[key_one][key_two] += record_id_list
                 if query_obj["term"].lower() in record_id_list_lower:
@@ -113,10 +169,7 @@ def globalsearch_search(query_obj, config_obj):
                         res_obj["exact_match"].append(exact_obj)
                         seen_exact_match[record_id] = True 
             elif target_collection == "c_glycan":
-                list_obj = get_glycan_list_record(doc)
-                #results_dict[key_one]["all"].append(list_obj)
-                #results.append(list_obj)
-                #results_dict[key_one][key_two].append(list_obj)
+                #list_obj = get_glycan_list_record(doc)
                 record_type, record_id = "glycan", doc["glytoucan_ac"]
                 record_name = record_id
                 record_id_list = [record_id]
@@ -162,11 +215,16 @@ def globalsearch_search(query_obj, config_obj):
                 "list_id":list_id, 
                 "count":hit_count
             }
+            
             res_obj["other_matches"]["total_match_count"] += len(results_dict[key_one][key_two])
         else:
             res_obj["other_matches"][key_one][key_two] = {"list_id":"", "count":0}
     
 
+    ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
+    time_list.append("A|%s" % (ts))
+
+    #return time_list
 
     return res_obj
 
