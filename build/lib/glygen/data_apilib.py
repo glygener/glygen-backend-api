@@ -270,7 +270,10 @@ def section_download(query_obj, config_obj, sec_info, data_path):
             if "evidence" in obj:
                 if obj["evidence"] != []:
                     for oo in obj["evidence"]:
-                        new_o = o
+                        #new_o = o
+                        new_o = {}
+                        for k in o:
+                            new_o[k] = o[k]
                         xref_db = oo["database"] if "database" in oo else ""
                         xref_url = oo["url"] if "url" in oo else ""
                         xref_id = oo["id"] if "id" in oo else ""
@@ -283,11 +286,21 @@ def section_download(query_obj, config_obj, sec_info, data_path):
             else:
                 list_obj["results"].append(o)
 
+
         if format_lc in ["csv", "tsv"]:
             data_buffer = get_tabular_buffer(list_obj, query_obj, config_obj)
 
+    #t_list = []
+    #seen = {}
+    #for o in list_obj["results"]:
+    #    if o["GlyTouCan Accession"] == "G83461WR" and o["Start Position"] == "128":
+    #        s = json.dumps(o)
+    #        if s not in seen:
+    #            t_list.append(o)
+    #            seen[s] = True
+    #return t_list
 
-
+    
     #Now that we have data_buffer, let's worry about compression
     if query_obj["compressed"] == True:
         fname = "%s.%s" % (query_obj["id"], query_obj["format"])
@@ -402,6 +415,8 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
 
     if len(list_obj["results"]) > 0:
         key_list = order_list(list_obj["results"][0].keys(), ordr_dict)
+        if "GlyTouCan Accession" in key_list:
+            key_list.append("Glycan Image Url")
         if format_lc == "csv":
             data_buffer = "\"" +  "\",\"".join(key_list) + "\"\n"
         else:
@@ -421,7 +436,10 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
                 #if query_obj["download_type"] == "site_list" and k in ["glycosylation", "mutagenesis", "snv","site_annotation"]:
                 #val_k = "yes" if len(obj[k]) > 0 else "no"
                 row.append(val_k)
-        
+            if "GlyTouCan Accession" in key_list:
+                glytoucan_ac = obj["GlyTouCan Accession"]
+                image_url = "https://api.glygen.org/glycan/image/%s" % (glytoucan_ac)
+                row.append(image_url)
             s = json.dumps(row)
             if s in seen_row:
                 continue

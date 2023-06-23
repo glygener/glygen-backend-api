@@ -74,6 +74,7 @@ def search_init(config_obj):
             init_dict[record_type]["list_id"] = cache_dict[record_type]["list_id"]
             init_dict[record_type]["bylinkage"] = cache_dict[record_type]["bylinkage"]
 
+
     seen_field = {}
     for record_type in path_dict:
         field_list = []
@@ -320,7 +321,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
             reason = "hit-in-initial-%s-query" % (record_type)
             add_reason(reason_dict, record_type, record_id, "self", record_id)  
 
-
+    #return initial_hit_dict["species"]
 
     dump_debug_timer("flag-2 loading network", DEBUG_FLAG)
 

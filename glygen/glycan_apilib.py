@@ -5,12 +5,12 @@ import hashlib
 import json
 import datetime,time
 import pytz
+import re
 from collections import OrderedDict
 from bson import json_util, ObjectId
 
 from glygen.db import get_mongodb
 from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, order_obj
-
 
 
 def glycan_search_init(config_obj):
@@ -47,14 +47,14 @@ def glycan_search_simple(query_obj, config_obj):
     mongo_query = get_simple_mongo_query(query_obj)
     #return {"error_list":[{"error":mongo_query}]}
     #mongo_query = {"byonic": {"$options": "i", "$regex": "Hex\(5\)"}}
-    
+    #return mongo_query
+
     collection = "c_glycan"
     record_list = []
     record_type = "glycan"
     prj_obj = {"glytoucan_ac":1}
     for doc in dbh[collection].find(mongo_query,prj_obj):
         record_list.append(doc["glytoucan_ac"])
-
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
@@ -324,11 +324,12 @@ def glycan_image(query_obj, data_path):
 def get_simple_mongo_query(query_obj):
 
 
-    #query_term = "\"%s\"" % (query_obj["term"])
     query_term = query_obj["term"]
-
     cond_objs = []
     if query_obj["term_category"] == "any":
+        tv, q = is_glycan_composition(query_obj["term"])
+        if tv == True:
+            return q
         return {'$text': { '$search': query_term}}
     elif query_obj["term_category"] == "glycan":
         cond_objs.append({"glytoucan_ac":{'$regex': query_obj["term"], '$options': 'i'}})
@@ -553,5 +554,27 @@ def passes_composition_filter(glytoucan_ac, comp_obj, comp_field, query_obj):
     r_value = len(tv) == n_cond and list(set(tv)) == [True]
 
     return r_value
+
+
+
+def is_glycan_composition(term):
+    term = term.strip().replace(" ", "")
+    res_str = re.sub(r"[(,)]", " ", term)
+    tmp_list_one, tmp_list_two = [], []
+    w_list = res_str.strip().split(" ")
+    if len(w_list)%2 != 0:
+        return False, []
+    for i in range(0, len(w_list) -1):
+        if i%2 == 0:
+            s = w_list[i]
+            ss = w_list[i+1]
+            f = s.isalpha() and ss.isdigit()
+            tmp_list_one.append(f)
+            cmp = "%s\(%s\)" % (s, ss)
+            #o = {"$text": { "$search": cmp}}
+            o = {"byonic": { "$regex": cmp, "$options":"i"}}
+            tmp_list_two.append(o)
+
+    return list(set(tmp_list_one)) == [True], {"$and":tmp_list_two}
 
 

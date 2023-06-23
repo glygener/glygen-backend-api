@@ -120,8 +120,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     }
@@ -210,8 +209,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     }
@@ -244,8 +242,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     },
@@ -417,8 +414,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     }
@@ -483,8 +479,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     }
@@ -531,8 +526,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     },
@@ -645,8 +639,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     },
@@ -705,8 +698,7 @@
                                     },
                                     "required": [
                                         "database",
-                                        "id",
-                                        "url"
+                                        "id"
                                     ]
                                 }
                             }
@@ -819,8 +811,7 @@
                                     },
                                     "required": [
                                         "database",
-                                        "id",
-                                        "url"
+                                        "id"
                                     ]
                                 }
                             }
@@ -893,8 +884,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     },
@@ -953,8 +943,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     },
@@ -1010,8 +999,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     },
@@ -1052,8 +1040,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     }
@@ -1098,8 +1085,7 @@
                             },
                             "required": [
                                 "id",
-                                "database",
-                                "url"
+                                "database"
                             ]
                         }
                     },
@@ -1216,8 +1202,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     },
@@ -1281,8 +1266,7 @@
                                                 },
                                                 "required": [
                                                     "database",
-                                                    "id",
-                                                    "url"
+                                                    "id"
                                                 ]
                                             }
                                         }
@@ -1336,8 +1320,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     }
@@ -1402,8 +1385,7 @@
                             },
                             "required": [
                                 "database",
-                                "id",
-                                "url"
+                                "id"
                             ]
                         }
                     }

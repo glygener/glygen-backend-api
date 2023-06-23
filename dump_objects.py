@@ -53,10 +53,8 @@ def main():
         dbh = client[db_name]
         q = {}
         for doc in dbh[coll].find(q):
-            for p in ["_id", "password"]:
-                if p in doc:
-                    doc.pop(p)
-            print (json.dumps(doc, indent=4))
+            print (json.dumps(doc, indent=4, default=json_util.default))
+
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:
