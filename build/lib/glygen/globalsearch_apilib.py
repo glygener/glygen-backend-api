@@ -147,13 +147,17 @@ def globalsearch_search(query_obj, config_obj):
         # trial-3
         #doc_list = list(dbh[target_collection].find(qry_obj,prj_obj))
 
-        q = [ 
-            { "$match": { "$text": { "$search": query_obj["term"] } } },
+        m_obj = { "$text": { "$search": query_obj["term"] } }
+        if key_one == "glycoprotein":
+            m_obj = {"$and":[ {"$text": {"$search": query_obj["term"]}}, {"glycosylation": {"$gt":[]}}]}
+        qry_obj = [ 
+            { "$match": m_obj},
             { "$addFields":{"score":{"$meta":"textScore"}}},
             { "$match":{"score":{"$gt":config_obj["globalsearchcutoff"]}}},
             { "$project" : prj_obj }
         ]
-        doc_list = list(dbh[target_collection].aggregate(q))
+        doc_list = list(dbh[target_collection].aggregate(qry_obj))
+
 
 
         

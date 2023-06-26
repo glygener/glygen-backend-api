@@ -53,8 +53,10 @@ def main():
         dbh = client[db_name]
         prj = {"uniprot_canonical_ac":-1, "score":-1}
         cutoff = 5.0
+        m = { "$text": { "$search": "kinase isomerase" } }
+        m = {"$and":[ {"$text": {"$search": "kinase isomerase"}}, {"glycosylation": {"$gt":[]}}]}
         q = [ 
-            { "$match": { "$text": { "$search": "kinase isomerase" } } },
+            { "$match": m },
             { "$addFields":{"score":{"$meta":"textScore"}}},
             { "$match":{"score":{"$gt":cutoff}}},
             { "$project" : prj }
