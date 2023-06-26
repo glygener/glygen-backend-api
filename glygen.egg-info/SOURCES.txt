@@ -60,8 +60,9 @@ glygen/conf/backup-edgerules.json
 glygen/conf/config.json
 glygen/conf/dbinfo.json
 glygen/conf/edgerules.json
+glygen/conf/global_search.2.json
+glygen/conf/global_search.3.json
 glygen/conf/global_search.json
-glygen/conf/global_search.json-backup
 glygen/conf/global_search_all.json
 glygen/conf/glycan_fields.csv
 glygen/conf/glycan_scratch.csv

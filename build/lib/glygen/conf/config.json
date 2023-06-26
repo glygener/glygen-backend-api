@@ -83,6 +83,14 @@
             ,"species":{"field":"taxid", "label":"Tax ID", "concept_label":"Organism"}
             ,"site":{"field":"id", "label":"Site ID", "concept_label":"Site"}
         }
+        ,"projectedfieldsglobalsearch":{
+            "c_glycan":{
+                "glytoucan_ac":1
+            }
+            ,"c_protein":{
+                "uniprot_canonical_ac":1
+            }
+        }
         ,"projectedfields":{
             "c_glycan":{
                 "glytoucan_ac":1
