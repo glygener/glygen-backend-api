@@ -126,24 +126,22 @@ def globalsearch_search(query_obj, config_obj):
         target_collection = obj["targetcollection"]
         cache_collection = "c_cache"
         qry_obj = obj["mongoquery"]
-        #prj_obj = config_obj["projectedfieldsglobalsearch"][target_collection]
-        prj_obj = config_obj["projectedfields"][target_collection]
+        prj_obj = config_obj["projectedfieldsglobalsearch"][target_collection]
+        #prj_obj = config_obj["projectedfields"][target_collection]
         ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         time_list.append("A|%s|%s|%s" % (ts,key_one, key_two))
-        doc_list = []
-        if key_two == "all":
-            #n = len(list(dbh[target_collection].find(qry_obj, {"_id":-1})))
-            n = dbh[target_collection].count_documents(qry_obj)
-            if n > 1000:
-                return {"error_list":[{"error_code":"too-many-results"}]}
-            doc_list_dict[key_one] = list(dbh[target_collection].find(qry_obj,prj_obj))
-            doc_list = doc_list_dict[key_one]
-        else:
-            doc_list = get_sublist(doc_list_dict[key_one], key_one, key_two, query_obj["term"])
+        
         #doc_list = []
-        #if key_two in ["alll"]:
-        #if key_two in ["all", "glycoproteins", "glycosylation"]:
-        #doc_list = list(dbh[target_collection].find(qry_obj,prj_obj))
+        #if key_two == "all":
+        #    n = dbh[target_collection].count_documents(qry_obj)
+        #    if n > 1000:
+        #        return {"error_list":[{"error_code":"too-many-results"}]}
+        #    doc_list_dict[key_one] = list(dbh[target_collection].find(qry_obj,prj_obj))
+        #    doc_list = doc_list_dict[key_one]
+        #else:
+        #    doc_list = get_sublist(doc_list_dict[key_one], key_one, key_two, query_obj["term"])
+        
+        doc_list = list(dbh[target_collection].find(qry_obj,prj_obj))
         
         
         ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
