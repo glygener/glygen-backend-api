@@ -9,6 +9,7 @@
         ,"max_query_value_len":10000
         ,"max_sequence_len":3000
         ,"cache_batch_size":5000
+        ,"globalsearchcutoff":3.0
         ,"max_results_count":{
 		  "glycan":100000
 		,"protein":100000

@@ -128,9 +128,12 @@ def globalsearch_search(query_obj, config_obj):
         qry_obj = obj["mongoquery"]
         prj_obj = config_obj["projectedfieldsglobalsearch"][target_collection]
         #prj_obj = config_obj["projectedfields"][target_collection]
+        prj_obj["score"] = -1
+        
         ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         time_list.append("A|%s|%s|%s" % (ts,key_one, key_two))
-        
+       
+        # trial-2
         #doc_list = []
         #if key_two == "all":
         #    n = dbh[target_collection].count_documents(qry_obj)
@@ -141,8 +144,18 @@ def globalsearch_search(query_obj, config_obj):
         #else:
         #    doc_list = get_sublist(doc_list_dict[key_one], key_one, key_two, query_obj["term"])
         
-        doc_list = list(dbh[target_collection].find(qry_obj,prj_obj))
-        
+        # trial-3
+        #doc_list = list(dbh[target_collection].find(qry_obj,prj_obj))
+
+        q = [ 
+            { "$match": { "$text": { "$search": query_obj["term"] } } },
+            { "$addFields":{"score":{"$meta":"textScore"}}},
+            { "$match":{"score":{"$gt":config_obj["globalsearchcutoff"]}}},
+            { "$project" : prj_obj }
+        ]
+        doc_list = list(dbh[target_collection].aggregate(q))
+
+
         
         ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         time_list.append("B|%s|%s|%s" % (ts, key_one, key_two))
