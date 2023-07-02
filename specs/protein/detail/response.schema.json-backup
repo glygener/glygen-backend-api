@@ -6,41 +6,34 @@
             "type": "object",
             "properties": {
                 "chemical_mass": {
-                    "type": "number",
-                    "description": "chemical mass of the protein"
+                    "type": "number"
                 }
             },
             "required": [
                 "chemical_mass"
-            ],
-            "description": "mass of the protein"
+            ]
         },
         "refseq": {
             "type": "object",
             "properties": {
                 "ac": {
-                    "type": "string",
-                    "description": "accession from RefSeq database"
+                    "type": "string"
                 },
                 "name": {
-                    "type": "string",
-                    "description": "name of protein from RefSeq database"
+                    "type": "string"
                 },
                 "summary": {
-                    "type": "string",
-                    "description": "protein function summary from RefSeq database"
+                    "type": "string"
                 },
                 "url": {
-                    "type": "string",
-                    "description": "url for protein entry in RefSeq database"
+                    "type": "string"
                 }
             },
             "required": [
                 "ac",
                 "name",
                 "url"
-            ],
-            "description": "information from RefSeq database"
+            ]
         },
         "gene_names": {
             "type": "array",
@@ -48,24 +41,19 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
-                        "description": "gene name"
+                        "type": "string"
                     },
                     "resource": {
-                        "type": "string",
-                        "description": "database for the gene name"
+                        "type": "string"
                     },
                     "type": {
-                        "type": "string",
-                        "description": "type of the gene name"
+                        "type": "string"
                     },
                     "url": {
-                        "type": "string",
-                        "description": "url for the gene name in UniProtKB/RefSeq database"
+                        "type": "string"
                     },
                     "id": {
-                        "type": "string",
-                        "description": "protein identifier for the gene in UniProtK and RefSeq"
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -75,8 +63,7 @@
                     "url",
                     "id"
                 ]
-            },
-            "description": "gene names"
+            }
         },
         "protein_names": {
             "type": "array",
@@ -84,24 +71,19 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
-                        "description": "name of the protein"
+                        "type": "string"
                     },
                     "resource": {
-                        "type": "string",
-                        "description": "resource for the protein name"
+                        "type": "string"
                     },
                     "type": {
-                        "type": "string",
-                        "description": "type of the protein name"
+                        "type": "string"
                     },
                     "url": {
-                        "type": "string",
-                        "description": "url for the name from the protein resource"
+                        "type": "string"
                     },
                     "id": {
-                        "type": "string",
-                        "description": "identifier of the protein"
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -111,8 +93,7 @@
                     "url",
                     "id"
                 ]
-            },
-            "description": "list of protein names from UniProtKB and RefSeq"
+            }
         },
         "function": {
             "type": "array",
@@ -120,8 +101,7 @@
                 "type": "object",
                 "properties": {
                     "annotation": {
-                        "type": "string",
-                        "description": "protein function annotation description from UniProtKB and/or RefSeq"
+                        "type": "string"
                     },
                     "evidence": {
                         "type": "array",
@@ -129,29 +109,25 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "list of evidence sources"
+                        }
                     }
                 },
-                "required": []
-            },
-            "description": "list of protein function from UniProtKB and/or RefSeq"
+                "required": [
+                ]
+            }
         },
         "disease": {
             "type": "array",
@@ -159,31 +135,25 @@
                 "type": "object",
                 "properties": {
                     "disease_id": {
-                        "type": "string",
-                        "description": "identifier for disease from disease specific database"
+                        "type": "string"
                     },
                     "recommended_name": {
                         "type": "object",
                         "properties": {
                             "id": {
-                                "type": "string",
-                                "description": "identifier for the disease"
+                                "type": "string"
                             },
                             "resource": {
-                                "type": "string",
-                                "description": "resource for the recommended disease name"
+                                "type": "string"
                             },
                             "url": {
-                                "type": "string",
-                                "description": "url for the disease identifier in the disease database"
+                                "type": "string"
                             },
                             "name": {
-                                "type": "string",
-                                "description": "disease recommended name"
+                                "type": "string"
                             },
                             "description": {
-                                "type": "string",
-                                "description": "definition or description of the disease"
+                                "type": "string"
                             }
                         },
                         "required": [
@@ -191,8 +161,7 @@
                             "name",
                             "resource",
                             "url"
-                        ],
-                        "description": "recommended name for the disease"
+                        ]
                     },
                     "synonyms": {
                         "type": "array",
@@ -200,24 +169,19 @@
                             "type": "object",
                             "properties": {
                                 "id": {
-                                    "type": "string",
-                                    "description": "identifier for the disease"
+                                    "type": "string"
                                 },
                                 "resource": {
-                                    "type": "string",
-                                    "description": "resource for the synonym disease name"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "url for the disease identifier in the disease database"
+                                    "type": "string"
                                 },
                                 "name": {
-                                    "type": "string",
-                                    "description": "synonyms name for the disease"
+                                    "type": "string"
                                 },
                                 "description": {
-                                    "type": "string",
-                                    "description": "definition or description of the disease"
+                                    "type": "string"
                                 }
                             },
                             "required": [
@@ -226,8 +190,7 @@
                                 "url",
                                 "name"
                             ]
-                        },
-                        "description": "synonyms for the disease"
+                        }
                     },
                     "evidence": {
                         "type": "array",
@@ -235,32 +198,27 @@
                             "type": "object",
                             "properties": {
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "evidence from a disease database for association between disease and protein"
+                        }
                     }
                 },
                 "required": [
                     "disease_id",
                     "recommended_name"
                 ]
-            },
-            "description": "list of diseases associated with proteins"
+            }
         },
         "snv": {
             "type": "array",
@@ -273,86 +231,68 @@
                             "type": "object",
                             "properties": {
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "evidence for the snv entry"
+                        }
                     },
                     "glycoeffect": {
                         "type": "array",
                         "items": {
                             "type": "string"
-                        },
-                        "description": "glycoeffect due to mutation that could be either loss of glycosylation site or gain of glycosylation site"
+                        }
                     },
                     "start_pos": {
-                        "type": "integer",
-                        "description": "amino acid start position"
+                        "type": "integer"
                     },
                     "end_pos": {
-                        "type": "integer",
-                        "description": "amino acid end position"
+                        "type": "integer"
                     },
                     "sequence_org": {
-                        "type": "string",
-                        "description": "original sequence"
+                        "type": "string"
                     },
                     "sequence_mut": {
-                        "type": "string",
-                        "description": "mutated sequence"
+                        "type": "string"
                     },
                     "comment": {
-                        "type": "string",
-                        "description": "comment containing additional information about snv entry"
+                        "type": "string"
                     },
                     "chr_id": {
-                        "type": "string",
-                        "description": "chromosome identifier"
+                        "type": "string"
                     },
                     "chr_pos": {
-                        "type": "string",
-                        "description": "chromosome position"
+                        "type": "string"
                     },
                     "ref_nt": {
-                        "type": "string",
-                        "description": "reference nucleotide"
+                        "type": "string"
                     },
                     "alt_nt": {
-                        "type": "string",
-                        "description": "alterred nucleotide"
+                        "type": "string"
                     },
                     "keywords": {
                         "type": "array",
                         "items": {
                             "type": "string"
-                        },
-                        "description": "keywords for the mutation entry"
+                        }
                     },
                     "subjects_tested": {
-                        "type": "string",
-                        "description": "number of patients tested for the given mutation for the given cancer type"
+                        "type": "string"
                     },
                     "subjects_positive": {
-                        "type": "string",
-                        "description": "number of patients positive for the given mutation for the given cancer type"
+                        "type": "string"
                     },
                     "frequency": {
-                        "type": "string",
-                        "description": "percent ratio of patients positive and patient tested"
+                        "type": "string"
                     },
                     "disease": {
                         "type": "array",
@@ -360,31 +300,25 @@
                             "type": "object",
                             "properties": {
                                 "disease_id": {
-                                    "type": "string",
-                                    "description": "identifier for the disease"
+                                    "type": "string"
                                 },
                                 "recommended_name": {
                                     "type": "object",
                                     "properties": {
                                         "id": {
-                                            "type": "string",
-                                            "description": "identifier for the disease"
+                                            "type": "string"
                                         },
                                         "resource": {
-                                            "type": "string",
-                                            "description": "resource for the recommended disease name"
+                                            "type": "string"
                                         },
                                         "url": {
-                                            "type": "string",
-                                            "description": "url for the disease identifier in the disease database"
+                                            "type": "string"
                                         },
                                         "name": {
-                                            "type": "string",
-                                            "description": "disease recommended name"
+                                            "type": "string"
                                         },
                                         "description": {
-                                            "type": "string",
-                                            "description": "definition or description of the disease"
+                                            "type": "string"
                                         }
                                     },
                                     "required": [
@@ -392,8 +326,7 @@
                                         "resource",
                                         "url",
                                         "name"
-                                    ],
-                                    "description": "disease recommended name"
+                                    ]
                                 },
                                 "synonyms": {
                                     "type": "array",
@@ -401,24 +334,19 @@
                                         "type": "object",
                                         "properties": {
                                             "id": {
-                                                "type": "string",
-                                                "description": "identifier for the disease"
+                                                "type": "string"
                                             },
                                             "resource": {
-                                                "type": "string",
-                                                "description": "resource for the synonym disease name"
+                                                "type": "string"
                                             },
                                             "url": {
-                                                "type": "string",
-                                                "description": "url for the disease identifier in the disease database"
+                                                "type": "string"
                                             },
                                             "name": {
-                                                "type": "string",
-                                                "description": "synonyms name for the disease"
+                                                "type": "string"
                                             },
                                             "description": {
-                                                "type": "string",
-                                                "description": "definition or description of the disease"
+                                                "type": "string"
                                             }
                                         },
                                         "required": [
@@ -427,16 +355,14 @@
                                             "url",
                                             "name"
                                         ]
-                                    },
-                                    "description": "synonyms for the disease"
+                                    }
                                 }
                             },
                             "required": [
                                 "disease_id",
                                 "recommended_name"
                             ]
-                        },
-                        "description": "list os snv entries associated with disease"
+                        }
                     }
                 },
                 "required": [
@@ -449,8 +375,7 @@
                     "chr_id",
                     "keywords"
                 ]
-            },
-            "description": "list of single nucleotide variants"
+            }
         },
         "mutagenesis": {
             "type": "array",
@@ -458,24 +383,19 @@
                 "type": "object",
                 "properties": {
                     "start_pos": {
-                        "type": "integer",
-                        "description": "amino acid start position"
+                        "type": "integer"
                     },
                     "end_pos": {
-                        "type": "integer",
-                        "description": "amino acid end position"
+                        "type": "integer"
                     },
                     "sequence_org": {
-                        "type": "string",
-                        "description": "original sequence"
+                        "type": "string"
                     },
                     "sequence_mut": {
-                        "type": "string",
-                        "description": "mutated sequence"
+                        "type": "string"
                     },
                     "comment": {
-                        "type": "string",
-                        "description": "comment containing additional information about the mutatgenesis entry"
+                        "type": "string"
                     },
                     "evidence": {
                         "type": "array",
@@ -483,24 +403,20 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "mutagenesis evidence"
+                        }
                     }
                 },
                 "required": [
@@ -510,8 +426,7 @@
                     "sequence_org",
                     "start_pos"
                 ]
-            },
-            "description": "list of mutagenesis information"
+            }
         },
         "expression_tissue": {
             "type": "array",
@@ -522,20 +437,16 @@
                         "type": "object",
                         "properties": {
                             "name": {
-                                "type": "string",
-                                "description": "tissue name from uberon"
+                                "type": "string"
                             },
                             "namespace": {
-                                "type": "string",
-                                "description": "tissue namespace from resource"
+                                "type": "string"
                             },
                             "id": {
-                                "type": "string",
-                                "description": "tissue identifier from Uberon"
+                                "type": "string"
                             },
                             "url": {
-                                "type": "string",
-                                "description": "url for the tissue identifier in the uberon database"
+                                "type": "string"
                             }
                         },
                         "required": [
@@ -543,16 +454,13 @@
                             "name",
                             "namespace",
                             "url"
-                        ],
-                        "description": "tissue name from uberon"
+                        ]
                     },
                     "score": {
-                        "type": "string",
-                        "description": "the gene expression score based on the combined expression and tissue specificity"
+                        "type": "string"
                     },
                     "present": {
-                        "type": "string",
-                        "description": "presence or absence of gene expression"
+                        "type": "string"
                     },
                     "evidence": {
                         "type": "array",
@@ -560,24 +468,20 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "list of tissue\u00a0 gene expression entries"
+                        }
                     }
                 },
                 "required": [
@@ -586,8 +490,7 @@
                     "score",
                     "tissue"
                 ]
-            },
-            "description": "list of gene expression entries associated with tissues"
+            }
         },
         "expression_disease": {
             "type": "array",
@@ -595,20 +498,16 @@
                 "type": "object",
                 "properties": {
                     "significant": {
-                        "type": "string",
-                        "description": "significant differential expression of the gene that can be either `Yes` or `No`"
+                        "type": "string"
                     },
                     "trend": {
-                        "type": "string",
-                        "description": "expression trend of the gene that can be either `Up` or `Down`"
+                        "type": "string"
                     },
                     "name": {
-                        "type": "string",
-                        "description": "disease name"
+                        "type": "string"
                     },
                     "url": {
-                        "type": "string",
-                        "description": "url for the disease identifier in the disease database"
+                        "type": "string"
                     },
                     "evidence": {
                         "type": "array",
@@ -616,24 +515,20 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "list of disease evidence"
+                        }
                     },
                     "disease": {
                         "type": "array",
@@ -641,31 +536,25 @@
                             "type": "object",
                             "properties": {
                                 "disease_id": {
-                                    "type": "string",
-                                    "description": "identifier for the disease"
+                                    "type": "string"
                                 },
                                 "recommended_name": {
                                     "type": "object",
                                     "properties": {
                                         "id": {
-                                            "type": "string",
-                                            "description": "identifier for the disease"
+                                            "type": "string"
                                         },
                                         "resource": {
-                                            "type": "string",
-                                            "description": "resource for the recommended disease name"
+                                            "type": "string"
                                         },
                                         "url": {
-                                            "type": "string",
-                                            "description": "url for the disease identifier in the disease database"
+                                            "type": "string"
                                         },
                                         "name": {
-                                            "type": "string",
-                                            "description": "disease recommended name"
+                                            "type": "string"
                                         },
                                         "description": {
-                                            "type": "string",
-                                            "description": "definition or description of the disease"
+                                            "type": "string"
                                         }
                                     },
                                     "required": [
@@ -673,8 +562,7 @@
                                         "resource",
                                         "url",
                                         "name"
-                                    ],
-                                    "description": "disease recommended name"
+                                    ]
                                 },
                                 "synonyms": {
                                     "type": "array",
@@ -682,24 +570,19 @@
                                         "type": "object",
                                         "properties": {
                                             "id": {
-                                                "type": "string",
-                                                "description": "identifier for the disease"
+                                                "type": "string"
                                             },
                                             "resource": {
-                                                "type": "string",
-                                                "description": "resource for the synonym disease name"
+                                                "type": "string"
                                             },
                                             "url": {
-                                                "type": "string",
-                                                "description": "url for the disease identifier in the disease database"
+                                                "type": "string"
                                             },
                                             "name": {
-                                                "type": "string",
-                                                "description": "synonyms name for the disease"
+                                                "type": "string"
                                             },
                                             "description": {
-                                                "type": "string",
-                                                "description": "definition or description of the disease"
+                                                "type": "string"
                                             }
                                         },
                                         "required": [
@@ -708,16 +591,14 @@
                                             "url",
                                             "name"
                                         ]
-                                    },
-                                    "description": "synonyms for the disease"
+                                    }
                                 }
                             },
                             "required": [
                                 "disease_id",
                                 "recommended_name"
                             ]
-                        },
-                        "description": "disease information for the gene expression entry"
+                        }
                     }
                 },
                 "required": [
@@ -728,8 +609,7 @@
                     "trend",
                     "url"
                 ]
-            },
-            "description": "list of gene expression entries associated with diseases"
+            }
         },
         "species": {
             "type": "array",
@@ -737,12 +617,10 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
-                        "description": "species/organism name"
+                        "type": "string"
                     },
                     "taxid": {
-                        "type": "integer",
-                        "description": "taxonomy identifierentifier for the species/organism"
+                        "type": "integer"
                     },
                     "evidence": {
                         "type": "array",
@@ -750,28 +628,23 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "evidence for the species"
+                        }
                     },
                     "common_name": {
-                        "type": "string",
-                        "description": "species/organism common name"
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -780,8 +653,7 @@
                     "name",
                     "taxid"
                 ]
-            },
-            "description": "species/organism to which the protein belongs"
+            }
         },
         "gene": {
             "type": "array",
@@ -789,31 +661,25 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
-                        "description": "list of gene name of the protein"
+                        "type": "string"
                     },
                     "url": {
-                        "type": "string",
-                        "description": "gene url"
+                        "type": "string"
                     },
                     "locus": {
                         "type": "object",
                         "properties": {
                             "chromosome": {
-                                "type": "string",
-                                "description": "chromosome number for the gene"
+                                "type": "string"
                             },
                             "start_pos": {
-                                "type": "integer",
-                                "description": "chromosome start position"
+                                "type": "integer"
                             },
                             "end_pos": {
-                                "type": "integer",
-                                "description": "chromosome end position"
+                                "type": "integer"
                             },
                             "strand": {
-                                "type": "string",
-                                "description": "chromosome strand"
+                                "type": "string"
                             },
                             "evidence": {
                                 "type": "array",
@@ -821,24 +687,20 @@
                                     "type": "object",
                                     "properties": {
                                         "database": {
-                                            "type": "string",
-                                            "description": "gene chromosome evidence database"
+                                            "type": "string"
                                         },
                                         "id": {
-                                            "type": "string",
-                                            "description": "Ensembl gene identifier for the gene"
+                                            "type": "string"
                                         },
                                         "url": {
-                                            "type": "string",
-                                            "description": "url for the gene chromosome from the Ensembl database"
+                                            "type": "string"
                                         }
                                     },
                                     "required": [
                                         "database",
                                         "id"
                                     ]
-                                },
-                                "description": "gene chromosome evidence information"
+                                }
                             }
                         },
                         "required": [
@@ -847,13 +709,12 @@
                             "evidence",
                             "start_pos",
                             "strand"
-                        ],
-                        "description": "chromosome information for the gene"
+                        ]
                     }
                 },
-                "required": []
-            },
-            "description": "gene information for protein"
+                "required": [
+                ]
+            }
         },
         "crossref": {
             "type": "array",
@@ -861,16 +722,13 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": "string",
-                        "description": "cross reference identifier"
+                        "type": "string"
                     },
                     "url": {
-                        "type": "string",
-                        "description": "cross reference url"
+                        "type": "string"
                     },
                     "database": {
-                        "type": "string",
-                        "description": "cross reference database name"
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -878,26 +736,22 @@
                     "id",
                     "url"
                 ]
-            },
-            "description": "list of entries and links to other databases"
+            }
         },
         "sequence": {
             "type": "object",
             "properties": {
                 "sequence": {
-                    "type": "string",
-                    "description": "protein fasta sequence"
+                    "type": "string"
                 },
                 "length": {
-                    "type": "integer",
-                    "description": "protein fasta sequence length"
+                    "type": "integer"
                 }
             },
             "required": [
                 "length",
                 "sequence"
-            ],
-            "description": "protein sequence information"
+            ]
         },
         "isoforms": {
             "type": "array",
@@ -905,49 +759,40 @@
                 "type": "object",
                 "properties": {
                     "isoform_ac": {
-                        "type": "string",
-                        "description": "UniProtKB isoform accession"
+                        "type": "string"
                     },
                     "url": {
-                        "type": "string",
-                        "description": "url for the isoform from the UniProtKB database"
+                        "type": "string"
                     },
                     "sequence": {
                         "type": "object",
                         "properties": {
                             "sequence": {
-                                "type": "string",
-                                "description": "protein isoform fasta sequence"
+                                "type": "string"
                             },
                             "length": {
-                                "type": "integer",
-                                "description": "protein isoform fasta sequence length"
+                                "type": "integer"
                             }
                         },
                         "required": [
                             "length",
                             "sequence"
-                        ],
-                        "description": "protein isoform sequence information"
+                        ]
                     },
                     "locus": {
                         "type": "object",
                         "properties": {
                             "chromosome": {
-                                "type": "string",
-                                "description": "chromosome number for the gene of the protein isoform"
+                                "type": "string"
                             },
                             "start_pos": {
-                                "type": "integer",
-                                "description": "chromosome start position"
+                                "type": "integer"
                             },
                             "end_pos": {
-                                "type": "integer",
-                                "description": "chromosome start position"
+                                "type": "integer"
                             },
                             "strand": {
-                                "type": "string",
-                                "description": "chromosome strand"
+                                "type": "string"
                             },
                             "evidence": {
                                 "type": "array",
@@ -955,24 +800,20 @@
                                     "type": "object",
                                     "properties": {
                                         "database": {
-                                            "type": "string",
-                                            "description": "evidence database"
+                                            "type": "string"
                                         },
                                         "id": {
-                                            "type": "string",
-                                            "description": "Ensembl gene identifier for the isoform"
+                                            "type": "string"
                                         },
                                         "url": {
-                                            "type": "string",
-                                            "description": "url for the isoform chromosome location in Ensembl"
+                                            "type": "string"
                                         }
                                     },
                                     "required": [
                                         "database",
                                         "id"
                                     ]
-                                },
-                                "description": "isoform chromosome evidence"
+                                }
                             }
                         },
                         "required": [
@@ -981,8 +822,7 @@
                             "evidence",
                             "start_pos",
                             "strand"
-                        ],
-                        "description": "chromosome information for the gene of protein isoform"
+                        ]
                     }
                 },
                 "required": [
@@ -990,8 +830,7 @@
                     "sequence",
                     "url"
                 ]
-            },
-            "description": "list of protein isoforms"
+            }
         },
         "glycosylation": {
             "type": "array",
@@ -999,44 +838,34 @@
                 "type": "object",
                 "properties": {
                     "glytoucan_ac": {
-                        "type": "string",
-                        "description": "GlyTouCan accession for the glycosylated entry"
+                        "type": "string"
                     },
                     "type": {
-                        "type": "string",
-                        "description": "glycosylation type"
+                        "type": "string"
                     },
                     "site_category": {
-                        "type": "string",
-                        "description": "type of glycosylation entry- with or without glycan"
+                        "type": "string"
                     },
                     "site_seq": {
-                        "type": "string",
-                        "description": "glycosylated sequence"
+                        "type": "string"
                     },
                     "relation": {
-                        "type": "string",
-                        "description": "glycan relation to protein site"
+                        "type": "string"
                     },
                     "start_pos": {
-                        "type": "integer",
-                        "description": "amino acid start position"
+                        "type": "integer"
                     },
                     "start_aa": {
-                        "type": "string",
-                        "description": "start amino acid"
+                        "type": "string"
                     },
                     "end_pos": {
-                        "type": "integer",
-                        "description": "amino acid end position"
+                        "type": "integer"
                     },
                     "end_aa": {
-                        "type": "string",
-                        "description": "end amino acid"
+                        "type": "string"
                     },
                     "residue": {
-                        "type": "string",
-                        "description": "glycosylated amino acid and position"
+                        "type": "string"
                     },
                     "evidence": {
                         "type": "array",
@@ -1044,32 +873,26 @@
                             "type": "object",
                             "properties": {
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "list of glcosylation evidence"
+                        }
                     },
                     "comment": {
-                        "type": "string",
-                        "description": "comment containing additional information about the glycosylation entry"
+                        "type": "string"
                     },
                     "subtype": {
-                        "type": "string",
-                        "description": "glycosylation subtype"
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -1078,15 +901,13 @@
                     "site_category",
                     "relation"
                 ]
-            },
-            "description": "list of glycosylation entries"
+            }
         },
         "keywords": {
             "type": "array",
             "items": {
                 "type": "string"
-            },
-            "description": "keywords"
+            }
         },
         "phosphorylation": {
             "type": "array",
@@ -1094,20 +915,16 @@
                 "type": "object",
                 "properties": {
                     "start_pos": {
-                        "type": "integer",
-                        "description": "amino acid start position"
+                        "type": "integer"
                     },
                     "end_pos": {
-                        "type": "integer",
-                        "description": "end position"
+                        "type": "integer"
                     },
                     "residue": {
-                        "type": "string",
-                        "description": "phophorylated amino acid and position"
+                        "type": "string"
                     },
                     "comment": {
-                        "type": "string",
-                        "description": "comment containing additional information about phosphorylation entry"
+                        "type": "string"
                     },
                     "evidence": {
                         "type": "array",
@@ -1115,32 +932,26 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "phosphorylation evidence"
+                        }
                     },
                     "kinase_uniprot_canonical_ac": {
-                        "type": "string",
-                        "description": "UniProtKB canonical accession for the kinase enzyme phosphorylating protein"
+                        "type": "string"
                     },
                     "kinase_gene_name": {
-                        "type": "string",
-                        "description": "gene name for the kinase enzyme phosphorylating protein"
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -1149,8 +960,7 @@
                     "residue",
                     "start_pos"
                 ]
-            },
-            "description": "list of phosphorylation entries"
+            }
         },
         "glycation": {
             "type": "array",
@@ -1158,24 +968,19 @@
                 "type": "object",
                 "properties": {
                     "start_pos": {
-                        "type": "integer",
-                        "description": "amino acid start position"
+                        "type": "integer"
                     },
                     "end_pos": {
-                        "type": "integer",
-                        "description": "amino acid start position"
+                        "type": "integer"
                     },
                     "type": {
-                        "type": "string",
-                        "description": "glycation type"
+                        "type": "string"
                     },
                     "residue": {
-                        "type": "string",
-                        "description": "glycated amino acid and position"
+                        "type": "string"
                     },
                     "comment": {
-                        "type": "string",
-                        "description": "comment on glycation entry"
+                        "type": "string"
                     },
                     "evidence": {
                         "type": "array",
@@ -1183,28 +988,23 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "glycation evidence information"
+                        }
                     },
                     "relation": {
-                        "type": "string",
-                        "description": "glycated monosaccharide relation to the protein"
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -1213,8 +1013,7 @@
                     "residue",
                     "start_pos"
                 ]
-            },
-            "description": "list of glycation annotation entries"
+            }
         },
         "ptm_annotation": {
             "type": "array",
@@ -1222,8 +1021,7 @@
                 "type": "object",
                 "properties": {
                     "annotation": {
-                        "type": "string",
-                        "description": "post translational modification annotation description"
+                        "type": "string"
                     },
                     "evidence": {
                         "type": "array",
@@ -1231,32 +1029,27 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "evidence fot ptm annotation"
+                        }
                     }
                 },
                 "required": [
                     "annotation",
                     "evidence"
                 ]
-            },
-            "description": "list of post translational modification annotations for the UniProtKB canonical accession protein"
+            }
         },
         "publication": {
             "type": "array",
@@ -1264,20 +1057,16 @@
                 "type": "object",
                 "properties": {
                     "title": {
-                        "type": "string",
-                        "description": "publication title"
+                        "type": "string"
                     },
                     "journal": {
-                        "type": "string",
-                        "description": "publication journal name"
+                        "type": "string"
                     },
                     "date": {
-                        "type": "string",
-                        "description": "publication date"
+                        "type": "string"
                     },
                     "authors": {
-                        "type": "string",
-                        "description": "publication authors"
+                        "type": "string"
                     },
                     "evidence": {
                         "type": "array",
@@ -1285,24 +1074,20 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database name"
+                                    "type": "string"
                                 },
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "id",
                                 "database"
                             ]
-                        },
-                        "description": "list of evidence sources"
+                        }
                     },
                     "reference": {
                         "type": "array",
@@ -1310,16 +1095,13 @@
                             "type": "object",
                             "properties": {
                                 "type": {
-                                    "type": "string",
-                                    "description": "reference type"
+                                    "type": "string"
                                 },
                                 "id": {
-                                    "type": "string",
-                                    "description": "reference identifier"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "reference url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
@@ -1327,8 +1109,7 @@
                                 "type",
                                 "url"
                             ]
-                        },
-                        "description": "list of publication references"
+                        }
                     }
                 },
                 "required": [
@@ -1339,8 +1120,7 @@
                     "reference",
                     "title"
                 ]
-            },
-            "description": "list of publications where the protein was mentioned"
+            }
         },
         "pathway": {
             "type": "array",
@@ -1348,24 +1128,19 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": "string",
-                        "description": "pathway identifierentifier"
+                        "type": "string"
                     },
                     "url": {
-                        "type": "string",
-                        "description": "url for the entry from the pathway resource"
+                        "type": "string"
                     },
                     "resource": {
-                        "type": "string",
-                        "description": "resource for pathway"
+                        "type": "string"
                     },
                     "name": {
-                        "type": "string",
-                        "description": "pathway name"
+                        "type": "string"
                     },
                     "description": {
-                        "type": "string",
-                        "description": "pathway description"
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -1373,8 +1148,7 @@
                     "resource",
                     "url"
                 ]
-            },
-            "description": "list of pathways from Reactome and KEGG databases"
+            }
         },
         "orthologs": {
             "type": "array",
@@ -1382,42 +1156,34 @@
                 "type": "object",
                 "properties": {
                     "uniprot_canonical_ac": {
-                        "type": "string",
-                        "description": "UniProtKB canonical accession for the orthologous protein"
+                        "type": "string"
                     },
                     "protein_name": {
-                        "type": "string",
-                        "description": "UniProtKB protein name for the orthalogous protein"
+                        "type": "string"
                     },
                     "gene_name": {
-                        "type": "string",
-                        "description": "gene name of the ortholog protein"
+                        "type": "string"
                     },
                     "tax_id": {
-                        "type": "integer",
-                        "description": "taxonomy identifierentifier for the orthologous species/organism"
+                        "type": "integer"
                     },
                     "organism": {
-                        "type": "string",
-                        "description": "scientific name for the orthalogous organism"
+                        "type": "string"
                     },
                     "sequence": {
                         "type": "object",
                         "properties": {
                             "sequence": {
-                                "type": "string",
-                                "description": "FASTA sequence for the orthalogous protein"
+                                "type": "string"
                             },
                             "length": {
-                                "type": "integer",
-                                "description": "length of the protein sequence of the orthalogous protein"
+                                "type": "integer"
                             }
                         },
                         "required": [
                             "length",
                             "sequence"
-                        ],
-                        "description": "sequence information for the orthalogous protein"
+                        ]
                     },
                     "evidence": {
                         "type": "array",
@@ -1425,28 +1191,23 @@
                             "type": "object",
                             "properties": {
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 },
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "evidence for the ortholog"
+                        }
                     },
                     "common_name": {
-                        "type": "string",
-                        "description": "common name for the orthologous organism"
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -1458,8 +1219,7 @@
                     "tax_id",
                     "uniprot_canonical_ac"
                 ]
-            },
-            "description": "list of orthologs to the given protein"
+            }
         },
         "go_annotation": {
             "type": "object",
@@ -1470,12 +1230,10 @@
                         "type": "object",
                         "properties": {
                             "name": {
-                                "type": "string",
-                                "description": "gene ontology categories"
+                                "type": "string"
                             },
                             "total": {
-                                "type": "integer",
-                                "description": "number of gene ontology entries"
+                                "type": "integer"
                             },
                             "go_terms": {
                                 "type": "array",
@@ -1483,16 +1241,13 @@
                                     "type": "object",
                                     "properties": {
                                         "name": {
-                                            "type": "string",
-                                            "description": "gene ontology term name"
+                                            "type": "string"
                                         },
                                         "id": {
-                                            "type": "string",
-                                            "description": "gene ontology term identifier"
+                                            "type": "string"
                                         },
                                         "url": {
-                                            "type": "string",
-                                            "description": "url for the gene ontology term from the gene ontology resource"
+                                            "type": "string"
                                         },
                                         "evidence": {
                                             "type": "array",
@@ -1500,24 +1255,20 @@
                                                 "type": "object",
                                                 "properties": {
                                                     "database": {
-                                                        "type": "string",
-                                                        "description": "evidence database"
+                                                        "type": "string"
                                                     },
                                                     "id": {
-                                                        "type": "string",
-                                                        "description": "evidence database identifier"
+                                                        "type": "string"
                                                     },
                                                     "url": {
-                                                        "type": "string",
-                                                        "description": "evidence database url"
+                                                        "type": "string"
                                                     }
                                                 },
                                                 "required": [
                                                     "database",
                                                     "id"
                                                 ]
-                                            },
-                                            "description": "evidence for gene ontology"
+                                            }
                                         }
                                     },
                                     "required": [
@@ -1526,8 +1277,7 @@
                                         "name",
                                         "url"
                                     ]
-                                },
-                                "description": "list of gene ontology terms"
+                                }
                             }
                         },
                         "required": [
@@ -1535,14 +1285,12 @@
                             "name",
                             "total"
                         ]
-                    },
-                    "description": "gene ontology category - Biological Process"
+                    }
                 }
             },
             "required": [
                 "categories"
-            ],
-            "description": "list of gene ontology entries"
+            ]
         },
         "pro_annotation": {
             "type": "array",
@@ -1550,12 +1298,10 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
-                        "description": "name for pro annotation"
+                        "type": "string"
                     },
                     "definition": {
-                        "type": "string",
-                        "description": "definition for pro annotation"
+                        "type": "string"
                     },
                     "evidence": {
                         "type": "array",
@@ -1563,24 +1309,20 @@
                             "type": "object",
                             "properties": {
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "evidence for pro annotation entry"
+                        }
                     }
                 },
                 "required": [
@@ -1588,8 +1330,7 @@
                     "evidence",
                     "name"
                 ]
-            },
-            "description": "list of protein ontology annotation (currently for glycoproteins)"
+            }
         },
         "site_annotation": {
             "type": "array",
@@ -1597,16 +1338,13 @@
                 "type": "object",
                 "properties": {
                     "start_pos": {
-                        "type": "integer",
-                        "description": "amino acid start position"
+                        "type": "integer"
                     },
                     "end_pos": {
-                        "type": "integer",
-                        "description": "amino acid end position"
+                        "type": "integer"
                     },
                     "annotation": {
-                        "type": "string",
-                        "description": "site annotation type"
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -1614,8 +1352,7 @@
                     "end_pos",
                     "start_pos"
                 ]
-            },
-            "description": "list of site annotations for the UniProtKB canonical protein accession"
+            }
         },
         "interactions": {
             "type": "array",
@@ -1623,16 +1360,13 @@
                 "type": "object",
                 "properties": {
                     "interactor_id": {
-                        "type": "string",
-                        "description": "interactor identifierentifier"
+                        "type": "string"
                     },
                     "interaction_name": {
-                        "type": "string",
-                        "description": "protein-protein interaction name"
+                        "type": "string"
                     },
                     "interaction_type": {
-                        "type": "string",
-                        "description": "protein-protein interaction type"
+                        "type": "string"
                     },
                     "evidence": {
                         "type": "array",
@@ -1640,24 +1374,20 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string",
-                                    "description": "evidence database"
+                                    "type": "string"
                                 },
                                 "id": {
-                                    "type": "string",
-                                    "description": "evidence database identifier"
+                                    "type": "string"
                                 },
                                 "url": {
-                                    "type": "string",
-                                    "description": "evidence database url"
+                                    "type": "string"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        },
-                        "description": "list of protein-protein interactions evidence"
+                        }
                     }
                 },
                 "required": [
@@ -1665,8 +1395,7 @@
                     "interaction_type",
                     "interactor_id"
                 ]
-            },
-            "description": "list of protein-protein entries"
+            }
         },
         "cluster_types": {
             "type": "array",
@@ -1674,39 +1403,32 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
-                        "description": "name for isoforms or homologs sequence alignement clusters"
+                        "type": "string"
                     },
                     "label": {
-                        "type": "string",
-                        "description": "label for isoforms or homologs sequence alignement clusters"
+                        "type": "string"
                     }
                 },
                 "required": [
                     "label",
                     "name"
                 ]
-            },
-            "description": "types of isoforms or homologs in sequence alignment set clusters"
+            }
         },
         "uniprot": {
             "type": "object",
             "properties": {
                 "uniprot_canonical_ac": {
-                    "type": "string",
-                    "description": "accession assigned to the protein isoform chosen to be the canonical sequence to which all positional annotation refers in UniProtKB database"
+                    "type": "string"
                 },
                 "uniprot_id": {
-                    "type": "string",
-                    "description": "UniProtKB ID"
+                    "type": "string"
                 },
                 "url": {
-                    "type": "string",
-                    "description": "Record URL for entry in GlyGen"
+                    "type": "string"
                 },
                 "length": {
-                    "type": "integer",
-                    "description": "Sequence length"
+                    "type": "integer"
                 }
             },
             "required": [
@@ -1714,8 +1436,7 @@
                 "uniprot_canonical_ac",
                 "uniprot_id",
                 "url"
-            ],
-            "description": "UniProtKB info"
+            ]
         },
         "history": {
             "type": "array",
@@ -1723,19 +1444,16 @@
                 "type": "object",
                 "properties": {
                     "type": {
-                        "type": "string",
-                        "description": "history info type"
+                        "type": "string"
                     },
                     "description": {
-                        "type": "string",
-                        "description": "history info description"
+                        "type": "string"
                     }
                 },
                 "required": [
                     "type"
                 ]
-            },
-            "description": "Record history info"
+            }
         }
     },
     "required": [

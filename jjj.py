@@ -1,32 +1,14 @@
-import re
+import json
 
+doc = json.loads(open("junk", "r").read())
 
-def is_glycan_composition(term):
-    term = term.strip().replace(" ", "")
-    res_str = re.sub(r"[(,)]", " ", term)
-    tmp_list_one, tmp_list_two = [], []
-    w_list = res_str.strip().split(" ")
-    if len(w_list)%2 != 0:
-        return False, []
-    for i in range(0, len(w_list) -1):
-        if i%2 == 0:
-            s = w_list[i]
-            ss = w_list[i+1]
-            f = s.isalpha() and ss.isdigit()
-            tmp_list_one.append(f)
-            cmp = "%s(%s)" % (s, ss)
-            o = {"$text": { "$search": cmp}}
-            tmp_list_two.append(o)
+for k in doc["by_subject"]:
+    obj = doc["by_subject"][k]
+    #if k in ["P14210-1"]:
+    if k in ["Q5EBA7-1"]:
+        #print (json.dumps(obj, indent=4))
+        print (list(obj.keys()))
 
-    return list(set(tmp_list_one)) == [True], {"$and":tmp_list_two}
-
-
-term = "Hex(5)HexNAc(4)dHex(1)"
-#term = "Hex(5)HexNAc(4)dHex"
-f, q = is_glycan_composition(term)
-
-print (f)
-print (q)
 
 
 

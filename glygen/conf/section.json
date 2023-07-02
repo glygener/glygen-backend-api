@@ -325,11 +325,11 @@
             },
             "fieldmap": [
                 {
-                    "path": "kinase_protein",
+                    "path": "kinase_uniprot_canonical_ac",
                     "label": "Kinase Protein"
                 },
                 {
-                    "path": "kinase_gene",
+                    "path": "kinase_gene_name",
                     "label": "Kinase Gene"
                 },
                 {
@@ -427,7 +427,7 @@
                     "label": "Disease"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],
@@ -462,7 +462,12 @@
                 {
                     "path": "disease",
                     "label": "Disease"
+                },
+                {
+                    "path": "minor_allelic_frequency",
+                    "label": "MAF"
                 }
+
             ],
             "sectionfield": "snv"
         },
@@ -494,7 +499,7 @@
                     "label": "Sequence"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],
@@ -689,11 +694,11 @@
             },
             "fieldmap": [
                 {
-                    "path": "kinase_protein",
+                    "path": "kinase_uniprot_canonical_ac",
                     "label": "Kinase Protein"
                 },
                 {
-                    "path": "kinase_gene",
+                    "path": "kinase_gene_name",
                     "label": "Kinase Gene"
                 },
                 {
@@ -791,7 +796,7 @@
                     "label": "Disease"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],
@@ -824,7 +829,7 @@
                     "label": "Disease"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],
@@ -862,7 +867,7 @@
                     "label": "Sequence"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],
@@ -1051,11 +1056,11 @@
                     "label": "UniProtKB Accession"
                 },
                 {
-                    "path": "kinase_protein",
+                    "path": "kinase_uniprot_canonical_ac",
                     "label": "Kinase Protein"
                 },
                 {
-                    "path": "kinase_gene",
+                    "path": "kinase_gene_name",
                     "label": "Kinase Gene"
                 },
                 {
@@ -1153,7 +1158,7 @@
                     "label": "Disease"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],
@@ -1194,7 +1199,7 @@
                     "label": "Disease"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],
@@ -1232,7 +1237,7 @@
                     "label": "Sequence"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],

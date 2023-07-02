@@ -227,7 +227,8 @@ def section_download(query_obj, config_obj, sec_info, data_path):
         lbl_dict = {}
         for o in sec_info[record_type][sec]["fieldmap"]:
             lbl_dict[o["path"]] = o["label"]
-       
+        
+
         list_obj = {"results":[]}
         for obj in record_obj[sec_field]:
             if filter_info["field"] != "":
@@ -247,18 +248,28 @@ def section_download(query_obj, config_obj, sec_info, data_path):
                             continue
                         elif filter_type != "exclude" and overlap == False:
                             continue
+
+            #return obj
+            #return lbl_dict
+
             o = {}
             for path in lbl_dict:
                 p_list = path.split(".")
                 val_obj = obj
                 for p in p_list:
                     val_obj = val_obj[p] if p in val_obj else val_obj
-                
+           
+                if sec.find("snv_") != -1 and path == "sequence":
+                    val_obj = "%s -> %s" % (obj["sequence_org"], obj["sequence_mut"])
+
                 # get deeper into structure for "disease" obj list 
                 if type(val_obj) is list and path == "disease":
+                    tmp_list = []
                     for oo in obj[path]:
                         if "recommended_name" in oo:
-                            val_obj = "%s (%s)" % (oo["recommended_name"]["name"], oo["recommended_name"]["id"])
+                            d = "%s (%s)" % (oo["recommended_name"]["name"], oo["recommended_name"]["id"])
+                            tmp_list.append(d)
+                    val_obj = "; ".join(tmp_list)
 
                 if type(val_obj) in [str, int, float]:
                     lbl = lbl_dict[path] if path in lbl_dict else path
@@ -287,8 +298,10 @@ def section_download(query_obj, config_obj, sec_info, data_path):
                 list_obj["results"].append(o)
 
 
+
         if format_lc in ["csv", "tsv"]:
             data_buffer = get_tabular_buffer(list_obj, query_obj, config_obj)
+
 
     #t_list = []
     #seen = {}

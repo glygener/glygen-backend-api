@@ -29,9 +29,9 @@
 
 
     $ http POST :8082/data/download/ < tests/temp/data_download.json
-    $ http POST :8082/data/section_download/ < testss/examples/data/section_download.protein.snv.1.json
-    $ http POST :8082/data/section_download/ < testss/examples/data/section_download.protein.snv.2.json
-    $ http POST :8082/data/section_download/ < testss/examples/data/section_download.protein.snv.3.json
+    $ http POST :8082/data/section_download/ < tests/examples/data/section_download.protein.snv.1.json
+    $ http POST :8082/data/section_download/ < tests/examples/data/section_download.protein.snv.2.json
+    $ http POST :8082/data/section_download/ < tests/examples/data/section_download.protein.snv.3.json
         
 
 

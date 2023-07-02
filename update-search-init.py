@@ -48,9 +48,13 @@ def main():
 
         res = requests.post(url, json=req_obj, allow_redirects=True)
         res_obj = json.loads(res.content)
+        #print (json.dumps(res_obj, indent=4))
+        #exit()
         q_obj = {}
         update_obj = {"supersearch_init":res_obj["results_summary"]}
         res = dbh["c_searchinit"].update_one(q_obj, {'$set':update_obj}, upsert=True)
+        print (json.dumps(res_obj["results_summary"], indent=4))
+
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

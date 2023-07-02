@@ -6,34 +6,43 @@
             "type": "object",
             "properties": {
                 "glytoucan_ac": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "glytoucan accession number"
                 },
                 "glytoucan_url": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "glytoucan URL"
                 }
             },
             "required": [
                 "glytoucan_ac",
                 "glytoucan_url"
-            ]
+            ],
+            "description": "glytoucan object"
         },
         "mass": {
-            "type": "number"
+            "type": "number",
+            "description": "monoisotopic mass of the glycan in daltons"
         },
         "number_monosaccharides": {
-            "type": "integer"
+            "type": "integer",
+            "description": "total number of monosaccharide residues"
         },
         "number_monosaccharides_suffix": {
-            "type": "string"
+            "type": "string",
+            "description": "'+' used to indicate if glycan has repeating structure"
         },
         "iupac": {
-            "type": "string"
+            "type": "string",
+            "description": "glycan sequence in iupac format"
         },
         "wurcs": {
-            "type": "string"
+            "type": "string",
+            "description": "glycan sequence in wurcs format"
         },
         "glycoct": {
-            "type": "string"
+            "type": "string",
+            "description": "glycan sequence in glycoct format"
         },
         "species": {
             "type": "array",
@@ -41,13 +50,16 @@
                 "type": "object",
                 "properties": {
                     "taxid": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "taxonomy id"
                     },
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "species name"
                     },
                     "annotation_category": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "type of annotation"
                     },
                     "evidence": {
                         "type": "array",
@@ -55,23 +67,28 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database name"
                                 },
                                 "id": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database id"
                                 },
                                 "url": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database url"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        }
+                        },
+                        "description": "list of evidence sources"
                     },
                     "common_name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "species common name"
                     }
                 },
                 "required": [
@@ -81,7 +98,8 @@
                     "name",
                     "taxid"
                 ]
-            }
+            },
+            "description": "list of organisms in which the glycan has been reported"
         },
         "classification": {
             "type": "array",
@@ -92,36 +110,43 @@
                         "type": "object",
                         "properties": {
                             "name": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "glycan type name"
                             },
                             "url": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "glycan type url"
                             }
                         },
                         "required": [
                             "name"
-                        ]
+                        ],
+                        "description": "glycan type"
                     },
                     "subtype": {
                         "type": "object",
                         "properties": {
                             "name": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "glycan subtype name"
                             },
                             "url": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "glycan subtype url"
                             }
                         },
                         "required": [
                             "name"
-                        ]
+                        ],
+                        "description": "glycan subtype"
                     }
                 },
                 "required": [
                     "subtype",
                     "type"
                 ]
-            }
+            },
+            "description": "glycan classification defined by type and subtype"
         },
         "glycoprotein": {
             "type": "array",
@@ -129,16 +154,20 @@
                 "type": "object",
                 "properties": {
                     "uniprot_canonical_ac": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "canonical uniprot accession number"
                     },
                     "start_pos": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "protein start position"
                     },
                     "end_pos": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "protein end position"
                     },
                     "residue": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "protein amino acid"
                     },
                     "evidence": {
                         "type": "array",
@@ -146,32 +175,40 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database name"
                                 },
                                 "id": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database id"
                                 },
                                 "url": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database url"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        }
+                        },
+                        "description": "list of evidence sources"
                     },
                     "protein_name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "protein name"
                     },
                     "gene_name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "gene name"
                     },
                     "tax_id": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "taxonomy id"
                     },
                     "tax_name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "taxonomy name"
                     }
                 },
                 "required": [
@@ -181,7 +218,8 @@
                     "tax_name",
                     "uniprot_canonical_ac"
                 ]
-            }
+            },
+            "description": "list of proteins glycosylated with the glycan"
         },
         "enzyme": {
             "type": "array",
@@ -189,25 +227,32 @@
                 "type": "object",
                 "properties": {
                     "uniprot_canonical_ac": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "canonical uniprot accession number"
                     },
                     "protein_name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "protein name"
                     },
                     "gene": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "gene name"
                     },
                     "gene_link": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "gene url"
                     },
                     "tax_id": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "taxonomy id"
                     },
                     "tax_name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "taxonomy name"
                     },
                     "tax_common_name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "taxonomy common name"
                     },
                     "evidence": {
                         "type": "array",
@@ -215,20 +260,24 @@
                             "type": "object",
                             "properties": {
                                 "id": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database id"
                                 },
                                 "database": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database name"
                                 },
                                 "url": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database url"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        }
+                        },
+                        "description": "list of evidence sources"
                     }
                 },
                 "required": [
@@ -241,7 +290,8 @@
                     "tax_name",
                     "uniprot_canonical_ac"
                 ]
-            }
+            },
+            "description": "enzymes that may have been involved in the biosynthesis of the glycan"
         },
         "crossref": {
             "type": "array",
@@ -249,50 +299,63 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "cross reference id"
                     },
                     "url": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "cross reference url"
                     },
                     "database": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "cross reference database name"
                     }
                 },
                 "required": [
                     "database",
                     "id"
                 ]
-            }
+            },
+            "description": "list of entries and links to other databases"
         },
         "mass_pme": {
-            "type": "number"
+            "type": "number",
+            "description": "permethylated monoisotopic mass of the glycan in daltons"
         },
         "tool_support": {
             "type": "object",
             "properties": {
                 "sandbox": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "sandbox"
                 },
                 "pdb": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "pdb"
                 },
                 "gnome_glygen_oglycans": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "gnome glygen o-glycans"
                 },
                 "gnome_glygen_nglycans": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "gnome glygen n-glycans"
                 },
                 "gnome_glygen": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "gnome glygen glycans"
                 },
                 "gnome_glycotree_oglycans": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "gnome glycotree o-glycans"
                 },
                 "gnome_glycotree_nglycans": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "gnome glycotree n-glycans"
                 },
                 "gnome": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "gnome all glycans"
                 }
             },
             "required": [
@@ -304,46 +367,58 @@
                 "gnome_glycotree_oglycans",
                 "gnome_glycotree_nglycans",
                 "gnome"
-            ]
+            ],
+            "description": "list of tool restriction groups"
         },
         "fully_determined": {
-            "type": "string"
+            "type": "string",
+            "description": "fully determined glycan structure"
         },
         "missing_score": {
-            "type": "integer"
+            "type": "integer",
+            "description": "score based on missing linkages and topology"
         },
         "glycan_type": {
-            "type": "string"
+            "type": "string",
+            "description": "type of glycan"
         },
         "inchi": {
-            "type": "string"
+            "type": "string",
+            "description": "glycan sequence in inchi format"
         },
         "glycam": {
-            "type": "string"
+            "type": "string",
+            "description": "glycan sequence in glycam format"
         },
         "smiles_isomeric": {
-            "type": "string"
+            "type": "string",
+            "description": "glycan sequence in smiles_isomeric format"
         },
         "inchi_key": {
             "type": "object",
             "properties": {
                 "key": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "inchi key"
                 },
                 "url": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "inchi key url"
                 }
             },
             "required": [
                 "key",
                 "url"
-            ]
+            ],
+            "description": "inchi key information"
         },
         "byonic": {
-            "type": "string"
+            "type": "string",
+            "description": "glycan sequence in byonic format"
         },
         "gwb": {
-            "type": "string"
+            "type": "string",
+            "description": "glycan sequence in glycoworkbench format"
         },
         "publication": {
             "type": "array",
@@ -351,16 +426,20 @@
                 "type": "object",
                 "properties": {
                     "title": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "publication title"
                     },
                     "journal": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "publication journal name"
                     },
                     "date": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "publication date"
                     },
                     "authors": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "publication authors"
                     },
                     "evidence": {
                         "type": "array",
@@ -368,20 +447,24 @@
                             "type": "object",
                             "properties": {
                                 "database": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database name"
                                 },
                                 "id": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database id"
                                 },
                                 "url": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database url"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        }
+                        },
+                        "description": "list of evidence sources"
                     },
                     "reference": {
                         "type": "array",
@@ -392,20 +475,24 @@
                                     "type": "array",
                                     "items": {
                                         "type": "string"
-                                    }
+                                    },
+                                    "description": "reference type"
                                 },
                                 "id": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "reference id"
                                 },
                                 "url": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "reference url"
                                 }
                             },
                             "required": [
                                 "id",
                                 "type"
                             ]
-                        }
+                        },
+                        "description": "list of publication references"
                     }
                 },
                 "required": [
@@ -416,7 +503,8 @@
                     "reference",
                     "title"
                 ]
-            }
+            },
+            "description": "list of publications where the glycan was mentioned"
         },
         "residues": {
             "type": "array",
@@ -424,19 +512,24 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "residue id"
                     },
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "residue name"
                     },
                     "attachedby": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "attachment enzyme"
                     },
                     "detachedby": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "detachment enzyme"
                     },
                     "parentid": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "parent residue id"
                     }
                 },
                 "required": [
@@ -445,7 +538,8 @@
                     "name",
                     "parentid"
                 ]
-            }
+            },
+            "description": "list of pathway residues"
         },
         "composition": {
             "type": "array",
@@ -453,19 +547,24 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "monosaccharide name"
                     },
                     "residue": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "monosaccharide residue class"
                     },
                     "count": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "number of monosaccharide residues"
                     },
                     "cid": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "monosaccharide pubchem compound id"
                     },
                     "url": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "monosaccharide url"
                     }
                 },
                 "required": [
@@ -473,7 +572,8 @@
                     "name",
                     "residue"
                 ]
-            }
+            },
+            "description": "monosaccharide composition of the glycan"
         },
         "composition_expanded": {
             "type": "array",
@@ -481,19 +581,24 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "monosaccharide name"
                     },
                     "residue": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "monosaccharide residue class"
                     },
                     "count": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "number of monosaccharide residues"
                     },
                     "cid": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "monosaccharide pubchem compound id"
                     },
                     "url": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "monosaccharide url"
                     }
                 },
                 "required": [
@@ -501,7 +606,8 @@
                     "name",
                     "residue"
                 ]
-            }
+            },
+            "description": "monosaccharide composition of the glycan represented by the number of each class of monosaccharide"
         },
         "motifs": {
             "type": "array",
@@ -509,23 +615,28 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "motif id"
                     },
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "motif name"
                     },
                     "synonym": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "motif synonymns"
                     },
                     "keywords": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "motif keywords"
                     }
                 },
                 "required": [
                     "id",
                     "name"
                 ]
-            }
+            },
+            "description": "list of glycan motifs present in the glycan"
         },
         "expression": {
             "type": "array",
@@ -533,16 +644,20 @@
                 "type": "object",
                 "properties": {
                     "uniprot_canonical_ac": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "canonical uniprot accession number"
                     },
                     "start_pos": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "protein start position"
                     },
                     "end_pos": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "protein end position"
                     },
                     "residue": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "protein amino acid"
                     },
                     "evidence": {
                         "type": "array",
@@ -550,35 +665,43 @@
                             "type": "object",
                             "properties": {
                                 "id": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database id"
                                 },
                                 "database": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database name"
                                 },
                                 "url": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database url"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        }
+                        },
+                        "description": "list of evidence sources"
                     },
                     "cell_line": {
                         "type": "object",
                         "properties": {
                             "name": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "cell line name"
                             },
                             "namespace": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "cell line namespace"
                             },
                             "id": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "cell line ID"
                             },
                             "url": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "cell line url"
                             }
                         },
                         "required": [
@@ -586,22 +709,27 @@
                             "namespace",
                             "id",
                             "url"
-                        ]
+                        ],
+                        "description": "cell line info"
                     },
                     "tissue": {
                         "type": "object",
                         "properties": {
                             "name": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "tissue name"
                             },
                             "namespace": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "tissue ontology namespace"
                             },
                             "id": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "tissue ontology id"
                             },
                             "url": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "tissue url"
                             }
                         },
                         "required": [
@@ -609,10 +737,12 @@
                             "namespace",
                             "id",
                             "url"
-                        ]
+                        ],
+                        "description": "list of expression tissues"
                     },
                     "abundance": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "glycan abundance value"
                     }
                 },
                 "required": [
@@ -622,7 +752,8 @@
                     "start_pos",
                     "uniprot_canonical_ac"
                 ]
-            }
+            },
+            "description": "expression of the glycan (attached to proteins) within tissues and cell lines"
         },
         "subsumption": {
             "type": "array",
@@ -630,23 +761,27 @@
                 "type": "object",
                 "properties": {
                     "related_accession": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "related glycan accession number"
                     },
                     "relationship": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "relationship type"
                     }
                 },
                 "required": [
                     "related_accession",
                     "relationship"
                 ]
-            }
+            },
+            "description": "list of related glycans"
         },
         "keywords": {
             "type": "array",
             "items": {
                 "type": "string"
-            }
+            },
+            "description": "keywords"
         },
         "names": {
             "type": "array",
@@ -654,44 +789,54 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "glycan name"
                     },
                     "domain": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "name type"
                     }
                 },
                 "required": [
                     "name",
                     "domain"
                 ]
-            }
+            },
+            "description": "list of names for the glycan"
         },
         "dictionary": {
             "type": "object",
             "properties": {
                 "wikipedia": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "term wikipedia page"
                 },
                 "term_xref": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "term cross references"
                 },
                 "term_in_sentence": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "example of term used in a sentence from a literature source"
                 },
                 "term": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "glycan structure dictionary term name"
                 },
                 "synonymns": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "description": "term synonymns"
                 },
                 "publication": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "publications where the term or synonymns were used"
                 },
                 "function": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "term function"
                 },
                 "evidence": {
                     "type": "array",
@@ -699,29 +844,36 @@
                         "type": "object",
                         "properties": {
                             "database": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "evidence database name"
                             },
                             "id": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "evidence database id"
                             },
                             "url": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "evidence database url"
                             }
                         },
                         "required": [
                             "database",
                             "id"
                         ]
-                    }
+                    },
+                    "description": "source information"
                 },
                 "essentials_of_glycobiology": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "chapters from essentials of glycobiology textbook where the term is used"
                 },
                 "disease_associations": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "disease associations for the term"
                 },
                 "definition": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "definition of the term"
                 }
             },
             "required": [
@@ -730,7 +882,8 @@
                 "synonymns",
                 "term",
                 "term_xref"
-            ]
+            ],
+            "description": "glycan structure dictionary term information"
         },
         "interactions": {
             "type": "array",
@@ -738,13 +891,16 @@
                 "type": "object",
                 "properties": {
                     "interactor_type": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "interactor type"
                     },
                     "interactor_name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "interactor name"
                     },
                     "interactor_id": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "interactor accession number"
                     },
                     "evidence": {
                         "type": "array",
@@ -752,20 +908,24 @@
                             "type": "object",
                             "properties": {
                                 "id": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database id"
                                 },
                                 "database": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database name"
                                 },
                                 "url": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "evidence database url"
                                 }
                             },
                             "required": [
                                 "database",
                                 "id"
                             ]
-                        }
+                        },
+                        "description": "list of evidence sources"
                     }
                 },
                 "required": [
@@ -774,7 +934,8 @@
                     "interactor_id",
                     "evidence"
                 ]
-            }
+            },
+            "description": "list of molecules that interact with the glycan"
         },
         "glycotree_pathways": {
             "type": "array",
@@ -782,25 +943,30 @@
                 "type": "object",
                 "properties": {
                     "source": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "source glytoucan accession number"
                     },
                     "target": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "target glytoucan accession number"
                     },
                     "residue_affected": {
                         "type": "object",
                         "properties": {
                             "id": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "residue id"
                             },
                             "full_name": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "residue name"
                             }
                         },
                         "required": [
                             "full_name",
                             "id"
-                        ]
+                        ],
+                        "description": "affected monosaccharide residue"
                     },
                     "enzymes": {
                         "type": "array",
@@ -808,17 +974,20 @@
                             "type": "object",
                             "properties": {
                                 "uniprotkb_ac": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "uniprotkb accession number"
                                 },
                                 "tax_name": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "taxonomy name"
                                 }
                             },
                             "required": [
                                 "tax_name",
                                 "uniprotkb_ac"
                             ]
-                        }
+                        },
+                        "description": "list of enzymes"
                     }
                 },
                 "required": [
@@ -826,7 +995,8 @@
                     "source",
                     "target"
                 ]
-            }
+            },
+            "description": "list of enzymes that directly impact residues in glycan during its biosynthesis"
         }
     },
     "required": [

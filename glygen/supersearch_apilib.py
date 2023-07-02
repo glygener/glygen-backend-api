@@ -323,6 +323,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
     #return initial_hit_dict["species"]
 
+
     dump_debug_timer("flag-2 loading network", DEBUG_FLAG)
 
     record_type_list = list(config_obj["record_type_info"].keys())
