@@ -1,7 +1,7 @@
 import os,sys
 from flask_restx import Namespace, Resource, fields
 from flask import (request, current_app)
-from glygen.db import log_error
+from glygen.db import log_error, log_request
 from glygen.document import get_one, get_many, insert_one, update_one, delete_one, order_json_obj
 from werkzeug.utils import secure_filename
 import datetime
@@ -13,6 +13,7 @@ import bcrypt
 from glygen.protein_apilib import protein_search_init, protein_search, protein_search_simple, protein_detail, protein_alignment
 from glygen.util import get_cached_records_indirect, get_req_obj
 import traceback
+
 
 
 api = Namespace("protein", description="Protein APIs")
@@ -49,7 +50,9 @@ class Protein(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            res_obj = protein_search_init(config_obj)
+            res_obj = log_request({}, "/protein/search_init/", request)
+            if "error_list" not in res_obj:
+                res_obj = protein_search_init(config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200 
@@ -70,7 +73,9 @@ class Protein(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = protein_search(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/protein/search/", request)
+            if "error_list" not in res_obj:
+                res_obj = protein_search(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200 
@@ -92,7 +97,9 @@ class Protein(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = protein_search_simple(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/protein/search_simple/", request)
+            if "error_list" not in res_obj:
+                res_obj = protein_search_simple(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -114,7 +121,9 @@ class Protein(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = get_cached_records_indirect(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/protein/list/", request)
+            if "error_list" not in res_obj:
+                res_obj = get_cached_records_indirect(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -137,7 +146,9 @@ class Protein(Resource):
         res_obj = {}
         try:
             req_obj = {"uniprot_canonical_ac":uniprot_canonical_ac}
-            res_obj = protein_detail(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/protein/detail/", request)
+            if "error_list" not in res_obj:
+                res_obj = protein_detail(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -159,7 +170,9 @@ class Protein(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = protein_alignment(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/protein/alignment/", request)
+            if "error_list" not in res_obj:
+                res_obj = protein_alignment(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

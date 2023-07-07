@@ -1,7 +1,7 @@
 import os,sys
 from flask_restx import Namespace, Resource, fields
 from flask import (request, current_app, send_file)
-from glygen.db import log_error
+from glygen.db import log_error, log_request
 from glygen.document import get_one, get_many, insert_one, update_one, delete_one, order_json_obj
 from werkzeug.utils import secure_filename
 import datetime
@@ -52,7 +52,9 @@ class Video(Resource):
             req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
-            res_obj = video_addnew(current_user, req_obj, config_obj)
+            res_obj = log_request(req_obj, "/video/addnew/", request)
+            if "error_list" not in res_obj:
+                res_obj = video_addnew(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -73,7 +75,9 @@ class Video(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = video_detail(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/video/detail/", request)
+            if "error_list" not in res_obj:
+                res_obj = video_detail(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -93,7 +97,9 @@ class Video(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = video_list(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/video/list/", request)
+            if "error_list" not in res_obj:
+                res_obj = video_list(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -117,7 +123,9 @@ class Video(Resource):
             req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
-            res_obj = video_delete(current_user, req_obj, config_obj)
+            res_obj = log_request(req_obj, "/video/delete/", request)
+            if "error_list" not in res_obj:
+                res_obj = video_delete(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
