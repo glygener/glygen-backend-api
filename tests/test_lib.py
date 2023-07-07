@@ -108,8 +108,9 @@ def run_exhaustive(in_file, record_type, config_obj, server):
             out_file = log_dir + "%s_failure_log_%s_detail.%s.json" % (user_name,record_type, main_id)
             with open(out_file, "w") as FL:
                 FL.write("%s\n" % (json.dumps(o, indent=4)))
+            print ("Created: %s\n" % (out_file))
     FW.close()
-
+    print ("Created: %s\n" % (summary_file))
     return
 
 
@@ -219,11 +220,13 @@ def run_from_queries(api_grp, config_obj, server):
                         out_file = log_dir + "%s_failure_log_%s.%s.json" % (user_name, o["name"], idx)
                         with open(out_file, "w") as FL:
                             FL.write("%s\n" % (json.dumps(o, indent=4)))
+                        print ("Created: %s\n" % (out_file))
                     flg_file = "logs/failure_log_%s.%s.json" % (o["name"], idx)
                     status = "success" if flags == "success" else "failed [see %s]"% (flg_file)
 
-
+        
         FW.close()
+        print ("Created: %s\n" % (summary_file))
     except Exception as e:
         print (traceback.format_exc())
 
