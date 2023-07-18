@@ -1,0 +1,33 @@
+{
+    "glytoucan_ac":"G51793MY",
+    "paginated_tables":[
+        {
+            "table_id": "glycoprotein",
+            "offset":1,
+            "limit":2,
+            "sort": "uniprot_canonical_ac",
+            "order":"asc"
+        },
+        {
+            "table_id": "enzyme",
+            "offset":1,
+            "limit":2,
+            "sort": "uniprot_canonical_ac",
+            "order":"asc"
+        },
+        {
+            "table_id": "expression",
+            "offset":1,
+            "limit":2,
+            "sort": "uniprot_canonical_ac",
+            "order":"asc"
+        },
+        {
+            "table_id": "publication",
+            "offset":1,
+            "limit":2,
+            "order":"asc"
+        }
+    ]
+}
+

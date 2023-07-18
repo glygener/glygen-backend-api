@@ -10,7 +10,7 @@ from bson import json_util, ObjectId
 
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj
+from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections
 
 
 
@@ -57,6 +57,20 @@ def publication_detail(query_obj, config_obj):
         for sec in batch_doc["sections"]:
             if sec in publication_doc:
                 publication_doc[sec] += batch_doc["sections"][sec]
+
+    
+
+    if "paginated_tables" in query_obj:
+        seen = {}
+        for o in query_obj["paginated_tables"]:
+            sec = o["table_id"].split("_")[0] if o["table_id"].find("glycosylation_") != -1 else o["table_id"]
+            seen[sec] = True
+        section_list = list(seen.keys())
+        sec_tables = get_paginated_sections(publication_doc, query_obj, section_list)
+        if "error_list" in sec_tables:
+            return sec_tables
+        for sec in sec_tables:
+            publication_doc[sec] = sec_tables[sec]
 
 
     clean_obj(publication_doc, config_obj["removelist"]["c_publication"], "c_publication")

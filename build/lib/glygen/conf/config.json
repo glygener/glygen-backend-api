@@ -348,6 +348,7 @@
         ,"glycan_detail":{
             "field_info":{
                 "glytoucan_ac":{"type":"string", "maxlen":20}
+                ,"paginated_tables":{"type":"string", "maxlen":10000}
             }
             ,"requiredfields":["glytoucan_ac"]
             ,"collectionlist":["c_glycan"]
@@ -355,7 +356,8 @@
         ,"publication_detail":{
             "field_info":{
                 "id":{"type":"string", "maxlen":200},
-                "type":{"type":"string", "maxlen":20}
+                "type":{"type":"string", "maxlen":20},
+                "paginated_tables":{"type":"string", "maxlen":10000}
             }
             ,"requiredfields":["id", "type"]
             ,"collectionlist":["c_publication"]
@@ -561,7 +563,8 @@
         }
         ,"protein_detail":{
             "field_info":{
-                "uniprot_canonical_ac":{"type":"string"}
+                "uniprot_canonical_ac":{"type":"string"},
+                "paginated_tables":{"type":"string", "maxlen":10000}
             }
             ,"requiredfields":["uniprot_canonical_ac"]
             ,"collectionlist":["c_protein"]

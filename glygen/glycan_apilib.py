@@ -10,7 +10,7 @@ from collections import OrderedDict
 from bson import json_util, ObjectId
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, order_obj
+from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, order_obj, get_paginated_sections
 
 
 def glycan_search_init(config_obj):
@@ -291,6 +291,20 @@ def glycan_detail(query_obj, config_obj):
         if o["count"] > 0:
             tmp_list.append(o)
     obj["composition"] = tmp_list
+
+
+    if "paginated_tables" in query_obj:
+        seen = {}
+        for o in query_obj["paginated_tables"]:
+            sec = o["table_id"].split("_")[0] if o["table_id"].find("glycosylation_") != -1 else o["table_id"]
+            seen[sec] = True
+        section_list = list(seen.keys())
+        sec_tables = get_paginated_sections(obj, query_obj, section_list)
+        if "error_list" in sec_tables:
+            return sec_tables
+        for sec in sec_tables:
+            obj[sec] = sec_tables[sec]
+
 
     clean_obj(obj, config_obj["removelist"]["c_glycan"], "c_glycan")
 

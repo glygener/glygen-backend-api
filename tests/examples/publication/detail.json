@@ -1,0 +1,61 @@
+{
+    "id":"29741879", 
+    "type":"PubMed",
+    "paginated_tables":[
+        {
+            "table_id": "glycosylation_reported_with_glycan",
+            "offset":1,
+            "limit":2,
+            "sort": "glytoucan_ac",
+            "order":"asc"
+        },
+        {
+            "table_id": "glycosylation_reported",
+            "offset":1,
+            "limit":2,
+            "sort": "start_pos",
+            "order":"asc"
+        },
+        {
+            "table_id": "glycosylation_predicted",
+            "offset":1,
+            "limit":2,
+            "sort": "start_pos",
+            "order":"asc"
+        },
+        {
+            "table_id": "glycosylation_automatic_literature_mining",
+            "offset":1,
+            "limit":2,
+            "sort": "start_pos",
+            "order":"asc"
+        },
+        {
+            "table_id": "phosphorylation",
+            "offset":1,
+            "limit":2,
+            "sort": "uniprot_canonical_ac",
+            "order":"asc"
+        },
+        {
+            "table_id": "glycan_expression",
+            "offset":1,
+            "limit":2,
+            "sort": "glytoucan_ac",
+            "order":"asc"
+        },
+        {
+            "table_id": "referenced_proteins",
+            "offset":1,
+            "limit":2,
+            "order":"asc"
+        },
+        {
+            "table_id": "referenced_glycans",
+            "offset":1,
+            "limit":2,
+            "order":"asc"
+        }
+    ]
+}
+

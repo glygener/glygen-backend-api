@@ -127,17 +127,20 @@ class Glycan(Resource):
     def get(self):
         return self.post()
 
-@api.route('/detail/<glytoucan_ac>/')
+#@api.route('/detail/<glytoucan_ac>/')
+@api.route('/detail/')
 @api.doc(params={"glytoucan_ac": {"in": "query", "default": "G17689DH"}})
 class Glycan(Resource):
     @api.doc('detail')
-    def post(self, glytoucan_ac):
+    #def post(self, glytoucan_ac):
+    def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = {"glytoucan_ac":glytoucan_ac}
+            #req_obj = {"glytoucan_ac":glytoucan_ac}
+            req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/glycan/detail/", request)
             if "error_list" not in res_obj:
                 res_obj = glycan_detail(req_obj, config_obj)
@@ -148,8 +151,10 @@ class Glycan(Resource):
         return res_obj, http_code
 
     @api.doc(False)
-    def get(self, glytoucan_ac):
-        return self.post(glytoucan_ac)
+    #def get(self, glytoucan_ac):
+    def get(self):
+        return self.post()
+        #return self.post(glytoucan_ac)
 
 
 @api.route('/image/<glytoucan_ac>/')

@@ -135,17 +135,20 @@ class Protein(Resource):
 
 
 
-@api.route('/detail/<uniprot_canonical_ac>/')
+#@api.route('/detail/<uniprot_canonical_ac>/')
+@api.route('/detail/')
 @api.doc(params={"uniprot_canonical_ac": {"in": "query", "default": "P14210"}})
 class Protein(Resource):
     @api.doc('detail')
-    def post(self, uniprot_canonical_ac):
+    #def post(self, uniprot_canonical_ac):
+    def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = {"uniprot_canonical_ac":uniprot_canonical_ac}
+            #req_obj = {"uniprot_canonical_ac":uniprot_canonical_ac}
+            req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/protein/detail/", request)
             if "error_list" not in res_obj:
                 res_obj = protein_detail(req_obj, config_obj)
@@ -155,9 +158,10 @@ class Protein(Resource):
         return res_obj, http_code
 
     @api.doc(False)
-    def get(self, uniprot_canonical_ac):
-        return self.post(uniprot_canonical_ac)
-
+    #def get(self, uniprot_canonical_ac):
+    def get(self):
+        #return self.post(uniprot_canonical_ac)
+        return self.post()
 
 @api.route('/alignment/')
 class Protein(Resource):

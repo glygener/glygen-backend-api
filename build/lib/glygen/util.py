@@ -252,7 +252,6 @@ def sort_objects(obj_list, return_fields, field_name, order_type):
     grid_obj = {}
     for f in field_list:
         grid_obj[f] = []
-
     for i in range(0, len(obj_list)):
         obj = obj_list[i]
         if field_name in return_fields["float"]:
@@ -267,13 +266,51 @@ def sort_objects(obj_list, return_fields, field_name, order_type):
             if field_name not in obj:
                 obj[field_name] = -1
             grid_obj[field_name].append({"index":i, field_name:int(obj[field_name])})
-
     reverse_flag = True if order_type == "desc" else False
     key_list = []
     sorted_obj_list = sorted(grid_obj[field_name], key=lambda x: x[field_name], reverse=reverse_flag)
     for o in sorted_obj_list:
             key_list.append(o["index"])
     return key_list
+
+
+def sort_objects_new(obj_list, field_name, order_type):
+
+    return_fields = {"float":[], "int":[], "string":[]}
+    obj = obj_list[0]
+    for k in obj:
+        if type(obj[k]) is float:
+            return_fields["float"].append(k)
+        if type(obj[k]) is int:
+            return_fields["int"].append(k)
+        if type(obj[k]) is str:
+            return_fields["string"].append(k)
+
+    field_list = return_fields["float"] + return_fields["int"] + return_fields["string"]
+    grid_obj = {}
+    for f in field_list:
+        grid_obj[f] = []
+    for i in range(0, len(obj_list)):
+        obj = obj_list[i]
+        if field_name in return_fields["float"]:
+            if field_name not in obj:
+                obj[field_name] = -1.0
+            grid_obj[field_name].append({"index":i, field_name:float(obj[field_name])})
+        elif field_name in return_fields["string"]:
+            if field_name not in obj:
+                obj[field_name] = ""
+            grid_obj[field_name].append({"index":i, field_name:obj[field_name]})
+        elif field_name in return_fields["int"]:
+            if field_name not in obj:
+                obj[field_name] = -1
+            grid_obj[field_name].append({"index":i, field_name:int(obj[field_name])})
+    reverse_flag = True if order_type == "desc" else False
+    key_list = []
+    sorted_obj_list = sorted(grid_obj[field_name], key=lambda x: x[field_name], reverse=reverse_flag)
+    for o in sorted_obj_list:
+        key_list.append(o["index"])
+    return key_list
+
 
 def extract_name(obj_list, name_type, resource):
    
@@ -1058,5 +1095,68 @@ def get_error_obj(error_code, error_log, log_path):
 
 
 
+
+
+
+def get_paginated_sections(obj, query_obj, section_list):
+
+
+    site_cat_list = ["reported", "reported_with_glycan", "predicted", "text_mining"]
+    sec_tables = {}
+    tableid2sec = {}
+    for sec in section_list:
+        if sec not in obj:
+            continue
+        for o in obj[sec]:
+            table_id = sec
+            if sec == "glycosylation" and o["site_category"] in site_cat_list:
+                table_id = "glycosylation_" + o["site_category"]
+            if table_id not in sec_tables:
+                sec_tables[table_id] = []
+            sec_tables[table_id].append(o)
+            tableid2sec[table_id] = sec
+
+    for q in query_obj["paginated_tables"]:
+        if "table_id" not in q:
+            return {"error_list":[{"error_code":"missing-table_id-parameter"}]}
+        table_id = q["table_id"]
+        if table_id in sec_tables:
+            sort_order = q["order"] if "order" in q else "asc"
+            offset = q["offset"] if "offset" in q else 1
+            limit = q["limit"] if "limit" in q else 20
+            if type(sec_tables[table_id][0]) is dict:
+
+                if "sort" in q:
+                    if q["sort"] not in sec_tables[table_id][0]:
+                        return {"error_list":[{"error_code":"unknown-sort-field-%s-in-section-%s" % (q["sort"], table_id)}]}
+                else:
+                    key_list = list(sec_tables[table_id][0].keys())
+                    q["sort"] = key_list[0]
+                sorted_idx_list = sort_objects_new(sec_tables[table_id], q["sort"], sort_order)
+            else:
+                sorted_idx_list = []
+                for v in sorted(sec_tables[table_id]):
+                    sorted_idx_list.append(sec_tables[table_id].index(v))
+
+            start_index = int(offset) - 1
+            stop_index = start_index + int(limit)
+            start_index = 0 if start_index > len(sorted_idx_list) - 1 else start_index
+            stop_index = len(sorted_idx_list) if stop_index > len(sorted_idx_list) else stop_index
+            sorted_idx_list = sorted_idx_list[start_index:stop_index]
+            tmp_table = []
+            for idx in sorted_idx_list:
+                tmp_table.append(sec_tables[table_id][idx])
+            sec = tableid2sec[table_id]
+            if sec == table_id:
+                sec_tables[sec] = tmp_table
+            else:
+                if sec not in sec_tables:
+                    sec_tables[sec] = []
+                sec_tables[sec] += tmp_table
+                if table_id in sec_tables:
+                    sec_tables.pop(table_id)
+
+
+    return sec_tables
 
 

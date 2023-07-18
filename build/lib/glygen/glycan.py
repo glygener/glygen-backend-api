@@ -1,7 +1,7 @@
 import os,sys
 from flask_restx import Namespace, Resource, fields
 from flask import (request, current_app, send_file, jsonify)
-from glygen.db import log_error
+from glygen.db import log_error, log_request
 from glygen.document import get_one, get_many, insert_one, update_one, delete_one, order_json_obj
 from werkzeug.utils import secure_filename
 import datetime
@@ -46,7 +46,9 @@ class Glycan(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            res_obj = glycan_search_init(config_obj)
+            res_obj = log_request({}, "/glycan/search_init/", request)
+            if "error_list" not in res_obj:
+                res_obj = glycan_search_init(config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200 
@@ -66,7 +68,9 @@ class Glycan(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = glycan_search(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/glycan/search/", request)
+            if "error_list" not in res_obj:
+                res_obj = glycan_search(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200 
@@ -87,7 +91,9 @@ class Glycan(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = glycan_search_simple(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/glycan/search_simple/", request)
+            if "error_list" not in res_obj:
+                res_obj = glycan_search_simple(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -109,7 +115,9 @@ class Glycan(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = get_cached_records_indirect(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/glycan/list/", request)
+            if "error_list" not in res_obj:
+                res_obj = get_cached_records_indirect(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -119,18 +127,23 @@ class Glycan(Resource):
     def get(self):
         return self.post()
 
-@api.route('/detail/<glytoucan_ac>/')
+#@api.route('/detail/<glytoucan_ac>/')
+@api.route('/detail/')
 @api.doc(params={"glytoucan_ac": {"in": "query", "default": "G17689DH"}})
 class Glycan(Resource):
     @api.doc('detail')
-    def post(self, glytoucan_ac):
+    #def post(self, glytoucan_ac):
+    def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = {"glytoucan_ac":glytoucan_ac}
-            res_obj = glycan_detail(req_obj, config_obj)
+            #req_obj = {"glytoucan_ac":glytoucan_ac}
+            req_obj = get_req_obj(request)
+            res_obj = log_request(req_obj, "/glycan/detail/", request)
+            if "error_list" not in res_obj:
+                res_obj = glycan_detail(req_obj, config_obj)
             #res_obj = jsonify(res_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
@@ -138,8 +151,10 @@ class Glycan(Resource):
         return res_obj, http_code
 
     @api.doc(False)
-    def get(self, glytoucan_ac):
-        return self.post(glytoucan_ac)
+    #def get(self, glytoucan_ac):
+    def get(self):
+        return self.post()
+        #return self.post(glytoucan_ac)
 
 
 @api.route('/image/<glytoucan_ac>/')
@@ -153,9 +168,11 @@ class Glycan(Resource):
         res_obj = {}
         try:
             req_obj = {"glytoucan_ac":glytoucan_ac}
-            data_path = os.environ["DATA_PATH"]
-            img_file = glycan_image(req_obj, data_path)
-            return send_file(img_file, mimetype='image/png')
+            res_obj = log_request(req_obj, "/glycan/image/", request)
+            if "error_list" not in res_obj:
+                data_path = os.environ["DATA_PATH"]
+                img_file = glycan_image(req_obj, data_path)
+                return send_file(img_file, mimetype='image/png')
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
