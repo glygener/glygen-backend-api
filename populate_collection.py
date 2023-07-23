@@ -94,7 +94,7 @@ def main():
 
         for coll in coll_list:
 
-            log_file = "logs/%s_loading_progress.txt" % (coll)
+            log_file = "logs/%s_loading_progress_%s.txt" % (coll, server)
             msg = "\n ... started loading %s.%s version %s" % (glydb_name, coll, ver)
             write_progress_msg(msg, "w")
 
