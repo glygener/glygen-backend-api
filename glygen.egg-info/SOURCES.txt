@@ -5,6 +5,8 @@ setup.py
 glygen/__init__.py
 glygen/auth.py
 glygen/auth_apilib.py
+glygen/biomarker.py
+glygen/biomarker_apilib.py
 glygen/data.py
 glygen/data_apilib.py
 glygen/db.py

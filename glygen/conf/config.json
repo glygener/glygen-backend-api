@@ -175,6 +175,7 @@
                 "synonyms"],
             "c_alignment":["_id"],
             "c_publication":["_id"],
+            "c_biomarker":["_id"],
             "c_glycan":["_id", "glytoucan_ac"]
         }
         ,"taxid2name":{
@@ -361,6 +362,13 @@
             }
             ,"requiredfields":["id", "type"]
             ,"collectionlist":["c_publication"]
+        }
+        ,"biomarker_detail":{
+            "field_info":{
+                "id":{"type":"string", "maxlen":200}
+            }
+            ,"requiredfields":["id"]
+            ,"collectionlist":["c_biomarker"]
         }
         ,"motif_detail":{
             "field_info":{
@@ -1034,6 +1042,7 @@
             ,"motif_detail":{"cache":"c_motif", "formatlist":["json", "csv","png"]}
             ,"site_detail":{"cache":"c_site", "formatlist":["json"]}
             ,"publication_detail":{"cache":"c_publication", "formatlist":["json"]}
+            ,"biomarker_detail":{"cache":"c_biomarker", "formatlist":["json"]}
             ,"protein_detail_isoformset":{"cache":"c_protein", "formatlist":["fasta"]}
             ,"protein_detail_homologset":{"cache":"c_protein", "formatlist":["fasta"]}
             ,"glycan_image":{"cache":"c_glycan", "formatlist":["png"]}

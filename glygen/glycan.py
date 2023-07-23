@@ -28,6 +28,11 @@ search_simple_query_model = api.model(
 GLYCAN_ID = api.model("GLYCAN_ID", {"glycan_id": fields.String(required=True, default="G17689DH")})
 search_query_model = api.model("Glycan Search Query", {"glycan_identifier":fields.Nested(GLYCAN_ID)})
 search_init_query_model = api.model("Glycan Search Init Query", {})
+detail_query_model = api.model("Glycan Detail Query",
+    { 
+        "glytoucan_ac": fields.String(required=True, default="G17689DH")
+    }
+)
 list_query_model = api.model("Glycan List Query",{ "id": fields.String(required=True, default="")})
 
 
@@ -129,9 +134,10 @@ class Glycan(Resource):
 
 #@api.route('/detail/<glytoucan_ac>/')
 @api.route('/detail/')
-@api.doc(params={"glytoucan_ac": {"in": "query", "default": "G17689DH"}})
+#@api.doc(params={"glytoucan_ac": {"in": "query", "default": "G17689DH"}})
 class Glycan(Resource):
     @api.doc('detail')
+    @api.expect(detail_query_model)
     #def post(self, glytoucan_ac):
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))

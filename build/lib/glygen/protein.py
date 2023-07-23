@@ -28,6 +28,11 @@ search_simple_query_model = api.model("Protein Simple Search Query",
 search_query_model = api.model("Protein Search Query",
     { "uniprot_canonical_ac": fields.String(required=True, default="P12314")}
 )
+detail_query_model = api.model("Protein Detail Query",
+    {
+        "uniprot_canonical_ac": fields.String(required=True, default="P14210-1")
+    }
+)
 list_query_model = api.model("Protein List Query",{ "id": fields.String(required=True, default="")})
 
 alignment_query_model = api.model("Protein Alignment Query",
@@ -136,10 +141,11 @@ class Protein(Resource):
 
 
 #@api.route('/detail/<uniprot_canonical_ac>/')
+#@api.doc(params={"uniprot_canonical_ac": {"in": "query", "default": "P14210"}})
 @api.route('/detail/')
-@api.doc(params={"uniprot_canonical_ac": {"in": "query", "default": "P14210"}})
 class Protein(Resource):
     @api.doc('detail')
+    @api.expect(detail_query_model)
     #def post(self, uniprot_canonical_ac):
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))

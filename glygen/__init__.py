@@ -16,6 +16,7 @@ from .pages import api as pages_api
 from .seqmapping import api as seqmapping_api
 from .motif import api as motif_api
 from .publication import api as publication_api
+from .biomarker import api as biomarker_api
 from .site import api as site_api
 from .idmapping import api as idmapping_api
 from .typeahead import api as typeahead_api
@@ -47,6 +48,7 @@ def create_app():
     api.add_namespace(protein_api)
     api.add_namespace(site_api)
     api.add_namespace(publication_api)
+    api.add_namespace(biomarker_api)
     api.add_namespace(usecases_api)
     api.add_namespace(idmapping_api)
     api.add_namespace(seqmapping_api)

@@ -146,3 +146,6 @@
   $ http POST :8082/graph/getdata/ < tests/temp/graph_getdata.json
 
 
+  $ http POST :8082/biomarker/detail/ < tests/examples/biomarker/detail.json
+
+
