@@ -21,7 +21,7 @@ list_download_query_model = api.model(
     "List Download Query", 
     { 
         "id": fields.String(required=True, default=""),
-        "type": fields.String(required=True, default="glycan_list"),
+        "download_type": fields.String(required=True, default="glycan_list"),
         "format": fields.String(required=True, default="csv"),
         "compressed": fields.Boolean(required=True, default=False)
     }
@@ -31,7 +31,7 @@ detail_download_query_model = api.model(
     "Detail Download Query",
     {
         "id": fields.String(required=True, default="G17689DH"),
-        "type": fields.String(required=True, default="glycan_detail"),
+        "download_type": fields.String(required=True, default="glycan_detail"),
         "format": fields.String(required=True, default="json"),
         "compressed": fields.Boolean(required=True, default=False)
     }
@@ -41,7 +41,7 @@ section_download_query_model = api.model(
     "Section Download Query",
     {
         "id": fields.String(required=True, default="G17689DH"),
-        "type": fields.String(required=True, default="glycan_section"),
+        "download_type": fields.String(required=True, default="glycan_section"),
         "section": fields.String(required=True, default="glycoprotein"),
         "tab": fields.String(required=False, default="reported"),
         "format": fields.String(required=True, default="csv"),
