@@ -355,7 +355,20 @@
             ,"requiredfields":["glytoucan_ac"]
             ,"collectionlist":["c_glycan"]
         }
-        ,"publication_detail":{
+        ,"pagination_page":{
+            "field_info":{
+                "record_type":{"type":"string", "maxlen":200}
+		,"record_id":{"type":"string", "maxlen":200}
+		,"table_id":{"type":"string", "maxlen":200}
+            	,"sort":{"type":"string"}
+                ,"order":{"type":"string"}
+                ,"limit":{"type":"number"}
+                ,"offset":{"type":"number"}
+	    }
+            ,"requiredfields":["record_type", "record_id", "table_id", "sort", "order", "limit", "offset"]
+            ,"collectionlist":[]
+        }
+	,"publication_detail":{
             "field_info":{
                 "id":{"type":"string", "maxlen":200},
                 "type":{"type":"string", "maxlen":20},

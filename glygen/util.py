@@ -1117,6 +1117,7 @@ def get_paginated_sections(obj, query_obj, section_list):
             sec_tables[table_id].append(o)
             tableid2sec[table_id] = sec
 
+
     for q in query_obj["paginated_tables"]:
         if "table_id" not in q:
             return {"error_list":[{"error_code":"missing-table_id-parameter"}]}

@@ -34,6 +34,8 @@ glygen/motif.py
 glygen/motif_apilib.py
 glygen/pages.py
 glygen/pages_apilib.py
+glygen/pagination.py
+glygen/pagination_apilib.py
 glygen/protein.py
 glygen/protein_apilib.py
 glygen/publication.py

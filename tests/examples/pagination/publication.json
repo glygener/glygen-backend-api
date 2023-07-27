@@ -1,0 +1,9 @@
+{
+  "record_type":"publication",
+  "record_id":"pubmed.29741879",
+  "table_id": "referenced_proteins",
+  "offset":1,
+  "limit":2,
+  "sort": "uniprot_canonical_ac",
+  "order":"asc"
+}

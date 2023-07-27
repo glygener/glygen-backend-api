@@ -154,3 +154,4 @@
   $ http POST :8082/biomarker/detail/ < tests/examples/biomarker/detail.json
 
 
+  $ http POST :8082/pagination/page/ < tests/examples/pagination/page.json
