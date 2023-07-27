@@ -1,7 +1,8 @@
 #srv="prd"
-srv="beta"
-#srv="tst"
+#srv="beta"
+srv="tst"
 
+#mod=substructure
 #mod="mongo"
 mod="api"
 

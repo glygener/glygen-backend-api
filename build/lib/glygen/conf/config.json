@@ -287,6 +287,7 @@
                     "operation":{"type":"string"},
                     "annotation_category":{"type":"string"}
                 }
+                ,"biomarker":{"id":{"type":"string"}, "name":{"type":"string"}, "type":{"type":"string"}}
                 ,"mass":{"min":{"type":"number"}, "max":{"type":"number"}}
                 ,"composition":{
                     "residue":{"type":"string"}, 
@@ -430,6 +431,7 @@
                 ,"glycosylation_evidence":{"type":"string"}
                 ,"mass":{"min":{"type":"number"}, "max":{"type":"number"}}        
                 ,"organism":{"id":{"type":"number"}, "name":{"type":"string"}}
+                ,"biomarker":{"id":{"type":"string"}, "name":{"type":"string"}, "type":{"type":"string"}}
                 ,"attached_glycan_id":{"type":"string"}
                 ,"sequence":{"aa_sequence":{"type":"string"}, "type":{"type":"string"}}
                 ,"glycosylated_aa":{"aa_list":{"type":"list"}, "operation":{"type":"string"}}

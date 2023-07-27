@@ -474,9 +474,24 @@ def get_mongo_query(query_obj):
     #organism
     if "organism" in query_obj:
         if "id" in query_obj["organism"]:
-            if query_obj["organism"]["id"] > 0:
+            if len(query_obj["organism"]["id"]) > 0:
                 cond_objs.append({"species.taxid": {'$eq': query_obj["organism"]["id"]}})
+    
+    #biomarker
+    if "biomarker" in query_obj:
+        if "id" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["id"]) > 0:
+                o = {"biomarkers.biomarker_id": {'$regex': query_obj["biomarker"]["id"], '$options': 'i'}}
+                cond_objs.append(o)
+        if "name" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["name"]) > 0:
+                o = {"biomarkers.assessed_biomarker_entity":{'$regex':query_obj["biomarker"]["name"],'$options':'i'}}
+                cond_objs.append(o)
 
+        if "type" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["type"]) > 0:
+                o = {"biomarkers.best_biomarker_type": {'$regex': query_obj["biomarker"]["type"], '$options': 'i'}}
+                cond_objs.append(o)
 
     #gene_name
     if "gene_name" in query_obj:

@@ -31,7 +31,8 @@ def get_req_obj(request):
         req_obj = request.json
     else:
         req_obj = json.loads(query_str)
-    trim_object(req_obj)
+    if req_obj != None:
+        trim_object(req_obj)
     return  req_obj
 
 

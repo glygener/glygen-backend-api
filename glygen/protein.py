@@ -140,21 +140,24 @@ class Protein(Resource):
 
 
 
-#@api.route('/detail/<uniprot_canonical_ac>/')
-#@api.doc(params={"uniprot_canonical_ac": {"in": "query", "default": "P14210"}})
-@api.route('/detail/')
+@api.route('/detail/<uniprot_canonical_ac>/')
+@api.doc(params={"uniprot_canonical_ac": {"in": "query", "default": "P14210"}})
+#@api.route('/detail/')
 class Protein(Resource):
     @api.doc('detail')
     @api.expect(detail_query_model)
-    #def post(self, uniprot_canonical_ac):
-    def post(self):
+    def post(self, uniprot_canonical_ac):
+    #def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            #req_obj = {"uniprot_canonical_ac":uniprot_canonical_ac}
-            req_obj = get_req_obj(request)
+            req_obj = {"uniprot_canonical_ac":uniprot_canonical_ac}
+            req_obj_extra = get_req_obj(request)
+            if req_obj_extra != None:
+                if "paginated_tables" in req_obj_extra:
+                    req_obj["paginated_tables"] = req_obj_extra["paginated_tables"]
             res_obj = log_request(req_obj, "/protein/detail/", request)
             if "error_list" not in res_obj:
                 res_obj = protein_detail(req_obj, config_obj)
@@ -164,10 +167,10 @@ class Protein(Resource):
         return res_obj, http_code
 
     @api.doc(False)
-    #def get(self, uniprot_canonical_ac):
-    def get(self):
-        #return self.post(uniprot_canonical_ac)
-        return self.post()
+    def get(self, uniprot_canonical_ac):
+    #def get(self):
+        return self.post(uniprot_canonical_ac)
+        #return self.post()
 
 @api.route('/alignment/')
 class Protein(Resource):

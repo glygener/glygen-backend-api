@@ -66,7 +66,8 @@ def motif_detail(query_obj, config_obj):
     prop_list = ["motif", "glytoucan","name",  "mass", "publication"]
     prop_list += ["synonym", "crossref","keywords", "reducing_end","aglycon","reducing_end",
         "alignment_method", "dictionary", 
-        "iupac","wurcs","glycoct","inchi","smiles_isomeric", "glycam", "byonic", "gwb"
+        "iupac","wurcs","glycoct","inchi","smiles_isomeric", "glycam", "byonic", "gwb",
+        "biomarkers"
     ]
 
 

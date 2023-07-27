@@ -4,17 +4,22 @@
     $ http POST :8082/protein/search_simple/ < tests/temp/protein_search_simple.json
     $ http POST :8082/protein/search/ < tests/temp/protein_search.json
     $ http POST :8082/protein/list/ < tests/temp/protein_list.json
-    $ http POST :8082/protein/detail/P14210-1/
+    $ http POST :8082/protein/detail/ < tests/examples/protein/detail.json
     $ http POST :8082/protein/alignment/ < tests/temp/protein_alignment.json
+    
+    $ http POST :8082/protein/search/ < tests/examples/protein/search.1.json
 
 
     $ http POST :8082/glycan/search_init/ < tests/temp/empty.json
     $ http POST :8082/glycan/search_simple/ < tests/temp/glycan_search_simple.json
     $ http POST :8082/glycan/search/ < tests/temp/glycan_search.json
     $ http POST :8082/glycan/list/ < tests/temp/glycan_list.json
-    $ http POST :8082/glycan/detail/G17689DH/
+    $ http POST :8082/glycan/detail/ < tests/examples/glycan/detail.json 
     $ http POST :8082/glycan/image/G17689DH/
     $ http POST :8082/glycan/pdb/G17689DH/
+
+    $ http POST :8082/glycan/search/ < tests/examples/glycan/search.1.json
+
 
     $ http POST :8082/auth/userdelete/ < tests/temp/auth_userdelete.json
     $ http POST :8082/auth/register/ < tests/temp/auth_register.json
@@ -51,7 +56,7 @@
   $ http POST :8082/globalsearch/search/ < tests/temp/globalsearch_search.json
   $ http POST :8082/pages/home_init/ < tests/temp/empty.json
   $ http POST :8082/seqmapping/search/ < tests/temp/seqmapping_search.json
-  $ http POST :8082/publication/detail/ < tests/temp/publication_detail.json
+  $ http POST :8082/publication/detail/ < tests/examples/publication/detail.json
 
   $ http POST :8082/motif/detail/ < tests/temp/motif_detail.json
   $ http POST :8082/motif/list/ < tests/temp/motif_list.json

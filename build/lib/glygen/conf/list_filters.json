@@ -103,6 +103,25 @@
                 "s":"Sulfate",
                 "other":"Other"
             }
+        },
+	"by_biomarker_type":{
+            "group_order":7,
+            "group_label":"By Biomarker Type",
+            "record_key":"biomarker_type",
+            "order_dict":{
+		"diagnostic":1,
+		"monitoring":2,
+            	"predictive":3,
+            	"prognostic":4,
+            	"risk":5	
+	    },
+            "label_dict":{
+		"diagnostic":"Diagnostic",
+                "monitoring":"Monitoring",
+                "predictive":"Predictive",
+                "prognostic":"Prognostic",
+                "risk":"Risk"
+	    }
         }
     },
     "protein":{
@@ -195,6 +214,25 @@
             "order_dict":{
                 "Mutagenesis":1,"SNV":2,"Pathway":3,"Disease":4,"Glycation":5,"Binding":6,
                 "Publication":7
+            }
+        },
+	"by_biomarker_type":{
+            "group_order":4,
+            "group_label":"By Biomarker Type",
+            "record_key":"biomarker_type",
+            "order_dict":{
+                "diagnostic":1,
+                "monitoring":2,
+                "predictive":3,
+                "prognostic":4,
+                "risk":5
+            },
+            "label_dict":{
+                "diagnostic":"Diagnostic",
+                "monitoring":"Monitoring",
+                "predictive":"Predictive",
+                "prognostic":"Prognostic",
+                "risk":"Risk"
             }
         }
     },

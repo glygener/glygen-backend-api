@@ -12,7 +12,7 @@ from bson import json_util, ObjectId
 from glygen.db import get_mongodb
 from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, order_obj, get_paginated_sections
 
-
+    
 def glycan_search_init(config_obj):
    
     dbh, error_obj = get_mongodb()
@@ -437,6 +437,20 @@ def get_mongo_query(query_obj):
             q = q_two if rel == "any" else q_one
             cond_objs.append(q)
 
+    #biomarker
+    if "biomarker" in query_obj:
+        if "id" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["id"]) > 0:
+                o = {"biomarkers.biomarker_id": {'$regex': query_obj["biomarker"]["id"], '$options': 'i'}}
+                cond_objs.append(o)
+        if "name" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["name"]) > 0:
+                o = {"biomarkers.assessed_biomarker_entity":{'$regex':query_obj["biomarker"]["name"],'$options':'i'}}
+                cond_objs.append(o)
+        if "type" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["type"]) > 0:
+                o = {"biomarkers.best_biomarker_type": {'$regex': query_obj["biomarker"]["type"], '$options': 'i'}}
+                cond_objs.append(o)
 
     
     #organism
