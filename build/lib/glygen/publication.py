@@ -33,6 +33,7 @@ class Publication(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
+            return {}
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/publication/detail/", request)
             if "error_list" not in res_obj:
