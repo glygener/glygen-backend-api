@@ -451,6 +451,22 @@ def get_mongo_query(query_obj):
             if len(query_obj["biomarker"]["type"]) > 0:
                 o = {"biomarkers.best_biomarker_type": {'$regex': query_obj["biomarker"]["type"], '$options': 'i'}}
                 cond_objs.append(o)
+        if "disease_id" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["disease_id"]) > 0:
+                disease_id = query_obj["biomarker"]["disease_id"]
+                or_list = [
+                    {"biomarkers.disease.recommended_name.id":{'$regex':disease_id,'$options':'i'}},
+                    {"biomarkers.disease.synonyms.id":{'$regex':disease_id,'$options':'i'}},
+                ]
+                cond_objs.append({'$or':or_list})
+        if "disease_name" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["disease_name"]) > 0:
+                disease_name = query_obj["biomarker"]["disease_name"]
+                or_list = [
+                    {"biomarkers.disease.recommended_name.name":{'$regex':disease_name,'$options':'i'}},
+                    {"biomarkers.disease.synonyms.name":{'$regex':disease_name,'$options':'i'}}
+                ]
+                cond_objs.append({'$or':or_list})
 
     
     #organism

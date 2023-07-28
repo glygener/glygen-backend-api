@@ -7,7 +7,7 @@
     $ http POST :8082/protein/detail/ < tests/examples/protein/detail.json
     $ http POST :8082/protein/alignment/ < tests/temp/protein_alignment.json
     
-    $ http POST :8082/protein/search/ < tests/examples/protein/search.1.json
+    $ http POST :8082/protein/search/ < tests/examples/protein/search_by_biomarker_id.json
 
 
     $ http POST :8082/glycan/search_init/ < tests/temp/empty.json

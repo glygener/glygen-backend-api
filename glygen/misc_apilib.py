@@ -39,13 +39,12 @@ def verlist(config_obj):
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
-    
+   
+    init_obj = dbh["c_init"].find_one({})
     out_obj = []
-    for coll in dbh.collection_names():
-        if coll.find("c_bco_v-") != -1:
-            rel = coll[8:]
-            out_obj.append(rel)
-
+    for rel in init_obj["versionlist"]:
+        out_obj.append(rel)
+ 
     return out_obj
 
 def messagelist(config_obj):
@@ -935,11 +934,14 @@ def get_filename_list(masterlist_file):
 
 def gtclist(config_obj, data_path):
 
-    url = "https://api.glygen.org//misc/verlist/"
-    cmd = "curl -s -k %s" % (url)
-    res = subprocess.getoutput(cmd)
-    release_list = sorted(json.loads(res))
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
 
+    init_obj = dbh["c_init"].find_one({})
+    release_list = []
+    for rel in init_obj["versionlist"]:
+        release_list.append(rel)
 
     seen = {}
     for rel in release_list:
