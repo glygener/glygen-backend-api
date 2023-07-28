@@ -71,10 +71,11 @@ class Typeahead(Resource):
                 elif "error_list" in tmp_obj_two: 
                     res_obj = tmp_obj_two
                 else:
-                    res_obj = tmp_obj_one + tmp_obj_two
+                    res_obj = sorted(list(set(tmp_obj_one + tmp_obj_two)))
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
+        
         return res_obj, http_code
 
 
