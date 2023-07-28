@@ -1,0 +1,7 @@
+{
+	"field": "biomarker_disease_id",
+	"limit": 10,
+   	"value": "DOID:17"
+}
+
+

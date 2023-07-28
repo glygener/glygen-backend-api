@@ -5,7 +5,7 @@
             "table_id": "glycosylation_reported_with_glycan",
             "offset":1,
             "limit":2,
-            "sort": "glytoucan_ac",
+            "sort": "site_lbl",
             "order":"asc"
         },
         {
