@@ -305,6 +305,13 @@ def sort_objects_new(obj_list, field_name, order_type):
             if field_name not in obj:
                 obj[field_name] = -1
             grid_obj[field_name].append({"index":i, field_name:int(obj[field_name])})
+        else:
+            if field_name not in grid_obj:
+                grid_obj[field_name] = []
+            if field_name not in obj:
+                obj[field_name] = ""
+            grid_obj[field_name].append({"index":i, field_name:obj[field_name]})
+        
     reverse_flag = True if order_type == "desc" else False
     key_list = []
     sorted_obj_list = sorted(grid_obj[field_name], key=lambda x: x[field_name], reverse=reverse_flag)
@@ -1127,11 +1134,7 @@ def get_paginated_sections(obj, query_obj, section_list):
             offset = q["offset"] if "offset" in q else 1
             limit = q["limit"] if "limit" in q else 20
             if type(sec_tables[table_id][0]) is dict:
-
-                if "sort" in q:
-                    if q["sort"] not in sec_tables[table_id][0]:
-                        return {"error_list":[{"error_code":"unknown-sort-field-%s-in-section-%s" % (q["sort"], table_id)}]}
-                else:
+                if "sort" not in q:
                     key_list = list(sec_tables[table_id][0].keys())
                     q["sort"] = key_list[0]
                 sorted_idx_list = sort_objects_new(sec_tables[table_id], q["sort"], sort_order)

@@ -1,0 +1,27 @@
+{
+    	"paginated_tables":[
+        {
+            "table_id": "glycosylation_reported_with_glycan",
+            "offset":1,
+            "limit":2,
+            "sort": "site_lbl",
+            "order":"asc"
+        },
+        {
+            "table_id": "glycosylation_reported",
+            "offset":1,
+            "limit":2,
+            "sort": "start_pos",
+            "order":"asc"
+        },
+        {
+            "table_id": "phosphorylation",
+            "offset":1,
+            "limit":2,
+            "sort": "start_pos",
+            "order":"asc"
+        }
+    ]
+
+}
+

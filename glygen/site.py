@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.site_apilib import site_search_init, site_detail
-from glygen.util import trim_object
+from glygen.util import trim_object, get_req_obj
 import traceback
 
 
@@ -53,6 +53,10 @@ class Site(Resource):
         res_obj = {}
         try:
             req_obj = {"site_id":site_id}
+            req_obj_extra = get_req_obj(request)
+            if req_obj_extra != None:
+                if "paginated_tables" in req_obj_extra:
+                    req_obj["paginated_tables"] = req_obj_extra["paginated_tables"]
             res_obj = log_request(req_obj, "/site/detail/", request)
             if "error_list" not in res_obj:
                 res_obj = site_detail(req_obj, config_obj)

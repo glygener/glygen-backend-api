@@ -1,0 +1,13 @@
+{
+    "motif_ac":"GGM.000022",
+    "paginated_tables":[
+        {
+            "table_id": "results",
+            "offset":1,
+            "limit":3,
+            "sort":"glytoucan_ac",
+	    "order":"asc"
+        }
+    ]
+}
+

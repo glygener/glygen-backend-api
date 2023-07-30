@@ -9,7 +9,8 @@ from collections import OrderedDict
 
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query
+from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, get_paginated_sections
+
 
 
 
@@ -77,6 +78,20 @@ def site_detail(query_obj, config_obj):
             "refseq"]:
         if k in canon_doc and k not in site_doc:
             site_doc[k] = canon_doc[k]
+
+
+    
+    if "paginated_tables" in query_obj:
+        seen = {}
+        for o in query_obj["paginated_tables"]:
+            sec = o["table_id"].split("_")[0] if o["table_id"].find("glycosylation_") != -1 else o["table_id"]
+            seen[sec] = True
+        section_list = list(seen.keys())
+        sec_tables = get_paginated_sections(site_doc, query_obj, section_list)
+        if "error_list" in sec_tables:
+            return sec_tables
+        for sec in sec_tables:
+            site_doc[sec] = sec_tables[sec]
 
 
     return site_doc

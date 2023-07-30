@@ -398,7 +398,8 @@
                 ,"order":{"type":"string"}
                 ,"limit":{"type":"number"}
                 ,"offset":{"type":"number"}
-            }
+            	,"paginated_tables":{"type":"string", "maxlen":10000}
+	    }
             ,"requiredfields":[]
             ,"collectionlist":["c_motif"]
         }
@@ -622,7 +623,8 @@
         ,"site_detail":{
             "field_info":{
                 "site_id":{"type":"string"}
-            }
+	    	,"paginated_tables":{"type":"string", "maxlen":10000} 
+	    }
             ,"requiredfields":["site_id"]
             ,"collectionlist":["c_site"]
         }

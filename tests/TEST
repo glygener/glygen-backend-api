@@ -4,7 +4,7 @@
     $ http POST :8082/protein/search_simple/ < tests/temp/protein_search_simple.json
     $ http POST :8082/protein/search/ < tests/temp/protein_search.json
     $ http POST :8082/protein/list/ < tests/temp/protein_list.json
-    $ http POST :8082/protein/detail/ < tests/examples/protein/detail.json
+    $ http POST :8082/protein/detail/P14210-1/ < tests/examples/protein/detail.json
     $ http POST :8082/protein/alignment/ < tests/temp/protein_alignment.json
     
     $ http POST :8082/protein/search/ < tests/examples/protein/search_by_biomarker_id.json
@@ -14,7 +14,7 @@
     $ http POST :8082/glycan/search_simple/ < tests/temp/glycan_search_simple.json
     $ http POST :8082/glycan/search/ < tests/temp/glycan_search.json
     $ http POST :8082/glycan/list/ < tests/temp/glycan_list.json
-    $ http POST :8082/glycan/detail/ < tests/examples/glycan/detail.json 
+    $ http POST :8082/glycan/detail/G17689DH/ < tests/examples/glycan/detail.json 
     $ http POST :8082/glycan/image/G17689DH/
     $ http POST :8082/glycan/pdb/G17689DH/
 
