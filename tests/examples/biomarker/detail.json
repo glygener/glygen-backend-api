@@ -1,3 +1,19 @@
 {
-    "id": "A0383"
+    "id": "A0001",
+	"paginated_tables":[
+        {
+            "table_id": "disease",
+            "offset":1,
+            "limit":2,
+            "sort":"disease_id",
+	    "order":"asc"
+        },
+	{
+            "table_id": "publication",
+            "offset":1,
+            "limit":2,
+            "sort":"authors",
+            "order":"asc"
+        }
+    ]
 }

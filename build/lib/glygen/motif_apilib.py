@@ -114,8 +114,9 @@ def motif_detail(query_obj, config_obj):
         sec_tables = get_paginated_sections(res_obj, query_obj, section_list)
         if "error_list" in sec_tables:
             return sec_tables
-        for sec in sec_tables:
-            res_obj[sec] = sec_tables[sec]
+        for sec in seen:
+            if sec in sec_tables:
+                res_obj[sec] = sec_tables[sec]
 
 
     return order_obj(res_obj, config_obj["objectorder"]["glycan"])

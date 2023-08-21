@@ -22,6 +22,8 @@ COPY ./requirements.txt .
 
 RUN pip3 install -r requirements.txt
 
+COPY ./tools/swagger-ui.html /usr/local/lib/python3.6/site-packages/flask_restx/templates/swagger-ui.html
+
 COPY ./dist/glygen-1.0-py3-none-any.whl .
 
 RUN pip3 install glygen-1.0-py3-none-any.whl

@@ -58,7 +58,6 @@ def publication_detail(query_obj, config_obj):
             if sec in publication_doc:
                 publication_doc[sec] += batch_doc["sections"][sec]
 
-    
 
     if "paginated_tables" in query_obj:
         seen = {}
@@ -69,8 +68,9 @@ def publication_detail(query_obj, config_obj):
         sec_tables = get_paginated_sections(publication_doc, query_obj, section_list)
         if "error_list" in sec_tables:
             return sec_tables
-        for sec in sec_tables:
-            publication_doc[sec] = sec_tables[sec]
+        for sec in seen:
+            if sec in sec_tables:
+                publication_doc[sec] = sec_tables[sec]
 
 
     clean_obj(publication_doc, config_obj["removelist"]["c_publication"], "c_publication")

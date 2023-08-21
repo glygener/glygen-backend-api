@@ -905,11 +905,12 @@ def update_filters(res_obj, step):
                     tmp_list = record_obj[k].split(";")
 
                 for option_id in tmp_list:
-                    if option_id.strip() != "":
+                    option_id = option_id.strip()
+                    if option_id != "":
                         if filter_group_id == "by_glycan_type":
-                            option_id = option_id.strip().split("/")[0]
+                            option_id = option_id.split("/")[0]
                         if filter_group_id == "by_monosaccharide":
-                            option_id = option_id.strip().split(" ")[0]
+                            option_id = option_id.split(" ")[0]
                         seen_option_id[option_id] = True
                 
                 for option_id in seen_option_id:

@@ -287,12 +287,12 @@
                     "operation":{"type":"string"},
                     "annotation_category":{"type":"string"}
                 }
-                ,"biomarker":{
-		    "id":{"type":"string"}
-		    ,"name":{"type":"string"}
-	            ,"type":{"type":"string"}
-                    ,"disease_id":{"type":"string"}
-                    ,"disease_name":{"type":"string"}
+		,"biomarker":{
+			"id":{"type":"string"}
+	        	,"name":{"type":"string"}
+			,"type":{"type":"string"}
+			,"disease_id":{"type":"string"}
+			,"disease_name":{"type":"string"}
 		}
 		,"mass":{"min":{"type":"number"}, "max":{"type":"number"}}
                 ,"composition":{
@@ -386,7 +386,8 @@
         ,"biomarker_detail":{
             "field_info":{
                 "id":{"type":"string", "maxlen":200}
-            }
+            	,"paginated_tables":{"type":"string", "maxlen":10000}
+	    }
             ,"requiredfields":["id"]
             ,"collectionlist":["c_biomarker"]
         }

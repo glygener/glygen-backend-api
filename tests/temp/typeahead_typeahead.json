@@ -1,5 +1,5 @@
 {
-            "field": "glytoucan_ac",
+            "field": "biomarker_disease_id",
             "limit": 10,
-            "value": "G"
-        }
+            "value": "001"
+}

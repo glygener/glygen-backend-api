@@ -229,10 +229,8 @@ def glycan_typeahead(query_obj, config_obj):
                         res_obj.append(val)
                         if len(res_obj) >= query_obj["limit"]:
                             return sorted(res_obj)
-    elif query_obj["field"] in  ["biomarker_id", "biomarker_name", "biomarker_type"]:
-        tmp_dict = {"biomarker_id":"biomarker_id", "biomarker_name":"assessed_biomarker_entity",
-            "biomarker_type":"best_biomarker_type"
-        }
+    elif query_obj["field"] in  ["biomarker_id", "biomarker_name"]:
+        tmp_dict = {"biomarker_id":"biomarker_id", "biomarker_name":"assessed_biomarker_entity"}
         f = tmp_dict[query_obj["field"]]
         p = "biomarkers." + f
         mongo_query = {p: {'$regex': query_obj["value"], '$options': 'i'}}
@@ -244,23 +242,36 @@ def glycan_typeahead(query_obj, config_obj):
                     res_obj.append(val)
                     if len(res_obj) >= query_obj["limit"]:
                         return sorted(res_obj)
+    elif query_obj["field"] in  ["biomarker_type"]:
+        p = "biomarkers.instances.best_biomarker_type"
+        mongo_query = {p: {'$regex': query_obj["value"], '$options': 'i'}}
+        prj_obj = {"biomarkers":1}
+        for obj in dbh[collection].find(mongo_query, prj_obj):
+            for o in obj["biomarkers"]:
+                for oo in o["instances"]:
+                    val = oo["best_biomarker_type"]
+                    if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
+                        res_obj.append(val)
+                        if len(res_obj) >= query_obj["limit"]:
+                            return sorted(res_obj)
     elif query_obj["field"] == "biomarker_disease_name":
         mongo_query = {
             "$or":[
-             {"biomarkers.disease.recommended_name.name": {'$regex': query_obj["value"], '$options': 'i'}}
-            ,{"biomarkers.disease.synonyms.name": {'$regex': query_obj["value"], '$options': 'i'}}
+             {"biomarkers.instances.disease.recommended_name.name": {'$regex': query_obj["value"], '$options': 'i'}}
+            ,{"biomarkers.instances.disease.synonyms.name": {'$regex': query_obj["value"], '$options': 'i'}}
             ]
         }
         prj_obj = {"biomarkers":1}
         for obj in dbh[collection].find(mongo_query,prj_obj):
             for o in obj["biomarkers"]:
-                for oo in o["disease"]:
+                for oo in o["instances"]:
+                    ooo = oo["disease"]
                     val_list = []
-                    if "recommended_name" in oo:
-                        val_list.append(oo["recommended_name"]["name"])
-                    if "synonyms" in oo:
-                        for ooo in oo["synonyms"]:
-                            val_list.append(ooo["name"])
+                    if "recommended_name" in ooo:
+                        val_list.append(ooo["recommended_name"]["name"])
+                    if "synonyms" in ooo:
+                        for oooo in ooo["synonyms"]:
+                            val_list.append(oooo["name"])
                     for val in val_list:
                         if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
                             val = val.split("[")[0]
@@ -270,20 +281,21 @@ def glycan_typeahead(query_obj, config_obj):
     elif query_obj["field"] == "biomarker_disease_id":
         mongo_query = {
             "$or":[
-             {"biomarkers.disease.recommended_name.id": {'$regex': query_obj["value"], '$options': 'i'}}
-            ,{"biomarkers.disease.synonyms.id": {'$regex': query_obj["value"], '$options': 'i'}}
+             {"biomarkers.instances.disease.recommended_name.id": {'$regex': query_obj["value"], '$options': 'i'}}
+            ,{"biomarkers.instances.disease.synonyms.id": {'$regex': query_obj["value"], '$options': 'i'}}
             ]
         }
         prj_obj = {"biomarkers":1}
         for obj in dbh[collection].find(mongo_query,prj_obj):
             for o in obj["biomarkers"]:
-                for oo in o["disease"]:
+                for oo in o["instances"]:
                     val_list = []
-                    if "recommended_name" in oo:
-                        val_list.append(oo["recommended_name"]["id"])
-                    if "synonyms" in oo:
-                        for ooo in oo["synonyms"]:
-                            val_list.append(ooo["id"])
+                    ooo = oo["disease"]
+                    if "recommended_name" in ooo:
+                        val_list.append(ooo["recommended_name"]["id"])
+                    if "synonyms" in ooo:
+                        for oooo in ooo["synonyms"]:
+                            val_list.append(oooo["id"])
                     for val in val_list:
                         if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
                             val = val.split("[")[0]
@@ -469,10 +481,8 @@ def protein_typeahead(query_obj, config_obj):
                         res_obj.append(val)
                         if len(res_obj) >= query_obj["limit"]:
                             return sorted(res_obj) 
-    elif query_obj["field"] in  ["biomarker_id", "biomarker_name", "biomarker_type"]:
-        tmp_dict = {"biomarker_id":"biomarker_id", "biomarker_name":"assessed_biomarker_entity",
-            "biomarker_type":"best_biomarker_type"
-        }
+    elif query_obj["field"] in  ["biomarker_id", "biomarker_name"]:
+        tmp_dict = {"biomarker_id":"biomarker_id", "biomarker_name":"assessed_biomarker_entity"}
         f = tmp_dict[query_obj["field"]]
         p = "biomarkers." + f
         mongo_query = {p: {'$regex': query_obj["value"], '$options': 'i'}}
@@ -484,23 +494,36 @@ def protein_typeahead(query_obj, config_obj):
                     res_obj.append(val)
                     if len(res_obj) >= query_obj["limit"]:
                         return sorted(res_obj)
+    elif query_obj["field"] in  ["biomarker_type"]:
+        p = "biomarkers.instances.best_biomarker_type"
+        mongo_query = {p: {'$regex': query_obj["value"], '$options': 'i'}}
+        prj_obj = {"biomarkers":1}
+        for obj in dbh[collection].find(mongo_query, prj_obj):
+            for o in obj["biomarkers"]:
+                for oo in o["instances"]:
+                    val = oo["best_biomarker_type"]
+                    if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
+                        res_obj.append(val)
+                        if len(res_obj) >= query_obj["limit"]:
+                            return sorted(res_obj) 
     elif query_obj["field"] == "biomarker_disease_name":
         mongo_query = {
             "$or":[
-             {"biomarkers.disease.recommended_name.name": {'$regex': query_obj["value"], '$options': 'i'}}
-            ,{"biomarkers.disease.synonyms.name": {'$regex': query_obj["value"], '$options': 'i'}}
+             {"biomarkers.instances.disease.recommended_name.name": {'$regex': query_obj["value"], '$options': 'i'}}
+            ,{"biomarkers.instances.disease.synonyms.name": {'$regex': query_obj["value"], '$options': 'i'}}
             ]
         }
         prj_obj = {"biomarkers":1}
         for obj in dbh[collection].find(mongo_query,prj_obj):
             for o in obj["biomarkers"]:
-                for oo in o["disease"]:
+                for oo in o["instances"]:
                     val_list = []
-                    if "recommended_name" in oo:
-                        val_list.append(oo["recommended_name"]["name"])
-                    if "synonyms" in oo:
-                        for ooo in oo["synonyms"]:
-                            val_list.append(ooo["name"])
+                    ooo = oo["disease"]
+                    if "recommended_name" in ooo:
+                        val_list.append(ooo["recommended_name"]["name"])
+                    if "synonyms" in ooo:
+                        for oooo in ooo["synonyms"]:
+                            val_list.append(oooo["name"])
                     for val in val_list:
                         if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
                             val = val.split("[")[0]
@@ -510,20 +533,21 @@ def protein_typeahead(query_obj, config_obj):
     elif query_obj["field"] == "biomarker_disease_id":
         mongo_query = {
             "$or":[
-             {"biomarkers.disease.recommended_name.id": {'$regex': query_obj["value"], '$options': 'i'}}
-            ,{"biomarkers.disease.synonyms.id": {'$regex': query_obj["value"], '$options': 'i'}}
+             {"biomarkers.instances.disease.recommended_name.id": {'$regex': query_obj["value"], '$options': 'i'}}
+            ,{"biomarkers.instances.disease.synonyms.id": {'$regex': query_obj["value"], '$options': 'i'}}
             ]
         }
         prj_obj = {"biomarkers":1}
         for obj in dbh[collection].find(mongo_query,prj_obj):
             for o in obj["biomarkers"]:
-                for oo in o["disease"]:
+                for oo in o["instances"]:
                     val_list = []
-                    if "recommended_name" in oo:
-                        val_list.append(oo["recommended_name"]["id"])
-                    if "synonyms" in oo:
-                        for ooo in oo["synonyms"]:
-                            val_list.append(ooo["id"])
+                    ooo = oo["disease"]
+                    if "recommended_name" in ooo:
+                        val_list.append(ooo["recommended_name"]["id"])
+                    if "synonyms" in ooo:
+                        for oooo in ooo["synonyms"]:
+                            val_list.append(oooo["id"])
                     for val in val_list:
                         if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
                             val = val.split("[")[0]

@@ -58,12 +58,13 @@
   $ http POST :8082/seqmapping/search/ < tests/temp/seqmapping_search.json
   $ http POST :8082/publication/detail/ < tests/examples/publication/detail.json
 
-  $ http POST :8082/motif/detail/ < tests/temp/motif_detail.json
+  $ http POST :8082/motif/detail/ < tests/examples/motif/detail.json
   $ http POST :8082/motif/list/ < tests/temp/motif_list.json
 
   $ http POST :8082/site/search_init/ < tests/temp/empty.json
-  $ http POST :8082/site/detail/P02724-1.52.52/
-  
+  $ http POST :8082/site/detail/P02724-1.52.52/ < tests/examples/site/detail.json
+
+ 
   $ http POST :8082/idmapping/search_init/ < tests/temp/empty.json
   $ http POST :8082/idmapping/search/ < tests/temp/idmapping_search.json
   $ http POST :8082/idmapping/list/ < tests/temp/idmapping_list.json
@@ -73,7 +74,13 @@
   $ http POST :8082/typeahead/categorized_typeahead/ < tests/temp/typeahead_categorized_typeahead.json
   $ http POST :8082/typeahead/global_typeahead/ < tests/temp/typeahead_global_typeahead.json
 
+  $ http POST :8082/typeahead/typeahead/ < tests/examples/typeahead/biomarker_id.json
+  $ http POST :8082/typeahead/typeahead/ < tests/examples/typeahead/biomarker_name.json
+  $ http POST :8082/typeahead/typeahead/ < tests/examples/typeahead/biomarker_type.json
+  $ http POST :8082/typeahead/typeahead/ < tests/examples/typeahead/biomarker_disease_id.json
+  $ http POST :8082/typeahead/typeahead/ < tests/examples/typeahead/biomarker_disease_name.json
 
+ 
   $ http POST :8082/log/logging/ < tests/temp/log_logging.json
   $ http POST :8082/log/init/ < tests/temp/log_init.json
   $ http POST :8082/log/access/ < tests/temp/log_access.json
