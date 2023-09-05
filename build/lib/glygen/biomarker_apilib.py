@@ -53,8 +53,8 @@ def biomarker_detail(query_obj, config_obj):
                 biomarker_doc[sec] = sec_tables[sec]
 
 
-
     clean_obj(biomarker_doc, config_obj["removelist"]["c_biomarker"], "c_biomarker")
+    biomarker_doc["crossref"] = []
 
     return biomarker_doc
 

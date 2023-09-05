@@ -1109,28 +1109,33 @@ def get_error_obj(error_code, error_log, log_path):
 
 def get_paginated_sections(obj, query_obj, section_list):
 
-
+    sec_map = {"expression_tissue":"expression", "expression_cell_line":"expression"}
     site_cat_list = ["reported", "reported_with_glycan", "predicted", "text_mining"]
     sec_tables = {}
     tableid2sec = {}
     for sec in section_list:
-        if sec not in obj:
+        sec_new = sec_map[sec]  if sec in sec_map else sec
+        if sec_new not in obj:
             continue
-        for o in obj[sec]:
+        for o in obj[sec_new]:
             table_id = sec
             if sec == "glycosylation" and o["site_category"] in site_cat_list:
                 table_id = "glycosylation_" + o["site_category"]
+            if sec in ["expression_tissue", "expression_cell_line"]:
+                table_id = "expression_" + o["category"]
             if table_id not in sec_tables:
                 sec_tables[table_id] = []
             sec_tables[table_id].append(o)
-            tableid2sec[table_id] = sec
+            tableid2sec[table_id] = sec_new
+
 
 
     for q in query_obj["paginated_tables"]:
         if "table_id" not in q:
             return {"error_list":[{"error_code":"missing-table_id-parameter"}]}
         table_id = q["table_id"]
-        if table_id in sec_tables:
+
+        if table_id in sec_tables and table_id in tableid2sec:
             sort_order = q["order"] if "order" in q else "asc"
             offset = q["offset"] if "offset" in q else 1
             limit = q["limit"] if "limit" in q else 20
@@ -1141,7 +1146,9 @@ def get_paginated_sections(obj, query_obj, section_list):
                 sorted_idx_list = sort_objects_new(sec_tables[table_id], q["sort"], sort_order)
             else:
                 sorted_idx_list = []
-                for v in sorted(sec_tables[table_id]):
+                rev_flag = sort_order == "desc"
+                ordered_values = sorted(sec_tables[table_id], reverse=rev_flag)
+                for v in ordered_values:
                     sorted_idx_list.append(sec_tables[table_id].index(v))
 
             start_index = int(offset) - 1

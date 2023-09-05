@@ -1085,7 +1085,8 @@
             ,"glycan_section":{"cache":"c_glycan", "formatlist":["csv","tsv"]}
             ,"motif_section":{"cache":"c_motif", "formatlist":["csv","tsv"]}
             ,"publication_section":{"cache":"c_publication", "formatlist":["csv","tsv"]}
-
+	    ,"biomarker_section":{"cache":"c_biomarker", "formatlist":["csv","tsv"]}
+            
         }
         ,"dev":{
                 "dbinfo":{

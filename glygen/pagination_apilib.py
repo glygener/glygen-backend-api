@@ -29,7 +29,8 @@ def pagination_page(query_obj, config_obj):
     main_id_dict = {
         "protein":"uniprot_canonical_ac",
         "glycan":"glytoucan_ac",
-        "publication":"record_id"
+        "publication":"record_id",
+        "biomarker":"biomarker_id"
     }
 
     record_type, record_id = query_obj["record_type"], query_obj["record_id"]
@@ -48,13 +49,15 @@ def pagination_page(query_obj, config_obj):
         return {"error_list":post_error_list}
 
    
-
      
     table_id = query_obj["table_id"]
     sec = table_id.split("_")[0] if table_id.find("glycosylation_") != -1 else table_id
     section_list = [sec]
+
+
     q = {"paginated_tables":[query_obj]}
     sec_tables = get_paginated_sections(doc, q, section_list)
+
     if "error_list" in sec_tables:
         return sec_tables
     if sec not in sec_tables:

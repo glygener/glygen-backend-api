@@ -1349,5 +1349,37 @@
             ],
             "sectionfield": "glycans"
         }
+    }, 
+    "biomarker": {
+        "component_protein": {
+            "filterinfo": {
+                "field": "",
+                "valuelist": []
+            },
+            "fieldmap": [
+                {
+                    "path": "protein.accession",
+                    "label": "UniProtKB AC"
+                },
+		{   
+                    "path": "protein.name",
+                    "label": "Protein Name"
+                }
+            ],
+            "sectionfield": "components"
+        },
+	"component_glycan": {
+            "filterinfo": {
+                "field": "",
+                "valuelist": []
+            },
+            "fieldmap": [
+                {
+                    "path": "glycan.accession",
+                    "label": "GlyTouCan AC"
+                }
+            ],
+            "sectionfield": "components"
+        }
     }
 }

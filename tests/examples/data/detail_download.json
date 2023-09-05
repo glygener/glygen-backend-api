@@ -1,8 +1,7 @@
 {
-    "id": "G17689DH",
-    "download_type": "glycan_detail",
-    "format": "json",
-    "compressed": false
+  "id": "A0001",
+  "download_type": "biomarker_detail",
+  "format": "json",
+  "compressed": false
 }
-
 

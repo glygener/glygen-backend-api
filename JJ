@@ -1,5 +1,19 @@
 
-cp /usr/local/lib/python3.6/site-packages/flask_restx/templates/swagger-ui.html /data/shared/glygen/tmp/ 
-cp /data/shared/glygen/tmp/swagger-ui.html /usr/local/lib/python3.6/site-packages/flask_restx/templates/swagger-ui.html 
+asc
 
+"referenced_glycans": [
+        "G00406II",
+        "G01650EU",
+        "G02030ZB",
+        "G02315DX",
+        "G02628JF"
+    ],
 
+desc
+"referenced_glycans": [
+        "G00406II",
+        "G01650EU",
+        "G02030ZB",
+        "G02315DX",
+        "G02628JF"
+    ],

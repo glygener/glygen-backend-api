@@ -61,8 +61,13 @@ def event_addnew(logged_user, query_obj, config_obj):
                 if time_parts[2] < 0 or time_parts[2] > 59:
                     error_list.append({"error_code":"invalid-second-value in %s" % (k)})
         if error_list == []:
+            dt, tm = query_obj[k].split(" ")[0], query_obj[k].split(" ")[1]
+            mm, dd, yy = dt.split("/")
+            hr, mn, sc = tm.split(":")
+            seconds = int(yy)*365*24*3600 + int(mm)*31*24*3600 + int(dd)*1*24*3600 + int(hr)*1*3600 + int(mn)*60 + int(sc)
+            query_obj[k + "_s"] = seconds
             query_obj[k] = datetime.datetime.strptime(query_obj[k],"%m/%d/%Y %H:%M:%S")
-
+                
 
     if error_list != []:
         return {"error_list":error_list}
@@ -129,6 +134,14 @@ def event_list(query_obj, config_obj):
     if error_list != []:
         return {"error_list":error_list}
 
+    now_est = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%m/%d/%Y %H:%M:%S')
+    dt, tm = now_est.split(" ")[0], now_est.split(" ")[1]
+    mm, dd, yy = dt.split("/")
+    hr, mn, sc = tm.split(":")
+    seconds = int(yy)*365*24*3600 + int(mm)*31*24*3600 + int(dd)*1*24*3600 + int(hr)*1*3600 + int(mn)*60 + int(sc)
+            
+
+    
 
     import pymongo
     res_obj = []
@@ -138,15 +151,16 @@ def event_list(query_obj, config_obj):
             cond_list.append({"visibility":{"$eq":query_obj["visibility"]}})
         if "status" in query_obj:
             if query_obj["status"] == "current":
-                now = datetime.datetime.now(pytz.timezone('US/Eastern'))     
-                cond_list.append({"start_date":{"$lte":now}})
-                cond_list.append({"end_date":{"$gte":now}})
+                cond_list.append({"start_date_s":{"$lte":seconds}})
+                cond_list.append({"end_date_s":{"$gte":seconds}})
         q_obj = {} if cond_list == [] else  {"$and":cond_list}
         doc_list = dbh["c_event"].find(q_obj).sort('createdts', pymongo.DESCENDING)
         for doc in doc_list:
+            if "title" not in doc:
+                continue
             doc["id"] = str(doc["_id"])
             doc.pop("_id")
-            for k in ["createdts", "updatedts", "start_date", "end_date"]:
+            for k in ["now_est", "now_utc", "createdts", "updatedts", "start_date", "end_date"]:
                 if k not in doc:
                     continue
                 doc[k] = doc[k].strftime('%Y-%m-%d %H:%M:%S %Z%z')

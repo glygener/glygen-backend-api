@@ -23,16 +23,23 @@ detail_query_model = api.model("Biomarker Detail Query",
     }
 )
 
-@api.route('/detail/')
+
+@api.route('/detail/<biomarker_id>/')
+@api.doc(params={"biomarker_id": {"in": "query", "default": "A0001"}})
 class Biomarker(Resource):
+    @api.doc('detail')
     @api.expect(detail_query_model)
-    def post(self):
+    def post(self, biomarker_id):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = get_req_obj(request)
+            req_obj = {"id":biomarker_id}
+            req_obj_extra = get_req_obj(request)
+            if req_obj_extra != None:
+                if "paginated_tables" in req_obj_extra:
+                    req_obj["paginated_tables"] = req_obj_extra["paginated_tables"]
             res_obj = log_request(req_obj, "/biomarker/detail/", request)
             if "error_list" not in res_obj:
                 res_obj = biomarker_detail(req_obj, config_obj)
@@ -42,8 +49,8 @@ class Biomarker(Resource):
         return res_obj, http_code
 
     @api.doc(False)
-    def get(self):
-        return self.post()
+    def get(self, biomarker_id):
+        return self.post(biomarker_id)
 
 
 

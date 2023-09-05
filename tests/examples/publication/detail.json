@@ -53,8 +53,8 @@
         {
             "table_id": "referenced_glycans",
             "offset":1,
-            "limit":2,
-            "order":"asc"
+            "limit":5,
+            "order":"desc"
         }
     ]
 }

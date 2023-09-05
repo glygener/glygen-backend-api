@@ -1,4 +1,4 @@
-srv="prd"
+#srv="prd"
 #srv="beta"
 srv="tst"
 

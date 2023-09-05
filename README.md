@@ -196,4 +196,16 @@ the following log files ($username is your ssh login user name):
    ```
 
 
+### Customization of Swagger page
+Edit /data/shared/glygen/swagger/swagger-ui.html first and then get into the API container to copy this file
+into /usr/local/lib/python3.6/site-packages/flask_restx/templates/ folder in the container. The command below
+assume that you have /data/shared/glygen/swagger/ visible from the container.
+
+```
+docker exec -it running_glygen_api_$DEP bash
+cp /data/shared/glygen/swagger/swagger-ui.html /usr/local/lib/python3.6/site-packages/flask_restx/templates/swagger-ui.html
+exit
+sudo systemctl restart docker-glygen-api-$DEP.service
+```
+
 

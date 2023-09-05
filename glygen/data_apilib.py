@@ -116,7 +116,7 @@ def detail_download(query_obj, config_obj, data_path):
     
     download_type_list =  [
         "glycan_detail", "motif_detail", "protein_detail","protein_detail_isoformset","protein_detail_homologset", 
-        "site_detail", "publication_detail", "glycan_image"
+        "site_detail", "publication_detail", "glycan_image", "biomarker_detail"
     ]
     sequence_format_list = ["fasta", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic", "grits"]
 
@@ -196,7 +196,7 @@ def section_download(query_obj, config_obj, sec_info, data_path):
    
     format_lc = query_obj["format"].lower()
     download_type_list =  [ "protein_section", "site_section", "glycan_section", 
-        "motif_section", "publication_section"]
+        "motif_section", "publication_section", "biomarker_section"]
 
 
     data_buffer = ""
@@ -230,7 +230,13 @@ def section_download(query_obj, config_obj, sec_info, data_path):
         
 
         list_obj = {"results":[]}
-        for obj in record_obj[sec_field]:
+        obj_list = record_obj[sec_field]
+        if record_type == "biomarker" and query_obj["section"] == "component_glycan":
+            obj_list = record_obj[sec_field]["glycan"]
+        elif record_type == "biomarker" and query_obj["section"] == "component_protein":
+            obj_list = record_obj[sec_field]["protein"] 
+
+        for obj in obj_list:
             if filter_info["field"] != "":
                 if filter_info["field"] in obj:
                     field_val = obj[filter_info["field"]]
@@ -249,7 +255,6 @@ def section_download(query_obj, config_obj, sec_info, data_path):
                         elif filter_type != "exclude" and overlap == False:
                             continue
 
-            #return obj
             #return lbl_dict
 
             o = {}
@@ -563,7 +568,8 @@ def get_record_object(dbh, query_obj, config_obj):
         main_id = "id"
     if query_obj["download_type"] in ["publication_detail", "publication_section"]:
         main_id = "record_id"
-        
+    if query_obj["download_type"] in ["biomarker_detail", "biomarker_section"]:
+        main_id = "biomarker_id"    
     mongo_query = {main_id:{"$regex":query_obj["id"], "$options":"i"}}
     record_obj = dbh[collection].find_one(mongo_query)
     if record_obj == None:
