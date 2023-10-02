@@ -30,7 +30,7 @@
     ,"protein_detail": {
         "url": "/protein/detail/",
         "schemafile":"../specs/protein/detail/response.schema.json",
-        "query":"P14210",
+        "query":"Q8N7X0",
         "semantic":true
     }
     ,"protein_alignment": {

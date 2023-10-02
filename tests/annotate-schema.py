@@ -16,8 +16,10 @@ def parse_doc(in_obj, path_dict, path):
             if k == "type":
                 ann_path = path.replace("properties.", "").replace(".items", "")
                 if ann_path != "" and path.split(".")[-1] not in ["items", "properties"]:
-                    ann = ann_dict[ann_path] if ann_path in ann_dict else "xxxxx: " + ann_path
-                    in_obj["description"] = ann
+                    ann = ann_dict[ann_path] if ann_path in ann_dict else ""
+                    if ann != "":
+                        in_obj["description"] = ann
+                        #print ("annotated:",path, ann)
             parse_doc(in_obj[k], path_dict, p)
     elif type(in_obj) is list:
         for k in range(0, len(in_obj)):
@@ -25,8 +27,10 @@ def parse_doc(in_obj, path_dict, path):
             if k == "type":
                 ann_path = path.replace("properties.", "").replace(".items", "")
                 if ann_path != "" and path.split(".")[-1] not in ["items", "properties"]:
-                    ann = ann_dict[ann_path] if ann_path in ann_dict else "xxxxx: " + ann_path
-                    in_obj["description"] = ann
+                    ann = ann_dict[ann_path] if ann_path in ann_dict else ""
+                    if ann != "":
+                        in_obj["description"] = ann
+                        #print ("annotated:",path, ann)
             parse_doc(in_obj[k], path_dict, p)
     elif type(in_obj) is str:
         path_dict[path] = "*"

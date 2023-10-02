@@ -689,11 +689,11 @@
                             },
                             "namespace": {
                                 "type": "string",
-                                "description": "cell line namespace"
+                                "description": "cell line ontology namespace"
                             },
                             "id": {
                                 "type": "string",
-                                "description": "cell line ID"
+                                "description": "cell line ontology id"
                             },
                             "url": {
                                 "type": "string",
@@ -706,7 +706,7 @@
                             "id",
                             "url"
                         ],
-                        "description": "cell line info"
+                        "description": "list of cell lines"
                     },
                     "tissue": {
                         "type": "object",
@@ -928,6 +928,257 @@
                 ]
             },
             "description": "list of molecules that interact with the glycan"
+        },
+        "biomarkers": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "assessed_biomarker_entity": {
+                        "type": "string",
+                        "description": "name of the biomarker entity"
+                    },
+                    "biomarker_id": {
+                        "type": "string",
+                        "description": "biomarker id"
+                    },
+                    "evidence": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "evidence database id"
+                                },
+                                "database": {
+                                    "type": "string",
+                                    "description": "evidence database name"
+                                },
+                                "url": {
+                                    "type": "string",
+                                    "description": "evidence database url"
+                                }
+                            },
+                            "required": [
+                                "database",
+                                "id",
+                                "url"
+                            ]
+                        },
+                        "description": "source information"
+                    },
+                    "instances": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "best_biomarker_type": {
+                                    "type": "string",
+                                    "description": "biomarker category according to fda best glossary"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "describes the change in the biomarker entity"
+                                },
+                                "disease": {
+                                    "type": "object",
+                                    "properties": {
+                                        "disease_id": {
+                                            "type": "string",
+                                            "description": "identifier for disease from disease specific database"
+                                        },
+                                        "recommended_name": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "description": "identifier for the disease"
+                                                },
+                                                "resource": {
+                                                    "type": "string",
+                                                    "description": "resource for the recommended disease name"
+                                                },
+                                                "url": {
+                                                    "type": "string",
+                                                    "description": "url for the disease identifier in the disease database"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "description": "recommended name for the disease"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "description": "definition or description of the disease"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "id",
+                                                "name",
+                                                "resource",
+                                                "url"
+                                            ],
+                                            "description": "recommended name for the disease"
+                                        },
+                                        "synonyms": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "identifier for the disease"
+                                                    },
+                                                    "resource": {
+                                                        "type": "string",
+                                                        "description": "resource for the synonym disease name"
+                                                    },
+                                                    "url": {
+                                                        "type": "string",
+                                                        "description": "url for the disease identifier in the disease database"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "description": "synonyms name for the disease"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "name",
+                                                    "resource",
+                                                    "url"
+                                                ]
+                                            },
+                                            "description": "synonyms for the disease"
+                                        }
+                                    },
+                                    "required": [
+                                        "disease_id",
+                                        "recommended_name",
+                                        "synonyms"
+                                    ],
+                                    "description": "list of diseases associated with the biomarker"
+                                },
+                                "tissue": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "description": "tissue name"
+                                        },
+                                        "namespace": {
+                                            "type": "string",
+                                            "description": "tissue ontology namespace"
+                                        },
+                                        "id": {
+                                            "type": "string",
+                                            "description": "tissue ontology id"
+                                        },
+                                        "url": {
+                                            "type": "string",
+                                            "description": "tissue url"
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "name",
+                                        "namespace",
+                                        "url"
+                                    ],
+                                    "description": "tissue where the biomarker entity is measured"
+                                },
+                                "evidence": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": "evidence database id"
+                                            },
+                                            "database": {
+                                                "type": "string",
+                                                "description": "evidence database name"
+                                            },
+                                            "url": {
+                                                "type": "string",
+                                                "description": "evidence database url"
+                                            }
+                                        },
+                                        "required": [
+                                            "database",
+                                            "id",
+                                            "url"
+                                        ]
+                                    },
+                                    "description": "source information"
+                                }
+                            },
+                            "required": [
+                                "best_biomarker_type",
+                                "disease",
+                                "evidence",
+                                "status",
+                                "tissue"
+                            ]
+                        },
+                        "description": "biomarker instances"
+                    }
+                },
+                "required": [
+                    "assessed_biomarker_entity",
+                    "biomarker_id",
+                    "evidence",
+                    "instances"
+                ]
+            },
+            "description": "biomarkers associated with the glycan"
+        },
+        "section_stats": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "table_id": {
+                        "type": "string",
+                        "description": "table name"
+                    },
+                    "table_stats": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "field": {
+                                    "type": "string",
+                                    "description": "field name"
+                                },
+                                "count": {
+                                    "type": "integer",
+                                    "description": "counts for table summary"
+                                }
+                            },
+                            "required": [
+                                "count",
+                                "field"
+                            ]
+                        },
+                        "description": "table fields and counts"
+                    },
+                    "sort_fields": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "field order for front end display"
+                    }
+                },
+                "required": [
+                    "table_id",
+                    "table_stats"
+                ]
+            },
+            "description": "section record counts"
         },
         "glycotree_pathways": {
             "type": "array",

@@ -16,7 +16,7 @@ def is_valid_json(myjson):
 
 def main():
    
-    api_name = "glycan_search_init"
+    api_name = "glycan_detail"
     res_file = "responses/%s.json" % (api_name)
     if os.path.isfile(res_file) == False:
         print ("ERROR: response file %s not found" % (res_file))
