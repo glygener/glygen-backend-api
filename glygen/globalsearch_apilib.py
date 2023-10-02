@@ -71,6 +71,7 @@ def globalsearch_search(query_obj, config_obj):
     query_obj["term"] = query_obj["term"].replace("(", "\\(").replace(")", "\\)")
     query_obj["term"] = query_obj["term"].replace("[", "\\[").replace("]", "\\]")
 
+
     for obj in search_obj:
         if "$text" in obj["mongoquery"]:
             obj["mongoquery"] = {'$text': { '$search': '\"' + query_obj["term"] + '\"'}}
@@ -156,6 +157,7 @@ def globalsearch_search(query_obj, config_obj):
             { "$match":{"score":{"$gt":config_obj["globalsearchcutoff"]}}},
             { "$project" : prj_obj }
         ]
+
         doc_list = list(dbh[target_collection].aggregate(qry_obj))
 
 

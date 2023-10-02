@@ -1,0 +1,16 @@
+
+
+{ 
+	"concept_query_list":[
+                {
+                    "concept":"site",
+                    "query":{
+                        "aggregator":"$and",
+                        "unaggregated_list":[
+                            {"order":1,"path":"site_seq","operator":"$eq","string_value":"N"}
+                        ],
+                        "aggregated_list":[]
+                    }
+                }
+    	]
+}

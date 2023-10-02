@@ -34,7 +34,6 @@ def main():
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     mongo_port = config_obj["dbinfo"]["port"][server]
-    mongo_container = "running_glygen_mongo_%s" % (server)
 
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
   
@@ -54,7 +53,6 @@ def main():
         q = {}
         for doc in dbh[coll].find(q):
             print (json.dumps(doc, indent=4, default=json_util.default))
-
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

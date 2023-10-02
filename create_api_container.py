@@ -64,6 +64,7 @@ def main():
             cmd_list.append("docker rm -f %s " % (container_id))
 
     cmd = "docker create --name %s --network %s -p 127.0.0.1:%s:80" % (api_container, network, port)
+    #cmd += " --add-host=host.docker.internal:172.17.0.1 "
     cmd += " -v %s:%s -v %s:%s -e MONGODB_CONNSTRING=%s -e DB_NAME=%s " % (downloads_path, downloads_path, data_path, data_path, conn_str, mongo_db)
     cmd += " -e MAIL_SERVER=%s -e MAIL_PORT=%s -e MAIL_SENDER=%s -e DATA_PATH=%s -e DOWNLOADS_PATH=%s -e SERVER=%s %s" % (mail_server, mail_port, mail_sender, data_path, downloads_path, server, image) 
     

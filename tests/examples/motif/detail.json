@@ -4,7 +4,7 @@
         {
             "table_id": "results",
             "offset":1,
-            "limit":3,
+            "limit":20,
             "sort":"glytoucan_ac",
 	    "order":"asc"
         }

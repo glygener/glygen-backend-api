@@ -15,9 +15,9 @@ from glygen.util import get_req_obj
 import traceback
 
 
-api = Namespace("pagination", description="Publication APIs")
+api = Namespace("pagination", description="Pagination APIs")
 
-page_query_model = api.model("Publication Page Query", 
+page_query_model = api.model("Pagination Page Query", 
     { 
         "record_type": fields.String(required=True, default="protein"),
         "record_id": fields.String(required=True, default="P14210"),
@@ -32,7 +32,7 @@ page_query_model = api.model("Publication Page Query",
 
 
 @api.route('/page/')
-class Publication(Resource):
+class Pagination(Resource):
     @api.expect(page_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))

@@ -3,7 +3,8 @@
     "type": "object",
     "properties": {
         "list_id": {
-            "type": "string"
+            "type": "string",
+	    "description": "ID for cached search results which is used by the glycan/list API"
         }
     },
     "required": [

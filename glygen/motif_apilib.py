@@ -104,19 +104,17 @@ def motif_detail(query_obj, config_obj):
         "total_length":len(results), "sort":query_obj["sort"], "order":query_obj["order"]}
     res_obj["query"] = query_obj
 
-    
+ 
     if "paginated_tables" in query_obj:
-        seen = {}
+        table_id_list = []
         for o in query_obj["paginated_tables"]:
-            sec = o["table_id"]
-            seen[sec] = True
-        section_list = list(seen.keys())
-        sec_tables = get_paginated_sections(res_obj, query_obj, section_list)
+            if o["table_id"] not in table_id_list:
+                table_id_list.append(o["table_id"])
+        sec_tables = get_paginated_sections(res_obj, query_obj, table_id_list)
         if "error_list" in sec_tables:
             return sec_tables
-        for sec in seen:
-            if sec in sec_tables:
-                res_obj[sec] = sec_tables[sec]
+        for sec in sec_tables:
+            res_obj[sec] = sec_tables[sec]
 
 
     return order_obj(res_obj, config_obj["objectorder"]["glycan"])

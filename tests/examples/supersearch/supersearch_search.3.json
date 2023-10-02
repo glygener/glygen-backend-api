@@ -1,0 +1,61 @@
+{
+    "concept_query_list": [
+        {
+            "concept": "enzyme",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "uniprot_ac",
+                        "operator": "$eq",
+                        "string_value": "Q9D081"
+                    }
+                ],
+                "aggregated_list": []
+            }
+        }
+    ],
+    "ignored_edges": [
+        {
+            "source": "species",
+            "target": "protein"
+        },
+        {
+            "source": "species",
+            "target": "glycan"
+        },
+        {
+            "source": "disease",
+            "target": "protein"
+        },
+        {
+            "source": "disease",
+            "target": "site",
+            "direction": "both"
+        },
+        {
+            "source": "gene",
+            "target": "species",
+            "direction": "both"
+        },
+        {
+            "source": "gene",
+            "target": "disease",
+            "direction": "both"
+        },
+        {
+            "source": "site",
+            "target": "protein"
+        },
+        {
+            "source": "glycan",
+            "target": "site"
+        },
+        {
+            "source": "protein",
+            "target": "glycan",
+            "direction": "both"
+        }
+    ]
+}

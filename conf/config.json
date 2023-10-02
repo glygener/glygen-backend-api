@@ -70,6 +70,7 @@
             ,"sitedb"
             ,"speciesdb"
             ,"statdb"
+	    ,"batchdb"
         ]
     }
 }

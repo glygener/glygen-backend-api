@@ -59,16 +59,27 @@ def home_init(config_obj, data_path):
         for tax_id in list(set(tax_id_list)):
             if tax_id in doc["oldstat"]:
                 res_obj["statistics"].append(doc["oldstat"][tax_id])
-
         #uncomment this when the frontend is ready to consume new stat format
-        #res_obj["statistics"] = doc["newstat"]
+        res_obj["statistics_new"] = doc["newstat"]
+
+
+
+    now_est = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%m/%d/%Y %H:%M:%S')
+    dt, tm = now_est.split(" ")[0], now_est.split(" ")[1]
+    mm, dd, yy = dt.split("/")
+    hr, mn, sc = tm.split(":")
+    now_in_seconds = int(yy)*365*24*3600 + int(mm)*31*24*3600 + int(dd)*1*24*3600 + int(hr)*1*3600 + int(mn)*60 + int(sc)
+
+
+
 
     res_obj["events"] = []
     cond_list = []
     cond_list.append({"visibility":{"$eq":"visible"}})
+    #cond_list.append({"status":{"$eq":"current"}})
     now = datetime.datetime.now()
-    cond_list.append({"start_date":{"$lte":now}})
-    cond_list.append({"end_date":{"$gte":now}})
+    cond_list.append({"start_date_s":{"$lte":now_in_seconds}})
+    cond_list.append({"end_date_s":{"$gte":now_in_seconds}})
     q_obj = {"$and":cond_list}
     doc_list = dbh["c_event"].find(q_obj).sort('createdts', pymongo.DESCENDING)
     for doc in doc_list:
@@ -78,6 +89,7 @@ def home_init(config_obj, data_path):
             if k not in doc:
                 continue
             doc[k] = doc[k].strftime('%Y-%m-%d %H:%M:%S %Z%z')
+        doc["now_in_seconds"] = now_in_seconds
         res_obj["events"].append(doc)
 
 

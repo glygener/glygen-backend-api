@@ -1,0 +1,52 @@
+{
+    "concept_query_list": [
+        {
+            "concept": "species",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "taxid",
+                        "operator": "$eq",
+                        "numeric_value": 9606
+                    }
+                ],
+                "aggregated_list": []
+            }
+        },
+        {
+            "concept": "site",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "glycosylation",
+                        "operator": "$gt",
+                        "string_value": []
+                    },
+                    {
+                        "order": 2,
+                        "path": "phosphorylation",
+                        "operator": "$gt",
+                        "string_value": []
+                    },
+                    {
+                        "order": 3,
+                        "path": "snv",
+                        "operator": "$gt",
+                        "string_value": []
+                    },
+                    {
+                        "order": 4,
+                        "path": "mutagenesis",
+                        "operator": "$gt",
+                        "string_value": []
+                    }
+                ],
+                "aggregated_list": []
+            }
+        }
+    ]
+}

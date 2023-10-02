@@ -34,6 +34,8 @@ class Globalsearch(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
+            if "error_list" in req_obj:
+                return req_obj
             data_path = os.environ["DATA_PATH"]
             res_obj = log_request(req_obj, "/globalsearch/search/", request)
             if "error_list" not in res_obj:

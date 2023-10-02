@@ -1,0 +1,90 @@
+{
+    "concept_query_list": [
+        {
+            "concept": "species",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "taxid",
+                        "operator": "$eq",
+                        "numeric_value": 9606
+                    }
+                ],
+                "aggregated_list": []
+            }
+        },
+        {
+            "concept": "protein",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [],
+                "aggregated_list": [
+                    {
+                        "aggregator": "$or",
+                        "unaggregated_list": [
+                            {
+                                "order": 1,
+                                "path": "disease",
+                                "operator": "$gt",
+                                "string_value": []
+                            },
+                            {
+                                "order": 2,
+                                "path": "snv.disease",
+                                "operator": "$gt",
+                                "string_value": []
+                            },
+                            {
+                                "order": 3,
+                                "path": "expression_disease.disease",
+                                "operator": "$gt",
+                                "string_value": []
+                            }
+                        ]
+                    },
+                    {
+                        "aggregator": "$or",
+                        "unaggregated_list": [
+                            {
+                                "order": 1,
+                                "path": "go_annotation.categories.go_terms.name",
+                                "operator": "$regex",
+                                "string_value": "nuclear membrane"
+                            },
+                            {
+                                "order": 2,
+                                "path": "go_annotation.categories.go_terms.name",
+                                "operator": "$regex",
+                                "string_value": "nuclues"
+                            }
+                        ],
+                        "aggregated_list": []
+                    }
+                ]
+            }
+        },
+        {
+            "concept": "site",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "phosphorylation",
+                        "operator": "$gt",
+                        "string_value": []
+                    },
+                    {
+                        "order": 2,
+                        "path": "glycosylation.type",
+                        "operator": "$regex",
+                        "string_value": "O-linked"
+                    }
+                ],
+                "aggregated_list": []
+            }
+        }
+    ]
+}

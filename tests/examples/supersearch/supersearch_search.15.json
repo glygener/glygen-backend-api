@@ -1,0 +1,25 @@
+{
+    "concept_query_list": [
+        {
+            "concept": "site",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "site_annotation.annotation",
+                        "operator": "$eq",
+                        "string_value": "n_glycosylation_sequon"
+                    },
+                    {
+                        "order": 2,
+                        "path": "glycosylation",
+                        "operator": "$exists",
+                        "string_value": false
+                    }
+                ],
+                "aggregated_list": []
+            }
+        }
+    ]
+}

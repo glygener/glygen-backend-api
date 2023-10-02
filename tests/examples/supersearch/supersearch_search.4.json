@@ -1,0 +1,19 @@
+{
+    "concept_query_list": [
+        {
+            "concept": "glycan",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "glytoucan_ac",
+                        "operator": "$eq",
+                        "string_value": "G17689DH"
+                    }
+                ],
+                "aggregated_list": []
+            }
+        }
+    ]
+}

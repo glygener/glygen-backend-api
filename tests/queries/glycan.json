@@ -57,7 +57,7 @@
     ,"glycan_detail": {
         "url": "/glycan/detail/",
         "schemafile":"../specs/glycan/detail/response.schema.json",
-        "query":"G17689DH",
+        "query":"G13834UM",
         "semantic":true
     }
     ,"glycan_image": {

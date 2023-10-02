@@ -1,0 +1,46 @@
+{
+    "concept_query_list": [
+        {
+            "concept": "species",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "taxid",
+                        "operator": "$eq",
+                        "numeric_value": 9606
+                    }
+                ],
+                "aggregated_list": []
+            }
+        },
+        {
+            "concept": "site",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "glycosylation",
+                        "operator": "$gt",
+                        "string_value": []
+                    },
+                    {
+                        "order": 2,
+                        "path": "snv.disease.recommended_name.name",
+                        "operator": "$regex",
+                        "string_value": "lung cancer"
+                    },
+                    {
+                        "order": 3,
+                        "path": "snv.disease.recommended_name.name",
+                        "operator": "$regex",
+                        "string_value": "breast cancer"
+                    }
+                ],
+                "aggregated_list": []
+            }
+        }
+    ]
+}

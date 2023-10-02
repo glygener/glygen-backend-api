@@ -189,7 +189,8 @@
             ,"2697049":"Severe acute respiratory syndrome coronavirus 2"
             ,"7227":"Drosophila melanogaster"
             ,"6573":"Mizuhopecten yessoensis"
-        }
+            ,"559292":"Saccharomyces cerevisiae"
+	}
         ,"usecases_search_init":{
             "field_info":{
             }

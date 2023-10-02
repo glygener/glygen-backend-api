@@ -1,7 +1,7 @@
 {
   "record_type": "glycan",
-  "table_id": "expression_tissue",
-  "record_id": "G17689DH",
+  "table_id": "expression_cell_line",
+  "record_id": "G92050GC",
   "offset": 1,
   "limit": 20,
   "order": "desc",

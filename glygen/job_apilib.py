@@ -676,7 +676,7 @@ def validate_input(query_obj, config_obj, release_dir, server):
     for o in cmd_parts:
         if query_obj["jobtype"] == "blastp":
             if o["flag"] == "-db":
-                o["value"] = release_dir + "blastdb/" + o["value"]
+                o["value"] = release_dir + "jsondb/blastdb/" + o["value"]
         query_obj["cmd"] += " %s %s" % (o["flag"], o["value"])
 
     query_obj["seq_id"] = "QUERY"

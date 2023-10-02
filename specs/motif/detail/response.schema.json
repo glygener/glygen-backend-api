@@ -213,7 +213,6 @@
                 }
             },
             "required": [
-                "best_match",
                 "definition",
                 "disease_associations",
                 "essentials_of_glycobiology",

@@ -1,0 +1,9 @@
+{
+  "record_type": "protein",
+  "table_id": "snv_disease",
+  "record_id": "P14210-1",
+  "offset": 1,
+  "limit": 100,
+  "order": "desc",
+  "sort": "start_pos"
+}

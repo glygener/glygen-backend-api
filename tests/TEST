@@ -33,7 +33,7 @@
     $ http POST :8082/auth/contactdelete/ < tests/temp/auth_contactdelete.json
 
 
-    $ http POST :8082/data/download/ < tests/temp/data_download.json
+    $ http POST :8082/data/detail_download/ < tests/examples/data/detail_download.json 
     $ http POST :8082/data/section_download/ < tests/examples/data/section_download.protein.snv.1.json
     $ http POST :8082/data/section_download/ < tests/examples/data/section_download.protein.snv.2.json
     $ http POST :8082/data/section_download/ < tests/examples/data/section_download.protein.snv.3.json
@@ -94,7 +94,8 @@
 
 
   $ http POST :8082/supersearch/search_init/ < tests/temp/empty.json
-  $ http POST :8082/supersearch/search/ < tests/temp/supersearch_search.json
+  $ http POST :8082/supersearch/search/ < tests/examples/supersearch/supersearch_search.1.json
+  $ http POST :8082/supersearch/search/ < tests/examples/supersearch/supersearch_search.2.json
   $ http POST :8082/supersearch/reason/ < tests/temp/supersearch_reason.json
   $ http POST :8082/supersearch/list/ < tests/temp/supersearch_list.json
 
@@ -158,7 +159,7 @@
   $ http POST :8082/graph/getdata/ < tests/temp/graph_getdata.json
 
 
-  $ http POST :8082/biomarker/detail/ < tests/examples/biomarker/detail.json
+  $ http POST :8082/biomarker/detail/A0001/ < tests/examples/biomarker/detail.json
 
 
   $ http POST :8082/pagination/page/ < tests/examples/pagination/page.json

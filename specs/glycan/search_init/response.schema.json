@@ -152,6 +152,12 @@
                     "url"
                 ]
             }
+        },
+        "biomarker_types": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         }
     },
     "required": [
@@ -161,6 +167,7 @@
         "id_namespace",
         "number_monosaccharides",
         "organism",
-        "simple_search_category"
+        "simple_search_category",
+        "biomarker_types"
     ]
 }

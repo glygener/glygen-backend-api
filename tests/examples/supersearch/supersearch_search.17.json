@@ -1,0 +1,49 @@
+{
+    "concept_query_list": [
+        {
+            "concept": "species",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "taxid",
+                        "operator": "$eq",
+                        "numeric_value": 9606
+                    }
+                ],
+                "aggregated_list": []
+            }
+        },
+        {
+            "concept": "protein",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "snv",
+                        "operator": "$gt",
+                        "string_value": []
+                    }
+                ],
+                "aggregated_list": []
+            }
+        },
+        {
+            "concept": "motif",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "names.name",
+                        "operator": "$regex",
+                        "string_value": "lewis x"
+                    }
+                ],
+                "aggregated_list": []
+            }
+        }
+    ]
+}

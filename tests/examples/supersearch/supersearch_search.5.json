@@ -1,0 +1,25 @@
+{
+    "concept_query_list": [
+        {
+            "concept": "site",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "glycosylation_flag",
+                        "operator": "$eq",
+                        "string_value": true
+                    },
+                    {
+                        "order": 2,
+                        "path": "snv_flag",
+                        "operator": "$eq",
+                        "string_value": true
+                    }
+                ],
+                "aggregated_list": []
+            }
+        }
+    ]
+}

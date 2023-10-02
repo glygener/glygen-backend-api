@@ -320,6 +320,7 @@ def protein_detail(query_obj, config_obj):
                 obj[sec] += batch_doc["sections"][sec]
 
 
+
     url = config_obj["urltemplate"]["uniprot"] % (obj["uniprot_canonical_ac"])
     obj["uniprot_id"] = obj["uniprot_id"] if "uniprot_id" in obj else ""
     obj["uniprot"] = {
@@ -337,18 +338,16 @@ def protein_detail(query_obj, config_obj):
 
 
     if "paginated_tables" in query_obj:
-        seen = {}
+        table_id_list = []
         for o in query_obj["paginated_tables"]:
-            sec = o["table_id"].split("_")[0] if o["table_id"].find("glycosylation_") != -1 else o["table_id"]
-            seen[sec] = True
-        section_list = list(seen.keys())
-        sec_tables = get_paginated_sections(obj, query_obj, section_list)
+            if o["table_id"] not in table_id_list:
+                table_id_list.append(o["table_id"])
+        sec_tables = get_paginated_sections(obj, query_obj, table_id_list)
         if "error_list" in sec_tables:
             return sec_tables
-        #for sec in sec_tables:
-        for sec in seen:
-            if sec in sec_tables:
-                obj[sec] = sec_tables[sec]
+        for sec in sec_tables:
+            obj[sec] = sec_tables[sec]
+
 
     clean_obj(obj, config_obj["removelist"]["c_protein"], "c_protein")
 
@@ -476,7 +475,7 @@ def get_mongo_query(query_obj):
     #organism
     if "organism" in query_obj:
         if "id" in query_obj["organism"]:
-            if len(query_obj["organism"]["id"]) > 0:
+            if type(query_obj["organism"]["id"]) is int:
                 cond_objs.append({"species.taxid": {'$eq': query_obj["organism"]["id"]}})
     
     #biomarker

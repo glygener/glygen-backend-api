@@ -93,7 +93,6 @@
                 },
                 "required": [
                     "annotation_category",
-                    "common_name",
                     "evidence",
                     "name",
                     "taxid"
@@ -472,10 +471,7 @@
                             "type": "object",
                             "properties": {
                                 "type": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    },
+                                    "type": "string",
                                     "description": "reference type"
                                 },
                                 "id": {
@@ -746,11 +742,7 @@
                     }
                 },
                 "required": [
-                    "end_pos",
-                    "evidence",
-                    "residue",
-                    "start_pos",
-                    "uniprot_canonical_ac"
+                    "evidence"
                 ]
             },
             "description": "expression of the glycan (attached to proteins) within tissues and cell lines"

@@ -158,17 +158,20 @@ def event_list(query_obj, config_obj):
         for doc in doc_list:
             if "title" not in doc:
                 continue
+            if "start_date_s" not in doc:
+                continue
             doc["id"] = str(doc["_id"])
             doc.pop("_id")
             for k in ["now_est", "now_utc", "createdts", "updatedts", "start_date", "end_date"]:
                 if k not in doc:
                     continue
                 doc[k] = doc[k].strftime('%Y-%m-%d %H:%M:%S %Z%z')
+            doc["now_ts"] = seconds
             res_obj.append(doc)
     except Exception as e:
         res_obj = {"error_list":[{"error_code":str(e)}]}
 
-
+ 
     return res_obj
 
 

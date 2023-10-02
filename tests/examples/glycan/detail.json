@@ -1,5 +1,4 @@
 {
-    "glytoucan_ac":"G51793MY",
     "paginated_tables":[
         {
             "table_id": "glycoprotein",
@@ -9,18 +8,18 @@
             "order":"asc"
         },
         {
-            "table_id": "enzyme",
+            "table_id": "expression_tissue",
             "offset":1,
             "limit":2,
-            "sort": "uniprot_canonical_ac",
+            "sort": "tissue.name",
             "order":"asc"
         },
         {
-            "table_id": "expression",
+            "table_id": "expression_cell_line",
             "offset":1,
-            "limit":2,
-            "sort": "uniprot_canonical_ac",
-            "order":"asc"
+            "limit":10,
+            "sort": "cell_line.name",
+            "order":"desc"
         },
         {
             "table_id": "publication",

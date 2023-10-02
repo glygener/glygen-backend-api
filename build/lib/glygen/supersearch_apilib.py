@@ -682,8 +682,9 @@ def load_network_type_III(doc_list, initial_hit_dict, empty_search_flag, ignore_
 
 
     for src_record_type in record_type_list:
+        if src_record_type not in edge_dict:
+            continue
         for src_record_id in edge_dict[src_record_type]:
-
             # if empty query search, add all src nodes including unlinked ones
             if empty_search_flag == True and src_record_type in orphan_dict:
                 if src_record_type not in node_hit_dict:

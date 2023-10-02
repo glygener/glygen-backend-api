@@ -67,16 +67,11 @@
                 }
             },
             "required": [
-                "createdts",
-                "url",
-                "visibility"
             ]
         }
     },
     "required": [
-        "events",
         "statistics",
-        "version",
-        "video"
+        "version"
     ]
 }

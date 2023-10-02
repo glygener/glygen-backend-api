@@ -39,11 +39,11 @@ def publication_detail(query_obj, config_obj):
         ]
     }
     
-    publication_doc = dbh[collection].find_one(mongo_query)
+    obj = dbh[collection].find_one(mongo_query)
     
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
-    if publication_doc == None:
+    if obj == None:
         post_error_list.append({"error_code":"non-existent-record"})
         return {"error_list":post_error_list}
 
@@ -55,27 +55,25 @@ def publication_detail(query_obj, config_obj):
     batch_doc = dbh["c_batch"].find_one(q)
     if batch_doc != None:
         for sec in batch_doc["sections"]:
-            if sec in publication_doc:
-                publication_doc[sec] += batch_doc["sections"][sec]
+            if sec in obj:
+                obj[sec] += batch_doc["sections"][sec]
 
 
     if "paginated_tables" in query_obj:
-        seen = {}
+        table_id_list = []
         for o in query_obj["paginated_tables"]:
-            sec = o["table_id"].split("_")[0] if o["table_id"].find("glycosylation_") != -1 else o["table_id"]
-            seen[sec] = True
-        section_list = list(seen.keys())
-        sec_tables = get_paginated_sections(publication_doc, query_obj, section_list)
+            if o["table_id"] not in table_id_list:
+                table_id_list.append(o["table_id"])
+        sec_tables = get_paginated_sections(obj, query_obj, table_id_list)
         if "error_list" in sec_tables:
             return sec_tables
-        for sec in seen:
-            if sec in sec_tables:
-                publication_doc[sec] = sec_tables[sec]
+        for sec in sec_tables:
+            obj[sec] = sec_tables[sec]
 
 
-    clean_obj(publication_doc, config_obj["removelist"]["c_publication"], "c_publication")
+    clean_obj(obj, config_obj["removelist"]["c_publication"], "c_publication")
 
-    return publication_doc
+    return obj
 
 
 

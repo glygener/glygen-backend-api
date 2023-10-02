@@ -51,24 +51,24 @@ def site_detail(query_obj, config_obj):
     
     collection = "c_site"
     mongo_query = {"id":query_obj["site_id"]}
-    site_doc = dbh[collection].find_one(mongo_query)
-    if site_doc == None:
+    obj = dbh[collection].find_one(mongo_query)
+    if obj == None:
         canon = canon_doc["uniprot_canonical_ac"]
         mongo_query = {"id":"%s.%s.%s" % (canon, start_pos, end_pos)}
-        site_doc = dbh[collection].find_one(mongo_query)
+        obj = dbh[collection].find_one(mongo_query)
 
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
-    if site_doc == None:
+    if obj == None:
         post_error_list.append({"error_code":"non-existent-record"})
         return {"error_list":post_error_list}
-    if "_id" in site_doc:
-        site_doc.pop("_id")
+    if "_id" in obj:
+        obj.pop("_id")
 
 
     url = config_obj["urltemplate"]["uniprot"] % (canon_doc["uniprot_canonical_ac"])
-    site_doc["uniprot_id"] = canon_doc["uniprot_id"] if "uniprot_id" in canon_doc else ""
-    site_doc["uniprot"] = {
+    obj["uniprot_id"] = canon_doc["uniprot_id"] if "uniprot_id" in canon_doc else ""
+    obj["uniprot"] = {
         "uniprot_canonical_ac":canon_doc["uniprot_canonical_ac"], 
         "uniprot_id":canon_doc["uniprot_id"],
         "url":url,
@@ -76,26 +76,23 @@ def site_detail(query_obj, config_obj):
     }
     for k in ["uniprot","sequence","mass", "protein_names", "gene", "gene_names","species",
             "refseq"]:
-        if k in canon_doc and k not in site_doc:
-            site_doc[k] = canon_doc[k]
+        if k in canon_doc and k not in obj:
+            obj[k] = canon_doc[k]
 
 
-    
     if "paginated_tables" in query_obj:
-        seen = {}
+        table_id_list = []
         for o in query_obj["paginated_tables"]:
-            sec = o["table_id"].split("_")[0] if o["table_id"].find("glycosylation_") != -1 else o["table_id"]
-            seen[sec] = True
-        section_list = list(seen.keys())
-        sec_tables = get_paginated_sections(site_doc, query_obj, section_list)
+            if o["table_id"] not in table_id_list:
+                table_id_list.append(o["table_id"])
+        sec_tables = get_paginated_sections(obj, query_obj, table_id_list)
         if "error_list" in sec_tables:
             return sec_tables
-        for sec in seen:
-            if sec in sec_tables:
-                site_doc[sec] = sec_tables[sec]
+        for sec in sec_tables:
+            obj[sec] = sec_tables[sec]
 
 
-    return site_doc
+    return obj
 
 
 

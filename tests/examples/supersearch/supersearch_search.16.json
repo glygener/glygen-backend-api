@@ -1,0 +1,54 @@
+{
+    "concept_query_list": [
+        {
+            "concept": "site",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "snv.disease.recommended_name.name",
+                        "operator": "$regex",
+                        "string_value": "lung cancer"
+                    },
+                    {
+                        "order": 2,
+                        "path": "snv.disease.recommended_name.name",
+                        "operator": "$regex",
+                        "string_value": "breast cancer"
+                    },
+                    {
+                        "order": 3,
+                        "path": "snv.evidence.database",
+                        "operator": "$eq",
+                        "string_value": "dbSNP"
+                    }
+                ],
+                "aggregated_list": [
+                    {
+                        "aggregator": "$or",
+                        "unaggregated_list": [
+                            {
+                                "order": 1,
+                                "path": "snv.glycoeffect",
+                                "operator": "$gte",
+                                "string_value": [
+                                    "n-glyco-sequon-gain"
+                                ]
+                            },
+                            {
+                                "order": 2,
+                                "path": "snv.glycoeffect",
+                                "operator": "$gte",
+                                "string_value": [
+                                    "n-glyco-site-loss"
+                                ]
+                            }
+                        ],
+                        "aggregated_list": []
+                    }
+                ]
+            }
+        }
+    ]
+}

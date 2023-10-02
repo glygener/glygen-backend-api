@@ -1,0 +1,25 @@
+{
+    "concept_query_list": [
+        {
+            "concept": "site",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "glycosylation_flag",
+                        "operator": "$eq",
+                        "string_value": "true"
+                    },
+                    {
+                        "order": 2,
+                        "path": "up_seq",
+                        "operator": "$regex",
+                        "string_value": "4|TXXR"
+                    }
+                ],
+                "aggregated_list": []
+            }
+        }
+    ]
+}

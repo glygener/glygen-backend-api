@@ -107,7 +107,7 @@ def main():
             
             json_db = coll[2:] + "db"
             file_list = glob.glob(jsondb_dir + "/" + json_db + "/*.json")
-            nrecords = 0
+            nrecords, nrecords_total  = 0, len(file_list)
             for in_file in file_list:
                 doc = json.loads(open(in_file, "r").read())
                 if "_id" in doc:
@@ -115,7 +115,7 @@ def main():
                 result = tmpdb_dbh[coll].insert_one(doc)     
                 nrecords += 1
                 if nrecords != 0 and nrecords%1000 == 0:
-                    msg = " ... loaded %s documents to tmpdb.%s" % (nrecords,coll)
+                    msg = " ... loaded %s/%s documents to tmpdb.%s" % (nrecords,nrecords_total,coll)
                     write_progress_msg(msg, "a")
 
             ts = datetime.datetime.now()

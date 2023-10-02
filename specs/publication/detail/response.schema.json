@@ -36,7 +36,13 @@
         "referenced_proteins": {
             "type": "array",
             "items": {
-                "type": "string"
+                "type": "object",
+		"properties": {
+		    "uniprot_canonical_ac": {"type": "string"},
+		    "protein_name":{"type": "string"},
+		    "gene_name":{"type": "string"},
+		    "tax_name":{"type": "string"}
+		}
             }
         },
         "species": {

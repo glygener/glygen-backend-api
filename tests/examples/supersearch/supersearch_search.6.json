@@ -1,0 +1,31 @@
+{
+    "concept_query_list": [
+        {
+            "concept": "site",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "site_seq",
+                        "operator": "$eq",
+                        "string_value": "N"
+                    },
+                    {
+                        "order": 2,
+                        "path": "neighbors.distance",
+                        "operator": "$lte",
+                        "numeric_value": 3
+                    },
+                    {
+                        "order": 3,
+                        "path": "neighbors.categories",
+                        "operator": "$eq",
+                        "string_value": "snv"
+                    }
+                ],
+                "aggregated_list": []
+            }
+        }
+    ]
+}

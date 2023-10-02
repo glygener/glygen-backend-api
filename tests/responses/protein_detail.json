@@ -190,7 +190,7 @@
             ]
         },
         {
-            "annotation": "Plasma glycated CD59 predicts postpartum glucose intolerance after gestational diabetes. Publication Status: Online-Only",
+            "annotation": "CD59 Expression in Skeletal Muscles and Its Role in Myasthenia Gravis. Publication Status: Online-Only",
             "evidence": [
                 {
                     "database": "RefSeq",
@@ -199,8 +199,23 @@
                 },
                 {
                     "database": "PubMed",
-                    "id": "34524975",
-                    "url": "https://glygen.org/publication/PubMed/34524975"
+                    "id": "36396448",
+                    "url": "https://glygen.org/publication/PubMed/36396448"
+                }
+            ]
+        },
+        {
+            "annotation": "Multiple CD59 Polymorphisms in Chinese Patients with Mycobacterium tuberculosis Infection. Publication Status: Online-Only",
+            "evidence": [
+                {
+                    "database": "RefSeq",
+                    "id": "NP_000602",
+                    "url": "https://www.ncbi.nlm.nih.gov/protein/NP_000602"
+                },
+                {
+                    "database": "PubMed",
+                    "id": "37050931",
+                    "url": "https://glygen.org/publication/PubMed/37050931"
                 }
             ]
         },
@@ -226,21 +241,6 @@
                     "database": "UniProtKB",
                     "id": "P13987",
                     "url": "https://www.uniprot.org/uniprot/P13987#function"
-                }
-            ]
-        },
-        {
-            "annotation": "The expression of membrane-bound complement regulatory proteins CD46, CD55 and CD59 in oral lichen planus.",
-            "evidence": [
-                {
-                    "database": "RefSeq",
-                    "id": "NP_000602",
-                    "url": "https://www.ncbi.nlm.nih.gov/protein/NP_000602"
-                },
-                {
-                    "database": "PubMed",
-                    "id": "33529836",
-                    "url": "https://glygen.org/publication/PubMed/33529836"
                 }
             ]
         },
@@ -294,7 +294,7 @@
                     "id": "MONDO:0012858",
                     "resource": "MONDO",
                     "url": "https://monarchinitiative.org/disease/MONDO:0012858",
-                    "name": "HACD59"
+                    "name": "primary CD59 deficiency"
                 },
                 {
                     "id": "MONDO:0012858",
@@ -306,13 +306,13 @@
                     "id": "MONDO:0012858",
                     "resource": "MONDO",
                     "url": "https://monarchinitiative.org/disease/MONDO:0012858",
-                    "name": "hemolytic anemia, CD59-mediated, with or without immune-mediated polyneuropathy"
+                    "name": "HACD59"
                 },
                 {
                     "id": "MONDO:0012858",
                     "resource": "MONDO",
                     "url": "https://monarchinitiative.org/disease/MONDO:0012858",
-                    "name": "primary CD59 deficiency"
+                    "name": "hemolytic anemia, CD59-mediated, with or without immune-mediated polyneuropathy"
                 },
                 {
                     "id": "MIM:612300",
@@ -335,93 +335,10 @@
         {
             "evidence": [
                 {
-                    "id": "rs377154070",
-                    "database": "dbSNP",
-                    "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs377154070"
-                },
-                {
-                    "id": "rs377154070",
-                    "database": "ExAC",
-                    "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs377154070"
-                },
-                {
-                    "id": "rs377154070",
-                    "database": "TOPMed",
-                    "url": "https://www.ncbi.nlm.nih.gov/snp/rs377154070#frequency_tab"
-                },
-                {
-                    "id": "rs377154070",
-                    "database": "gnomAD",
-                    "url": "http://gnomad.broadinstitute.org/awesome?query=rs377154070"
-                }
-            ],
-            "glycoeffect": [
-                "o-glyco-site-loss"
-            ],
-            "start_pos": 105,
-            "end_pos": 105,
-            "sequence_org": "T",
-            "sequence_mut": "I",
-            "comment": "Germline mutation passed 1 out of 1 filters: o-glyco-site-loss (T->I).",
-            "chr_id": "11",
-            "chr_pos": "33710199G>",
-            "ref_nt": "A",
-            "alt_nt": "null",
-            "keywords": [
-                "ebi",
-                "germline"
-            ]
-        },
-        {
-            "evidence": [
-                {
-                    "id": "rs201067115",
-                    "database": "dbSNP",
-                    "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs201067115"
-                },
-                {
-                    "id": "rs201067115",
-                    "database": "ExAC",
-                    "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs201067115"
-                },
-                {
-                    "id": "rs201067115",
-                    "database": "TOPMed",
-                    "url": "https://www.ncbi.nlm.nih.gov/snp/rs201067115#frequency_tab"
-                },
-                {
-                    "id": "rs201067115",
-                    "database": "gnomAD",
-                    "url": "http://gnomad.broadinstitute.org/awesome?query=rs201067115"
-                }
-            ],
-            "glycoeffect": [
-                "o-glyco-site-loss"
-            ],
-            "start_pos": 105,
-            "end_pos": 105,
-            "sequence_org": "T",
-            "sequence_mut": "P",
-            "comment": "Germline mutation passed 1 out of 1 filters: o-glyco-site-loss (T->P).",
-            "chr_id": "11",
-            "chr_pos": "33710200T>",
-            "ref_nt": "G",
-            "alt_nt": "null",
-            "keywords": [
-                "ebi",
-                "germline"
-            ]
-        },
-        {
-            "evidence": [
-                {
                     "id": "P13987",
                     "database": "BioMuta",
                     "url": "https://hive.biochemistry.gwu.edu/biomuta/proteinview/P13987"
                 }
-            ],
-            "glycoeffect": [
-                "n-glyco-sequon-gain"
             ],
             "start_pos": 34,
             "end_pos": 34,
@@ -435,6 +352,7 @@
             "chr_pos": "33717438",
             "ref_nt": "G",
             "alt_nt": "T",
+            "site_lbl": "P34",
             "disease": [
                 {
                     "disease_id": "DOID:4159",
@@ -499,6 +417,7 @@
             "chr_pos": "33717420G>",
             "ref_nt": "A",
             "alt_nt": "null",
+            "site_lbl": "T40",
             "keywords": [
                 "ebi",
                 "germline"
@@ -529,42 +448,7 @@
             "chr_pos": "33717411T>",
             "ref_nt": "C",
             "alt_nt": "null",
-            "keywords": [
-                "ebi",
-                "germline"
-            ]
-        },
-        {
-            "evidence": [
-                {
-                    "id": "rs767238039",
-                    "database": "dbSNP",
-                    "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs767238039"
-                },
-                {
-                    "id": "rs767238039",
-                    "database": "ExAC",
-                    "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs767238039"
-                },
-                {
-                    "id": "rs767238039",
-                    "database": "gnomAD",
-                    "url": "http://gnomad.broadinstitute.org/awesome?query=rs767238039"
-                }
-            ],
-            "glycoeffect": [
-                "n-glyco-sequon-loss",
-                "o-glyco-site-loss"
-            ],
-            "start_pos": 45,
-            "end_pos": 45,
-            "sequence_org": "S",
-            "sequence_mut": "P",
-            "comment": "Germline mutation passed 1 out of 1 filters: n-glyco-sequon-loss (NCS->NCP).",
-            "chr_id": "11",
-            "chr_pos": "33717406A>",
-            "ref_nt": "G",
-            "alt_nt": "null",
+            "site_lbl": "N43",
             "keywords": [
                 "ebi",
                 "germline"
@@ -584,23 +468,8 @@
                 },
                 {
                     "id": "rs144931418",
-                    "database": "ExAC",
-                    "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs144931418"
-                },
-                {
-                    "id": "rs144931418",
                     "database": "NCI-TCGA",
                     "url": "https://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=rs&rs=rs144931418"
-                },
-                {
-                    "id": "rs144931418",
-                    "database": "TOPMed",
-                    "url": "https://www.ncbi.nlm.nih.gov/snp/rs144931418#frequency_tab"
-                },
-                {
-                    "id": "rs144931418",
-                    "database": "gnomAD",
-                    "url": "http://gnomad.broadinstitute.org/awesome?query=rs144931418"
                 }
             ],
             "glycoeffect": [
@@ -616,8 +485,9 @@
             "comment": "Somatic mutation passed 1 out of 6 filters: n-glyco-sequon-gain (DVT->NVT).",
             "chr_id": "11",
             "chr_pos": "33710293",
-            "ref_nt": "G",
-            "alt_nt": "A",
+            "ref_nt": "C",
+            "alt_nt": "T",
+            "site_lbl": "D74",
             "disease": [
                 {
                     "disease_id": "DOID:363",
@@ -679,7 +549,8 @@
                 "somatic",
                 "cancer",
                 "disease",
-                "ebi"
+                "ebi",
+                "germline"
             ]
         }
     ],
@@ -1049,7 +920,7 @@
     "expression_tissue": [
         {
             "tissue": {
-                "name": "Kidney",
+                "name": "Adult mammalian kidney",
                 "namespace": "UBERON",
                 "id": "0000082",
                 "url": "http://purl.obolibrary.org/obo/UBERON_0000082"
@@ -1253,7 +1124,7 @@
         },
         {
             "tissue": {
-                "name": "Breast",
+                "name": "Thoracic mammary gland",
                 "namespace": "UBERON",
                 "id": "0005200",
                 "url": "http://purl.obolibrary.org/obo/UBERON_0005200"
@@ -1342,23 +1213,35 @@
                             "name": "tumor of the prostate"
                         },
                         {
+                            "id": "MONDO:0012597",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012597",
+                            "name": "prostate cancer, hereditary, 9"
+                        },
+                        {
+                            "id": "MONDO:0012597",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012597",
+                            "name": "prostate cancer, hereditary, 9"
+                        },
+                        {
+                            "id": "MONDO:0012597",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012597",
+                            "name": "prostate cancer, hereditary, type 9"
+                        },
+                        {
+                            "id": "MONDO:0012597",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012597",
+                            "name": "HPC9"
+                        },
+                        {
                             "id": "MONDO:0012741",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012741",
                             "name": "prostate cancer, hereditary, 12",
                             "description": "Any familial prostate cancer in which the cause of the disease is a mutation in the EHBP1 gene."
-                        },
-                        {
-                            "id": "MONDO:0012741",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012741",
-                            "name": "prostate cancer, hereditary, 12"
-                        },
-                        {
-                            "id": "MONDO:0012741",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012741",
-                            "name": "HPC12"
                         },
                         {
                             "id": "MONDO:0012741",
@@ -1370,13 +1253,31 @@
                             "id": "MONDO:0012741",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012741",
+                            "name": "familial prostate cancer caused by mutation in EHBP1"
+                        },
+                        {
+                            "id": "MONDO:0012741",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012741",
+                            "name": "prostate cancer, hereditary, 12"
+                        },
+                        {
+                            "id": "MONDO:0012741",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012741",
                             "name": "prostate cancer, hereditary, type 12"
                         },
                         {
                             "id": "MONDO:0012741",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012741",
-                            "name": "familial prostate cancer caused by mutation in EHBP1"
+                            "name": "HPC12"
+                        },
+                        {
+                            "id": "MONDO:0012244",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012244",
+                            "name": "prostate cancer, hereditary, 5"
                         },
                         {
                             "id": "MONDO:0012244",
@@ -1394,13 +1295,13 @@
                             "id": "MONDO:0012244",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012244",
-                            "name": "prostate cancer, hereditary, 5"
+                            "name": "HPC5"
                         },
                         {
-                            "id": "MONDO:0012244",
+                            "id": "MONDO:0012093",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012244",
-                            "name": "HPC5"
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012093",
+                            "name": "prostate cancer, hereditary, 3"
                         },
                         {
                             "id": "MONDO:0012093",
@@ -1418,19 +1319,13 @@
                             "id": "MONDO:0012093",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012093",
-                            "name": "HPC3"
-                        },
-                        {
-                            "id": "MONDO:0012093",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012093",
                             "name": "prostate cancer, susceptibility to, 3"
                         },
                         {
                             "id": "MONDO:0012093",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012093",
-                            "name": "prostate cancer, hereditary, 3"
+                            "name": "HPC3"
                         },
                         {
                             "id": "MONDO:0012094",
@@ -1442,7 +1337,7 @@
                             "id": "MONDO:0012094",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012094",
-                            "name": "HPC4"
+                            "name": "prostate cancer, hereditary, 4"
                         },
                         {
                             "id": "MONDO:0012094",
@@ -1454,19 +1349,19 @@
                             "id": "MONDO:0012094",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012094",
-                            "name": "prostate cancer, hereditary, on chromosome 7"
-                        },
-                        {
-                            "id": "MONDO:0012094",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012094",
                             "name": "prostate cancer, susceptibility to, 4"
                         },
                         {
                             "id": "MONDO:0012094",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012094",
-                            "name": "prostate cancer, hereditary, 4"
+                            "name": "HPC4"
+                        },
+                        {
+                            "id": "MONDO:0012094",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012094",
+                            "name": "prostate cancer, hereditary, on chromosome 7"
                         },
                         {
                             "id": "MONDO:0012758",
@@ -1479,19 +1374,7 @@
                             "id": "MONDO:0012758",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012758",
-                            "name": "HPC13"
-                        },
-                        {
-                            "id": "MONDO:0012758",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012758",
                             "name": "MSMB familial prostate cancer"
-                        },
-                        {
-                            "id": "MONDO:0012758",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012758",
-                            "name": "prostate cancer, hereditary, 13"
                         },
                         {
                             "id": "MONDO:0012758",
@@ -1503,7 +1386,25 @@
                             "id": "MONDO:0012758",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012758",
+                            "name": "prostate cancer, hereditary, 13"
+                        },
+                        {
+                            "id": "MONDO:0012758",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012758",
                             "name": "prostate cancer, hereditary, type 13"
+                        },
+                        {
+                            "id": "MONDO:0012758",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012758",
+                            "name": "HPC13"
+                        },
+                        {
+                            "id": "MONDO:0011270",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011270",
+                            "name": "prostate cancer, hereditary, 8"
                         },
                         {
                             "id": "MONDO:0011270",
@@ -1521,7 +1422,7 @@
                             "id": "MONDO:0011270",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0011270",
-                            "name": "prostate cancer, hereditary, 8"
+                            "name": "HPC8"
                         },
                         {
                             "id": "MONDO:0011270",
@@ -1536,12 +1437,6 @@
                             "name": "prostate cancer, susceptibility to"
                         },
                         {
-                            "id": "MONDO:0011270",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0011270",
-                            "name": "HPC8"
-                        },
-                        {
                             "id": "MONDO:0012300",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012300",
@@ -1551,7 +1446,7 @@
                             "id": "MONDO:0012300",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012300",
-                            "name": "HPC6"
+                            "name": "prostate cancer, hereditary, 6"
                         },
                         {
                             "id": "MONDO:0012300",
@@ -1563,7 +1458,7 @@
                             "id": "MONDO:0012300",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012300",
-                            "name": "prostate cancer, hereditary, 6"
+                            "name": "HPC6"
                         },
                         {
                             "id": "MONDO:0012300",
@@ -1581,146 +1476,13 @@
                             "id": "MONDO:0012620",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012620",
-                            "name": "prostate cancer, hereditary, 10"
+                            "name": "HPC10"
                         },
                         {
                             "id": "MONDO:0012620",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012620",
-                            "name": "HPC10"
-                        },
-                        {
-                            "id": "MONDO:0012597",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012597",
-                            "name": "prostate cancer, hereditary, 9"
-                        },
-                        {
-                            "id": "MONDO:0012597",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012597",
-                            "name": "HPC9"
-                        },
-                        {
-                            "id": "MONDO:0012597",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012597",
-                            "name": "prostate cancer, hereditary, type 9"
-                        },
-                        {
-                            "id": "MONDO:0012597",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012597",
-                            "name": "prostate cancer, hereditary, 9"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "prostate cancer",
-                            "description": "A primary or metastatic malignant tumor involving the prostate gland. The vast majority are carcinomas."
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "malignant tumor of prostate"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "hereditary prostate cancer"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "malignant neoplasm of prostate"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "malignant neoplasm of prostate gland"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "malignant prostate tumor"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "malignant neoplasm of the prostate"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "prostate neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "prostate gland cancer"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "tumor of the prostate"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "malignant prostate neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "prostatic cancer"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "prostate cancer, familial"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "malignant tumor of the prostate"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "prostatic neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "malignant prostate gland neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "cancer of prostate gland"
-                        },
-                        {
-                            "id": "MONDO:0008315",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008315",
-                            "name": "NGP - new growth of prostate"
+                            "name": "prostate cancer, hereditary, 10"
                         },
                         {
                             "id": "MONDO:0023122",
@@ -1733,19 +1495,7 @@
                             "id": "MONDO:0023122",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0023122",
-                            "name": "prostate cancer, somatic"
-                        },
-                        {
-                            "id": "MONDO:0023122",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0023122",
                             "name": "familial prostate cancer"
-                        },
-                        {
-                            "id": "MONDO:0023122",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0023122",
-                            "name": "prostate cancer, familial"
                         },
                         {
                             "id": "MONDO:0023122",
@@ -1763,13 +1513,7 @@
                             "id": "MONDO:0023122",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0023122",
-                            "name": "prostate cancer, hereditary"
-                        },
-                        {
-                            "id": "MONDO:0023122",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0023122",
-                            "name": "prostate cancer, susceptibility to, autosomal dominant, somatic mutation"
+                            "name": "prostate cancer, autosomal dominant, somatic mutation"
                         },
                         {
                             "id": "MONDO:0023122",
@@ -1781,19 +1525,31 @@
                             "id": "MONDO:0023122",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0023122",
-                            "name": "prostate cancer, autosomal dominant, somatic mutation"
+                            "name": "prostate cancer, somatic"
+                        },
+                        {
+                            "id": "MONDO:0023122",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0023122",
+                            "name": "prostate cancer, susceptibility to, autosomal dominant, somatic mutation"
+                        },
+                        {
+                            "id": "MONDO:0023122",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0023122",
+                            "name": "prostate cancer, familial"
+                        },
+                        {
+                            "id": "MONDO:0023122",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0023122",
+                            "name": "prostate cancer, hereditary"
                         },
                         {
                             "id": "MONDO:0012470",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012470",
                             "name": "prostate cancer, hereditary, 7"
-                        },
-                        {
-                            "id": "MONDO:0012470",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012470",
-                            "name": "prostate cancer aggressiveness"
                         },
                         {
                             "id": "MONDO:0012470",
@@ -1808,29 +1564,17 @@
                             "name": "prostate cancer, hereditary, 7"
                         },
                         {
+                            "id": "MONDO:0012470",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012470",
+                            "name": "prostate cancer aggressiveness"
+                        },
+                        {
                             "id": "MONDO:0011098",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0011098",
                             "name": "prostate cancer, hereditary, 1",
                             "description": "Any familial prostate cancer in which the cause of the disease is a mutation in the RNASEL gene."
-                        },
-                        {
-                            "id": "MONDO:0011098",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0011098",
-                            "name": "HPC1"
-                        },
-                        {
-                            "id": "MONDO:0011098",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0011098",
-                            "name": "prostate cancer, hereditary, 1"
-                        },
-                        {
-                            "id": "MONDO:0011098",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0011098",
-                            "name": "prostate cancer 1"
                         },
                         {
                             "id": "MONDO:0011098",
@@ -1848,13 +1592,31 @@
                             "id": "MONDO:0011098",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0011098",
-                            "name": "Prca1"
+                            "name": "prostate cancer 1"
+                        },
+                        {
+                            "id": "MONDO:0011098",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011098",
+                            "name": "prostate cancer, hereditary, 1"
                         },
                         {
                             "id": "MONDO:0011098",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0011098",
                             "name": "prostate cancer, hereditary, type 1"
+                        },
+                        {
+                            "id": "MONDO:0011098",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011098",
+                            "name": "HPC1"
+                        },
+                        {
+                            "id": "MONDO:0011098",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0011098",
+                            "name": "Prca1"
                         },
                         {
                             "id": "MONDO:0012768",
@@ -1884,13 +1646,13 @@
                             "id": "MONDO:0012769",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012769",
-                            "name": "prostate cancer, hereditary, 14"
+                            "name": "HPC14"
                         },
                         {
                             "id": "MONDO:0012769",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012769",
-                            "name": "HPC14"
+                            "name": "prostate cancer, hereditary, 14"
                         },
                         {
                             "id": "MONDO:0012770",
@@ -1920,12 +1682,6 @@
                             "id": "MONDO:0010257",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0010257",
-                            "name": "prostate cancer susceptibility, X-linked"
-                        },
-                        {
-                            "id": "MONDO:0010257",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0010257",
                             "name": "HPCX1"
                         },
                         {
@@ -1933,6 +1689,12 @@
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0010257",
                             "name": "prostate cancer, hereditary, X-linked 1"
+                        },
+                        {
+                            "id": "MONDO:0010257",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0010257",
+                            "name": "prostate cancer susceptibility, X-linked"
                         },
                         {
                             "id": "MONDO:0010405",
@@ -1965,13 +1727,6 @@
                             "url": "https://www.omim.org/entry/611928",
                             "name": "Prostate cancer, hereditary, 13",
                             "description": "Prostate cancer, hereditary, 13"
-                        },
-                        {
-                            "id": "MIM:176807",
-                            "resource": "MIM",
-                            "url": "https://www.omim.org/entry/176807",
-                            "name": "Prostate cancer",
-                            "description": "Prostate cancer"
                         },
                         {
                             "id": "MIM:176807",
@@ -2044,43 +1799,19 @@
                             "id": "MONDO:0001056",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "malignant tumor of body of stomach"
-                        },
-                        {
-                            "id": "MONDO:0001056",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "malignant tumor of the stomach"
-                        },
-                        {
-                            "id": "MONDO:0001056",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
                             "name": "gastric neoplasm"
                         },
                         {
                             "id": "MONDO:0001056",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "malignant tumor of stomach"
+                            "name": "Ca lesser curvature - stomach"
                         },
                         {
                             "id": "MONDO:0001056",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "malignant tumor of lesser curve of stomach"
-                        },
-                        {
-                            "id": "MONDO:0001056",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "malignant gastric tumor"
-                        },
-                        {
-                            "id": "MONDO:0001056",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "malignant neoplasm of body of stomach"
+                            "name": "cancer of stomach"
                         },
                         {
                             "id": "MONDO:0001056",
@@ -2098,13 +1829,73 @@
                             "id": "MONDO:0001056",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "gastric cancer, intestinal"
+                            "name": "gastric cancer, somatic"
                         },
                         {
                             "id": "MONDO:0001056",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "gastric cancer, somatic"
+                            "name": "malignant gastric neoplasm"
+                        },
+                        {
+                            "id": "MONDO:0001056",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                            "name": "malignant gastric tumor"
+                        },
+                        {
+                            "id": "MONDO:0001056",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                            "name": "malignant neoplasm of lesser curve of stomach"
+                        },
+                        {
+                            "id": "MONDO:0001056",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                            "name": "malignant neoplasm of stomach"
+                        },
+                        {
+                            "id": "MONDO:0001056",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                            "name": "malignant neoplasm of the stomach"
+                        },
+                        {
+                            "id": "MONDO:0001056",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                            "name": "malignant stomach neoplasm"
+                        },
+                        {
+                            "id": "MONDO:0001056",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                            "name": "malignant tumor of body of stomach"
+                        },
+                        {
+                            "id": "MONDO:0001056",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                            "name": "malignant tumor of greater curve of stomach"
+                        },
+                        {
+                            "id": "MONDO:0001056",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                            "name": "malignant tumor of lesser curve of stomach"
+                        },
+                        {
+                            "id": "MONDO:0001056",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                            "name": "malignant tumor of stomach"
+                        },
+                        {
+                            "id": "MONDO:0001056",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
+                            "name": "malignant tumor of the stomach"
                         },
                         {
                             "id": "MONDO:0001056",
@@ -2122,55 +1913,19 @@
                             "id": "MONDO:0001056",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "malignant tumor of greater curve of stomach"
-                        },
-                        {
-                            "id": "MONDO:0001056",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
                             "name": "ca greater curvature of stomach"
                         },
                         {
                             "id": "MONDO:0001056",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "Ca lesser curvature - stomach"
+                            "name": "malignant neoplasm of body of stomach"
                         },
                         {
                             "id": "MONDO:0001056",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "malignant stomach neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0001056",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "malignant neoplasm of stomach"
-                        },
-                        {
-                            "id": "MONDO:0001056",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "malignant gastric neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0001056",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "malignant neoplasm of the stomach"
-                        },
-                        {
-                            "id": "MONDO:0001056",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "malignant neoplasm of lesser curve of stomach"
-                        },
-                        {
-                            "id": "MONDO:0001056",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001056",
-                            "name": "cancer of stomach"
+                            "name": "gastric cancer, intestinal"
                         },
                         {
                             "id": "MIM:613659",
@@ -2229,13 +1984,79 @@
                             "id": "MONDO:0001187",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "malignant neoplasm of the bladder"
+                            "name": "tumor of the bladder"
+                        },
+                        {
+                            "id": "MONDO:0001187",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                            "name": "bladder cancer, somatic"
+                        },
+                        {
+                            "id": "MONDO:0001187",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                            "name": "cancer of urinary bladder"
                         },
                         {
                             "id": "MONDO:0001187",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001187",
                             "name": "malignant bladder neoplasm"
+                        },
+                        {
+                            "id": "MONDO:0001187",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                            "name": "malignant bladder tumor"
+                        },
+                        {
+                            "id": "MONDO:0001187",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                            "name": "malignant neoplasm of bladder"
+                        },
+                        {
+                            "id": "MONDO:0001187",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                            "name": "malignant neoplasm of the bladder"
+                        },
+                        {
+                            "id": "MONDO:0001187",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                            "name": "malignant neoplasm of the urinary bladder"
+                        },
+                        {
+                            "id": "MONDO:0001187",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                            "name": "malignant neoplasm of urinary bladder"
+                        },
+                        {
+                            "id": "MONDO:0001187",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                            "name": "malignant neoplasm, bladder"
+                        },
+                        {
+                            "id": "MONDO:0001187",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                            "name": "malignant neoplasm, urinary bladder"
+                        },
+                        {
+                            "id": "MONDO:0001187",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                            "name": "malignant tumor of bladder"
+                        },
+                        {
+                            "id": "MONDO:0001187",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
+                            "name": "malignant tumor of the bladder"
                         },
                         {
                             "id": "MONDO:0001187",
@@ -2253,13 +2074,7 @@
                             "id": "MONDO:0001187",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "malignant neoplasm of bladder"
-                        },
-                        {
-                            "id": "MONDO:0001187",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "malignant bladder tumor"
+                            "name": "malignant tumor, urinary bladder"
                         },
                         {
                             "id": "MONDO:0001187",
@@ -2271,37 +2086,7 @@
                             "id": "MONDO:0001187",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "malignant tumor of the bladder"
-                        },
-                        {
-                            "id": "MONDO:0001187",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "urinary bladder malignant neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0001187",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "malignant neoplasm, urinary bladder"
-                        },
-                        {
-                            "id": "MONDO:0001187",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "bladder cancer, somatic"
-                        },
-                        {
-                            "id": "MONDO:0001187",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "malignant tumor of bladder"
-                        },
-                        {
-                            "id": "MONDO:0001187",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "cancer of urinary bladder"
+                            "name": "malignant urinary bladder tumor"
                         },
                         {
                             "id": "MONDO:0001187",
@@ -2313,43 +2098,13 @@
                             "id": "MONDO:0001187",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "malignant neoplasm of urinary bladder"
-                        },
-                        {
-                            "id": "MONDO:0001187",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "malignant neoplasm of the urinary bladder"
-                        },
-                        {
-                            "id": "MONDO:0001187",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "tumor of the bladder"
-                        },
-                        {
-                            "id": "MONDO:0001187",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "malignant tumor, urinary bladder"
-                        },
-                        {
-                            "id": "MONDO:0001187",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "malignant urinary bladder tumor"
+                            "name": "urinary bladder malignant neoplasm"
                         },
                         {
                             "id": "MONDO:0001187",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0001187",
                             "name": "urinary bladder malignant tumor"
-                        },
-                        {
-                            "id": "MONDO:0001187",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0001187",
-                            "name": "malignant neoplasm, bladder"
                         },
                         {
                             "id": "MIM:109800",
@@ -2461,24 +2216,6 @@
                             "name": "lung cancer susceptibility 1"
                         },
                         {
-                            "id": "MONDO:0012955",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012955",
-                            "name": "lung cancer susceptibility 4"
-                        },
-                        {
-                            "id": "MONDO:0012955",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012955",
-                            "name": "lung cancer susceptibility 4"
-                        },
-                        {
-                            "id": "MONDO:0012955",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0012955",
-                            "name": "LNCR4"
-                        },
-                        {
                             "id": "MONDO:0012942",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012942",
@@ -2494,19 +2231,31 @@
                             "id": "MONDO:0012942",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012942",
-                            "name": "adenocarcinoma of lung, susceptibility to"
+                            "name": "lung cancer susceptibility 3"
                         },
                         {
                             "id": "MONDO:0012942",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0012942",
-                            "name": "lung cancer susceptibility 3"
+                            "name": "adenocarcinoma of lung, susceptibility to"
                         },
                         {
-                            "id": "MONDO:0013631",
+                            "id": "MONDO:0012955",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0013631",
-                            "name": "lung cancer susceptibility 5"
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012955",
+                            "name": "lung cancer susceptibility 4"
+                        },
+                        {
+                            "id": "MONDO:0012955",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012955",
+                            "name": "LNCR4"
+                        },
+                        {
+                            "id": "MONDO:0012955",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0012955",
+                            "name": "lung cancer susceptibility 4"
                         },
                         {
                             "id": "MONDO:0013631",
@@ -2521,83 +2270,17 @@
                             "name": "LNCR5"
                         },
                         {
+                            "id": "MONDO:0013631",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0013631",
+                            "name": "lung cancer susceptibility 5"
+                        },
+                        {
                             "id": "MONDO:0008903",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0008903",
                             "name": "lung cancer",
                             "description": "A malignant neoplasm involving the lung."
-                        },
-                        {
-                            "id": "MONDO:0008903",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "malignant tumor of the lung"
-                        },
-                        {
-                            "id": "MONDO:0008903",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "nonsmall cell lung cancer, somatic"
-                        },
-                        {
-                            "id": "MONDO:0008903",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "cancer of lung"
-                        },
-                        {
-                            "id": "MONDO:0008903",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "lung cancer, susceptibility to, autosomal dominant, somatic mutation"
-                        },
-                        {
-                            "id": "MONDO:0008903",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "adenocarcinoma of lung, somatic"
-                        },
-                        {
-                            "id": "MONDO:0008903",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "malignant neoplasm of lung"
-                        },
-                        {
-                            "id": "MONDO:0008903",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "lung cancer, protection against"
-                        },
-                        {
-                            "id": "MONDO:0008903",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "lung cancer, protection against, autosomal dominant, somatic mutation"
-                        },
-                        {
-                            "id": "MONDO:0008903",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "lung cancer"
-                        },
-                        {
-                            "id": "MONDO:0008903",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "alveolar cell carcinoma"
-                        },
-                        {
-                            "id": "MONDO:0008903",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "malignant neoplasm of the lung"
-                        },
-                        {
-                            "id": "MONDO:0008903",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "malignant lung tumor"
                         },
                         {
                             "id": "MONDO:0008903",
@@ -2609,19 +2292,31 @@
                             "id": "MONDO:0008903",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "nonsmall cell lung cancer, response to tyrosine kinase inhibitor in, autosomal dominant, somatic mutation"
+                            "name": "adenocarcinoma of lung, somatic"
                         },
                         {
                             "id": "MONDO:0008903",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "Nonsmall cell lung cancer"
+                            "name": "cancer of lung"
                         },
                         {
                             "id": "MONDO:0008903",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "malignant lung neoplasm"
+                            "name": "lung cancer"
+                        },
+                        {
+                            "id": "MONDO:0008903",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                            "name": "lung cancer, protection against, autosomal dominant, somatic mutation"
+                        },
+                        {
+                            "id": "MONDO:0008903",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                            "name": "lung cancer, resistance to, autosomal dominant, somatic mutation"
                         },
                         {
                             "id": "MONDO:0008903",
@@ -2633,13 +2328,31 @@
                             "id": "MONDO:0008903",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "nonsmall cell lung cancer, susceptibility to, autosomal dominant, somatic mutation"
+                            "name": "lung cancer, susceptibility to, autosomal dominant, somatic mutation"
                         },
                         {
                             "id": "MONDO:0008903",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "lung neoplasm"
+                            "name": "malignant lung neoplasm"
+                        },
+                        {
+                            "id": "MONDO:0008903",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                            "name": "malignant lung tumor"
+                        },
+                        {
+                            "id": "MONDO:0008903",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                            "name": "malignant neoplasm of lung"
+                        },
+                        {
+                            "id": "MONDO:0008903",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                            "name": "malignant neoplasm of the lung"
                         },
                         {
                             "id": "MONDO:0008903",
@@ -2651,7 +2364,49 @@
                             "id": "MONDO:0008903",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0008903",
-                            "name": "lung cancer, resistance to, autosomal dominant, somatic mutation"
+                            "name": "malignant tumor of the lung"
+                        },
+                        {
+                            "id": "MONDO:0008903",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                            "name": "nonsmall cell lung cancer, response to tyrosine kinase inhibitor in, autosomal dominant, somatic mutation"
+                        },
+                        {
+                            "id": "MONDO:0008903",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                            "name": "nonsmall cell lung cancer, somatic"
+                        },
+                        {
+                            "id": "MONDO:0008903",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                            "name": "nonsmall cell lung cancer, susceptibility to, autosomal dominant, somatic mutation"
+                        },
+                        {
+                            "id": "MONDO:0008903",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                            "name": "Nonsmall cell lung cancer"
+                        },
+                        {
+                            "id": "MONDO:0008903",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                            "name": "alveolar cell carcinoma"
+                        },
+                        {
+                            "id": "MONDO:0008903",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                            "name": "lung cancer, protection against"
+                        },
+                        {
+                            "id": "MONDO:0008903",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0008903",
+                            "name": "lung neoplasm"
                         },
                         {
                             "id": "MIM:211980",
@@ -2734,31 +2489,31 @@
                             "id": "MONDO:0016419",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0016419",
-                            "name": "breast cancer, lobular, somatic"
+                            "name": "breast cancer susceptibility, autosomal dominant, somatic mutation"
                         },
                         {
                             "id": "MONDO:0016419",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0016419",
-                            "name": "familial breast carcinoma"
-                        },
-                        {
-                            "id": "MONDO:0016419",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0016419",
-                            "name": "familial breast cancer"
-                        },
-                        {
-                            "id": "MONDO:0016419",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0016419",
-                            "name": "hereditary breast cancer"
+                            "name": "breast cancer, early-onset, susceptibility to, autosomal dominant, somatic mutation"
                         },
                         {
                             "id": "MONDO:0016419",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0016419",
                             "name": "breast cancer, invasive ductal, autosomal dominant, somatic mutation"
+                        },
+                        {
+                            "id": "MONDO:0016419",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0016419",
+                            "name": "breast cancer, lobular, somatic"
+                        },
+                        {
+                            "id": "MONDO:0016419",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0016419",
+                            "name": "breast cancer, male, susceptibility to, autosomal dominant, somatic mutation"
                         },
                         {
                             "id": "MONDO:0016419",
@@ -2776,6 +2531,24 @@
                             "id": "MONDO:0016419",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0016419",
+                            "name": "breast cancer, susceptibility to, autosomal dominant, somatic mutation"
+                        },
+                        {
+                            "id": "MONDO:0016419",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0016419",
+                            "name": "familial breast cancer"
+                        },
+                        {
+                            "id": "MONDO:0016419",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0016419",
+                            "name": "familial breast carcinoma"
+                        },
+                        {
+                            "id": "MONDO:0016419",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0016419",
                             "name": "familial cancer of breast"
                         },
                         {
@@ -2788,31 +2561,7 @@
                             "id": "MONDO:0016419",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0016419",
-                            "name": "breast cancer, early-onset, susceptibility to, autosomal dominant, somatic mutation"
-                        },
-                        {
-                            "id": "MONDO:0016419",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0016419",
-                            "name": "breast cancer, susceptibility to, autosomal dominant, somatic mutation"
-                        },
-                        {
-                            "id": "MONDO:0016419",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0016419",
-                            "name": "breast cancer susceptibility, autosomal dominant, somatic mutation"
-                        },
-                        {
-                            "id": "MONDO:0016419",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0016419",
-                            "name": "breast cancer, male, susceptibility to, autosomal dominant, somatic mutation"
-                        },
-                        {
-                            "id": "MONDO:0016419",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0016419",
-                            "name": "breast cancer, familial Male"
+                            "name": "hereditary breast cancer"
                         },
                         {
                             "id": "MONDO:0016419",
@@ -2827,198 +2576,10 @@
                             "name": "breast cancer, familial"
                         },
                         {
-                            "id": "MONDO:0007254",
+                            "id": "MONDO:0016419",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "breast cancer",
-                            "description": "A primary or metastatic malignant neoplasm involving the breast. The vast majority of cases are carcinomas arising from the breast parenchyma or the nipple. Malignant breast neoplasms occur more frequently in females than in males."
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "malignant tumor of the breast"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "primary breast cancer"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "malignant tumor of breast"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "mammary tumor"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "malignant neoplasm of breast"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "cancer of breast"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "malignant breast tumor"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "malignant neoplasm of the breast"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "malignant breast neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "breast cancer"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "breast tumor"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "mammary neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "mammary cancer"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "breast cancer",
-                            "description": "A primary or metastatic malignant neoplasm involving the breast. The vast majority of cases are carcinomas arising from the breast parenchyma or the nipple. Malignant breast neoplasms occur more frequently in females than in males."
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "malignant tumor of the breast"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "primary breast cancer"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "malignant tumor of breast"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "mammary tumor"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "malignant neoplasm of breast"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "cancer of breast"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "malignant breast tumor"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "malignant neoplasm of the breast"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "malignant breast neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "breast cancer"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "breast tumor"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "mammary neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0007254",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007254",
-                            "name": "mammary cancer"
-                        },
-                        {
-                            "id": "MONDO:0010804",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0010804",
-                            "name": "obsolete BRCATA"
-                        },
-                        {
-                            "id": "MONDO:0010804",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0010804",
-                            "name": "moved to 114480"
-                        },
-                        {
-                            "id": "MONDO:0010804",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0010804",
-                            "name": "BRCATA"
-                        },
-                        {
-                            "id": "MONDO:0010804",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0010804",
-                            "name": "breast cancer, 11-22 translocation-associated"
+                            "url": "https://monarchinitiative.org/disease/MONDO:0016419",
+                            "name": "breast cancer, familial Male"
                         },
                         {
                             "id": "MIM:114480",
@@ -3419,31 +2980,31 @@
                             "id": "MONDO:0007576",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "malignant neoplasm of middle third of oesophagus"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "malignant tumor of proximal third of esophagus"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "malignant neoplasm of proximal third of esophagus"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
                             "name": "cancer of esophagus"
                         },
                         {
                             "id": "MONDO:0007576",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "Escc, susceptibility to"
+                            "name": "esophageal cancer"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "esophageal cancer, somatic"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "esophageal carcinoma, somatic"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "esophageal squamous cell carcinoma, somatic"
                         },
                         {
                             "id": "MONDO:0007576",
@@ -3455,31 +3016,25 @@
                             "id": "MONDO:0007576",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "malignant esophageal neoplasm"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
                             "name": "malignant esophageal tumor"
                         },
                         {
                             "id": "MONDO:0007576",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "Ca middle third oesophagus"
+                            "name": "malignant esophagus neoplasm"
                         },
                         {
                             "id": "MONDO:0007576",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "malignant tumor of abdominal esophagus"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "malignant neoplasm of lower third of oesophagus"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "esophageal squamous cell carcinoma, somatic"
+                            "name": "malignant esophagus tumor"
                         },
                         {
                             "id": "MONDO:0007576",
@@ -3497,61 +3052,7 @@
                             "id": "MONDO:0007576",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "malignant neoplasm of distal third of esophagus"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "malignant esophagus tumor"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "gastric cardia adenocarcinoma, susceptibility to"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "malignant tumor of distal third of esophagus"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "malignant tumor of the middle third of the esophagus"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "malignant esophagus neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "Ca lower third oesophagus"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "esophageal squamous cell carcinoma, susceptibility to"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "esophageal cancer, somatic"
-                        },
-                        {
-                            "id": "MONDO:0007576",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "esophageal cancer"
+                            "name": "malignant tumor of esophagus"
                         },
                         {
                             "id": "MONDO:0007576",
@@ -3563,19 +3064,37 @@
                             "id": "MONDO:0007576",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "malignant tumor of esophagus"
+                            "name": "Ca lower third oesophagus"
                         },
                         {
                             "id": "MONDO:0007576",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "Aerodigestive tract cancer, susceptibility to"
+                            "name": "Ca middle third oesophagus"
                         },
                         {
                             "id": "MONDO:0007576",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "esophageal carcinoma, somatic"
+                            "name": "malignant neoplasm of distal third of esophagus"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "malignant neoplasm of lower third of oesophagus"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "malignant neoplasm of middle third of oesophagus"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "malignant neoplasm of proximal third of esophagus"
                         },
                         {
                             "id": "MONDO:0007576",
@@ -3587,7 +3106,49 @@
                             "id": "MONDO:0007576",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0007576",
-                            "name": "malignant esophageal neoplasm"
+                            "name": "malignant tumor of abdominal esophagus"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "malignant tumor of distal third of esophagus"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "malignant tumor of proximal third of esophagus"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "malignant tumor of the middle third of the esophagus"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "Aerodigestive tract cancer, susceptibility to"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "Escc, susceptibility to"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "esophageal squamous cell carcinoma, susceptibility to"
+                        },
+                        {
+                            "id": "MONDO:0007576",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0007576",
+                            "name": "gastric cardia adenocarcinoma, susceptibility to"
                         },
                         {
                             "id": "MIM:133239",
@@ -3624,120 +3185,11 @@
                     },
                     "synonyms": [
                         {
-                            "id": "MONDO:0005008",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005008",
-                            "name": "colorectal adenocarcinoma",
-                            "description": "The most common type of colorectal carcinoma. It is characterized by the presence of malignant glandular epithelial cells invading through the muscularis mucosa into the submucosa. Histologic variants include mucinous adenocarcinoma, signet ring cell carcinoma, medullary carcinoma, serrated adenocarcinoma, cribriform comedo-type adenocarcinoma, and micropapillary adenocarcinoma."
-                        },
-                        {
-                            "id": "MONDO:0005008",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005008",
-                            "name": "adenocarcinoma of the large intestine"
-                        },
-                        {
-                            "id": "MONDO:0005008",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005008",
-                            "name": "large bowel adenocarcinoma"
-                        },
-                        {
-                            "id": "MONDO:0005008",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005008",
-                            "name": "adenocarcinoma of large intestine"
-                        },
-                        {
-                            "id": "MONDO:0005008",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005008",
-                            "name": "colorectal adenocarcinoma"
-                        },
-                        {
-                            "id": "MONDO:0005008",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005008",
-                            "name": "colorectum adenocarcinoma"
-                        },
-                        {
-                            "id": "MONDO:0005008",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005008",
-                            "name": "adenocarcinoma of the large bowel"
-                        },
-                        {
-                            "id": "MONDO:0005008",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005008",
-                            "name": "large intestine adenocarcinoma"
-                        },
-                        {
-                            "id": "MONDO:0005008",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005008",
-                            "name": "colorectal (colon or rectal) adenocarcinoma"
-                        },
-                        {
-                            "id": "MONDO:0005008",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005008",
-                            "name": "adenocarcinoma of large bowel"
-                        },
-                        {
                             "id": "MONDO:0005575",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0005575",
                             "name": "colorectal cancer",
                             "description": "A primary or metastatic malignant neoplasm that affects the colon or rectum. Representative examples include carcinoma, lymphoma, and sarcoma."
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "colorectal cancer, susceptibility to, autosomal dominant, somatic mutation"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant colorectal tumor"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant tumor of the large intestine"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant tumor of large intestine"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant large bowel neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant neoplasm of the large bowel"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "CRC"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant neoplasm of large bowel"
                         },
                         {
                             "id": "MONDO:0005575",
@@ -3749,85 +3201,13 @@
                             "id": "MONDO:0005575",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "cancer of large bowel"
+                        },
+                        {
+                            "id": "MONDO:0005575",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
                             "name": "cancer of large intestine"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant large bowel tumor"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "colon cancer, susceptibility to, autosomal dominant, somatic mutation"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "colorectal cancer with chromosomal instability, somatic"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant colorectal neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "colon cancer, somatic"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "colorectal cancer, autosomal dominant, somatic mutation"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "large intestine cancer"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "colorectal cancer, somatic"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant tumor of the large bowel"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "colorectum cancer"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant tumor of large bowel"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant large intestine neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0005575",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant neoplasm of the large intestine"
                         },
                         {
                             "id": "MONDO:0005575",
@@ -3839,13 +3219,13 @@
                             "id": "MONDO:0005575",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant neoplasm of large intestine"
+                            "name": "colon cancer, advanced, somatic"
                         },
                         {
                             "id": "MONDO:0005575",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "colon cancer"
+                            "name": "colon cancer, somatic"
                         },
                         {
                             "id": "MONDO:0005575",
@@ -3857,7 +3237,67 @@
                             "id": "MONDO:0005575",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant neoplasm of colorectum"
+                            "name": "colorectal cancer with chromosomal instability, somatic"
+                        },
+                        {
+                            "id": "MONDO:0005575",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "colorectal cancer, autosomal dominant, somatic mutation"
+                        },
+                        {
+                            "id": "MONDO:0005575",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "colorectal cancer, somatic"
+                        },
+                        {
+                            "id": "MONDO:0005575",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "colorectal cancer, susceptibility to, autosomal dominant, somatic mutation"
+                        },
+                        {
+                            "id": "MONDO:0005575",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "colorectum cancer"
+                        },
+                        {
+                            "id": "MONDO:0005575",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "malignant colorectal neoplasm"
+                        },
+                        {
+                            "id": "MONDO:0005575",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "malignant colorectal tumor"
+                        },
+                        {
+                            "id": "MONDO:0005575",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "malignant colorectum neoplasm"
+                        },
+                        {
+                            "id": "MONDO:0005575",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "malignant large bowel neoplasm"
+                        },
+                        {
+                            "id": "MONDO:0005575",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "malignant large bowel tumor"
+                        },
+                        {
+                            "id": "MONDO:0005575",
+                            "resource": "MONDO",
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "malignant large intestine neoplasm"
                         },
                         {
                             "id": "MONDO:0005575",
@@ -3869,136 +3309,79 @@
                             "id": "MONDO:0005575",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "cancer of large bowel"
+                            "name": "malignant neoplasm of colorectum"
                         },
                         {
                             "id": "MONDO:0005575",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "colon cancer, advanced, somatic"
+                            "name": "malignant neoplasm of large bowel"
                         },
                         {
                             "id": "MONDO:0005575",
                             "resource": "MONDO",
                             "url": "https://monarchinitiative.org/disease/MONDO:0005575",
-                            "name": "malignant colorectum neoplasm"
+                            "name": "malignant neoplasm of large intestine"
                         },
                         {
-                            "id": "MONDO:0005335",
+                            "id": "MONDO:0005575",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "colorectal neoplasm",
-                            "description": "A benign or malignant neoplasm that affects the colon or rectum. Representative examples of benign neoplasms include lipoma and leiomyoma. Representative examples of malignant neoplasms include carcinoma, lymphoma, and sarcoma. Colorectal adenomas always exhibit epithelial dysplasia and are considered premalignant neoplasms."
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "malignant neoplasm of the large bowel"
                         },
                         {
-                            "id": "MONDO:0005335",
+                            "id": "MONDO:0005575",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "colorectal tumor"
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "malignant neoplasm of the large intestine"
                         },
                         {
-                            "id": "MONDO:0005335",
+                            "id": "MONDO:0005575",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "neoplasm of the large bowel"
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "malignant tumor of large bowel"
                         },
                         {
-                            "id": "MONDO:0005335",
+                            "id": "MONDO:0005575",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "neoplasm of colorectum"
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "malignant tumor of large intestine"
                         },
                         {
-                            "id": "MONDO:0005335",
+                            "id": "MONDO:0005575",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "neoplasm of large bowel"
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "malignant tumor of the large bowel"
                         },
                         {
-                            "id": "MONDO:0005335",
+                            "id": "MONDO:0005575",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "large bowel neoplasm"
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "malignant tumor of the large intestine"
                         },
                         {
-                            "id": "MONDO:0005335",
+                            "id": "MONDO:0005575",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "colorectum tumor"
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "CRC"
                         },
                         {
-                            "id": "MONDO:0005335",
+                            "id": "MONDO:0005575",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "large intestinal neoplasm"
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "colon cancer"
                         },
                         {
-                            "id": "MONDO:0005335",
+                            "id": "MONDO:0005575",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "colorectum neoplasm"
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "colon cancer, susceptibility to, autosomal dominant, somatic mutation"
                         },
                         {
-                            "id": "MONDO:0005335",
+                            "id": "MONDO:0005575",
                             "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "large bowel tumor"
-                        },
-                        {
-                            "id": "MONDO:0005335",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "colorectal neoplasm"
-                        },
-                        {
-                            "id": "MONDO:0005335",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "tumor of the large bowel"
-                        },
-                        {
-                            "id": "MONDO:0005335",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "tumor of colorectum"
-                        },
-                        {
-                            "id": "MONDO:0005335",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "colorectum neoplasm (disease)"
-                        },
-                        {
-                            "id": "MONDO:0005335",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "tumor of large bowel"
-                        },
-                        {
-                            "id": "MONDO:0005335",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "large intestine tumor"
-                        },
-                        {
-                            "id": "MONDO:0005335",
-                            "resource": "MONDO",
-                            "url": "https://monarchinitiative.org/disease/MONDO:0005335",
-                            "name": "large intestine neoplasm"
-                        },
-                        {
-                            "id": "MIM:114500",
-                            "resource": "MIM",
-                            "url": "https://www.omim.org/entry/114500",
-                            "name": "Colorectal cancer",
-                            "description": "Colorectal cancer"
-                        },
-                        {
-                            "id": "MIM:114500",
-                            "resource": "MIM",
-                            "url": "https://www.omim.org/entry/114500",
-                            "name": "Colorectal cancer",
-                            "description": "Colorectal cancer"
+                            "url": "https://monarchinitiative.org/disease/MONDO:0005575",
+                            "name": "large intestine cancer"
                         },
                         {
                             "id": "MIM:114500",
@@ -4097,11 +3480,6 @@
             "database": "InterPro"
         },
         {
-            "id": "IPR027101",
-            "url": "https://www.ebi.ac.uk/interpro/entry/IPR027101",
-            "database": "InterPro"
-        },
-        {
             "id": "IPR045860",
             "url": "https://www.ebi.ac.uk/interpro/entry/IPR045860",
             "database": "InterPro"
@@ -4137,18 +3515,23 @@
             "database": "O-GlcNAc Database"
         },
         {
-            "id": "CSKQRDC",
-            "url": "https://omabrowser.org/oma/group/CSKQRDC/",
+            "id": "CEYSRLA",
+            "url": "https://omabrowser.org/oma/group/CEYSRLA/",
             "database": "OMA"
         },
         {
-            "id": "1586315at2759",
-            "url": "http://www.orthodb.org/?query=1586315at2759",
+            "id": "4299809at2759",
+            "url": "http://www.orthodb.org/?query=4299809at2759",
             "database": "OrthoDB"
         },
         {
-            "id": "PTHR10036:SF9",
-            "url": "http://www.pantherdb.org/panther/family.do?clsAccession=PTHR10036:SF9",
+            "id": "PTHR10036",
+            "url": "http://www.pantherdb.org/panther/family.do?clsAccession=PTHR10036",
+            "database": "PANTHER"
+        },
+        {
+            "id": "PTHR10036:SF24",
+            "url": "http://www.pantherdb.org/panther/family.do?clsAccession=PTHR10036:SF24",
             "database": "PANTHER"
         },
         {
@@ -4214,6 +3597,21 @@
         {
             "id": "6ZD0",
             "url": "https://www.rcsb.org/structure/6ZD0",
+            "database": "PDB"
+        },
+        {
+            "id": "8B0F",
+            "url": "https://www.rcsb.org/structure/8B0F",
+            "database": "PDB"
+        },
+        {
+            "id": "8B0G",
+            "url": "https://www.rcsb.org/structure/8B0G",
+            "database": "PDB"
+        },
+        {
+            "id": "8B0H",
+            "url": "https://www.rcsb.org/structure/8B0H",
             "database": "PDB"
         },
         {
@@ -4428,7 +3826,7 @@
         },
         {
             "id": "P13987",
-            "url": "http://unicarbkb.org/proteinsummary/P13987/annotated",
+            "url": "DISABLED",
             "database": "UniCarbKB"
         },
         {
@@ -4621,13 +4019,13 @@
                 "evidence": [
                     {
                         "database": "Ensembl Transcript",
-                        "id": "ENST00000533403.6",
-                        "url": "https://www.ensembl.org/id/ENST00000533403.6"
+                        "id": "ENST00000643183.1",
+                        "url": "https://www.ensembl.org/id/ENST00000643183.1"
                     },
                     {
                         "database": "Ensembl Peptide",
-                        "id": "ENSP00000436737.1",
-                        "url": "https://www.ensembl.org/id/ENSP00000436737.1"
+                        "id": "ENSP00000495784.1",
+                        "url": "https://www.ensembl.org/id/ENSP00000495784.1"
                     }
                 ]
             }
@@ -4647,13 +4045,13 @@
                 "evidence": [
                     {
                         "database": "Ensembl Transcript",
-                        "id": "ENST00000351554.8",
-                        "url": "https://www.ensembl.org/id/ENST00000351554.8"
+                        "id": "ENST00000395850.9",
+                        "url": "https://www.ensembl.org/id/ENST00000395850.9"
                     },
                     {
                         "database": "Ensembl Peptide",
-                        "id": "ENSP00000340210.3",
-                        "url": "https://www.ensembl.org/id/ENSP00000340210.3"
+                        "id": "ENSP00000379191.3",
+                        "url": "https://www.ensembl.org/id/ENSP00000379191.3"
                     }
                 ]
             }
@@ -4679,6 +4077,7 @@
             "end_pos": 105,
             "end_aa": "Thr",
             "residue": "Thr",
+            "site_lbl": "Thr105",
             "evidence": [
                 {
                     "id": "79",
@@ -4703,6 +4102,7 @@
             "end_pos": 105,
             "end_aa": "Thr",
             "residue": "Thr",
+            "site_lbl": "Thr105",
             "evidence": [
                 {
                     "id": "79",
@@ -4727,6 +4127,7 @@
             "end_pos": 106,
             "end_aa": "Ser",
             "residue": "Ser",
+            "site_lbl": "Ser106",
             "evidence": [
                 {
                     "id": "79",
@@ -4751,6 +4152,7 @@
             "end_pos": 40,
             "end_aa": "Thr",
             "residue": "Thr",
+            "site_lbl": "Thr40",
             "evidence": [
                 {
                     "id": "79",
@@ -4775,6 +4177,7 @@
             "end_pos": 40,
             "end_aa": "Thr",
             "residue": "Thr",
+            "site_lbl": "Thr40",
             "evidence": [
                 {
                     "id": "79",
@@ -4799,6 +4202,7 @@
             "end_pos": 40,
             "end_aa": "Thr",
             "residue": "Thr",
+            "site_lbl": "Thr40",
             "evidence": [
                 {
                     "id": "79",
@@ -4815,21 +4219,22 @@
         {
             "glytoucan_ac": "G49108TO",
             "type": "O-linked",
-            "subtype": "TADCK-T-AVNCS",
+            "subtype": "O-GlcNAcylation",
             "site_category": "reported_with_glycan",
             "site_seq": "T",
             "relation": "attached",
-            "comment": "TADCK-T-AVNCS",
+            "comment": "O-GlcNAcylation",
             "start_pos": 40,
             "start_aa": "Thr",
             "end_pos": 40,
             "end_aa": "Thr",
             "residue": "Thr",
+            "site_lbl": "Thr40",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "O-GlcNAc Database",
-                    "url": "https://www.oglcnac.mcw.edu/search/?query_protein=P13987"
+                    "database": "O-GlcNAc Atlas",
+                    "url": "https://oglcnac.org/atlas/detail/P13987"
                 },
                 {
                     "id": "34846842",
@@ -4850,11 +4255,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "7514386",
@@ -4879,6 +4284,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -4903,6 +4309,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -4927,6 +4334,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -4951,6 +4359,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -4975,6 +4384,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -4999,6 +4409,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5029,11 +4440,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "7514386",
@@ -5059,11 +4470,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "7514386",
@@ -5088,6 +4499,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5122,6 +4534,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5146,6 +4559,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5170,6 +4584,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5195,11 +4610,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "7514386",
@@ -5224,6 +4639,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5248,6 +4664,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5277,6 +4694,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5302,11 +4720,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -5331,6 +4749,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5365,6 +4784,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5394,6 +4814,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5419,11 +4840,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -5448,6 +4869,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5472,6 +4894,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5496,6 +4919,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5520,6 +4944,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5544,6 +4969,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5568,6 +4994,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5593,11 +5020,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -5622,6 +5049,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5646,6 +5074,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5670,6 +5099,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5694,6 +5124,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5718,6 +5149,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5742,6 +5174,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5766,6 +5199,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5791,11 +5225,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -5821,11 +5255,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "7514386",
@@ -5850,6 +5284,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5874,6 +5309,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5899,11 +5335,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -5928,6 +5364,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -5953,11 +5390,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "7514386",
@@ -5983,11 +5420,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -6012,6 +5449,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6036,6 +5474,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6060,11 +5499,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -6089,6 +5528,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6113,6 +5553,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6137,6 +5578,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6161,6 +5603,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6185,6 +5628,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6209,6 +5653,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6238,6 +5683,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6267,6 +5713,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6296,6 +5743,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6320,6 +5768,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6354,6 +5803,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6383,6 +5833,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6407,6 +5858,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6431,6 +5883,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6456,11 +5909,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -6485,6 +5938,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6509,6 +5963,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6533,6 +5988,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6557,6 +6013,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6581,6 +6038,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6605,6 +6063,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6630,11 +6089,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "7514386",
@@ -6659,6 +6118,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6683,6 +6143,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6713,11 +6174,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "7514386",
@@ -6742,11 +6203,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -6771,6 +6232,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6795,6 +6257,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6819,11 +6282,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -6849,11 +6312,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -6878,6 +6341,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6902,6 +6366,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6931,6 +6396,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6955,6 +6421,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -6979,6 +6446,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7003,6 +6471,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7027,6 +6496,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7051,6 +6521,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7075,6 +6546,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7099,6 +6571,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7123,6 +6596,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7147,6 +6621,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7172,11 +6647,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "7514386",
@@ -7201,6 +6676,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7225,6 +6701,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7249,6 +6726,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7273,6 +6751,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7297,6 +6776,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7331,6 +6811,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7360,6 +6841,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7385,11 +6867,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "7514386",
@@ -7415,11 +6897,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -7444,6 +6926,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7468,6 +6951,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7492,6 +6976,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7517,11 +7002,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -7547,11 +7032,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -7576,6 +7061,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7600,6 +7086,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7630,11 +7117,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -7659,6 +7146,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7688,6 +7176,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7712,6 +7201,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7741,11 +7231,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -7770,11 +7260,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "23345538",
@@ -7794,6 +7284,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7818,6 +7309,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7843,11 +7335,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "7514386",
@@ -7872,6 +7364,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7896,6 +7389,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -7925,11 +7419,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -7954,11 +7448,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "26791533",
@@ -7979,11 +7473,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -8008,6 +7502,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -8037,6 +7532,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -8061,6 +7557,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -8085,6 +7582,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -8110,11 +7608,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -8140,11 +7638,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -8169,6 +7667,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -8193,6 +7692,7 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "79",
@@ -8216,11 +7716,11 @@
             "end_pos": 43,
             "end_aa": "Asn",
             "residue": "Asn",
+            "site_lbl": "Asn43",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "10207177",
@@ -8283,8 +7783,7 @@
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "23584533",
@@ -8310,11 +7809,11 @@
             "end_pos": 76,
             "end_aa": "Thr",
             "residue": "Thr",
+            "site_lbl": "Thr76",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "25813380",
@@ -8350,6 +7849,7 @@
             "end_pos": 76,
             "end_aa": "Thr",
             "residue": "Thr",
+            "site_lbl": "Thr76",
             "evidence": [
                 {
                     "id": "P13987",
@@ -8372,8 +7872,7 @@
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "23584533",
@@ -8399,11 +7898,11 @@
             "end_pos": 77,
             "end_aa": "Thr",
             "residue": "Thr",
+            "site_lbl": "Thr77",
             "evidence": [
                 {
                     "id": "P13987",
-                    "database": "UniCarbKB",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "database": "UniCarbKB"
                 },
                 {
                     "id": "25813380",
@@ -8439,6 +7938,7 @@
             "end_pos": 77,
             "end_aa": "Thr",
             "residue": "Thr",
+            "site_lbl": "Thr77",
             "evidence": [
                 {
                     "id": "P13987",
@@ -8868,8 +8368,7 @@
             "evidence": [
                 {
                     "database": "UniCarbKB",
-                    "id": "P13987",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "id": "P13987"
                 }
             ],
             "reference": [
@@ -8908,8 +8407,7 @@
             "evidence": [
                 {
                     "database": "UniCarbKB",
-                    "id": "P13987",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "id": "P13987"
                 },
                 {
                     "database": "GlyConnect",
@@ -11579,7 +11077,7 @@
             "title": "CD59 deficiency is associated with chronic hemolysis and childhood relapsing immune-mediated polyneuropathy.",
             "journal": "Blood",
             "date": "2013",
-            "authors": "Anikster Y., Elpeleg O., Shaag A., Ta-Shma A., Zenvirt S., Shorer Z., Straussberg R., Fattal-Valevski A., Ben-Zeev B., Aharoni S., Fellig Y., Goldshmidt H., Mevorach D., Nevo Y., Rabie M., Tabib A.",
+            "authors": "Nevo Y, Ben-Zeev B, Tabib A, Straussberg R, Anikster Y, Shorer Z, Fattal-Valevski A, Ta-Shma A, Aharoni S, Rabie M, Zenvirt S, Goldshmidt H, Fellig Y, Shaag A, Mevorach D, Elpeleg O",
             "evidence": [
                 {
                     "database": "UniProtKB",
@@ -11603,8 +11101,7 @@
             "evidence": [
                 {
                     "database": "UniCarbKB",
-                    "id": "P13987",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "id": "P13987"
                 },
                 {
                     "database": "GlyConnect",
@@ -11688,8 +11185,7 @@
             "evidence": [
                 {
                     "database": "UniCarbKB",
-                    "id": "P13987",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "id": "P13987"
                 }
             ],
             "reference": [
@@ -12168,8 +11664,7 @@
             "evidence": [
                 {
                     "database": "UniCarbKB",
-                    "id": "P13987",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "id": "P13987"
                 }
             ],
             "reference": [
@@ -12208,8 +11703,7 @@
             "evidence": [
                 {
                     "database": "UniCarbKB",
-                    "id": "P13987",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "id": "P13987"
                 }
             ],
             "reference": [
@@ -12421,26 +11915,6 @@
             ]
         },
         {
-            "title": "The expression of membrane-bound complement regulatory proteins CD46, CD55 and CD59 in oral lichen planus.",
-            "journal": "Archives of oral biology",
-            "date": "2021",
-            "authors": "Li L, Cong B, Yu X, Deng S, Liu M, Wang Y, Wang W, Gao M, Xu Y",
-            "evidence": [
-                {
-                    "database": "RefSeq",
-                    "id": "NP_000602",
-                    "url": "https://www.ncbi.nlm.nih.gov/protein/NP_000602"
-                }
-            ],
-            "reference": [
-                {
-                    "type": "PubMed",
-                    "id": "33529836",
-                    "url": "https://glygen.org/publication/PubMed/33529836"
-                }
-            ]
-        },
-        {
             "title": "O-GlcNAc modification regulates MTA1 transcriptional activity during breast cancer cell genotoxic adaptation.",
             "journal": "Biochimica et biophysica acta. General subjects",
             "date": "2021",
@@ -12461,35 +11935,15 @@
             ]
         },
         {
-            "title": "Plasma glycated CD59 predicts postpartum glucose intolerance after gestational diabetes.",
-            "journal": "European journal of endocrinology",
-            "date": "2021",
-            "authors": "Benhalima K, Ma DD, Laenen A, Mathieu C, Halperin JA",
-            "evidence": [
-                {
-                    "database": "RefSeq",
-                    "id": "NP_000602",
-                    "url": "https://www.ncbi.nlm.nih.gov/protein/NP_000602"
-                }
-            ],
-            "reference": [
-                {
-                    "type": "PubMed",
-                    "id": "34524975",
-                    "url": "https://glygen.org/publication/PubMed/34524975"
-                }
-            ]
-        },
-        {
             "title": "Highly Efficient Enrichment of O-GlcNAc Glycopeptides Based on Chemical Oxidation and Reversible Hydrazide Chemistry.",
             "journal": "Analytical chemistry",
             "date": "2021",
             "authors": "Chen Y, Qin H, Yue X, Zhou J, Liu L, Nie Y, Ye M",
             "evidence": [
                 {
-                    "database": "O-GlcNAc Database",
+                    "database": "O-GlcNAc Atlas",
                     "id": "P13987",
-                    "url": "https://www.oglcnac.mcw.edu/search/?query_protein=P13987"
+                    "url": "https://oglcnac.org/atlas/detail/P13987"
                 }
             ],
             "reference": [
@@ -12557,6 +12011,46 @@
                     "type": "PubMed",
                     "id": "35907507",
                     "url": "https://glygen.org/publication/PubMed/35907507"
+                }
+            ]
+        },
+        {
+            "title": "CD59 Expression in Skeletal Muscles and Its Role in Myasthenia Gravis.",
+            "journal": "Neurology(R) neuroimmunology & neuroinflammation",
+            "date": "2023-01",
+            "authors": "Iwasa Kazuo, Furukawa Yutaka, Yoshikawa Hiroaki, Yamada Masahito, Ono Kenjiro",
+            "evidence": [
+                {
+                    "database": "RefSeq",
+                    "id": "NP_000602",
+                    "url": "https://www.ncbi.nlm.nih.gov/protein/NP_000602"
+                }
+            ],
+            "reference": [
+                {
+                    "type": "PubMed",
+                    "id": "36396448",
+                    "url": "https://glygen.org/publication/PubMed/36396448"
+                }
+            ]
+        },
+        {
+            "title": "Multiple CD59 Polymorphisms in Chinese Patients with Mycobacterium tuberculosis Infection.",
+            "journal": "Journal of immunology research",
+            "date": "2023",
+            "authors": "Tang J, Zhao Z, Zhou J, Jiao L, Zhou W, Ying B, Yang Y",
+            "evidence": [
+                {
+                    "database": "RefSeq",
+                    "id": "NP_000602",
+                    "url": "https://www.ncbi.nlm.nih.gov/protein/NP_000602"
+                }
+            ],
+            "reference": [
+                {
+                    "type": "PubMed",
+                    "id": "37050931",
+                    "url": "https://glygen.org/publication/PubMed/37050931"
                 }
             ]
         },
@@ -12868,8 +12362,7 @@
             "evidence": [
                 {
                     "database": "UniCarbKB",
-                    "id": "P13987",
-                    "url": "http://unicarbkb.org/proteinsummary/P13987/annotated"
+                    "id": "P13987"
                 },
                 {
                     "database": "GlyConnect",
@@ -13374,7 +12867,7 @@
             "title": "Mutational analysis of the active site and antibody epitopes of the complement-inhibitory glycoprotein, CD59.",
             "journal": "J. Exp. Med.",
             "date": "1997",
-            "authors": "Morgan B.P., Bodian D.L., Davis S.J., Rushmere N.K.",
+            "authors": "Bodian DL, Davis SJ, Morgan BP, Rushmere NK",
             "evidence": [
                 {
                     "database": "UniProtKB",
@@ -13866,9 +13359,14 @@
             },
             "evidence": [
                 {
-                    "id": "41500468",
-                    "url": "http://www.informatics.jax.org/homology/41500468",
+                    "id": "44422508",
+                    "url": "http://www.informatics.jax.org/homology/44422508",
                     "database": "MGI"
+                },
+                {
+                    "id": "P13987",
+                    "url": "https://omabrowser.org/oma/group/P13987/",
+                    "database": "OMA"
                 }
             ],
             "common_name": "Mouse"
@@ -13885,19 +13383,14 @@
             },
             "evidence": [
                 {
-                    "id": "41500468",
-                    "url": "http://www.informatics.jax.org/homology/41500468",
+                    "id": "44423580",
+                    "url": "http://www.informatics.jax.org/homology/44423580",
                     "database": "MGI"
                 },
                 {
-                    "id": "41501948",
-                    "url": "http://www.informatics.jax.org/homology/41501948",
+                    "id": "44422508",
+                    "url": "http://www.informatics.jax.org/homology/44422508",
                     "database": "MGI"
-                },
-                {
-                    "id": "P13987",
-                    "url": "https://omabrowser.org/oma/group/P13987/",
-                    "database": "OMA"
                 }
             ],
             "common_name": "Rat"
@@ -13914,8 +13407,8 @@
             },
             "evidence": [
                 {
-                    "id": "41501948",
-                    "url": "http://www.informatics.jax.org/homology/41501948",
+                    "id": "44423580",
+                    "url": "http://www.informatics.jax.org/homology/44423580",
                     "database": "MGI"
                 },
                 {
@@ -14487,6 +13980,313 @@
         {
             "name": "homologset.oma",
             "label": "OMA Homologs"
+        }
+    ],
+    "section_stats": [
+        {
+            "table_id": "glycosylation",
+            "table_stats": [
+                {
+                    "field": "total",
+                    "count": 162
+                },
+                {
+                    "field": "total_sites",
+                    "count": 7
+                },
+                {
+                    "field": "n_linked_glycans",
+                    "count": 139
+                },
+                {
+                    "field": "n_linked_glycan_sites",
+                    "count": 2
+                },
+                {
+                    "field": "o_linked_glycans",
+                    "count": 8
+                },
+                {
+                    "field": "o_linked_glycan_sites",
+                    "count": 8
+                }
+            ],
+            "sort_fields": [
+                "glytoucan_ac",
+                "type",
+                "subtype",
+                "site_category",
+                "site_seq",
+                "relation",
+                "comment",
+                "start_pos",
+                "start_aa",
+                "end_pos",
+                "end_aa",
+                "residue",
+                "site_lbl"
+            ]
+        },
+        {
+            "table_id": "glycosylation_reported",
+            "table_stats": [
+                {
+                    "field": "total",
+                    "count": 3
+                },
+                {
+                    "field": "total_sites",
+                    "count": 3
+                },
+                {
+                    "field": "n_linked_glycans",
+                    "count": 0
+                },
+                {
+                    "field": "n_linked_glycan_sites",
+                    "count": 1
+                },
+                {
+                    "field": "o_linked_glycans",
+                    "count": 0
+                },
+                {
+                    "field": "o_linked_glycan_sites",
+                    "count": 2
+                }
+            ],
+            "sort_fields": [
+                "glytoucan_ac",
+                "type",
+                "subtype",
+                "site_category",
+                "site_seq",
+                "relation",
+                "comment",
+                "start_pos",
+                "start_aa",
+                "end_pos",
+                "end_aa",
+                "residue",
+                "site_lbl"
+            ]
+        },
+        {
+            "table_id": "glycosylation_reported_with_glycan",
+            "table_stats": [
+                {
+                    "field": "total",
+                    "count": 159
+                },
+                {
+                    "field": "total_sites",
+                    "count": 7
+                },
+                {
+                    "field": "n_linked_glycans",
+                    "count": 139
+                },
+                {
+                    "field": "n_linked_glycan_sites",
+                    "count": 1
+                },
+                {
+                    "field": "o_linked_glycans",
+                    "count": 8
+                },
+                {
+                    "field": "o_linked_glycan_sites",
+                    "count": 6
+                }
+            ],
+            "sort_fields": [
+                "glytoucan_ac",
+                "type",
+                "subtype",
+                "site_category",
+                "site_seq",
+                "relation",
+                "comment",
+                "start_pos",
+                "start_aa",
+                "end_pos",
+                "end_aa",
+                "residue",
+                "site_lbl"
+            ]
+        },
+        {
+            "table_id": "glycosylation_predicted",
+            "table_stats": [
+                {
+                    "field": "total",
+                    "count": 0
+                },
+                {
+                    "field": "total_sites",
+                    "count": 0
+                },
+                {
+                    "field": "n_linked_glycans",
+                    "count": 0
+                },
+                {
+                    "field": "n_linked_glycan_sites",
+                    "count": 0
+                },
+                {
+                    "field": "o_linked_glycans",
+                    "count": 0
+                },
+                {
+                    "field": "o_linked_glycan_sites",
+                    "count": 0
+                }
+            ]
+        },
+        {
+            "table_id": "glycosylation_automatic_literature_mining",
+            "table_stats": [
+                {
+                    "field": "total",
+                    "count": 0
+                },
+                {
+                    "field": "total_sites",
+                    "count": 0
+                },
+                {
+                    "field": "n_linked_glycans",
+                    "count": 0
+                },
+                {
+                    "field": "n_linked_glycan_sites",
+                    "count": 0
+                },
+                {
+                    "field": "o_linked_glycans",
+                    "count": 0
+                },
+                {
+                    "field": "o_linked_glycan_sites",
+                    "count": 0
+                }
+            ]
+        },
+        {
+            "table_id": "phosphorylation",
+            "table_stats": [
+                {
+                    "field": "total",
+                    "count": 0
+                },
+                {
+                    "field": "total_sites",
+                    "count": 0
+                }
+            ]
+        },
+        {
+            "table_id": "snv",
+            "table_stats": [
+                {
+                    "field": "total",
+                    "count": 4
+                },
+                {
+                    "field": "total_sites",
+                    "count": 4
+                }
+            ],
+            "sort_fields": [
+                "start_pos",
+                "end_pos",
+                "subjects_tested",
+                "subjects_positive",
+                "frequency",
+                "sequence_org",
+                "sequence_mut",
+                "comment",
+                "chr_id",
+                "chr_pos",
+                "ref_nt",
+                "alt_nt",
+                "minor_allelic_frequency",
+                "site_lbl"
+            ]
+        },
+        {
+            "table_id": "snv_disease",
+            "table_stats": [
+                {
+                    "field": "total",
+                    "count": 2
+                },
+                {
+                    "field": "total_sites",
+                    "count": 2
+                }
+            ],
+            "sort_fields": [
+                "start_pos",
+                "end_pos",
+                "subjects_tested",
+                "subjects_positive",
+                "frequency",
+                "sequence_org",
+                "sequence_mut",
+                "comment",
+                "chr_id",
+                "chr_pos",
+                "ref_nt",
+                "alt_nt",
+                "minor_allelic_frequency",
+                "site_lbl"
+            ]
+        },
+        {
+            "table_id": "snv_non_disease",
+            "table_stats": [
+                {
+                    "field": "total",
+                    "count": 2
+                },
+                {
+                    "field": "total_sites",
+                    "count": 2
+                }
+            ],
+            "sort_fields": [
+                "start_pos",
+                "end_pos",
+                "subjects_tested",
+                "subjects_positive",
+                "frequency",
+                "sequence_org",
+                "sequence_mut",
+                "comment",
+                "chr_id",
+                "chr_pos",
+                "ref_nt",
+                "alt_nt",
+                "minor_allelic_frequency",
+                "site_lbl"
+            ]
+        },
+        {
+            "table_id": "publication",
+            "table_stats": [
+                {
+                    "field": "total",
+                    "count": 246
+                }
+            ],
+            "sort_fields": [
+                "title",
+                "journal",
+                "date",
+                "authors"
+            ]
         }
     ],
     "uniprot": {

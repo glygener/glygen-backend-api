@@ -272,6 +272,7 @@ def glycan_detail(query_obj, config_obj):
     q = {"batchid": 1, "recordid": glytoucan_ac, "recordtype": "glycan"}
     batch_doc = dbh["c_batch"].find_one(q)
     if batch_doc != None:
+        #return list(batch_doc["sections"].keys())
         for sec in batch_doc["sections"]:
             if sec in obj:
                 if len(batch_doc["sections"][sec]) > 1000:
@@ -294,19 +295,16 @@ def glycan_detail(query_obj, config_obj):
 
 
     if "paginated_tables" in query_obj:
-        seen = {}
+        table_id_list = []
         for o in query_obj["paginated_tables"]:
-            sec = o["table_id"].split("_")[0] if o["table_id"].find("glycosylation_") != -1 else o["table_id"]
-            seen[sec] = True
-        section_list = list(seen.keys())
-        sec_tables = get_paginated_sections(obj, query_obj, section_list)
+            if o["table_id"] not in table_id_list:
+                table_id_list.append(o["table_id"])
+        sec_tables = get_paginated_sections(obj, query_obj, table_id_list)
         if "error_list" in sec_tables:
             return sec_tables
-        for sec in seen:
-            if sec in sec_tables:
-                obj[sec] = sec_tables[sec]
-
-
+        for sec in sec_tables:
+            obj[sec] = sec_tables[sec]
+    
     clean_obj(obj, config_obj["removelist"]["c_glycan"], "c_glycan")
 
     if "enzyme" in obj:
@@ -347,11 +345,17 @@ def get_simple_mongo_query(query_obj):
             return q
         return {'$text': { '$search': query_term}}
     elif query_obj["term_category"] == "glycan":
+        tv, q = is_glycan_composition(query_obj["term"])
+        if tv == True:
+            return q
         cond_objs.append({"glytoucan_ac":{'$regex': query_obj["term"], '$options': 'i'}})
-        cond_objs.append({"iupac":{'$regex': query_obj["term"], '$options': 'i'}})
-        cond_objs.append({"wurcs":{'$regex': query_obj["term"], '$options': 'i'}})
-        cond_objs.append({"glycoct":{'$regex': query_obj["term"], '$options': 'i'}})
         qval = query_obj["term"].replace("(", "\\(").replace(")", "\\)")
+        #cond_objs.append({"iupac":{'$regex': query_obj["term"], '$options': 'i'}})
+        #cond_objs.append({"wurcs":{'$regex': query_obj["term"], '$options': 'i'}})
+        #cond_objs.append({"glycoct":{'$regex': query_obj["term"], '$options': 'i'}})
+        cond_objs.append({"iupac":{'$regex': qval, '$options': 'i'}})
+        cond_objs.append({"wurcs":{'$regex': qval, '$options': 'i'}})
+        cond_objs.append({"glycoct":{'$regex': qval, '$options': 'i'}})
         cond_objs.append({"byonic":{'$regex': qval, '$options': 'i'}})
         cond_objs.append({"names.name": {'$regex': qval,'$options': 'i'}})
     elif query_obj["term_category"] == "protein":

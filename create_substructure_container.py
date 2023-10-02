@@ -45,9 +45,8 @@ def main():
 
 
     for cmd in cmd_list:
-        x = subprocess.getoutput(cmd)
-        print (x)
-
+        #x = subprocess.getoutput(cmd)
+        print (cmd)
 
 
 if __name__ == '__main__':

@@ -48,18 +48,43 @@ def pagination_page(query_obj, config_obj):
         post_error_list.append({"error_code":"non-existent-record"})
         return {"error_list":post_error_list}
 
+
+    # Get section objects if this record was batched 
+    q = {"recordid": record_id, "recordtype": record_type}
+    tmp_dict = {}
+    for batch_doc in dbh["c_batch"].find(q):
+        for sec in batch_doc["sections"]:
+            if sec not in tmp_dict:
+                tmp_dict[sec] = []
+            if sec in doc:
+                tmp_dict[sec] += batch_doc["sections"][sec]
+    for sec in tmp_dict:
+        doc[sec] = tmp_dict[sec]
+
+    #return tmp_dict
    
      
     table_id = query_obj["table_id"]
-    sec = table_id.split("_")[0] if table_id.find("glycosylation_") != -1 else table_id
+    sec = table_id
+    #sec = table_id.split("_")[0] if table_id.find("glycosylation_") != -1 else sec
+    #sec = table_id.split("_")[0] if table_id.find("snv_") != -1 else sec
+    #sec = table_id.split("_")[0] if table_id.find("expression_") != -1 else sec
     section_list = [sec]
-
+ 
+    if "_id" in doc:
+        doc.pop("_id")
 
     q = {"paginated_tables":[query_obj]}
     sec_tables = get_paginated_sections(doc, q, section_list)
+   
+    #return sec_tables
 
     if "error_list" in sec_tables:
         return sec_tables
+    
+    sec = table_id.split("_")[0] if table_id.find("glycosylation_") != -1 else sec
+    sec = table_id.split("_")[0] if table_id.find("snv_") != -1 else sec
+    sec = table_id.split("_")[0] if table_id.find("expression_") != -1 else sec
     if sec not in sec_tables:
         sec_tables[sec] = []
  

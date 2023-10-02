@@ -1,45 +1,58 @@
 {
-    "uniprot_canonical_ac":"O94856-1",
     "paginated_tables":[
         {
             "table_id": "glycosylation_reported_with_glycan",
             "offset":1,
-            "limit":2,
+            "limit":20,
             "sort": "site_lbl",
             "order":"asc"
         },
         {
             "table_id": "glycosylation_reported",
             "offset":1,
-            "limit":2,
+            "limit":20,
             "sort": "start_pos",
             "order":"asc"
         },
         {
             "table_id": "glycosylation_predicted",
             "offset":1,
-            "limit":2,
+            "limit":20,
             "sort": "start_pos",
             "order":"asc"
         },
         {
             "table_id": "glycosylation_automatic_literature_mining",
             "offset":1,
-            "limit":2,
+            "limit":20,
             "sort": "start_pos",
             "order":"asc"
         },
         {
             "table_id": "phosphorylation",
             "offset":1,
-            "limit":2,
+            "limit":20,
             "sort": "start_pos",
             "order":"asc"
         },
         {
+            "table_id": "snv_disease",
+            "offset":1,
+            "limit":20, 
+            "sort": "start_pos",
+            "order":"asc"
+        },  
+	{
+            "table_id": "snv_non_disease",
+            "offset":1,
+            "limit":20, 
+            "sort": "start_pos",
+            "order":"asc"
+        },  
+	{
             "table_id": "publication",
             "offset":1,
-            "limit":2,
+            "limit":20,
             "order":"asc"
         }
     ]

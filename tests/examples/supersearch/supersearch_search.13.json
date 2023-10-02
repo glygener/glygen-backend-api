@@ -1,0 +1,80 @@
+{
+    "concept_query_list": [
+        {
+            "concept": "species",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "taxid",
+                        "operator": "$eq",
+                        "numeric_value": 9606
+                    }
+                ],
+                "aggregated_list": []
+            }
+        },
+        {
+            "concept": "protein",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "gene.locus.chromosome",
+                        "operator": "$eq",
+                        "string_value": "7"
+                    },
+                    {
+                        "order": 2,
+                        "path": "go_annotation.categories.go_terms.name",
+                        "operator": "$regex",
+                        "string_value": "nuclear membrane"
+                    }
+                ],
+                "aggregated_list": []
+            }
+        },
+        {
+            "concept": "site",
+            "query": {
+                "aggregator": "$and",
+                "unaggregated_list": [
+                    {
+                        "order": 1,
+                        "path": "glycosylation.type",
+                        "operator": "$regex",
+                        "string_value": "O-linked"
+                    },
+                    {
+                        "order": 2,
+                        "path": "snv.disease.recommended_name.name",
+                        "operator": "$regex",
+                        "string_value": "lung cancer"
+                    }
+                ],
+                "aggregated_list": [
+                    {
+                        "aggregator": "$or",
+                        "unaggregated_list": [
+                            {
+                                "order": 1,
+                                "path": "glycosylation.residue",
+                                "operator": "$eq",
+                                "string_value": "Ser"
+                            },
+                            {
+                                "order": 2,
+                                "path": "glycosylation.residue",
+                                "operator": "$eq",
+                                "string_value": "Thr"
+                            }
+                        ],
+                        "aggregated_list": []
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -25,7 +25,8 @@ def main():
     parser.add_option("-s","--srv",action="store",dest="srv",help="dev/tst/beta/prd")
     parser.add_option("-e","--email",action="store",dest="email",help="")
     parser.add_option("-p","--password",action="store",dest="password",help="")
-        
+    parser.add_option("-m","--mode",action="store",dest="mode",help="")
+ 
     (options,args) = parser.parse_args()
 
     for key in ([options.srv, options.email, options.password]):
@@ -36,7 +37,10 @@ def main():
     srv = options.srv
     email = options.email
     password = options.password
-
+    access_mode = "read"
+    if options.mode != None:
+        access_mode = options.mode
+    
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     mongo_port = config_obj["dbinfo"]["port"][srv]
@@ -59,7 +63,7 @@ def main():
         res = dbh[coll].delete_one({"email":email})
         
         password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        obj = {"email":email, "password":password, "access":"write", "status":1}
+        obj = {"email":email, "password":password, "access":access_mode, "status":1}
         res = dbh[coll].insert_one(obj)
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
