@@ -1160,6 +1160,7 @@ def get_paginated_sections(obj, query_obj, section_list):
   
     sec_tables = {}
     tableid2sec = {}
+    seen_obj = {}
     tmp_list = []
     for sec in section_list:
         sec_new = sec_map[sec]  if sec in sec_map else sec
@@ -1167,19 +1168,24 @@ def get_paginated_sections(obj, query_obj, section_list):
             continue
         for o in obj[sec_new]:
             table_id = sec
-            if sec == "glycosylation" and o["site_category"] in site_cat_list:
+            if sec.find("glycosylation_") != -1 and o["site_category"] in site_cat_list:
                 table_id = "glycosylation_" + o["site_category"]
             if sec in ["expression_tissue", "expression_cell_line"]:
                 table_id = "expression_" + o["category"]
             if sec in ["snv"]:
                 table_id = "snv_disease" if "disease" in o["keywords"] else "snv_non_disease" 
             if table_id in table_id_list:
+                tableid2sec[table_id] = sec_new
                 if table_id not in sec_tables:
                     sec_tables[table_id] = []
-                sec_tables[table_id].append(o)
-                tableid2sec[table_id] = sec_new
+                s = json.dumps(o)
+                if table_id not in seen_obj:
+                    seen_obj[table_id] = {}
+                if s not in seen_obj[table_id]:
+                    sec_tables[table_id].append(o)
+                seen_obj[table_id][s] = True
+                 
     #return sec_tables
-
 
 
     for q in query_obj["paginated_tables"]:

@@ -151,7 +151,6 @@ def main():
             
 
 
-
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

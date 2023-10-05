@@ -1,1 +1,8 @@
-{"term":"G17689DH"}
+{
+	"paginated_tables":[
+		{"table_id":"glycosylation_reported_with_glycan","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
+		{"table_id":"glycosylation_predicted","offset":1,"limit":20,"sort":"start_pos","order":"asc"}
+	
+	]
+}
+

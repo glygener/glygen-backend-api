@@ -1,5 +1,5 @@
-#srv="prd"
-srv="beta"
+srv="prd"
+#srv="beta"
 #srv="tst"
 
 #mod=substructure

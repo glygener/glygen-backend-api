@@ -343,6 +343,7 @@ def protein_detail(query_obj, config_obj):
             if o["table_id"] not in table_id_list:
                 table_id_list.append(o["table_id"])
         sec_tables = get_paginated_sections(obj, query_obj, table_id_list)
+        #return sec_tables
         if "error_list" in sec_tables:
             return sec_tables
         for sec in sec_tables:
