@@ -1,0 +1,14 @@
+1) Create new branch:
+
+    git branch 2.3
+
+2) Checkout branch
+
+    git checkout 2.3
+
+
+3) Push
+
+    git push --set-upstream origin 2.3
+
+
