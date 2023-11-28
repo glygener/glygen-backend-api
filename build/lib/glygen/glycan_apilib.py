@@ -323,12 +323,29 @@ def glycan_image(query_obj, data_path):
         return error_obj
 
     init_obj = dbh["c_init"].find_one({})
-    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg/" % (init_obj["dataversion"])
+    ver = init_obj["dataversion"]
+    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg/" % (ver)
+    
     img_file =  img_path + query_obj["glytoucan_ac"].upper() + ".png"
     if os.path.isfile(img_file) == False:
-        img_file = img_path +  "G0000000.png"
+        img_file = img_path +  "G0000000.png" 
     return img_file
 
+
+def glycan_image_svg(query_obj, data_path):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    init_obj = dbh["c_init"].find_one({})
+    ver = init_obj["dataversion"]
+    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg_svg/" % (ver)
+    img_file =  img_path + query_obj["glytoucan_ac"].upper() + ".svg" 
+    if os.path.isfile(img_file) == False:
+        img_file = img_path +  "G0000000.svg"
+           
+    return img_file
 
 
 
