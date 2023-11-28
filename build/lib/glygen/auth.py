@@ -1,7 +1,7 @@
 import os,sys
 from flask_restx import Namespace, Resource, fields
 from flask import (request, current_app, session, jsonify)
-from glygen.db import get_mongodb, log_error
+from glygen.db import get_mongodb, log_error, log_request
 from glygen.document import get_one, get_many, insert_one, update_one, delete_one, order_json_obj
 from werkzeug.utils import secure_filename
 import datetime
@@ -82,7 +82,9 @@ class Auth(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = auth_userid(config_obj)
+            res_obj = log_request(req_obj, "/auth/userid/", request)
+            if "error_list" not in res_obj:
+                res_obj = auth_userid(config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -102,7 +104,9 @@ class Auth(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = auth_contact(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/auth/contact/", request)
+            if "error_list" not in res_obj:
+                res_obj = auth_contact(req_obj, config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -126,7 +130,9 @@ class Auth(Resource):
             req_obj["status"], req_obj["access"], req_obj["role"] = 0, "readonly", ""
             if req_obj["email"] in config_obj["admin_list"]:
                 req_obj["status"], req_obj["access"], req_obj["role"] = 1, "write", "admin"
-            res_obj = auth_register(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/auth/register/", request)
+            if "error_list" not in res_obj:
+                res_obj = auth_register(req_obj, config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -164,22 +170,24 @@ class Auth(Resource):
                 #stored_password = user_doc['password']
                 if bcrypt.hashpw(submitted_password, stored_password) != stored_password:
                     error = "incorrect-email/password"
-            res_obj = {"status":1}
-            if error is None:
-                if user_doc["status"] == 0:
-                    res_obj = {"error_list":[{"error_code":"inactive account"}]}
+            res_obj = log_request(req_obj, "/auth/login/", request)
+            if "error_list" not in res_obj:
+                res_obj = {"status":1}
+                if error is None:
+                    if user_doc["status"] == 0:
+                        res_obj = {"error_list":[{"error_code":"inactive account"}]}
+                    else:
+                        access_token = create_access_token(identity=username, expires_delta=None)
+                        refresh_token = create_refresh_token(identity=username)
+                        res_obj["access_token"] = access_token
+                        res_obj["access_csrf"] = get_csrf_token(access_token)
+                        res_obj["refresh_csrf"] = get_csrf_token(refresh_token)
+                        res_obj["username"] = user_doc["email"]
+                        session['email'] = user_doc["email"]
+                        set_access_cookies(jsonify(res_obj), access_token)
+                        set_refresh_cookies(jsonify(res_obj), refresh_token)
                 else:
-                    access_token = create_access_token(identity=username, expires_delta=None)
-                    refresh_token = create_refresh_token(identity=username)
-                    res_obj["access_token"] = access_token
-                    res_obj["access_csrf"] = get_csrf_token(access_token)
-                    res_obj["refresh_csrf"] = get_csrf_token(refresh_token)
-                    res_obj["username"] = user_doc["email"]
-                    session['email'] = user_doc["email"]
-                    set_access_cookies(jsonify(res_obj), access_token)
-                    set_refresh_cookies(jsonify(res_obj), refresh_token)
-            else:
-                res_obj = {"error_list":[{"error_code":error}]}
+                    res_obj = {"error_list":[{"error_code":error}]}
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         
@@ -208,7 +216,9 @@ class Auth(Resource):
             req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
-            res_obj = auth_userinfo(current_user, req_obj, config_obj)
+            res_obj = log_request(req_obj, "/auth/userinfo/", request)
+            if "error_list" not in res_obj:
+                res_obj = auth_userinfo(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -232,7 +242,9 @@ class Auth(Resource):
             req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
-            res_obj = auth_userupdate(current_user, req_obj, config_obj)
+            res_obj = log_request(req_obj, "/auth/userupdate/", request)
+            if "error_list" not in res_obj:
+                res_obj = auth_userupdate(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         
@@ -256,7 +268,9 @@ class Auth(Resource):
             req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
-            res_obj = auth_userdelete(current_user, req_obj, config_obj)
+            res_obj = log_request(req_obj, "/auth/userdelete/", request)
+            if "error_list" not in res_obj:
+                res_obj = auth_userdelete(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -281,7 +295,9 @@ class Auth(Resource):
             req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
-            res_obj = auth_contactlist(current_user, req_obj, config_obj)
+            res_obj = log_request(req_obj, "/auth/contactlist/", request)
+            if "error_list" not in res_obj:
+                res_obj = auth_contactlist(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -305,7 +321,9 @@ class Auth(Resource):
             req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
-            res_obj = auth_contactupdate(current_user, req_obj, config_obj)
+            res_obj = log_request(req_obj, "/auth/contactupdate/", request)
+            if "error_list" not in res_obj:
+                res_obj = auth_contactupdate(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -329,7 +347,9 @@ class Auth(Resource):
             req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
-            res_obj = auth_contactdelete(current_user, req_obj, config_obj)
+            res_obj = log_request(req_obj, "/auth/contactdelete/", request)
+            if "error_list" not in res_obj:
+                res_obj = auth_contactdelete(current_user, req_obj, config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

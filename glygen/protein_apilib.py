@@ -9,7 +9,8 @@ from collections import OrderedDict
 
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query
+from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, get_paginated_sections
+
 
 def protein_search_init(config_obj):
 
@@ -251,8 +252,8 @@ def protein_detail(query_obj, config_obj):
         return {"error_list":error_list}
 
 
-
     collection = "c_protein"
+
     mongo_query = {
         "$or":[
             {"uniprot_canonical_ac":{'$eq': query_obj["uniprot_canonical_ac"].upper()}},
@@ -260,18 +261,18 @@ def protein_detail(query_obj, config_obj):
         ]
     }
     obj = dbh[collection].find_one(mongo_query)
-    history_obj_one, history_obj_two = None, None
+    c_a = {"recordtype":{"$eq": "protein"}}
+    c_b = {"record_id":{'$regex':query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
+    c_c = {"accessions":{'$regex':","+query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
+
+    q_one = {"$and":[c_a, c_b]}
+    history_obj_one = dbh["c_idtrack"].find_one(q_one)
+    q_two = {"$and":[c_a, c_c]}
+    history_obj_two = dbh["c_idtrack"].find_one(q_two)
+
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
     if obj == None:
-        c_a = {"recordtype":{"$eq": "protein"}}
-        c_b = {"record_id":{'$regex':query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
-        c_c = {"accessions":{'$regex':","+query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
-        q_one = {"$and":[c_a, c_b]}
-        history_obj_one = dbh["c_idtrack"].find_one(q_one)
-        q_two = {"$and":[c_a, c_c]}
-        history_obj_two = dbh["c_idtrack"].find_one(q_two)
-        
         post_error_list.append({"error_code":"non-existent-record"})
         res_obj = {"error_list":post_error_list}
         if history_obj_one != None:
@@ -303,7 +304,6 @@ def protein_detail(query_obj, config_obj):
             res_obj["reason"] = {"type":"invalid","description": "Invalid accession"}
         return res_obj
 
-
     # Get section objects if record is batched
     canon = query_obj["uniprot_canonical_ac"].upper()
     q = {
@@ -320,6 +320,7 @@ def protein_detail(query_obj, config_obj):
                 obj[sec] += batch_doc["sections"][sec]
 
 
+
     url = config_obj["urltemplate"]["uniprot"] % (obj["uniprot_canonical_ac"])
     obj["uniprot_id"] = obj["uniprot_id"] if "uniprot_id" in obj else ""
     obj["uniprot"] = {
@@ -334,6 +335,21 @@ def protein_detail(query_obj, config_obj):
     #    if len(obj["synonyms"]["gene"]["uniprotkb"]) > 1:
     #        o["name"] += "; " + "; ".join(obj["synonyms"]["gene"]["uniprotkb"][1:]) + ";"
     truncate_go_terms(obj)
+
+
+    if "paginated_tables" in query_obj:
+        table_id_list = []
+        for o in query_obj["paginated_tables"]:
+            if o["table_id"] not in table_id_list:
+                table_id_list.append(o["table_id"])
+        sec_tables = get_paginated_sections(obj, query_obj, table_id_list)
+        #return sec_tables
+        if "error_list" in sec_tables:
+            return sec_tables
+        for sec in sec_tables:
+            obj[sec] = sec_tables[sec]
+
+
     clean_obj(obj, config_obj["removelist"]["c_protein"], "c_protein")
 
     return obj
@@ -460,8 +476,40 @@ def get_mongo_query(query_obj):
     #organism
     if "organism" in query_obj:
         if "id" in query_obj["organism"]:
-            if query_obj["organism"]["id"] > 0:
+            if type(query_obj["organism"]["id"]) is int:
                 cond_objs.append({"species.taxid": {'$eq': query_obj["organism"]["id"]}})
+    
+    #biomarker
+    if "biomarker" in query_obj:
+        if "id" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["id"]) > 0:
+                o = {"biomarkers.biomarker_id": {'$regex': query_obj["biomarker"]["id"], '$options': 'i'}}
+                cond_objs.append(o)
+        if "name" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["name"]) > 0:
+                o = {"biomarkers.assessed_biomarker_entity":{'$regex':query_obj["biomarker"]["name"],'$options':'i'}}
+                cond_objs.append(o)
+        if "type" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["type"]) > 0:
+                o = {"biomarkers.instances.best_biomarker_type": {'$regex': query_obj["biomarker"]["type"], '$options': 'i'}}
+                cond_objs.append(o)
+        if "disease_id" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["disease_id"]) > 0:
+                disease_id = query_obj["biomarker"]["disease_id"]
+                or_list = [
+                    {"biomarkers.instances.disease.recommended_name.id":{'$regex':disease_id,'$options':'i'}},
+                    {"biomarkers.instances.disease.synonyms.id":{'$regex':disease_id,'$options':'i'}},
+                ]
+                cond_objs.append({'$or':or_list})
+        if "disease_name" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["disease_name"]) > 0:
+                disease_name = query_obj["biomarker"]["disease_name"]
+                or_list = [
+                    {"biomarkers.instances.disease.recommended_name.name":{'$regex':disease_name,'$options':'i'}},
+                    {"biomarkers.instances.disease.synonyms.name":{'$regex':disease_name,'$options':'i'}}
+                ]
+                cond_objs.append({'$or':or_list})
+
 
 
     #gene_name
@@ -512,7 +560,9 @@ def get_mongo_query(query_obj):
     if "disease_name" in query_obj:
         or_list = [
             {"disease.recommended_name.name":{'$regex':query_obj["disease_name"],'$options':'i'}},
-            {"disease.synonyms.name":{'$regex':query_obj["disease_name"],'$options':'i'}}
+            {"disease.synonyms.name":{'$regex':query_obj["disease_name"],'$options':'i'}},
+            {"biomarkers.instances.disease.recommended_name.name":{'$regex':query_obj["disease_name"],'$options':'i'}},
+            {"biomarkers.instances.disease.synonyms.name":{'$regex':query_obj["disease_name"],'$options':'i'}}
         ]
         cond_objs.append({'$or':or_list})
 
@@ -521,6 +571,8 @@ def get_mongo_query(query_obj):
         or_list = [
             {"disease.recommended_name.id":{'$regex':query_obj["disease_id"],'$options':'i'}},
             {"disease.synonyms.id":{'$regex':query_obj["disease_id"],'$options':'i'}},
+            {"biomarkers.instances.disease.recommended_name.id":{'$regex':query_obj["disease_id"],'$options':'i'}},
+            {"biomarkers.instances.disease.synonyms.id":{'$regex':query_obj["disease_id"],'$options':'i'}}
         ]
         cond_objs.append({'$or':or_list})
 

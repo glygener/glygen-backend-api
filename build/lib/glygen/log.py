@@ -1,7 +1,7 @@
 import os,sys
 from flask_restx import Namespace, Resource, fields
 from flask import (request, current_app, send_file)
-from glygen.db import log_error
+from glygen.db import log_error, log_request
 from glygen.document import get_one, get_many, insert_one, update_one, delete_one, order_json_obj
 from werkzeug.utils import secure_filename
 import datetime
@@ -78,7 +78,9 @@ class Log(Resource):
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_logging(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/log/logging/", request)
+            if "error_list" not in res_obj:
+                res_obj = log_logging(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         
@@ -102,7 +104,9 @@ class Log(Resource):
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_init(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/log/init/", request)
+            if "error_list" not in res_obj:
+                res_obj = log_init(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         
@@ -125,7 +129,9 @@ class Log(Resource):
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_access(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/log/access/", request)
+            if "error_list" not in res_obj:
+                res_obj = log_access(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         
@@ -149,7 +155,9 @@ class Log(Resource):
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_grouped(req_obj, config_obj)
+            res_obj = log_request(req_obj, "/log/grouped/", request)
+            if "error_list" not in res_obj:
+                res_obj = log_grouped(req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         

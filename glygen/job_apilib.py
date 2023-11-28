@@ -253,8 +253,8 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
 
     record_list = []
     for row in row_list:
-        if row[1] == True:
-            record_list.append(row[0])
+        #if row[1] == True:
+        record_list.append(row[0])
 
 
 
@@ -338,7 +338,7 @@ def parse_blastp_ouput(out_file, config_obj):
     sec_list = ["ptm_annotation", "glycation", "snv", "site_annotation", "glycosylation",
         "site_annotation", "glycosylation", "mutagenesis", "phosphorylation"        
     ]
-    prj_obj = {"uniprot_canonical_ac":1, "uniprot_id":1, "protein_names":1, "species":1}
+    prj_obj = {"uniprot_canonical_ac":1, "uniprot_id":1, "gene_names":1, "protein_names":1, "species":1}
     for sec in sec_list:
         prj_obj[sec] = 1
 
@@ -353,14 +353,28 @@ def parse_blastp_ouput(out_file, config_obj):
                 "common_name":sp_obj["common_name"]}
         res_obj_dict[canon]["details"] = {}
         res_obj_dict[canon]["details"]["species"] = o
-        res_obj_dict[canon]["details"]["protein_name"] = doc["protein_names"][0]["name"]
-        res_obj_dict[canon]["details"]["uniprot_id"] = doc["uniprot_id"]
+        res_obj_dict[canon]["details"]["protein_name"] = ""
+        if "protein_names" in doc:
+            if len(doc["protein_names"]) > 0:
+                res_obj_dict[canon]["details"]["protein_name"] = doc["protein_names"][0]["name"]
+        res_obj_dict[canon]["details"]["gene_name"] = ""
+        if "gene_names" in doc:
+            if len(doc["gene_names"]) > 0:
+                res_obj_dict[canon]["details"]["gene_name"] = doc["gene_names"][0]["name"]
+        res_obj_dict[canon]["details"]["uniprot_id"] = ""
+        if "uniprot_id" in doc:
+            res_obj_dict[canon]["details"]["uniprot_id"] = doc["uniprot_id"]
         for o in doc["protein_names"]:
             if o["type"] == "recommended":
                 res_obj_dict[canon]["details"]["protein_name"] = o["name"]
                 break
+        for o in doc["gene_names"]:
+            if o["type"] == "recommended":
+                res_obj_dict[canon]["details"]["gene_name"] = o["name"]
+                break
         for sec in sec_list:
             res_obj_dict[canon]["details"][sec] = doc[sec]
+
 
 
     for sbj_id in res_obj_dict:
@@ -373,7 +387,8 @@ def parse_blastp_ouput(out_file, config_obj):
         #res_obj_dict[sbj_id].pop("protein_name")
         #res_obj_dict[sbj_id].pop("species")
         #res_obj_dict[sbj_id].pop("uniprot_id")
-        for obj in res_obj_dict[sbj_id]["hsp_list"]:
+        hsp_obj_list = res_obj_dict[sbj_id]["hsp_list"]
+        for obj in hsp_obj_list:
             qry, sbj, matches = "", "", ""
             q_ranges, s_ranges = [], []
             for o in obj["aln"]:
@@ -407,7 +422,9 @@ def parse_blastp_ouput(out_file, config_obj):
             obj["sequences"].append(o)
 
             obj.pop("aln")
-     
+    
+
+    #res_obj = {"by_subject":{}, "raw":raw}
     res_obj = {"by_subject":res_obj_dict, "raw":raw}
 
     return res_obj
@@ -659,7 +676,7 @@ def validate_input(query_obj, config_obj, release_dir, server):
     for o in cmd_parts:
         if query_obj["jobtype"] == "blastp":
             if o["flag"] == "-db":
-                o["value"] = release_dir + "blastdb/" + o["value"]
+                o["value"] = release_dir + "jsondb/blastdb/" + o["value"]
         query_obj["cmd"] += " %s %s" % (o["flag"], o["value"])
 
     query_obj["seq_id"] = "QUERY"

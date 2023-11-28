@@ -10,8 +10,7 @@ from bson import json_util, ObjectId
 
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, order_obj
-
+from glygen.util import get_errors_in_query, sort_objects, order_obj, get_paginated_sections
 
 
 
@@ -66,7 +65,8 @@ def motif_detail(query_obj, config_obj):
     prop_list = ["motif", "glytoucan","name",  "mass", "publication"]
     prop_list += ["synonym", "crossref","keywords", "reducing_end","aglycon","reducing_end",
         "alignment_method", "dictionary", 
-        "iupac","wurcs","glycoct","inchi","smiles_isomeric", "glycam", "byonic", "gwb"
+        "iupac","wurcs","glycoct","inchi","smiles_isomeric", "glycam", "byonic", "gwb",
+        "biomarkers", "section_stats"
     ]
 
 
@@ -103,6 +103,19 @@ def motif_detail(query_obj, config_obj):
     res_obj["pagination"] = {"offset":query_obj["offset"], "limit":query_obj["limit"],
         "total_length":len(results), "sort":query_obj["sort"], "order":query_obj["order"]}
     res_obj["query"] = query_obj
+
+ 
+    if "paginated_tables" in query_obj:
+        table_id_list = []
+        for o in query_obj["paginated_tables"]:
+            if o["table_id"] not in table_id_list:
+                table_id_list.append(o["table_id"])
+        sec_tables = get_paginated_sections(res_obj, query_obj, table_id_list)
+        if "error_list" in sec_tables:
+            return sec_tables
+        for sec in sec_tables:
+            res_obj[sec] = sec_tables[sec]
+
 
     return order_obj(res_obj, config_obj["objectorder"]["glycan"])
 

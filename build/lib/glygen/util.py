@@ -28,12 +28,18 @@ def get_req_obj(request):
     
     req_obj = {}
     if query_str == None:
-        req_obj = request.json
+        try:
+            req_obj = request.json
+        except Exception as e:
+            return {"error_list":[{"error_code":"bad-request-json"}]}
     else:
-        req_obj = json.loads(query_str)
+        try:
+            req_obj = json.loads(query_str)
+        except Exception as e:
+            return {"error_list":[{"error_code":"bad-request-json"}]}
+
     if req_obj != None:
         trim_object(req_obj)
-    
     return  req_obj
 
 
@@ -254,7 +260,6 @@ def sort_objects(obj_list, return_fields, field_name, order_type):
     grid_obj = {}
     for f in field_list:
         grid_obj[f] = []
-
     for i in range(0, len(obj_list)):
         obj = obj_list[i]
         if field_name in return_fields["float"]:
@@ -269,13 +274,83 @@ def sort_objects(obj_list, return_fields, field_name, order_type):
             if field_name not in obj:
                 obj[field_name] = -1
             grid_obj[field_name].append({"index":i, field_name:int(obj[field_name])})
-
     reverse_flag = True if order_type == "desc" else False
     key_list = []
     sorted_obj_list = sorted(grid_obj[field_name], key=lambda x: x[field_name], reverse=reverse_flag)
     for o in sorted_obj_list:
             key_list.append(o["index"])
     return key_list
+
+def get_field_value(obj, field_name):
+
+    field_value = obj[field_name] if field_name in obj else ""
+    if field_name.find(".") != -1:
+        ff_list = field_name.split(".")
+        field_value = obj[ff_list[0]]
+        for ff in ff_list[1:]:
+            if ff in field_value:
+                field_value = field_value[ff]
+    return field_value
+
+
+def sort_objects_new(obj_list, field_name, order_type):
+
+    return_fields = {"float":[], "int":[], "string":[]}
+    for obj in obj_list:
+        for k in obj:
+            if type(obj[k]) is float:
+                return_fields["float"].append(k)
+            if type(obj[k]) is int:
+                return_fields["int"].append(k)
+            if type(obj[k]) is str:
+                return_fields["string"].append(k)
+            if type(obj[k]) is dict:
+                o = obj[k]
+                for kk in o:
+                    if type(o[kk]) is float:
+                        return_fields["float"].append(k + "." + kk)
+                    if type(o[kk]) is int:
+                        return_fields["int"].append(k + "." + kk)
+                    if type(o[kk]) is str:
+                        return_fields["string"].append(k + "." + kk)
+    for k in return_fields:
+        return_fields[k] = list(set(return_fields[k]))
+
+
+    field_list = return_fields["float"] + return_fields["int"] + return_fields["string"]
+    grid_obj = {}
+    for f in field_list:
+        grid_obj[f] = []
+    for i in range(0, len(obj_list)):
+        obj = obj_list[i]
+        if field_name in return_fields["float"]:
+            field_value = get_field_value(obj, field_name)
+            field_value = float(field_value) if field_value != "" else -1.0
+            grid_obj[field_name].append({"index":i, field_name:field_value})
+        elif field_name in return_fields["string"]:
+            field_value = get_field_value(obj, field_name)
+            field_value = str(field_value) if field_value != "" else ""
+            grid_obj[field_name].append({"index":i, field_name:field_value})
+        elif field_name in return_fields["int"]:
+            field_value = get_field_value(obj, field_name)
+            field_value = int(field_value) if field_value != "" else -1
+            grid_obj[field_name].append({"index":i, field_name:field_value})
+        else:
+            if field_name not in grid_obj:
+                grid_obj[field_name] = []
+            if field_name not in obj:
+                obj[field_name] = ""
+            grid_obj[field_name].append({"index":i, field_name:obj[field_name]})
+   
+ 
+    reverse_flag = True if order_type == "desc" else False
+    key_list = []
+    sorted_obj_list = sorted(grid_obj[field_name], key=lambda x: x[field_name], reverse=reverse_flag)
+    for o in sorted_obj_list:
+        key_list.append(o["index"])
+    #return {"grid":grid_obj[field_name], "keylist":key_list}
+    return key_list
+
 
 def extract_name(obj_list, name_type, resource):
    
@@ -862,11 +937,12 @@ def update_filters(res_obj, step):
                     tmp_list = record_obj[k].split(";")
 
                 for option_id in tmp_list:
-                    if option_id.strip() != "":
+                    option_id = option_id.strip()
+                    if option_id != "":
                         if filter_group_id == "by_glycan_type":
-                            option_id = option_id.strip().split("/")[0]
+                            option_id = option_id.split("/")[0]
                         if filter_group_id == "by_monosaccharide":
-                            option_id = option_id.strip().split(" ")[0]
+                            option_id = option_id.split(" ")[0]
                         seen_option_id[option_id] = True
                 
                 for option_id in seen_option_id:
@@ -1060,5 +1136,97 @@ def get_error_obj(error_code, error_log, log_path):
 
 
 
+
+
+
+def get_paginated_sections(obj, query_obj, section_list):
+
+
+    sec_map = {
+        "glycosylation_reported_with_glycan":"glycosylation",
+        "glycosylation_reported":"glycosylation",
+        "glycosylation_predicted":"glycosylation",
+        "glycosylation_text_mining":"glycosylation",
+        "snv_disease":"snv",
+        "snv_non_disease":"snv", 
+        "expression_tissue":"expression", 
+        "expression_cell_line":"expression"
+    }
+    site_cat_list = ["reported", "reported_with_glycan", "predicted", "text_mining"]
+   
+    table_id_list = []
+    for o in query_obj["paginated_tables"]:
+        table_id_list.append(o["table_id"])
+  
+    sec_tables = {}
+    tableid2sec = {}
+    seen_obj = {}
+    tmp_list = []
+    for sec in section_list:
+        sec_new = sec_map[sec]  if sec in sec_map else sec
+        if sec_new not in obj:
+            continue
+        for o in obj[sec_new]:
+            table_id = sec
+            if sec.find("glycosylation_") != -1 and o["site_category"] in site_cat_list:
+                table_id = "glycosylation_" + o["site_category"]
+            if sec in ["expression_tissue", "expression_cell_line"]:
+                table_id = "expression_" + o["category"]
+            if sec in ["snv"]:
+                table_id = "snv_disease" if "disease" in o["keywords"] else "snv_non_disease" 
+            if table_id in table_id_list:
+                tableid2sec[table_id] = sec_new
+                if table_id not in sec_tables:
+                    sec_tables[table_id] = []
+                s = json.dumps(o)
+                if table_id not in seen_obj:
+                    seen_obj[table_id] = {}
+                if s not in seen_obj[table_id]:
+                    sec_tables[table_id].append(o)
+                seen_obj[table_id][s] = True
+                 
+    #return sec_tables
+
+
+    for q in query_obj["paginated_tables"]:
+        if "table_id" not in q:
+            return {"error_list":[{"error_code":"missing-table_id-parameter"}]}
+        table_id = q["table_id"]
+        if table_id in sec_tables and table_id in tableid2sec:
+            sort_order = q["order"] if "order" in q else "asc"
+            offset = q["offset"] if "offset" in q else 1
+            limit = q["limit"] if "limit" in q else 20
+            if type(sec_tables[table_id][0]) is dict:
+                if "sort" not in q:
+                    key_list = list(sec_tables[table_id][0].keys())
+                    q["sort"] = key_list[0]
+                sorted_idx_list = sort_objects_new(sec_tables[table_id], q["sort"], sort_order)
+                #return sorted_idx_list
+            else:
+                sorted_idx_list = []
+                rev_flag = sort_order == "desc"
+                ordered_values = sorted(sec_tables[table_id], reverse=rev_flag)
+                for v in ordered_values:
+                    sorted_idx_list.append(sec_tables[table_id].index(v))
+            start_index = int(offset) - 1
+            stop_index = start_index + int(limit)
+            start_index = 0 if start_index > len(sorted_idx_list) - 1 else start_index
+            stop_index = len(sorted_idx_list) if stop_index > len(sorted_idx_list) else stop_index
+            sorted_idx_list = sorted_idx_list[start_index:stop_index]
+            tmp_table = []
+            for idx in sorted_idx_list:
+                tmp_table.append(sec_tables[table_id][idx])
+            sec = tableid2sec[table_id]
+            if sec == table_id:
+                sec_tables[sec] = tmp_table
+            else:
+                if sec not in sec_tables:
+                    sec_tables[sec] = []
+                sec_tables[sec] += tmp_table
+                if table_id in sec_tables:
+                    sec_tables.pop(table_id)
+
+
+    return sec_tables
 
 

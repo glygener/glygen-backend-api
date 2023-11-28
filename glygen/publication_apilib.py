@@ -10,7 +10,7 @@ from bson import json_util, ObjectId
 
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj
+from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections
 
 
 
@@ -39,11 +39,11 @@ def publication_detail(query_obj, config_obj):
         ]
     }
     
-    publication_doc = dbh[collection].find_one(mongo_query)
+    obj = dbh[collection].find_one(mongo_query)
     
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
-    if publication_doc == None:
+    if obj == None:
         post_error_list.append({"error_code":"non-existent-record"})
         return {"error_list":post_error_list}
 
@@ -55,13 +55,25 @@ def publication_detail(query_obj, config_obj):
     batch_doc = dbh["c_batch"].find_one(q)
     if batch_doc != None:
         for sec in batch_doc["sections"]:
-            if sec in publication_doc:
-                publication_doc[sec] += batch_doc["sections"][sec]
+            if sec in obj:
+                obj[sec] += batch_doc["sections"][sec]
 
 
-    clean_obj(publication_doc, config_obj["removelist"]["c_publication"], "c_publication")
+    if "paginated_tables" in query_obj:
+        table_id_list = []
+        for o in query_obj["paginated_tables"]:
+            if o["table_id"] not in table_id_list:
+                table_id_list.append(o["table_id"])
+        sec_tables = get_paginated_sections(obj, query_obj, table_id_list)
+        if "error_list" in sec_tables:
+            return sec_tables
+        for sec in sec_tables:
+            obj[sec] = sec_tables[sec]
 
-    return publication_doc
+
+    clean_obj(obj, config_obj["removelist"]["c_publication"], "c_publication")
+
+    return obj
 
 
 
