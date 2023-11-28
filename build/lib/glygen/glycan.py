@@ -10,7 +10,7 @@ import subprocess
 import json
 import bcrypt
 
-from glygen.glycan_apilib import glycan_search_init, glycan_search, glycan_search_simple, glycan_detail, glycan_image
+from glygen.glycan_apilib import glycan_search_init, glycan_search, glycan_search_simple, glycan_detail, glycan_image, glycan_image_svg
 
 from glygen.util import get_cached_records_indirect, get_req_obj
 import traceback
@@ -172,22 +172,40 @@ class Glycan(Resource):
     def post(self, glytoucan_ac):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
-        return {"file":json_url}
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
             req_obj = {"glytoucan_ac":glytoucan_ac}
-            #req_obj_extra = get_req_obj(request)
-            return req_obj
-            #if req_obj_extra != None:
-            #    if "format" in req_obj_extra:
-            #        req_obj["format"] = req_obj_extra["format"]
-            #return req_obj
             res_obj = log_request(req_obj, "/glycan/image/", request)
             if "error_list" not in res_obj:
                 data_path = os.environ["DATA_PATH"]
                 img_file = glycan_image(req_obj, data_path)
-                return send_file(img_file, mimetype='image/png')
+                return send_file(img_file, mimetype="image/png")
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
+    @api.doc(False)
+    def get(self, glytoucan_ac):
+        return self.post(glytoucan_ac)
+
+@api.route('/image_svg/<glytoucan_ac>/')
+@api.doc(params={"glytoucan_ac": {"in": "query", "default": "G17689DH"}})
+class Glycan(Resource):
+    @api.doc('image_svg')
+    def post(self, glytoucan_ac):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = {"glytoucan_ac":glytoucan_ac}
+            res_obj = log_request(req_obj, "/glycan/image_svg/", request)
+            if "error_list" not in res_obj:
+                data_path = os.environ["DATA_PATH"]
+                img_file = glycan_image_svg(req_obj, data_path)
+                return send_file(img_file, mimetype="image/svg")
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
