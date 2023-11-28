@@ -1,6 +1,7 @@
 import os,sys
 from flask_restx import Namespace, Resource, fields
 from flask import (request, current_app, send_file)
+from glygen.db import log_error, log_request
 from glygen.document import get_one, get_many, insert_one, update_one, delete_one, order_json_obj
 from werkzeug.utils import secure_filename
 import datetime
@@ -47,26 +48,34 @@ class Typeahead(Resource):
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
             field_list_one = ["glytoucan_ac", "motif_name", "enzyme_uniprot_canonical_ac", 
-                    "glycan_pmid", "enzyme"]
+                "glycan_pmid", "enzyme", 
+                "biomarker_id", "biomarker_name","biomarker_type",
+                "biomarker_disease_id", "biomarker_disease_name"
+            ]
             field_list_two = ["uniprot_canonical_ac", "uniprot_id", "refseq_ac", 
-                                "protein_name", "gene_name", "pathway_id", "pathway_name", 
-                                "disease_name","disease_id", 
-                                "go_id", "go_term", "protein_pmid"] 
-            tmp_obj_one, tmp_obj_two = [], []
-            if req_obj["field"] in field_list_one:
-                tmp_obj_one = glycan_typeahead(req_obj, config_obj)
-            if req_obj["field"] in field_list_two:
-                tmp_obj_two = protein_typeahead(req_obj, config_obj)
-            if "error_list" in tmp_obj_one:
-                res_obj = tmp_obj_one
-            elif "error_list" in tmp_obj_two: 
-                res_obj = tmp_obj_two
-            else:
-                res_obj = tmp_obj_one + tmp_obj_two
-
+                "protein_name", "gene_name", "pathway_id", "pathway_name", 
+                "disease_name","disease_id", 
+                "go_id", "go_term", "protein_pmid",
+                "biomarker_id", "biomarker_name","biomarker_type",
+                "biomarker_disease_id", "biomarker_disease_name"
+            ] 
+            res_obj = log_request(req_obj, "/typeahead/typeahead/", request)
+            if "error_list" not in res_obj:
+                tmp_obj_one, tmp_obj_two = [], []
+                if req_obj["field"] in field_list_one:
+                    tmp_obj_one = glycan_typeahead(req_obj, config_obj)
+                if req_obj["field"] in field_list_two:
+                    tmp_obj_two = protein_typeahead(req_obj, config_obj)
+                if "error_list" in tmp_obj_one:
+                    res_obj = tmp_obj_one
+                elif "error_list" in tmp_obj_two: 
+                    res_obj = tmp_obj_two
+                else:
+                    res_obj = sorted(list(set(tmp_obj_one + tmp_obj_two)))
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
+        
         return res_obj, http_code
 
 
@@ -87,11 +96,13 @@ class Typeahead(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            tmp_obj = categorized_typeahead(req_obj, config_obj)
-            if "error_list" in tmp_obj:
-                res_obj = tmp_obj
-            else:
-                res_obj = tmp_obj
+            res_obj = log_request(req_obj, "/typeahead/categorized_typeahead/", request)
+            if "error_list" not in res_obj:
+                tmp_obj = categorized_typeahead(req_obj, config_obj)
+                if "error_list" in tmp_obj:
+                    res_obj = tmp_obj
+                else:
+                    res_obj = tmp_obj
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -112,11 +123,13 @@ class Typeahead(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
-            tmp_obj = global_typeahead(req_obj, config_obj)
-            if "error_list" in tmp_obj:
-                res_obj = tmp_obj
-            else:
-                res_obj = tmp_obj
+            res_obj = log_request(req_obj, "/typeahead/global_typeahead/", request)
+            if "error_list" not in res_obj:
+                tmp_obj = global_typeahead(req_obj, config_obj)
+                if "error_list" in tmp_obj:
+                    res_obj = tmp_obj
+                else:
+                    res_obj = tmp_obj
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

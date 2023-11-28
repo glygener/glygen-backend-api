@@ -74,6 +74,7 @@ def search_init(config_obj):
             init_dict[record_type]["list_id"] = cache_dict[record_type]["list_id"]
             init_dict[record_type]["bylinkage"] = cache_dict[record_type]["bylinkage"]
 
+
     seen_field = {}
     for record_type in path_dict:
         field_list = []
@@ -320,6 +321,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
             reason = "hit-in-initial-%s-query" % (record_type)
             add_reason(reason_dict, record_type, record_id, "self", record_id)  
 
+    #return initial_hit_dict["species"]
 
 
     dump_debug_timer("flag-2 loading network", DEBUG_FLAG)
@@ -680,8 +682,9 @@ def load_network_type_III(doc_list, initial_hit_dict, empty_search_flag, ignore_
 
 
     for src_record_type in record_type_list:
+        if src_record_type not in edge_dict:
+            continue
         for src_record_id in edge_dict[src_record_type]:
-
             # if empty query search, add all src nodes including unlinked ones
             if empty_search_flag == True and src_record_type in orphan_dict:
                 if src_record_type not in node_hit_dict:

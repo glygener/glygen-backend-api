@@ -27,7 +27,8 @@ from .misc import api as misc_api
 from .job import api as job_api
 from .usecases import api as usecases_api
 from .graph import api as graph_api
-
+from .biomarker import api as biomarker_api
+from .pagination import api as pagination_api
 
 
 def create_app():
@@ -64,6 +65,8 @@ def create_app():
     
     api.add_namespace(misc_api)
     #api.add_namespace(graph_api)
+    api.add_namespace(biomarker_api)
+    api.add_namespace(pagination_api)
 
 
     try:

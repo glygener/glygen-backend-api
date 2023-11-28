@@ -5,14 +5,14 @@ import hashlib
 import json
 import datetime,time
 import pytz
+import re
 from collections import OrderedDict
 from bson import json_util, ObjectId
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, order_obj
+from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, order_obj, get_paginated_sections
 
-
-
+    
 def glycan_search_init(config_obj):
    
     dbh, error_obj = get_mongodb()
@@ -47,14 +47,14 @@ def glycan_search_simple(query_obj, config_obj):
     mongo_query = get_simple_mongo_query(query_obj)
     #return {"error_list":[{"error":mongo_query}]}
     #mongo_query = {"byonic": {"$options": "i", "$regex": "Hex\(5\)"}}
-    
+    #return mongo_query
+
     collection = "c_glycan"
     record_list = []
     record_type = "glycan"
     prj_obj = {"glytoucan_ac":1}
     for doc in dbh[collection].find(mongo_query,prj_obj):
         record_list.append(doc["glytoucan_ac"])
-
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
@@ -244,6 +244,13 @@ def glycan_detail(query_obj, config_obj):
     collection = "c_glycan"
 
 
+    q = {
+        "$and":[ 
+            {"record_id":{'$eq': query_obj["glytoucan_ac"].upper()}},
+            {"recordtype":{"$eq": "glycan"}}
+        ]
+    }
+    history_obj = dbh["c_idtrack"].find_one(q)
 
     glytoucan_ac = query_obj["glytoucan_ac"].upper()
     mongo_query = {"glytoucan_ac":{'$eq': glytoucan_ac}}
@@ -251,11 +258,7 @@ def glycan_detail(query_obj, config_obj):
     
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
-    history_obj = None
     if obj == None:
-        q = { "$and":[ {"record_id":{'$eq': query_obj["glytoucan_ac"].upper()}}, {"recordtype":{"$eq": "glycan"}}]}
-        history_obj = dbh["c_idtrack"].find_one(q)
-        
         post_error_list.append({"error_code":"non-existent-record"})
         res_obj = {"error_list":post_error_list}
         if history_obj != None:
@@ -269,6 +272,7 @@ def glycan_detail(query_obj, config_obj):
     q = {"batchid": 1, "recordid": glytoucan_ac, "recordtype": "glycan"}
     batch_doc = dbh["c_batch"].find_one(q)
     if batch_doc != None:
+        #return list(batch_doc["sections"].keys())
         for sec in batch_doc["sections"]:
             if sec in obj:
                 if len(batch_doc["sections"][sec]) > 1000:
@@ -289,6 +293,18 @@ def glycan_detail(query_obj, config_obj):
             tmp_list.append(o)
     obj["composition"] = tmp_list
 
+
+    if "paginated_tables" in query_obj:
+        table_id_list = []
+        for o in query_obj["paginated_tables"]:
+            if o["table_id"] not in table_id_list:
+                table_id_list.append(o["table_id"])
+        sec_tables = get_paginated_sections(obj, query_obj, table_id_list)
+        if "error_list" in sec_tables:
+            return sec_tables
+        for sec in sec_tables:
+            obj[sec] = sec_tables[sec]
+    
     clean_obj(obj, config_obj["removelist"]["c_glycan"], "c_glycan")
 
     if "enzyme" in obj:
@@ -321,18 +337,25 @@ def glycan_image(query_obj, data_path):
 def get_simple_mongo_query(query_obj):
 
 
-    #query_term = "\"%s\"" % (query_obj["term"])
     query_term = query_obj["term"]
-
     cond_objs = []
     if query_obj["term_category"] == "any":
+        tv, q = is_glycan_composition(query_obj["term"])
+        if tv == True:
+            return q
         return {'$text': { '$search': query_term}}
     elif query_obj["term_category"] == "glycan":
+        tv, q = is_glycan_composition(query_obj["term"])
+        if tv == True:
+            return q
         cond_objs.append({"glytoucan_ac":{'$regex': query_obj["term"], '$options': 'i'}})
-        cond_objs.append({"iupac":{'$regex': query_obj["term"], '$options': 'i'}})
-        cond_objs.append({"wurcs":{'$regex': query_obj["term"], '$options': 'i'}})
-        cond_objs.append({"glycoct":{'$regex': query_obj["term"], '$options': 'i'}})
         qval = query_obj["term"].replace("(", "\\(").replace(")", "\\)")
+        #cond_objs.append({"iupac":{'$regex': query_obj["term"], '$options': 'i'}})
+        #cond_objs.append({"wurcs":{'$regex': query_obj["term"], '$options': 'i'}})
+        #cond_objs.append({"glycoct":{'$regex': query_obj["term"], '$options': 'i'}})
+        cond_objs.append({"iupac":{'$regex': qval, '$options': 'i'}})
+        cond_objs.append({"wurcs":{'$regex': qval, '$options': 'i'}})
+        cond_objs.append({"glycoct":{'$regex': qval, '$options': 'i'}})
         cond_objs.append({"byonic":{'$regex': qval, '$options': 'i'}})
         cond_objs.append({"names.name": {'$regex': qval,'$options': 'i'}})
     elif query_obj["term_category"] == "protein":
@@ -419,6 +442,36 @@ def get_mongo_query(query_obj):
             q = q_two if rel == "any" else q_one
             cond_objs.append(q)
 
+    #biomarker
+    if "biomarker" in query_obj:
+        if "id" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["id"]) > 0:
+                o = {"biomarkers.biomarker_id": {'$regex': query_obj["biomarker"]["id"], '$options': 'i'}}
+                cond_objs.append(o)
+        if "name" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["name"]) > 0:
+                o = {"biomarkers.assessed_biomarker_entity":{'$regex':query_obj["biomarker"]["name"],'$options':'i'}}
+                cond_objs.append(o)
+        if "type" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["type"]) > 0:
+                o = {"biomarkers.instances.best_biomarker_type": {'$regex': query_obj["biomarker"]["type"], '$options': 'i'}}
+                cond_objs.append(o)
+        if "disease_id" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["disease_id"]) > 0:
+                disease_id = query_obj["biomarker"]["disease_id"]
+                or_list = [
+                    {"biomarkers.instances.disease.recommended_name.id":{'$regex':disease_id,'$options':'i'}},
+                    {"biomarkers.instances.disease.synonyms.id":{'$regex':disease_id,'$options':'i'}},
+                ]
+                cond_objs.append({'$or':or_list})
+        if "disease_name" in query_obj["biomarker"]:
+            if len(query_obj["biomarker"]["disease_name"]) > 0:
+                disease_name = query_obj["biomarker"]["disease_name"]
+                or_list = [
+                    {"biomarkers.instances.disease.recommended_name.name":{'$regex':disease_name,'$options':'i'}},
+                    {"biomarkers.instances.disease.synonyms.name":{'$regex':disease_name,'$options':'i'}}
+                ]
+                cond_objs.append({'$or':or_list})
 
     
     #organism
@@ -550,5 +603,27 @@ def passes_composition_filter(glytoucan_ac, comp_obj, comp_field, query_obj):
     r_value = len(tv) == n_cond and list(set(tv)) == [True]
 
     return r_value
+
+
+
+def is_glycan_composition(term):
+    term = term.strip().replace(" ", "")
+    res_str = re.sub(r"[(,)]", " ", term)
+    tmp_list_one, tmp_list_two = [], []
+    w_list = res_str.strip().split(" ")
+    if len(w_list)%2 != 0:
+        return False, []
+    for i in range(0, len(w_list) -1):
+        if i%2 == 0:
+            s = w_list[i]
+            ss = w_list[i+1]
+            f = s.isalpha() and ss.isdigit()
+            tmp_list_one.append(f)
+            cmp = "%s\(%s\)" % (s, ss)
+            #o = {"$text": { "$search": cmp}}
+            o = {"byonic": { "$regex": cmp, "$options":"i"}}
+            tmp_list_two.append(o)
+
+    return list(set(tmp_list_one)) == [True], {"$and":tmp_list_two}
 
 

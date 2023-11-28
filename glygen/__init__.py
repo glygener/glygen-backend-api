@@ -27,7 +27,8 @@ from .misc import api as misc_api
 from .job import api as job_api
 from .usecases import api as usecases_api
 from .graph import api as graph_api
-
+from .biomarker import api as biomarker_api
+from .pagination import api as pagination_api
 
 
 def create_app():
@@ -38,14 +39,10 @@ def create_app():
     #CORS(app)
 
     api = Api(app, version='1.0', title='GlyGen APIs', description='Documentation for the GlyGen APIs',)
-<<<<<<< HEAD
-    
-=======
         
 
 
 
->>>>>>> 2.0
     api.add_namespace(glycan_api)
     api.add_namespace(motif_api)
     api.add_namespace(protein_api)
@@ -54,11 +51,7 @@ def create_app():
     api.add_namespace(usecases_api)
     api.add_namespace(idmapping_api)
     api.add_namespace(seqmapping_api)
-<<<<<<< HEAD
-    api.add_namespace(directsearch_api)
-=======
     #api.add_namespace(directsearch_api)
->>>>>>> 2.0
     api.add_namespace(supersearch_api)
     api.add_namespace(globalsearch_api)
     api.add_namespace(data_api)
@@ -72,6 +65,8 @@ def create_app():
     
     api.add_namespace(misc_api)
     #api.add_namespace(graph_api)
+    api.add_namespace(biomarker_api)
+    api.add_namespace(pagination_api)
 
 
     try:

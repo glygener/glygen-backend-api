@@ -22,9 +22,7 @@
 	    "structure_search":{
                 "incmdflag":"-i",
                 "outcmdflag":"-o",
-<<<<<<< HEAD
                 "path":"python /app/job_submitters/structure_search.py",
-=======
                 "path":{
                     "prd":"python /app/job_submitters/structure_search.py",
                     "beta":"python /app/job_submitters/structure_search_beta.py",

@@ -29,6 +29,28 @@ def get_mongodb():
 
 
 
+def log_request(req_obj, api_name, request):
+
+    mongo_dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+    if len(json.dumps(req_obj)) > 20000:
+        return {"error_list":[{"error_code": "Too long request, unable to log request!"}]}
+
+    try:
+        ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+        ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
+        #x = request.headers.get('User-Agent')
+        log_obj = {"api":api_name, "req":req_obj, "ts":ts}
+        res = mongo_dbh["c_request"].insert_one(log_obj)
+        return {}
+    except Exception as e:
+        return {"error_list":[{"error_code": "Unable to log error!"}]}
+
+
+
+
+
 def log_error(error_log):
 
     mongo_dbh, error_obj = get_mongodb()
