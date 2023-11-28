@@ -12,7 +12,7 @@ conf/config.json. Make sure you are in the branch for the given release.
 For example, you are trying to deploy release 2.0, use the following 
 commands to be in the right branch.
    ```
-   git checkout 2.0
+   git checkout 2.2
    git branch
    ```
 the second command should show that you are are in 2.0 branch.
@@ -33,24 +33,24 @@ that release. Since this will take long, use nohup as shown below.
 Run the python script given to create a mongodb container with admin
 authentication creditials given in the conf/config.json file.
    ```
-   python3 create_mongodb_container.py -s $DEP
+   python3 create_mongodb_container.py -s $SER
    docker ps --all 
    ```
-where $DEP is your deployment server which can be  dev, tst, beta or prd.
+where $SER is your deployment server which can be  dev, tst, beta or prd.
 The last command should list docker all containers and you should see the container
-you created 'running_glygen_mongo_$DEP'. To start this container, the best way is
-to create a service file (/usr/lib/systemd/system/docker-glygen-mongo-$DEP.service),
+you created 'running_glygen_mongo_$SER'. To start this container, the best way is
+to create a service file (/usr/lib/systemd/system/docker-glygen-mongo-$SER.service),
 and place the following content in it. 
    ```
    [Unit]
-   Description=Glygen MONGODB Container ($DEP)
+   Description=Glygen MONGODB Container ($SER)
    Requires=docker.service
    After=docker.service
 
    [Service]
    Restart=always
-   ExecStart=/usr/bin/docker start -a running_glygen_mongo_$DEP
-   ExecStop=/usr/bin/docker stop -t 2 running_glygen_mongo_$DEP
+   ExecStart=/usr/bin/docker start -a running_glygen_mongo_$SER
+   ExecStop=/usr/bin/docker stop -t 2 running_glygen_mongo_$SER
 
    [Install]
    WantedBy=default.target
@@ -60,9 +60,9 @@ This will allow you to start/stop the container with the following commands, and
 that the container will start on server reboot.
    ```
    $ sudo systemctl daemon-reload 
-   $ sudo systemctl enable docker-glygen-mongo-$DEP.service
-   $ sudo systemctl start docker-glygen-mongo-$DEP.service
-   $ sudo systemctl stop docker-glygen-mongo-$DEP.service
+   $ sudo systemctl enable docker-glygen-mongo-$SER.service
+   $ sudo systemctl start docker-glygen-mongo-$SER.service
+   $ sudo systemctl stop docker-glygen-mongo-$SER.service
    ```
 
 
@@ -70,15 +70,15 @@ that the container will start on server reboot.
  Run the command given below to create the "glydb" database and glydb user
 (this should be done only one time). 
    ```
-   python3 init_mongodb.py -s $DEP
+   python3 init_mongodb.py -s $SER
    ```
 You can populate collections using the following commands:
    ```
-   python3 populate_collections.py -s $DEP -v $VER
+   python3 populate_collections.py -s $SER -v $VER
    ```
 To update a few collections, you can use:
    ```
-   python3 populate_collection.py -s $DEP -v $VER -c $COLLS
+   python3 populate_collection.py -s $SER -v $VER -c $COLLS
    ```
 where the variable $COLLS is collection names separated by comma (e.g., c_glycan,c_motif)
 
@@ -87,24 +87,24 @@ where the variable $COLLS is collection names separated by comma (e.g., c_glycan
 ## Step-4: Creating and starting docker container for mongodb
 Run the python script given to build and create the API container:
    ```
-   python3 create_api_container.py -s $DEP
+   python3 create_api_container.py -s $SER
    docker ps --all 
    ```
-where $DEP is your deployment server which can be  dev, tst, beta or prd.
+where $SER is your deployment server which can be  dev, tst, beta or prd.
 The last command should list docker all containers and you should see the container
-you created "running_glygen_api_$DEP". To start this container, the best way is
-to create a service file (/usr/lib/systemd/system/docker-glygen-api-$DEP.service),
+you created "running_glygen_api_$SER". To start this container, the best way is
+to create a service file (/usr/lib/systemd/system/docker-glygen-api-$SER.service),
 and place the following content in it. 
    ```
    [Unit]
-   Description=Glygen API Container ($DEP)
+   Description=Glygen API Container ($SER)
    Requires=docker.service
    After=docker.service
 
    [Service]
    Restart=always
-   ExecStart=/usr/bin/docker start -a running_glygen_api_$DEP
-   ExecStop=/usr/bin/docker stop -t 2 running_glygen_api_$DEP
+   ExecStart=/usr/bin/docker start -a running_glygen_api_$SER
+   ExecStop=/usr/bin/docker stop -t 2 running_glygen_api_$SER
 
    [Install]
    WantedBy=default.target
@@ -114,9 +114,9 @@ This will allow you to start/stop the container with the following commands, and
 that the container will start on server reboot.
    ```
    $ sudo systemctl daemon-reload 
-   $ sudo systemctl enable docker-glygen-api-$DEP.service
-   $ sudo systemctl start docker-glygen-api-$DEP.service
-   $ sudo systemctl stop docker-glygen-api-$DEP.service
+   $ sudo systemctl enable docker-glygen-api-$SER.service
+   $ sudo systemctl start docker-glygen-api-$SER.service
+   $ sudo systemctl stop docker-glygen-api-$SER.service
    ```
 
 
@@ -134,10 +134,10 @@ Run the python script given to build and create the API container:
    python3 create_substructure_container.py 
    docker ps --all 
    ```
-where $DEP is your deployment server which can be  dev, tst, beta or prd.
+where $SER is your deployment server which can be  dev, tst, beta or prd.
 The last command should list docker all containers and you should see the container
 you created "running_substructure". To start this container, the best way is
-to create a service file (/usr/lib/systemd/system/docker-glygen-substructure-$DEP.service),
+to create a service file (/usr/lib/systemd/system/docker-glygen-substructure-$SER.service),
 and place the following content in it. 
    ```
    [Unit]
@@ -158,9 +158,9 @@ This will allow you to start/stop the container with the following commands, and
 that the container will start on server reboot.
    ```
    $ sudo systemctl daemon-reload 
-   $ sudo systemctl enable docker-glygen-substructure-$DEP.service
-   $ sudo systemctl start docker-glygen-substructure-$DEP.service
-   $ sudo systemctl stop docker-glygen-substructure-$DEP.service
+   $ sudo systemctl enable docker-glygen-substructure-$SER.service
+   $ sudo systemctl start docker-glygen-substructure-$SER.service
+   $ sudo systemctl stop docker-glygen-substructure-$SER.service
    ```
 
 
@@ -202,10 +202,10 @@ into /usr/local/lib/python3.6/site-packages/flask_restx/templates/ folder in the
 assume that you have /data/shared/glygen/swagger/ visible from the container.
 
 ```
-docker exec -it running_glygen_api_$DEP bash
+docker exec -it running_glygen_api_$SER bash
 cp /data/shared/glygen/swagger/swagger-ui.html /usr/local/lib/python3.6/site-packages/flask_restx/templates/swagger-ui.html
 exit
-sudo systemctl restart docker-glygen-api-$DEP.service
+sudo systemctl restart docker-glygen-api-$SER.service
 ```
 
 
