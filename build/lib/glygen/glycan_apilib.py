@@ -348,6 +348,22 @@ def glycan_image_svg(query_obj, data_path):
     return img_file
 
 
+def glycan_image_metadata(query_obj, data_path):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    init_obj = dbh["c_init"].find_one({})
+    ver = init_obj["dataversion"]
+    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg_metadata/" % (ver)
+    img_file =  img_path + query_obj["glytoucan_ac"].upper() + ".json"
+    if os.path.isfile(img_file) == False:
+        img_file = img_path +  "G0000000.json"
+    
+    return json.loads(open(img_file, "r").read())
+
+
 
 
 
