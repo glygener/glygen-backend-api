@@ -32,6 +32,8 @@ glygen/misc.py
 glygen/misc_apilib.py
 glygen/motif.py
 glygen/motif_apilib.py
+glygen/outreach.py
+glygen/outreach_apilib.py
 glygen/pages.py
 glygen/pages_apilib.py
 glygen/pagination.py
@@ -64,6 +66,8 @@ glygen/conf/config.json
 glygen/conf/dbinfo.json
 glygen/conf/edgerules.json
 glygen/conf/fieldmap.json
+glygen/conf/global_search.2.json
+glygen/conf/global_search.3.json
 glygen/conf/global_search.json
 glygen/conf/global_search.json-backup
 glygen/conf/global_search_all.json

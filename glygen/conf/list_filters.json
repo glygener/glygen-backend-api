@@ -26,7 +26,8 @@
                 "Rattus norvegicus":3,
                 "Rattus":4,
                 "Drosophila melanogaster":5,
-                "Hepatitis C virus (isolate H)":6,
+                "Saccharomyces cerevisiae":5.1,
+		"Hepatitis C virus (isolate H)":6,
                 "Hepatitis C virus (isolate Japanese)":7,
                 "Hepacivirus C":8,
                 "Severe acute respiratory syndrome-related coronavirus":9,
@@ -36,8 +37,9 @@
                 "Homo sapiens":"Human",
                 "Mus musculus":"Mouse",
                 "Rattus norvegicus":"Rat",
-                "Drosophila melanogaster":"Fruit Fly",
-                "Hepatitis C virus (isolate H)":"HCV-H",
+                "Drosophila melanogaster":"Fruitfly",
+                "Saccharomyces cerevisiae":"Yeast",
+		"Hepatitis C virus (isolate H)":"HCV-H",
                 "Hepatitis C virus (isolate Japanese)":"HCV-Japanese",
                 "Hepacivirus C":"HCV",
                 "Severe acute respiratory syndrome-related coronavirus":"HCoV-SARS",
@@ -103,6 +105,29 @@
                 "s":"Sulfate",
                 "other":"Other"
             }
+        },
+	"by_biomarker_type":{
+            "group_order":7,
+            "group_label":"By Biomarker Type",
+            "record_key":"biomarker_type",
+            "order_dict":{
+		"diagnostic":1,
+		"monitoring":2,
+            	"predictive":3,
+            	"prognostic":4,
+            	"risk":5,
+		"response":6,
+                "safety":7	
+	    },
+            "label_dict":{
+		"diagnostic":"Diagnostic",
+                "monitoring":"Monitoring",
+                "predictive":"Predictive",
+                "prognostic":"Prognostic",
+                "risk":"Risk",
+		"response":"Response",
+                "safety":"Safety"
+	    }
         }
     },
     "protein":{
@@ -138,7 +163,8 @@
                 "Rattus norvegicus":3,
                 "Rattus":4,
                 "Drosophila melanogaster":5,
-                "Hepatitis C virus (isolate H)":6,
+                "Saccharomyces cerevisiae":5.1,
+		"Hepatitis C virus (isolate H)":6,
                 "Hepatitis C virus (isolate Japanese)":7,
                 "Hepacivirus C":8,
                 "Severe acute respiratory syndrome-related coronavirus":9,
@@ -148,8 +174,9 @@
                 "Homo sapiens":"Human",
                 "Mus musculus":"Mouse",
                 "Rattus norvegicus":"Rat",
-                "Drosophila melanogaster":"Fruit Fly",
-                "Hepatitis C virus (isolate H)":"HCV-H",
+                "Drosophila melanogaster":"Fruitfly",
+                "Saccharomyces cerevisiae":"Yeast",
+		"Hepatitis C virus (isolate H)":"HCV-H",
                 "Hepatitis C virus (isolate Japanese)":"HCV-Japanese",
                 "Hepacivirus C":"HCV",
                 "Severe acute respiratory syndrome-related coronavirus":"HCoV-SARS",
@@ -195,6 +222,29 @@
             "order_dict":{
                 "Mutagenesis":1,"SNV":2,"Pathway":3,"Disease":4,"Glycation":5,"Binding":6,
                 "Publication":7
+            }
+        },
+	"by_biomarker_type":{
+            "group_order":4,
+            "group_label":"By Biomarker Type",
+            "record_key":"biomarker_type",
+            "order_dict":{
+                "diagnostic":1,
+                "monitoring":2,
+                "predictive":3,
+                "prognostic":4,
+                "risk":5,
+		"response":6,
+		"safety":7
+            },
+            "label_dict":{
+                "diagnostic":"Diagnostic",
+                "monitoring":"Monitoring",
+                "predictive":"Predictive",
+                "prognostic":"Prognostic",
+                "risk":"Risk",
+		"response":"Response",
+                "safety":"Safety"
             }
         }
     },
@@ -308,7 +358,8 @@
                 "Rattus norvegicus":3,
                 "Rattus":4,
                 "Drosophila melanogaster":5,
-                "Hepatitis C virus (isolate H)":6,
+                "Saccharomyces cerevisiae":5.1,
+		"Hepatitis C virus (isolate H)":6,
                 "Hepatitis C virus (isolate Japanese)":7,
                 "Hepacivirus C":8,
                 "Severe acute respiratory syndrome-related coronavirus":9,
@@ -318,8 +369,9 @@
                 "Homo sapiens":"Human",
                 "Mus musculus":"Mouse",
                 "Rattus norvegicus":"Rat",
-                "Drosophila melanogaster":"Fruit Fly",
-                "Hepatitis C virus (isolate H)":"HCV-H",
+                "Drosophila melanogaster":"Fruitfly",
+                "Saccharomyces cerevisiae":"Yeast",
+		"Hepatitis C virus (isolate H)":"HCV-H",
                 "Hepatitis C virus (isolate Japanese)":"HCV-Japanese",
                 "Hepacivirus C":"HCV",
                 "Severe acute respiratory syndrome-related coronavirus":"HCoV-SARS",

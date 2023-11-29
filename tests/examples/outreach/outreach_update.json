@@ -1,0 +1,18 @@
+[
+    {
+        "id":1,
+	"title": "GGGGlyGen: Computational and Informatics Resources for Glycoscience.",
+        "author_list": "William S. York, Raja Mazumder, Rene Ranzinger, Nathan Edwards, Robel Kahsay, Kiyoko F. Aoki-Kinoshita, Matthew P. Campbell, Richard D. Cummings, Ten Feizi, Maria Martin, Darren A. Natale, Nicolle H. Packer, Robert J. Woods, Gaurav Agarwal, Sena Arpinar, Sanath Bhat, Judith Blake, Leyla Jael Garcia Castro, Brian Fochtman, Jeffrey Gildersleeve, Radoslav Goldman, Xavier Holmes, Vinamra Jain, Sujeet Kulkarni, Rupali Mahadik, Akul Mehta, Reza Mousavi, Sandeep Nakarakommula, Rahi Navelkar, Nagarajan Pattabiraman, Michael J. Pierce, Karen Ross, Preethi Vasudev, Jeet Vora, Tatiana Williamson, and Wenjin Zhang.",
+        "journal": "Glycobiology",
+        "date": "2020-01-08",
+        "issue": "30(2)",
+        "pages": "72-73",
+        "pmid": "31616925",
+        "doid": "10.1093/glycob/cwz080",
+        "cite": false,
+        "funding": [
+            "GlyGen U24"
+        ],
+        "category": "papers"
+    }
+]

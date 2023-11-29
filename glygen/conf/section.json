@@ -325,11 +325,11 @@
             },
             "fieldmap": [
                 {
-                    "path": "kinase_protein",
+                    "path": "kinase_uniprot_canonical_ac",
                     "label": "Kinase Protein"
                 },
                 {
-                    "path": "kinase_gene",
+                    "path": "kinase_gene_name",
                     "label": "Kinase Gene"
                 },
                 {
@@ -392,6 +392,47 @@
             ],
             "sectionfield": "glycation"
         },
+        "snv_mutations": {
+            "filterinfo": {
+                "field": "",
+                "valuelist": []
+            },
+            "fieldmap": [
+                {
+                    "path": "uniprotkb_accession",
+                    "label": "UniProtKB Accession"
+                },
+                {
+                    "path": "filter_annotations",
+                    "label": "Filter Annotations"
+                },
+                {
+                    "path": "genomic_locus",
+                    "label": "Genomic Locus"
+                },
+                {
+                    "path": "start_pos",
+                    "label": "Start Position"
+                },
+                {
+                    "path": "end_pos",
+                    "label": "End Position"
+                },
+                {
+                    "path": "sequence",
+                    "label": "Sequence"
+                },
+                {
+                    "path": "disease",
+                    "label": "Disease"
+                },
+                {
+                    "path": "minor_allelic_frequency",
+                    "label": "MAF"
+                }
+            ],
+            "sectionfield": "snv"
+        },
         "snv_disease_associated_mutations": {
             "filterinfo": {
                 "field": "keywords",
@@ -421,7 +462,12 @@
                 {
                     "path": "disease",
                     "label": "Disease"
+                },
+                {
+                    "path": "minor_allelic_frequency",
+                    "label": "MAF"
                 }
+
             ],
             "sectionfield": "snv"
         },
@@ -453,7 +499,7 @@
                     "label": "Sequence"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],
@@ -648,11 +694,11 @@
             },
             "fieldmap": [
                 {
-                    "path": "kinase_protein",
+                    "path": "kinase_uniprot_canonical_ac",
                     "label": "Kinase Protein"
                 },
                 {
-                    "path": "kinase_gene",
+                    "path": "kinase_gene_name",
                     "label": "Kinase Gene"
                 },
                 {
@@ -715,6 +761,47 @@
             ],
             "sectionfield": "glycation"
         },
+        "snv_mutations": {
+            "filterinfo": {
+                "field": "",
+                "valuelist": []
+            },
+            "fieldmap": [
+                {
+                    "path": "uniprotkb_accession",
+                    "label": "UniProtKB Accession"
+                },
+                {
+                    "path": "filter_annotations",
+                    "label": "Filter Annotations"
+                },
+                {
+                    "path": "genomic_locus",
+                    "label": "Genomic Locus"
+                },
+                {
+                    "path": "start_pos",
+                    "label": "Start Position"
+                },
+                {
+                    "path": "end_pos",
+                    "label": "End Position"
+                },
+                {
+                    "path": "sequence",
+                    "label": "Sequence"
+                },
+                {
+                    "path": "disease",
+                    "label": "Disease"
+                },
+                {
+                    "path": "minor_allelic_frequency",
+                    "label": "MAF"
+                }
+            ],
+            "sectionfield": "snv"
+        },
         "snv_disease_associated_mutations": {
             "filterinfo": {
                 "field": "keywords",
@@ -742,7 +829,7 @@
                     "label": "Disease"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],
@@ -780,7 +867,7 @@
                     "label": "Sequence"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],
@@ -969,11 +1056,11 @@
                     "label": "UniProtKB Accession"
                 },
                 {
-                    "path": "kinase_protein",
+                    "path": "kinase_uniprot_canonical_ac",
                     "label": "Kinase Protein"
                 },
                 {
-                    "path": "kinase_gene",
+                    "path": "kinase_gene_name",
                     "label": "Kinase Gene"
                 },
                 {
@@ -1036,6 +1123,47 @@
             ],
             "sectionfield": "glycation"
         },
+        "snv_mutations": {
+            "filterinfo": {
+                "field": "",
+                "valuelist": []
+            },
+            "fieldmap": [
+                {
+                    "path": "uniprotkb_accession",
+                    "label": "UniProtKB Accession"
+                },
+                {
+                    "path": "filter_annotations",
+                    "label": "Filter Annotations"
+                },
+                {
+                    "path": "genomic_locus",
+                    "label": "Genomic Locus"
+                },
+                {
+                    "path": "start_pos",
+                    "label": "Start Position"
+                },
+                {
+                    "path": "end_pos",
+                    "label": "End Position"
+                },
+                {
+                    "path": "sequence",
+                    "label": "Sequence"
+                },
+                {
+                    "path": "disease",
+                    "label": "Disease"
+                },
+                {
+                    "path": "minor_allelic_frequency",
+                    "label": "MAF"
+                }
+            ],
+            "sectionfield": "snv"
+        },
         "snv_disease_associated_mutations": {
             "filterinfo": {
                 "field": "keywords",
@@ -1071,7 +1199,7 @@
                     "label": "Disease"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],
@@ -1109,7 +1237,7 @@
                     "label": "Sequence"
                 },
                 {
-                    "path": "maf",
+                    "path": "minor_allelic_frequency",
                     "label": "MAF"
                 }
             ],
@@ -1220,6 +1348,38 @@
                 }
             ],
             "sectionfield": "glycans"
+        }
+    }, 
+    "biomarker": {
+        "component_protein": {
+            "filterinfo": {
+                "field": "",
+                "valuelist": []
+            },
+            "fieldmap": [
+                {
+                    "path": "protein.accession",
+                    "label": "UniProtKB AC"
+                },
+		{   
+                    "path": "protein.name",
+                    "label": "Protein Name"
+                }
+            ],
+            "sectionfield": "components"
+        },
+	"component_glycan": {
+            "filterinfo": {
+                "field": "",
+                "valuelist": []
+            },
+            "fieldmap": [
+                {
+                    "path": "glycan.accession",
+                    "label": "GlyTouCan AC"
+                }
+            ],
+            "sectionfield": "components"
         }
     }
 }
