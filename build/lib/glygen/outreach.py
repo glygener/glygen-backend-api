@@ -23,7 +23,6 @@ api = Namespace("outreach", description="Outreach APIs")
 addnew_query_model = api.model(
     'Outreach Addnew Query', 
         {
-            "query":fields.Raw()
         }
 )
 

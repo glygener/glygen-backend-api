@@ -10,7 +10,8 @@ import subprocess
 import json
 import bcrypt
 
-from glygen.glycan_apilib import glycan_search_init, glycan_search, glycan_search_simple, glycan_detail, glycan_image, glycan_image_svg
+from glygen.glycan_apilib import glycan_search_init, glycan_search, glycan_search_simple, glycan_detail, glycan_image, glycan_image_svg, glycan_image_metadata
+
 
 from glygen.util import get_cached_records_indirect, get_req_obj
 import traceback
@@ -210,7 +211,31 @@ class Glycan(Resource):
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
+    @api.doc(False)
+    def get(self, glytoucan_ac):
+        return self.post(glytoucan_ac)
 
+
+@api.route('/image_metadata/<glytoucan_ac>/')
+@api.doc(params={"glytoucan_ac": {"in": "query", "default": "G17689DH"}})
+class Glycan(Resource):
+    @api.doc('image_metadata')
+    def post(self, glytoucan_ac):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = {"glytoucan_ac":glytoucan_ac}
+            res_obj = log_request(req_obj, "/glycan/image_metadata/", request)
+            if "error_list" not in res_obj:
+                data_path = os.environ["DATA_PATH"]
+                res_obj = glycan_image_metadata(req_obj, data_path)
+                return res_obj
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
     @api.doc(False)
     def get(self, glytoucan_ac):
         return self.post(glytoucan_ac)
