@@ -855,6 +855,33 @@
             ,"requiredfields":["id"]
             ,"collectionlist":["c_video"]
         }
+	,"outreach_addnew":{
+            "field_info":{
+                "url":{"type":"string"}
+            }
+            ,"requiredfields":["category"]
+            ,"collectionlist":["c_outreach"]
+        }
+        ,"outreach_update":{
+            "field_info":{
+                "id":{"type":"string"}
+            }
+            ,"requiredfields":["id"]
+            ,"collectionlist":["c_outreach"]
+        }
+        ,"outreach_list":{
+            "field_info":{
+            }
+            ,"requiredfields":[]
+            ,"collectionlist":["c_outreach"]
+        }
+        ,"outreach_delete":{
+            "field_info":{
+                "id":{"type":"string"}
+            }
+            ,"requiredfields":["id"]
+            ,"collectionlist":["c_outreach"]
+        }
         ,"typeahead_glycan":{
             "field_info":{
                 "field":{"type":"string"}

@@ -120,3 +120,8 @@
 
 
 
+
+  $ http POST :8082/outreach/addnew/ < tests/examples/outreach/outreach_addnew.json
+  $ http POST :8082/outreach/list/ < tests/examples/outreach/outreach_list.json
+  $ http POST :8082/outreach/update/ < tests/examples/outreach/outreach_update.json
+

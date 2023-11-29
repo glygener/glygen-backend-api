@@ -38,7 +38,7 @@ def get_req_obj(request):
         except Exception as e:
             return {"error_list":[{"error_code":"bad-request-json"}]}
 
-    if req_obj != None:
+    if req_obj != None and type(req_obj) is dict:
         trim_object(req_obj)
     return  req_obj
 

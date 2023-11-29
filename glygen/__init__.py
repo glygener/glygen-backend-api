@@ -29,6 +29,7 @@ from .usecases import api as usecases_api
 from .graph import api as graph_api
 from .biomarker import api as biomarker_api
 from .pagination import api as pagination_api
+from .outreach import api as outreach_api
 
 
 def create_app():
@@ -62,12 +63,12 @@ def create_app():
     api.add_namespace(video_api)
     api.add_namespace(event_api)
     api.add_namespace(job_api)
-    
+     
     api.add_namespace(misc_api)
     #api.add_namespace(graph_api)
     api.add_namespace(biomarker_api)
     api.add_namespace(pagination_api)
-
+    api.add_namespace(outreach_api)
 
     try:
         os.makedirs(app.instance_path)

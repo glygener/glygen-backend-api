@@ -1,0 +1,22 @@
+[
+    {
+        "title": "The Glycan Array Data Repository",
+        "presenter": "Rene Ranzinger",
+        "date": "2023-06-15",
+        "meeting": "Beilstein Glyco-Bioinformatics Symposium 2023",
+        "location": "Limburg, Germany",
+        "meeting_url": "https://www.beilstein-institut.de/en/symposia/glyco-bioinformatics/",
+        "files": [
+            {
+                "type": "poster",
+                "format": "pdf",
+                "url": "https://gwu0.sharepoint.com/:p:/r/sites/GlyGenTeam-GRP/_layouts/15/Doc.aspx?sourcedoc=%7B57FF9715-7E54-4C57-A8A2-A0A919FDD145%7D&file=2023.09.27-Outreach%20page.pptx&action=edit&mobileredirect=true"
+            }
+        ],
+        "funding": [
+            "GlyGen U24",
+            "CFDE"
+        ],
+        "category": "poster"
+    }
+]
