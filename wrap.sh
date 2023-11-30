@@ -1,6 +1,6 @@
-srv="prd"
+#srv="prd"
 #srv="beta"
-#srv="tst"
+srv="tst"
 
 #mod=substructure
 #mod="mongo"

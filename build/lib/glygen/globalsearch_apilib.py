@@ -68,8 +68,8 @@ def globalsearch_search(query_obj, config_obj):
     #json_url = os.path.join(SITE_ROOT, "conf/global_search.json-backup")
 
     search_obj = json.loads(open(json_url, "r").read())
-    query_obj["term"] = query_obj["term"].replace("(", "\\(").replace(")", "\\)")
-    query_obj["term"] = query_obj["term"].replace("[", "\\[").replace("]", "\\]")
+    query_obj["term"] = sanitize_query_term(query_obj["term"])
+    #return query_obj["term"]
 
 
     for obj in search_obj:
@@ -159,13 +159,14 @@ def globalsearch_search(query_obj, config_obj):
         ]
 
         doc_list = list(dbh[target_collection].aggregate(qry_obj))
-
-
+        
 
         
         ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         time_list.append("B|%s|%s|%s" % (ts, key_one, key_two))
         for doc in doc_list:
+            #if doc["score"] < 2000:
+            #    continue
             if "_id" in doc:
                 doc.pop("_id")
             record_type, record_id, record_name = "", "", ""
@@ -284,4 +285,27 @@ def get_glycan_list_record(in_obj):
 
 
 
+
+
+def sanitize_query_term(term):
+
+    term = term.replace("(", "\\(").replace(")", "\\)")
+    term = term.replace("[", "\\[").replace("]", "\\]")
+    
+    return term
+    tmp_list = term.split(" ")
+    word_list = []
+    for w in tmp_list:
+        if w.strip() == "":
+            continue
+        flag = False
+        for c in ["-"]:
+            flag = True if w.find(c) != -1 else flag
+            w = w.replace(c, " ") if w.find(c) != -1 else w
+        if flag:
+            w = "\"%s\"" % (w)
+        word_list.append(w)
+
+    return " ".join(word_list)
+ 
 
