@@ -134,19 +134,6 @@ def globalsearch_search(query_obj, config_obj):
         ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         time_list.append("A|%s|%s|%s" % (ts,key_one, key_two))
        
-        # trial-2
-        #doc_list = []
-        #if key_two == "all":
-        #    n = dbh[target_collection].count_documents(qry_obj)
-        #    if n > 1000:
-        #        return {"error_list":[{"error_code":"too-many-results"}]}
-        #    doc_list_dict[key_one] = list(dbh[target_collection].find(qry_obj,prj_obj))
-        #    doc_list = doc_list_dict[key_one]
-        #else:
-        #    doc_list = get_sublist(doc_list_dict[key_one], key_one, key_two, query_obj["term"])
-        
-        # trial-3
-        #doc_list = list(dbh[target_collection].find(qry_obj,prj_obj))
 
         m_obj = { "$text": { "$search": query_obj["term"] } }
         if key_one == "glycoprotein":
@@ -291,18 +278,12 @@ def sanitize_query_term(term):
 
     term = term.replace("(", "\\(").replace(")", "\\)")
     term = term.replace("[", "\\[").replace("]", "\\]")
-    
-    return term
     tmp_list = term.split(" ")
     word_list = []
     for w in tmp_list:
         if w.strip() == "":
             continue
-        flag = False
-        for c in ["-"]:
-            flag = True if w.find(c) != -1 else flag
-            w = w.replace(c, " ") if w.find(c) != -1 else w
-        if flag:
+        if w.find("-") != -1:
             w = "\"%s\"" % (w)
         word_list.append(w)
 
