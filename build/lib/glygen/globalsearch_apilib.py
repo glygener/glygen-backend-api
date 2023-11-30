@@ -134,19 +134,6 @@ def globalsearch_search(query_obj, config_obj):
         ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         time_list.append("A|%s|%s|%s" % (ts,key_one, key_two))
        
-        # trial-2
-        #doc_list = []
-        #if key_two == "all":
-        #    n = dbh[target_collection].count_documents(qry_obj)
-        #    if n > 1000:
-        #        return {"error_list":[{"error_code":"too-many-results"}]}
-        #    doc_list_dict[key_one] = list(dbh[target_collection].find(qry_obj,prj_obj))
-        #    doc_list = doc_list_dict[key_one]
-        #else:
-        #    doc_list = get_sublist(doc_list_dict[key_one], key_one, key_two, query_obj["term"])
-        
-        # trial-3
-        #doc_list = list(dbh[target_collection].find(qry_obj,prj_obj))
 
         m_obj = { "$text": { "$search": query_obj["term"] } }
         if key_one == "glycoprotein":
@@ -159,10 +146,8 @@ def globalsearch_search(query_obj, config_obj):
         ]
 
         doc_list = list(dbh[target_collection].aggregate(qry_obj))
-
-
-
-        
+       
+ 
         ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         time_list.append("B|%s|%s|%s" % (ts, key_one, key_two))
         for doc in doc_list:
