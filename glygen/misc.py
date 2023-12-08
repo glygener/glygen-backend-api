@@ -29,12 +29,13 @@ class Misc(Resource):
     def post(self):
         res_obj = {"config":{}}
         try:
-            mongo_dbh, error_obj = get_mongodb()
-            res_obj["connection_status"] = "success" if error_obj == {} else error_obj
             for k in ["SERVER", "DATA_PATH", "DB_NAME", "MAIL_SERVER", "MAIL_PORT", "MAIL_SENDER"]:
                 if k in os.environ:
                     res_obj["config"][k] = os.environ[k]
-            
+            return res_obj
+
+            mongo_dbh, error_obj = get_mongodb()
+            res_obj["connection_status"] = "success" if error_obj == {} else error_obj
             init_obj = mongo_dbh["c_init"].find_one({})
             if "_id" in init_obj:
                 init_obj.pop("_id")

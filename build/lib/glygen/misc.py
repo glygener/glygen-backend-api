@@ -19,6 +19,8 @@ import traceback
 
 api = Namespace("misc", description="Misc APIs")
 
+verlist_query_model = api.model("Misc Version List Query", {})
+gtclist_query_model = api.model("Misc GlyTouCan Accession List Query", {})
 
 
 @api.route('/info/')
@@ -30,12 +32,10 @@ class Misc(Resource):
             for k in ["SERVER", "DATA_PATH", "DB_NAME", "MAIL_SERVER", "MAIL_PORT", "MAIL_SENDER"]:
                 if k in os.environ:
                     res_obj["config"][k] = os.environ[k]
+            return res_obj
 
             mongo_dbh, error_obj = get_mongodb()
             res_obj["connection_status"] = "success" if error_obj == {} else error_obj
-            if error_obj != {}:
-                return error_obj
-
             init_obj = mongo_dbh["c_init"].find_one({})
             if "_id" in init_obj:
                 init_obj.pop("_id")
@@ -118,38 +118,47 @@ class Misc(Resource):
 
 @api.route('/verlist/')
 class Misc(Resource):
-    @api.doc(False)
+    #@api.doc(False)
+    @api.expect(verlist_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = get_req_obj(request)
+            req_obj = {}
             data_path = os.environ["DATA_PATH"]
             res_obj = verlist(config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
+    @api.doc(False)
+    def get(self):
+        return self.post()
 
 
 @api.route('/gtclist/')
 class Misc(Resource):
-    @api.doc(False)
+    #@api.doc(False)
+    @api.expect(gtclist_query_model)
     def post(self):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = get_req_obj(request)
+            req_obj = {}
             data_path = os.environ["DATA_PATH"]
             res_obj = gtclist(config_obj,data_path)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
 
 @api.route('/bcolist/')
 class Misc(Resource):
@@ -167,6 +176,10 @@ class Misc(Resource):
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
 
 
 @api.route('/lastid/')
