@@ -36,5 +36,5 @@ COPY ./instance/config.py /usr/local/var/glygen-instance/config.py
 
 COPY . .
 
-ENTRYPOINT FLASK_APP=glygen gunicorn -b :80 'glygen:create_app()' --timeout 120 --graceful-timeout 60
+ENTRYPOINT FLASK_APP=glygen gunicorn -w 4 -b :80 'glygen:create_app()' --timeout 120 --graceful-timeout 60
 
