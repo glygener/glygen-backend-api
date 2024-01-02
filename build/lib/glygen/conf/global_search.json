@@ -22,6 +22,27 @@
             "mongoquery":{
                 "$text": { "$search": "query_term"}
             }
+        },
+	{
+            "searchname":"biomarker.all",
+            "targetcollection":"c_biomarker",
+            "mongoquery":{
+                "$text": { "$search": "query_term"}
+            }
+        },
+	{
+            "searchname":"motif.all",
+            "targetcollection":"c_motif",
+            "mongoquery":{
+                "$text": { "$search": "query_term"}
+            }
+        },
+	{
+            "searchname":"publication.all",
+            "targetcollection":"c_publication",
+            "mongoquery":{
+                "$text": { "$search": "query_term"}
+            }
         }
 ]
 

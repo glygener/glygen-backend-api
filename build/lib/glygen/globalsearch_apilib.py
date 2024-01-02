@@ -12,7 +12,7 @@ from bson import json_util, ObjectId
 from glygen.protein_apilib import get_protein_list_object
 
 from glygen.db import get_mongodb
-from glygen.util import order_obj, order_list, get_errors_in_query,get_cached_motif_records_direct, get_cached_records_direct,                        get_cached_records_indirect, get_random_string, cache_record_list
+from glygen.util import order_obj, order_list, get_errors_in_query,get_cached_motif_records_direct, get_cached_records_direct,                        get_cached_records_indirect, get_random_string, cache_record_list, transform_query_term
 
 
 def get_sublist(doc_list, record_type, sec, term):
@@ -68,13 +68,15 @@ def globalsearch_search(query_obj, config_obj):
     #json_url = os.path.join(SITE_ROOT, "conf/global_search.json-backup")
 
     search_obj = json.loads(open(json_url, "r").read())
-    query_obj["term"] = query_obj["term"].replace("(", "\\(").replace(")", "\\)")
-    query_obj["term"] = query_obj["term"].replace("[", "\\[").replace("]", "\\]")
+    new_term = transform_query_term(query_obj["term"])
+    
 
+    #return query_obj
+ 
 
     for obj in search_obj:
         if "$text" in obj["mongoquery"]:
-            obj["mongoquery"] = {'$text': { '$search': '\"' + query_obj["term"] + '\"'}}
+            obj["mongoquery"] = {'$text': { '$search': new_term}}
         elif "$or" in obj["mongoquery"]:
             for o in obj["mongoquery"]["$or"]:
                 for k in o:
@@ -88,7 +90,7 @@ def globalsearch_search(query_obj, config_obj):
                             if "$regex" in oo[k]:
                                 oo[k]["$regex"] = query_obj["term"]
                 elif "$text" in o:
-                    obj["mongoquery"]["$and"][0] = {'$text': { '$search': '\"' + query_obj["term"] + '\"'}}
+                    obj["mongoquery"]["$and"][0] = {'$text': { '$search': new_term}}
                 else:
                     for k in o:
                         if "$regex" in o[k]:
@@ -135,9 +137,9 @@ def globalsearch_search(query_obj, config_obj):
         time_list.append("A|%s|%s|%s" % (ts,key_one, key_two))
        
 
-        m_obj = { "$text": { "$search": query_obj["term"] } }
+        m_obj = { "$text": { "$search":new_term } }
         if key_one == "glycoprotein":
-            m_obj = {"$and":[ {"$text": {"$search": query_obj["term"]}}, {"glycosylation": {"$gt":[]}}]}
+            m_obj = {"$and":[ {"$text": {"$search":new_term}}, {"glycosylation": {"$gt":[]}}]}
         qry_obj = [ 
             { "$match": m_obj},
             { "$addFields":{"score":{"$meta":"textScore"}}},
@@ -145,9 +147,19 @@ def globalsearch_search(query_obj, config_obj):
             { "$project" : prj_obj }
         ]
 
+        #return qry_obj
+
         doc_list = list(dbh[target_collection].aggregate(qry_obj))
-       
+
+        #if target_collection == "c_biomarker":
+        #    tmp_list = []
+        #    for doc in doc_list:
+        #        if "_id" in doc:
+        #            doc.pop("_id")
+        #        tmp_list.append(doc)
+        #    return tmp_list       
  
+
         ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         time_list.append("B|%s|%s|%s" % (ts, key_one, key_two))
         for doc in doc_list:
@@ -183,7 +195,42 @@ def globalsearch_search(query_obj, config_obj):
                         exact_obj = {"id":record_id, "type":record_type, "name":record_name}
                         res_obj["exact_match"].append(exact_obj)
                         seen_exact_match[record_id] = True
-
+            elif target_collection == "c_biomarker":
+                record_type, record_id = "biomarker", doc["biomarker_id"]
+                record_name = record_id
+                record_id_list = [record_id]
+                record_id_list_lower = [record_id.lower()]
+                results_dict[key_one]["all"].append(record_id)
+                results_dict[key_one][key_two].append(record_id)
+                if query_obj["term"].lower() in record_id_list_lower:
+                    if record_id not in seen_exact_match:
+                        exact_obj = {"id":record_id, "type":record_type, "name":record_name}
+                        res_obj["exact_match"].append(exact_obj)
+                        seen_exact_match[record_id] = True
+            elif target_collection == "c_motif":
+                record_type, record_id = "motif", doc["motif_ac"]
+                record_name = record_id
+                record_id_list = [record_id]
+                record_id_list_lower = [record_id.lower()]
+                results_dict[key_one]["all"].append(record_id)
+                results_dict[key_one][key_two].append(record_id)
+                if query_obj["term"].lower() in record_id_list_lower:
+                    if record_id not in seen_exact_match:
+                        exact_obj = {"id":record_id, "type":record_type, "name":record_name}
+                        res_obj["exact_match"].append(exact_obj)
+                        seen_exact_match[record_id] = True
+            elif target_collection == "c_publication":
+                record_type, record_id = "publication", doc["record_id"].split(".")[1]
+                record_name = record_id
+                record_id_list = [record_id]
+                record_id_list_lower = [record_id.lower()]
+                results_dict[key_one]["all"].append(record_id)
+                results_dict[key_one][key_two].append(record_id)
+                if query_obj["term"].lower() in record_id_list_lower:
+                    if record_id not in seen_exact_match:
+                        exact_obj = {"id":record_id, "type":record_type, "name":record_name}
+                        res_obj["exact_match"].append(exact_obj)
+                        seen_exact_match[record_id] = True
 
         if len(results_dict[key_one][key_two]) > 0:
             record_type = key_one
@@ -226,6 +273,7 @@ def globalsearch_search(query_obj, config_obj):
     ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
     time_list.append("A|%s" % (ts))
 
+    #res_obj["query"] = search_obj
     #return time_list
 
     return res_obj

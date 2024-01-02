@@ -1,8 +1,11 @@
+
 {
-    "id": "P14210-1",
-    "type": "protein_detail",
-    "format": "json",
-    "compressed": true
+	"organism":{
+		"organism_list":[{"name":"Homo sapiens","id":9606}],
+		"operation":"or"
+	}
 }
+
+
 
 

@@ -50,6 +50,11 @@ def search_init(config_obj):
         enum_dict[f] = ["upstream", "downstream"]
     for f in ["neighbors.categories"]:
         enum_dict[f] = site_type_list
+    
+    enum_dict["taxid"], enum_dict["name"] = [], []
+    for doc in dbh["c_species"].find({}):
+        enum_dict["taxid"].append(doc["taxid"])
+        enum_dict["name"].append(doc["name"])
 
     path_dict = {}
     for doc in dbh["c_path"].find({}):

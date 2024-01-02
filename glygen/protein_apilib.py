@@ -9,8 +9,7 @@ from collections import OrderedDict
 
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, get_paginated_sections
-
+from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, get_paginated_sections, transform_query_term
 
 def protein_search_init(config_obj):
 
@@ -44,6 +43,9 @@ def protein_search_simple(query_obj, config_obj):
     if error_list != []:
         return {"error_list":error_list}
 
+
+    query_obj["term"] = transform_query_term(query_obj["term"])
+
     mongo_query = get_simple_mongo_query(query_obj)
     #return mongo_query
 
@@ -70,6 +72,8 @@ def protein_search_simple(query_obj, config_obj):
         }
         cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
+    res_obj["query"] = query_obj
+    res_obj["resultcount"] = len(record_list)
 
     return res_obj
 
@@ -379,8 +383,8 @@ def truncate_go_terms(obj):
 def get_simple_mongo_query(query_obj):
 
 
-    query_term = "\"%s\"" % (query_obj["term"])
-
+    #query_term = "\"%s\"" % (query_obj["term"])
+    query_term = query_obj["term"]
     cond_objs = []
     if query_obj["term_category"] == "any":
         return {'$text': { '$search': query_term}}

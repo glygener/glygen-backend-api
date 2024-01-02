@@ -15,6 +15,26 @@ from glygen.db import get_mongodb
 
 
 
+def transform_query_term(term):
+
+ 
+    tmp_term = term.strip()
+    tmp_term = tmp_term.replace("'", "\"")
+    if tmp_term[0] == "\"" and tmp_term[-1] == "\"":
+        return tmp_term
+
+
+    tmp_term = tmp_term.replace("(", "\\(").replace(")", "\\)")
+    tmp_term = tmp_term.replace("[", "\\[").replace("]", "\\]")
+    w_list = []
+    for w in tmp_term.split(" "):
+        w = w.strip()
+        if w != "":
+            w_list.append('\"' + w + '\"')
+         
+    return " ".join(w_list)
+
+
 def get_req_obj(request):
 
     query_str, arg = None, "query"

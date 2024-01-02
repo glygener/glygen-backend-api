@@ -10,7 +10,7 @@ from collections import OrderedDict
 from bson import json_util, ObjectId
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, order_obj, get_paginated_sections
+from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, order_obj, get_paginated_sections, transform_query_term
 
     
 def glycan_search_init(config_obj):
@@ -43,6 +43,7 @@ def glycan_search_simple(query_obj, config_obj):
     if error_list != []:
         return {"error_list":error_list}
 
+    query_obj["term"] = transform_query_term(query_obj["term"])
 
     mongo_query = get_simple_mongo_query(query_obj)
     #return {"error_list":[{"error":mongo_query}]}
@@ -324,7 +325,7 @@ def glycan_image(query_obj, data_path):
 
     init_obj = dbh["c_init"].find_one({})
     ver = init_obj["dataversion"]
-    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg/" % (ver)
+    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg_png/" % (ver)
     
     img_file =  img_path + query_obj["glytoucan_ac"].upper() + ".png"
     if os.path.isfile(img_file) == False:
@@ -356,11 +357,11 @@ def glycan_image_metadata(query_obj, data_path):
 
     init_obj = dbh["c_init"].find_one({})
     ver = init_obj["dataversion"]
-    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg_metadata/" % (ver)
+    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg_json/" % (ver)
     img_file =  img_path + query_obj["glytoucan_ac"].upper() + ".json"
     if os.path.isfile(img_file) == False:
-        img_file = img_path +  "G0000000.json"
-    
+        return {"error_list":[{"error_code":"non-existent-record"}]}
+         
     return json.loads(open(img_file, "r").read())
 
 

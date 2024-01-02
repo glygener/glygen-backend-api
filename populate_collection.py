@@ -72,7 +72,7 @@ def main():
     glydb_user = config_obj["dbinfo"]["glydb"]["user"]
     glydb_pass = config_obj["dbinfo"]["glydb"]["password"]
     glydb_name =  config_obj["dbinfo"]["glydb"]["db"]
-    indexed_colls = ["c_protein", "c_glycan"]
+    indexed_colls = ["c_protein", "c_glycan", "c_motif", "c_publication", "c_biomarker"]
 
     db_list = config_obj["downloads"]["jsondb"]
     coll_list = get_coll_list(db_list)
