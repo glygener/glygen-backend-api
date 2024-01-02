@@ -1,0 +1,13 @@
+{
+	"operation":"AND",
+	"query_type":"search_glycan",
+	"glycan_name":"",
+	"organism":{
+		"organism_list":[
+			{"name":"Homo sapiens","id":9606}
+		],
+		"annotation_category":"",
+		"operation":"or"
+	}
+}
+

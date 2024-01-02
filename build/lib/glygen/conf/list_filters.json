@@ -31,8 +31,9 @@
                 "Hepatitis C virus (isolate Japanese)":7,
                 "Hepacivirus C":8,
                 "Severe acute respiratory syndrome-related coronavirus":9,
-                "Severe acute respiratory syndrome coronavirus 2":10
-            },
+                "Severe acute respiratory syndrome coronavirus 2":10,
+                "Dictyostelium discoideum":11
+	    },
             "label_dict":{
                 "Homo sapiens":"Human",
                 "Mus musculus":"Mouse",
@@ -43,8 +44,9 @@
                 "Hepatitis C virus (isolate Japanese)":"HCV-Japanese",
                 "Hepacivirus C":"HCV",
                 "Severe acute respiratory syndrome-related coronavirus":"HCoV-SARS",
-                "Severe acute respiratory syndrome coronavirus 2":"SARS-CoV-2"
-            }
+                "Severe acute respiratory syndrome coronavirus 2":"SARS-CoV-2",
+                "Dictyostelium discoideum":"Dictyostelium discoideum"  
+	  }
         },
         "by_glycan_type":{
             "group_order":3,
@@ -168,7 +170,8 @@
                 "Hepatitis C virus (isolate Japanese)":7,
                 "Hepacivirus C":8,
                 "Severe acute respiratory syndrome-related coronavirus":9,
-                "Severe acute respiratory syndrome coronavirus 2":10 
+                "Severe acute respiratory syndrome coronavirus 2":10,
+		"Dictyostelium discoideum":11 
             },
             "label_dict":{
                 "Homo sapiens":"Human",
@@ -180,7 +183,8 @@
                 "Hepatitis C virus (isolate Japanese)":"HCV-Japanese",
                 "Hepacivirus C":"HCV",
                 "Severe acute respiratory syndrome-related coronavirus":"HCoV-SARS",
-                "Severe acute respiratory syndrome coronavirus 2":"SARS-CoV-2"
+                "Severe acute respiratory syndrome coronavirus 2":"SARS-CoV-2",
+		"Dictyostelium discoideum":"Dictyostelium discoideum"
             }
         },
         "by_ptm":{
@@ -363,7 +367,8 @@
                 "Hepatitis C virus (isolate Japanese)":7,
                 "Hepacivirus C":8,
                 "Severe acute respiratory syndrome-related coronavirus":9,
-                "Severe acute respiratory syndrome coronavirus 2":10
+                "Severe acute respiratory syndrome coronavirus 2":10,
+		"Dictyostelium discoideum":11
             },
             "label_dict":{
                 "Homo sapiens":"Human",
@@ -375,7 +380,8 @@
                 "Hepatitis C virus (isolate Japanese)":"HCV-Japanese",
                 "Hepacivirus C":"HCV",
                 "Severe acute respiratory syndrome-related coronavirus":"HCoV-SARS",
-                "Severe acute respiratory syndrome coronavirus 2":"SARS-CoV-2"
+                "Severe acute respiratory syndrome coronavirus 2":"SARS-CoV-2",
+		"Dictyostelium discoideum":"Dictyostelium discoideum"
             }
         }
 

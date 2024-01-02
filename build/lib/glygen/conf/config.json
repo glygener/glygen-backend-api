@@ -9,7 +9,7 @@
         ,"max_query_value_len":10000
         ,"max_sequence_len":3000
         ,"cache_batch_size":5000
-        ,"globalsearchcutoff":3.0
+        ,"globalsearchcutoff":1.0
         ,"max_results_count":{
 		  "glycan":100000
 		,"protein":100000
@@ -91,6 +91,15 @@
             ,"c_protein":{
                 "uniprot_canonical_ac":1
             }
+	    ,"c_biomarker":{
+                "biomarker_id":1
+            }
+	    ,"c_motif":{
+                "motif_ac":1
+            }
+	    ,"c_publication":{
+		"record_id":1
+	    }
         }
         ,"projectedfields":{
             "c_glycan":{
@@ -1086,6 +1095,7 @@
             ,"glycoct":"text/plain"
             ,"image":"image/png"
             ,"png":"image/png"
+	    ,"svg":"image/svg"
             ,"json":"application/json"
         }
         ,"downloadtypes":{
@@ -1097,13 +1107,13 @@
             ,"site_list":{"cache":"c_cache", "formatlist":["csv","json"]}
             ,"protein_detail":{"cache":"c_protein", "formatlist":["json","fasta"]}
             ,"glycan_detail":{"cache":"c_glycan", "formatlist":["json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic"]}
-            ,"motif_detail":{"cache":"c_motif", "formatlist":["json", "csv","png"]}
+            ,"motif_detail":{"cache":"c_motif", "formatlist":["json", "csv","png", "svg"]}
             ,"site_detail":{"cache":"c_site", "formatlist":["json"]}
             ,"publication_detail":{"cache":"c_publication", "formatlist":["json"]}
             ,"biomarker_detail":{"cache":"c_biomarker", "formatlist":["json"]}
             ,"protein_detail_isoformset":{"cache":"c_protein", "formatlist":["fasta"]}
             ,"protein_detail_homologset":{"cache":"c_protein", "formatlist":["fasta"]}
-            ,"glycan_image":{"cache":"c_glycan", "formatlist":["png"]}
+            ,"glycan_image":{"cache":"c_glycan", "formatlist":["png", "svg"]}
             ,"idmapping_list_mapped":{"cache":"c_cache", "formatlist":["csv"]}
             ,"idmapping_list_unmapped":{"cache":"c_cache", "formatlist":["csv"]}
             ,"idmapping_list_all":{"cache":"c_cache", "formatlist":["csv"]}

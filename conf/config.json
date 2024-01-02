@@ -58,7 +58,6 @@
             ,"clusterdb"
             ,"diseasedb"
             ,"glytoucandb"
-            ,"historydb"
             ,"idtrackdb"
             ,"listdb"
             ,"motifdb"
@@ -69,6 +68,8 @@
             ,"sitedb"
             ,"speciesdb"
             ,"statdb"
-        ]
+	    ,"biomarkerdb"
+            ,"historydb"
+	]
     }
 }

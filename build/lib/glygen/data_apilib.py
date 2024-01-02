@@ -29,7 +29,7 @@ def list_download(query_obj, config_obj, data_path):
         return error_obj
 
     init_obj = dbh["c_init"].find_one({})
-    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg/" % (init_obj["dataversion"])
+    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg_png/" % (init_obj["dataversion"])
 
     #Collect errors 
     error_list = get_errors_in_query("list_download",query_obj, config_obj)
@@ -91,7 +91,6 @@ def detail_download(query_obj, config_obj, data_path):
         return error_obj
 
     init_obj = dbh["c_init"].find_one({})
-    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg/" % (init_obj["dataversion"])
 
     #Collect errors 
     error_list = get_errors_in_query("detail_download",query_obj, config_obj)
@@ -111,9 +110,12 @@ def detail_download(query_obj, config_obj, data_path):
         error_list.append({"error_code":"non-existent-mime-type-for-submitted-format"})
         return {"error_list":error_list}
 
-    img_file = img_path +  "G0000000.png"
     format_lc = query_obj["format"].lower()
-    
+    img_path = data_path + "/releases/data/v-%s/glycanimages_snfg_png/" % (init_obj["dataversion"])
+    if format_lc == "svg":
+        img_path = data_path + "/releases/data/v-%s/glycanimages_snfg_svg/" % (init_obj["dataversion"])
+    img_file = img_path +  "G0000000." + format_lc
+ 
     download_type_list =  [
         "glycan_detail", "motif_detail", "protein_detail","protein_detail_isoformset","protein_detail_homologset", 
         "site_detail", "publication_detail", "glycan_image", "biomarker_detail"
@@ -126,10 +128,10 @@ def detail_download(query_obj, config_obj, data_path):
         
         if record_obj == None:
             return {"error_list":{"error_code":"non-existent-record"}}
-        elif query_obj["download_type"] in ["glycan_image"] and format_lc in ["png"]:
-            img_file = img_path + query_obj["id"].upper() + ".png"
+        elif query_obj["download_type"] in ["glycan_image"] and format_lc in ["png", "svg"]:
+            img_file = img_path + query_obj["id"].upper() + "." + format_lc
             if os.path.isfile(img_file) == False:
-                img_file = img_path +  "G0000000.png"
+                img_file = img_path +  "G0000000." + format_lc
             data_buffer = open(img_file, "rb").read()
         elif query_obj["download_type"] in ["motif_detail"] and format_lc in ["csv", "tsv"]:
             m_query = {"motifs.id": {'$eq': query_obj["id"]}}
@@ -141,12 +143,12 @@ def detail_download(query_obj, config_obj, data_path):
             for o in dbh["c_glycan"].find(m_query):
                 row = [o["glytoucan_ac"]]
                 data_buffer += "\"" +  "\",\"".join(row) + "\"\n"
-        elif query_obj["download_type"] in ["motif_detail"] and format_lc in ["png"]:
+        elif query_obj["download_type"] in ["motif_detail"] and format_lc in ["png", "svg"]:
             data_buffer = ""
             glytoucan_ac = record_obj["glytoucan_ac"]
-            img_file = img_path + glytoucan_ac.upper() + ".png"
+            img_file = img_path + glytoucan_ac.upper() + "." + format_lc
             if os.path.isfile(img_file) == False:
-                img_file = img_path +  "G0000000.png"
+                img_file = img_path +  "G0000000." + format_lc
             data_buffer = open(img_file, "rb").read()
         elif format_lc in sequence_format_list:
             data_buffer = get_sequence_buffer_two(dbh, record_obj, query_obj)
