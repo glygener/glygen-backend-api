@@ -159,7 +159,11 @@ def detail_download(query_obj, config_obj, data_path):
     #Now that we have data_buffer, let's worry about compression
     if query_obj["compressed"] == True:
         fname = "%s.%s" % (query_obj["id"], query_obj["format"])
-        c_data_buffer = gzip.compress(bytes(data_buffer, 'utf-8'))
+        c_data_buffer = ""
+        if query_obj["download_type"] in ["glycan_image"]:
+            c_data_buffer = gzip.compress(data_buffer)
+        else:
+            c_data_buffer = gzip.compress(bytes(data_buffer, 'utf-8'))
         res_stream = Response(c_data_buffer, mimetype='application/gzip')
         res_stream.headers['Content-Disposition'] = 'attachment; filename=%s.gz' % (fname)
     else:
@@ -178,6 +182,7 @@ def section_download(query_obj, config_obj, sec_info, data_path):
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
+
 
     #Collect errors 
     error_list = get_errors_in_query("section_download",query_obj, config_obj)
@@ -229,10 +234,12 @@ def section_download(query_obj, config_obj, sec_info, data_path):
         lbl_dict = {}
         for o in sec_info[record_type][sec]["fieldmap"]:
             lbl_dict[o["path"]] = o["label"]
-        
+       
+     
 
         list_obj = {"results":[]}
         obj_list = record_obj[sec_field]
+        
         if record_type == "biomarker" and query_obj["section"] == "component_glycan":
             obj_list = record_obj[sec_field]["glycan"]
         elif record_type == "biomarker" and query_obj["section"] == "component_protein":
@@ -278,6 +285,12 @@ def section_download(query_obj, config_obj, sec_info, data_path):
                             tmp_list.append(d)
                     val_obj = "; ".join(tmp_list)
 
+                #if type(val_obj) is list and path == "referenced_proteins":
+                #    tmp_list = []
+                #    for oo in obj[path]:
+                #        tmp_list.append(oo["protein_name"])
+                #    val_obj = "; ".join(tmp_list)
+                
                 if type(val_obj) in [str, int, float]:
                     lbl = lbl_dict[path] if path in lbl_dict else path
                     o[lbl] = str(val_obj)
@@ -308,17 +321,8 @@ def section_download(query_obj, config_obj, sec_info, data_path):
 
         if format_lc in ["csv", "tsv"]:
             data_buffer = get_tabular_buffer(list_obj, query_obj, config_obj)
+            #data_buffer = json.dumps(list_obj)
 
-
-    #t_list = []
-    #seen = {}
-    #for o in list_obj["results"]:
-    #    if o["GlyTouCan Accession"] == "G83461WR" and o["Start Position"] == "128":
-    #        s = json.dumps(o)
-    #        if s not in seen:
-    #            t_list.append(o)
-    #            seen[s] = True
-    #return t_list
 
     
     #Now that we have data_buffer, let's worry about compression
@@ -434,14 +438,15 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
             list_obj["results"] = new_list_obj
 
     if len(list_obj["results"]) > 0:
-        key_list = order_list(list_obj["results"][0].keys(), ordr_dict)
-        if "GlyTouCan Accession" in key_list:
-            key_list.append("Glycan Image Url")
+        header_list = order_list(list_obj["results"][0].keys(), ordr_dict)
+        if "GlyTouCan Accession" in header_list:
+            header_list.append("Glycan Image Url")
         if format_lc == "csv":
-            data_buffer = "\"" +  "\",\"".join(key_list) + "\"\n"
+            data_buffer = "\"" +  "\",\"".join(header_list) + "\"\n"
         else:
-            data_buffer = "\"" +  "\"\t\"".join(key_list) + "\"\n"
+            data_buffer = "\"" +  "\"\t\"".join(header_list) + "\"\n"
 
+        key_list = order_list(list_obj["results"][0].keys(), ordr_dict)
         seen_row = {}
         line_list = []
         for j in range(0, len(list_obj["results"])):
@@ -449,6 +454,8 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
             row = []
             for k in key_list:
                 val_k = str(obj[k]) if k in obj else ""
+                #if query_obj["download_type"] == "publication_section" and k == "referenced_proteins":
+                #    val_k = "xxxx"
                 if query_obj["download_type"] == "ortholog_list" and k == "sequence":
                     val_k = obj[k]["sequence"]
                 if query_obj["download_type"] == "ortholog_list" and k == "evidence":
@@ -456,6 +463,7 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
                 #if query_obj["download_type"] == "site_list" and k in ["glycosylation", "mutagenesis", "snv","site_annotation"]:
                 #val_k = "yes" if len(obj[k]) > 0 else "no"
                 row.append(val_k)
+
             if "GlyTouCan Accession" in key_list:
                 glytoucan_ac = obj["GlyTouCan Accession"]
                 image_url = "https://api.glygen.org/glycan/image/%s" % (glytoucan_ac)

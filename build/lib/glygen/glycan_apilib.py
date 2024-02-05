@@ -27,6 +27,11 @@ def glycan_search_init(config_obj):
     collection = "c_searchinit"
     res_obj =  dbh[collection].find_one({})
 
+    if "" in res_obj["glycan"]["id_namespace"]:
+        res_obj["glycan"]["id_namespace"].remove("")
+
+
+
     return res_obj["glycan"]
 
 
@@ -43,7 +48,9 @@ def glycan_search_simple(query_obj, config_obj):
     if error_list != []:
         return {"error_list":error_list}
 
-    query_obj["term"] = transform_query_term(query_obj["term"])
+    tv, q = is_glycan_composition(query_obj["term"])
+    if query_obj["term_category"] == "any" and tv == False:
+        query_obj["term"] = transform_query_term(query_obj["term"])
 
     mongo_query = get_simple_mongo_query(query_obj)
     #return {"error_list":[{"error":mongo_query}]}
@@ -512,7 +519,8 @@ def get_mongo_query(query_obj):
     if "organism" in query_obj:
         cat_q = ""
         if "annotation_category" in query_obj["organism"]:
-            cat_q = {'$regex': query_obj["organism"]["annotation_category"], '$options': 'i'}
+            if query_obj["organism"]["annotation_category"].strip() != "":
+                cat_q = {'$regex': query_obj["organism"]["annotation_category"], '$options': 'i'}
         if "organism_list" in query_obj["organism"]:
             obj_list = []
             for o in query_obj["organism"]["organism_list"]:

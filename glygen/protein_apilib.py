@@ -26,6 +26,8 @@ def protein_search_init(config_obj):
 
     res_obj =  dbh[collection].find_one({})
 
+    if "Undefined type" in res_obj["protein"]["glycosylation_types"]:
+        res_obj["protein"]["glycosylation_types"].pop("Undefined type")
 
     return res_obj["protein"]
 
@@ -44,7 +46,8 @@ def protein_search_simple(query_obj, config_obj):
         return {"error_list":error_list}
 
 
-    query_obj["term"] = transform_query_term(query_obj["term"])
+    if query_obj["term_category"] == "any":
+        query_obj["term"] = transform_query_term(query_obj["term"])
 
     mongo_query = get_simple_mongo_query(query_obj)
     #return mongo_query

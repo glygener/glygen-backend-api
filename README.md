@@ -131,6 +131,9 @@ that the container will start on server reboot.
    $ sudo systemctl stop docker-glygen-api-$DEP.service
    ```
 
+You can also edit the "Dockerfile" to add "-w $n" to the ENTRYPOINT line
+to specify the number of processor workers.
+
 
 ## Step-5: Updating supersearch init 
 This will perform supersearch API calls for each concept type and

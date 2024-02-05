@@ -12,6 +12,53 @@ import pytz
 import hashlib
 
 from glygen.db import get_mongodb
+from glygen.libgly import load_sheet
+
+
+
+def get_taxid2name():
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    species_obj = {}
+    init_obj = dbh["c_init"].find_one({})
+    data_path = os.environ["DATA_PATH"]
+    in_file = data_path + "/releases/data/v-%s/misc/species_info.csv" % (init_obj["dataversion"])
+    load_species_info(species_obj, in_file)
+
+    tmp_dict = {"0":"All"}
+    for k in species_obj:
+        obj = species_obj[k]
+        if obj["is_reference"] == "yes":
+            tax_id = str(obj["tax_id"])
+            tmp_dict[tax_id] = obj["long_name"]
+
+    return tmp_dict
+
+
+
+def load_species_info(species_obj, in_file):
+
+    data_frame = {}
+    load_sheet(data_frame, in_file, ",")
+    f_list = data_frame["fields"]
+    for row in data_frame["data"]:
+        obj = {}
+        for f in f_list:
+            obj[f] = row[f_list.index(f)]
+        tax_id = obj["tax_id"]
+        short_name = obj["short_name"]
+        if tax_id not in species_obj:
+            species_obj[tax_id] = {}
+            species_obj[short_name] = {}
+        for f in obj:
+            species_obj[tax_id][f] = int(obj[f]) if f == "tax_id" else obj[f]
+            species_obj[short_name][f] = int(obj[f]) if f == "tax_id" else obj[f]
+
+    return
+
 
 
 
@@ -609,6 +656,37 @@ def get_cached_motif_records_direct(query_obj, config_obj):
     return res_obj
 
 
+def get_filter_conf():
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    label_dict, order_dict = {}, {}
+    species_obj = {}
+    init_obj = dbh["c_init"].find_one({})
+    data_path = os.environ["DATA_PATH"]
+    in_file = data_path + "/releases/data/v-%s/misc/species_info.csv" % (init_obj["dataversion"])
+    load_species_info(species_obj, in_file)
+    tax_id_list = []
+    for k in species_obj:
+        obj = species_obj[k]
+        if obj["is_reference"] == "yes":
+            long_name, common_name = obj["long_name"], obj["common_name"]
+            label_dict[long_name] = common_name
+            order_dict[long_name] = int(obj["sort_order"]) if obj["sort_order"].isdigit() else 10000
+
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "conf/list_filters.json")
+    filter_conf = json.loads(open(json_url, "r").read())
+    for record_type in filter_conf:
+        if "by_organism" not in filter_conf[record_type]:
+            continue
+        filter_conf[record_type]["by_organism"]["label_dict"] = label_dict
+        filter_conf[record_type]["by_organism"]["order_dict"] = order_dict
+
+    return filter_conf
+
 
 
 def get_cached_records_indirect(query_obj, config_obj):
@@ -669,9 +747,8 @@ def get_cached_records_indirect(query_obj, config_obj):
             obj["score_info"] = score_info
             cached_obj["results"].append(obj)
 
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, "conf/list_filters.json")
-    filter_conf = json.loads(open(json_url, "r").read())
+    filter_conf = get_filter_conf() 
+    
     record_type = cached_obj["cache_info"]["record_type"]
 
     #Get available list before applying filtering
@@ -794,9 +871,7 @@ def cache_record_list(dbh,list_id, record_list, cache_info, cache_coll, config_o
 def filter_list(res_obj, query_obj):
 
     record_type = res_obj["cache_info"]["record_type"]
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, "conf/list_filters.json")
-    filter_conf = json.loads(open(json_url, "r").read())
+    filter_conf = get_filter_conf()
 
 
     if "filters" not in res_obj:
@@ -891,9 +966,8 @@ def filter_list(res_obj, query_obj):
 def update_filters(res_obj, step):
 
 
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, "conf/list_filters.json")
-    filter_conf = json.loads(open(json_url, "r").read())
+    filter_conf = get_filter_conf()
+
     record_type = res_obj["cache_info"]["record_type"]
 
     if "filters" not in res_obj:

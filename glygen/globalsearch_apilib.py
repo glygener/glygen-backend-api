@@ -69,7 +69,7 @@ def globalsearch_search(query_obj, config_obj):
 
     search_obj = json.loads(open(json_url, "r").read())
     new_term = transform_query_term(query_obj["term"])
-    
+   
 
     #return query_obj
  
@@ -220,10 +220,12 @@ def globalsearch_search(query_obj, config_obj):
                         res_obj["exact_match"].append(exact_obj)
                         seen_exact_match[record_id] = True
             elif target_collection == "c_publication":
-                record_type, record_id = "publication", doc["record_id"].split(".")[1]
+                #record_type, record_id = "publication", doc["record_id"].split(".")[1]
+                record_type, record_id = "publication", doc["record_id"]
+                article_id = ".".join(doc["record_id"].split(".")[1:])
                 record_name = record_id
                 record_id_list = [record_id]
-                record_id_list_lower = [record_id.lower()]
+                record_id_list_lower = [article_id.lower()]
                 results_dict[key_one]["all"].append(record_id)
                 results_dict[key_one][key_two].append(record_id)
                 if query_obj["term"].lower() in record_id_list_lower:

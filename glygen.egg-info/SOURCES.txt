@@ -63,6 +63,7 @@ glygen.egg-info/requires.txt
 glygen.egg-info/top_level.txt
 glygen/conf/backup-edgerules.json
 glygen/conf/config.json
+glygen/conf/config.json-backup
 glygen/conf/dbinfo.json
 glygen/conf/edgerules.json
 glygen/conf/fieldmap.json

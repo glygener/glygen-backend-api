@@ -12,10 +12,8 @@ from collections import OrderedDict
 from bson.objectid import ObjectId
 
 
-from glygen.libgly import load_species_info
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, cache_record_list
-
+from glygen.util import get_errors_in_query, sort_objects, cache_record_list, load_species_info
 
 
 
@@ -55,7 +53,7 @@ def job_init(config_obj, data_path):
     for k in species_obj:
         obj = species_obj[k]
         if obj["short_name"] not in species_list and obj["is_reference"] == "yes":
-            o = {"value":"canonicalsequences_%s" % (obj["short_name"]),"label":obj["long_name"]}
+            o = {"value":"canonicalsequences_%s" % (obj["short_name"]),"label":obj["common_name"]}
             opt_list.append(o) 
             species_list.append(obj["short_name"])
 

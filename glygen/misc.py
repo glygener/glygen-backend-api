@@ -13,7 +13,8 @@ import pymongo
 from glygen.db import get_mongodb, log_error
 
 from glygen.misc_apilib import validate, propertylist, pathlist, messagelist, verlist, gtclist, bcolist
-from glygen.util import get_req_obj
+from glygen.util import get_req_obj, get_filter_conf
+
 import traceback
 
 
@@ -29,6 +30,10 @@ class Misc(Resource):
     def post(self):
         res_obj = {"config":{}}
         try:
+            #ip_addr = request.remote_addr
+            #ip_addr = request.environ['REMOTE_ADDR']
+            ip_addr = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+            return {"ip":ip_addr}
             mongo_dbh, error_obj = get_mongodb()
             res_obj["connection_status"] = "success" if error_obj == {} else error_obj
             for k in ["SERVER", "DATA_PATH", "DB_NAME", "MAIL_SERVER", "MAIL_PORT", "MAIL_SENDER"]:

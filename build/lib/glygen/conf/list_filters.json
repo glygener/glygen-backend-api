@@ -21,31 +21,8 @@
             "group_label":"By Organism",
             "record_key":"species_list",
             "order_dict":{
-                "Homo sapiens":1,
-                "Mus musculus":2,
-                "Rattus norvegicus":3,
-                "Rattus":4,
-                "Drosophila melanogaster":5,
-                "Saccharomyces cerevisiae":5.1,
-		"Hepatitis C virus (isolate H)":6,
-                "Hepatitis C virus (isolate Japanese)":7,
-                "Hepacivirus C":8,
-                "Severe acute respiratory syndrome-related coronavirus":9,
-                "Severe acute respiratory syndrome coronavirus 2":10,
-                "Dictyostelium discoideum":11
 	    },
             "label_dict":{
-                "Homo sapiens":"Human",
-                "Mus musculus":"Mouse",
-                "Rattus norvegicus":"Rat",
-                "Drosophila melanogaster":"Fruitfly",
-                "Saccharomyces cerevisiae":"Yeast",
-		"Hepatitis C virus (isolate H)":"HCV-H",
-                "Hepatitis C virus (isolate Japanese)":"HCV-Japanese",
-                "Hepacivirus C":"HCV",
-                "Severe acute respiratory syndrome-related coronavirus":"HCoV-SARS",
-                "Severe acute respiratory syndrome coronavirus 2":"SARS-CoV-2",
-                "Dictyostelium discoideum":"Dictyostelium discoideum"  
 	  }
         },
         "by_glycan_type":{
@@ -160,31 +137,8 @@
             "group_label":"By Organism",
             "record_key":"organism",
             "order_dict":{
-                "Homo sapiens":1,
-                "Mus musculus":2,
-                "Rattus norvegicus":3,
-                "Rattus":4,
-                "Drosophila melanogaster":5,
-                "Saccharomyces cerevisiae":5.1,
-		"Hepatitis C virus (isolate H)":6,
-                "Hepatitis C virus (isolate Japanese)":7,
-                "Hepacivirus C":8,
-                "Severe acute respiratory syndrome-related coronavirus":9,
-                "Severe acute respiratory syndrome coronavirus 2":10,
-		"Dictyostelium discoideum":11 
             },
             "label_dict":{
-                "Homo sapiens":"Human",
-                "Mus musculus":"Mouse",
-                "Rattus norvegicus":"Rat",
-                "Drosophila melanogaster":"Fruitfly",
-                "Saccharomyces cerevisiae":"Yeast",
-		"Hepatitis C virus (isolate H)":"HCV-H",
-                "Hepatitis C virus (isolate Japanese)":"HCV-Japanese",
-                "Hepacivirus C":"HCV",
-                "Severe acute respiratory syndrome-related coronavirus":"HCoV-SARS",
-                "Severe acute respiratory syndrome coronavirus 2":"SARS-CoV-2",
-		"Dictyostelium discoideum":"Dictyostelium discoideum"
             }
         },
         "by_ptm":{
@@ -357,31 +311,8 @@
             "group_label":"By Organism",
             "record_key":"organism",
             "order_dict":{
-                "Homo sapiens":1,
-                "Mus musculus":2,
-                "Rattus norvegicus":3,
-                "Rattus":4,
-                "Drosophila melanogaster":5,
-                "Saccharomyces cerevisiae":5.1,
-		"Hepatitis C virus (isolate H)":6,
-                "Hepatitis C virus (isolate Japanese)":7,
-                "Hepacivirus C":8,
-                "Severe acute respiratory syndrome-related coronavirus":9,
-                "Severe acute respiratory syndrome coronavirus 2":10,
-		"Dictyostelium discoideum":11
             },
             "label_dict":{
-                "Homo sapiens":"Human",
-                "Mus musculus":"Mouse",
-                "Rattus norvegicus":"Rat",
-                "Drosophila melanogaster":"Fruitfly",
-                "Saccharomyces cerevisiae":"Yeast",
-		"Hepatitis C virus (isolate H)":"HCV-H",
-                "Hepatitis C virus (isolate Japanese)":"HCV-Japanese",
-                "Hepacivirus C":"HCV",
-                "Severe acute respiratory syndrome-related coronavirus":"HCoV-SARS",
-                "Severe acute respiratory syndrome coronavirus 2":"SARS-CoV-2",
-		"Dictyostelium discoideum":"Dictyostelium discoideum"
             }
         }
 

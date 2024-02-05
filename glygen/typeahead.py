@@ -25,13 +25,24 @@ typeahead_query_model = api.model(
 
 categorized_typeahead_query_model = api.model(
     'Categorized Typeahead Query',
-    { 'query': fields.String(required=True, default="", description='')}
+    {
+        "field": fields.String(required=True, default="go_term"),
+        "value": fields.String(required=True, default="kinase"),
+        "total_limit": fields.Integer(required=True, default=15),
+        "categorywise_limit": fields.Integer(required=True, default=5)
+    }    
+ 
 )
 
 global_typeahead_query_model = api.model(
     'Global Typeahead Query',
-    { 'query': fields.String(required=True, default="", description='')}
+    {   
+        "target": fields.String(required=True, default="glycan"),
+        "value": fields.String(required=True, default="G"),
+        "limit": fields.Integer(required=True, default=10)
+    }
 )
+
 
 
 

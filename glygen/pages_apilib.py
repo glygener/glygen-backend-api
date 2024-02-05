@@ -13,11 +13,9 @@ from collections import OrderedDict
 import smtplib
 from email.mime.text import MIMEText
 
-from glygen.libgly import load_species_info
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list,  extract_name, get_errors_in_query, order_obj
-
+from glygen.util import cache_record_list,  extract_name, get_errors_in_query, order_obj, load_species_info
 
 
 def home_init(config_obj, data_path):

@@ -24,12 +24,10 @@ import struct
 from Bio import SeqIO
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, cache_record_list
-
+from glygen.util import get_errors_in_query, sort_objects, cache_record_list, load_species_info
 from glygen.protein_apilib import protein_detail
 from glygen.glycan_apilib import glycan_detail
-
-from glygen.libgly import load_sheet, load_sheet_as_dict, load_species_info
+from glygen.libgly import load_sheet, load_sheet_as_dict
 
 
 
