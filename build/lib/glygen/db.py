@@ -41,6 +41,10 @@ def log_request(req_obj, api_name, request):
         ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
         ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
         #x = request.headers.get('User-Agent')
+        #ip_addr = request.remote_addr
+        #ip_addr = request.environ['REMOTE_ADDR']
+        ip_addr = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+        #log_obj = {"api":api_name, "req":req_obj, "ts":ts, "ip":ip_addr}
         log_obj = {"api":api_name, "req":req_obj, "ts":ts}
         res = mongo_dbh["c_request"].insert_one(log_obj)
         return {}

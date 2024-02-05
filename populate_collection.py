@@ -94,7 +94,7 @@ def main():
 
         for coll in coll_list:
 
-            log_file = "logs/%s_loading_progress.txt" % (coll)
+            log_file = "logs/%s_loading_progress_%s.txt" % (coll, server)
             msg = "\n ... started loading %s.%s version %s" % (glydb_name, coll, ver)
             write_progress_msg(msg, "w")
 
@@ -107,6 +107,7 @@ def main():
             
             json_db = coll[2:] + "db"
             file_list = glob.glob(jsondb_dir + "/" + json_db + "/*.json")
+            nrecords_total = len(file_list)
             nrecords = 0
             for in_file in file_list:
                 #debug
@@ -120,11 +121,11 @@ def main():
                 result = tmpdb_dbh[coll].insert_one(doc)     
                 nrecords += 1
                 if nrecords != 0 and nrecords%1000 == 0:
-                    msg = " ... loaded %s documents to tmpdb.%s" % (nrecords,coll)
+                    msg = " ... loaded %s out of %s documents to tmpdb.%s" % (nrecords, nrecords_total, coll)
                     write_progress_msg(msg, "a")
                 
             ts = datetime.datetime.now()
-            msg = " ... finished loading %s documents to tmpdb.%s" % (nrecords, coll)
+            msg = " ... finished loading %s out of %s documents to tmpdb.%s" % (nrecords,nrecords_total, coll)
             write_progress_msg(msg, "a")
 
             #CREATING COLLECTION

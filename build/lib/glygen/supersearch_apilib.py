@@ -32,29 +32,38 @@ def search_init(config_obj):
     json_url = os.path.join(SITE_ROOT, "conf/typeahead.json")
     typeahead_dict = json.load(open(json_url))
 
-    enum_dict = {}
+    enum_dict = {
+        "glycan":{},
+        "motif":{},
+        "protein":{},
+        "enzyme":{},
+        "site":{},
+        "species":{},
+        "gene":{},
+        "disease":{}
+    }
     default_dict = {}
-    load_enum(dbh,enum_dict, "glycan_classification")
+    load_enum(dbh,enum_dict["glycan"], "glycan_classification")
     site_type_list = [
         "glycosylation_flag", "snv_flag", "phosphorylation_flag", "glycation_flag", 
         "mutagenesis_flag"
     ]
 
     for f in site_type_list:
-        enum_dict[f] = ["true", "false"]
+        enum_dict["site"][f] = ["true", "false"]
         default_dict[f] = "true"
     for f in ["fully_determined"]:
-        enum_dict[f] = ["yes", "no"]
+        enum_dict["glycan"][f] = ["yes", "no"]
         default_dict[f] = "yes"
     for f in ["neighbors.direction"]:
-        enum_dict[f] = ["upstream", "downstream"]
+        enum_dict["site"][f] = ["upstream", "downstream"]
     for f in ["neighbors.categories"]:
-        enum_dict[f] = site_type_list
+        enum_dict["site"][f] = site_type_list
     
-    enum_dict["taxid"], enum_dict["name"] = [], []
+    enum_dict["species"]["taxid"], enum_dict["species"]["name"] = [], []
     for doc in dbh["c_species"].find({}):
-        enum_dict["taxid"].append(doc["taxid"])
-        enum_dict["name"].append(doc["name"])
+        enum_dict["species"]["taxid"].append(doc["taxid"])
+        enum_dict["species"]["name"].append(doc["common_name"])
 
     path_dict = {}
     for doc in dbh["c_path"].find({}):
@@ -148,8 +157,10 @@ def search_init(config_obj):
                 op_list = ["$eq","$ne", "$gt","$lt","$gte","$lte"]
             if f_name in ["neighbors.direction", "neighbors.categories"]:
                 op_list = ["$eq"]
-
-            enum = enum_dict[f_name] if f_name in enum_dict else []
+            enum = []
+            if record_type in enum_dict:
+                if f_name in enum_dict[record_type]:
+                    enum = enum_dict[record_type][f_name]
             url = config_obj["urltemplate"]["glygenwiki"] % (f_name)
             typeahead = ""
             if record_type in typeahead_dict:

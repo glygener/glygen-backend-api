@@ -4,25 +4,7 @@ import json
 
 
 
-def load_species_info(species_obj, in_file):
 
-    data_frame = {}
-    load_sheet(data_frame, in_file, ",")
-    f_list = data_frame["fields"]
-    for row in data_frame["data"]:
-        obj = {}
-        for f in f_list:
-            obj[f] = row[f_list.index(f)]
-        tax_id = obj["tax_id"] 
-        short_name = obj["short_name"]
-        if tax_id not in species_obj:
-            species_obj[tax_id] = {}
-            species_obj[short_name] = {}
-        for f in obj:
-            species_obj[tax_id][f] = int(obj[f]) if f == "tax_id" else obj[f] 
-            species_obj[short_name][f] = int(obj[f]) if f == "tax_id" else obj[f]
-
-    return
 
 
 def load_sheet_as_dict(sheet_obj, in_file, separator, anchor_field):

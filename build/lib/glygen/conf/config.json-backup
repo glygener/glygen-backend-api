@@ -187,6 +187,19 @@
             "c_biomarker":["_id"],
             "c_glycan":["_id", "glytoucan_ac"]
         }
+        ,"taxid2name":{
+            "0":"All"
+            ,"9606":"Homo sapiens"
+            ,"10090":"Mus musculus"
+            ,"10116":"Rattus norvegicus"
+            ,"63746":"Hepatitis C virus (isolate H)"
+            ,"11116":"Hepatitis C virus (isolate Japanese)"
+            ,"694009":"Severe acute respiratory syndrome-related coronavirus"
+            ,"2697049":"Severe acute respiratory syndrome coronavirus 2"
+            ,"7227":"Drosophila melanogaster"
+            ,"6573":"Mizuhopecten yessoensis"
+            ,"559292":"Saccharomyces cerevisiae"
+	}
         ,"usecases_search_init":{
             "field_info":{
             }

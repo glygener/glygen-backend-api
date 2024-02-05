@@ -911,9 +911,21 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
-                    "label": "UniProtKB Accession"
-                }
+		    "path": "uniprot_canonical_ac",
+                    "label": "UniProtKB Canonical Accession"
+                },
+		{
+			"path": "protein_name",
+			"label": "Protein Name"
+		},
+		{
+			"path": "gene_name",
+                        "label": "Gene Name"
+		},
+		{
+			"path": "tax_name",
+                        "label": "Species"
+		}            
             ],
             "sectionfield": "referenced_proteins"
         },
@@ -924,7 +936,7 @@
             },
             "fieldmap": [
                 {
-                    "path": "glytoucan_accession",
+                    "path": "glytoucan_ac",
                     "label": "GlyTouCan Accession"
                 }
             ],

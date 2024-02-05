@@ -13,6 +13,9 @@ from glygen.util import get_errors_in_query, sort_objects, order_obj, extract_na
 
 from glygen.protein_apilib import get_protein_list_object
 
+from glygen.util import get_taxid2name
+
+
 
 def search_init(config_obj):
 
@@ -69,7 +72,10 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
                 elif tax_id == query_obj["tax_id"]:
                     record_list.append(o["uniprot_canonical_ac"])
 
-    query_obj["organism"] = {"id":query_obj["tax_id"], "name":config_obj["taxid2name"][str(query_obj["tax_id"])]}
+    taxid2name = get_taxid2name()
+    if str(query_obj["tax_id"]) not in taxid2name:
+        return {"list_id":""}
+    query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
     query_obj.pop("tax_id")
 
 
@@ -129,7 +135,10 @@ def glycan_to_glycoproteins(query_obj, config_obj):
                 elif tax_id == query_obj["tax_id"]:
                     record_list.append(o["uniprot_canonical_ac"])
 
-    query_obj["organism"] = {"id":query_obj["tax_id"], "name":config_obj["taxid2name"][str(query_obj["tax_id"])]}
+    taxid2name = get_taxid2name()
+    if str(query_obj["tax_id"]) not in taxid2name:
+        return {"list_id":""}
+    query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
     query_obj.pop("tax_id")
 
     res_obj = {}
@@ -183,7 +192,11 @@ def glycan_to_enzyme_gene_loci(query_obj, config_obj):
             elif tax_id == query_obj["tax_id"]:
                 results.append(plist_obj)
 
-    query_obj["organism"] = {"id":query_obj["tax_id"], "name":config_obj["taxid2name"][str(query_obj["tax_id"])]}
+    taxid2name = get_taxid2name()
+    if str(query_obj["tax_id"]) not in taxid2name:
+        return {"list_id":""}
+    
+    query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
     query_obj.pop("tax_id")
 
 
@@ -237,7 +250,10 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query, prj_obj):
         record_list.append(obj["glytoucan_ac"])
 
-    query_obj["organism"] = {"id":query_obj["tax_id"], "name":config_obj["taxid2name"][str(query_obj["tax_id"])]}
+    taxid2name = get_taxid2name()
+    if str(query_obj["tax_id"]) not in taxid2name:
+        return {"list_id":""}
+    query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
     query_obj.pop("tax_id")
 
 
@@ -399,7 +415,10 @@ def species_to_glycosyltransferases(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query, config_obj["projectedfields"][collection]):
         record_list.append(obj["uniprot_canonical_ac"])
 
-    query_obj["organism"] = {"id":query_obj["tax_id"], "name":config_obj["taxid2name"][str(query_obj["tax_id"])]}
+    taxid2name = get_taxid2name()
+    if str(query_obj["tax_id"]) not in taxid2name:
+        return {"list_id":""}
+    query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
     query_obj.pop("tax_id")
 
     res_obj = {}
@@ -446,8 +465,10 @@ def species_to_glycohydrolases(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query, config_obj["projectedfields"][collection]):
         record_list.append(obj["uniprot_canonical_ac"])
 
-
-    query_obj["organism"] = {"id":query_obj["tax_id"], "name":config_obj["taxid2name"][str(query_obj["tax_id"])]}
+    taxid2name = get_taxid2name()
+    if str(query_obj["tax_id"]) not in taxid2name:
+        return {"list_id":""}
+    query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
     query_obj.pop("tax_id")
 
     res_obj = {}
@@ -496,7 +517,10 @@ def species_to_glycoproteins(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query, config_obj["projectedfields"][collection]):
         record_list.append(obj["uniprot_canonical_ac"])
 
-    query_obj["organism"] = {"id":query_obj["tax_id"], "name":config_obj["taxid2name"][str(query_obj["tax_id"])]}
+    taxid2name = get_taxid2name()
+    if str(query_obj["tax_id"]) not in taxid2name:
+        return {"list_id":""}
+    query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
     query_obj.pop("tax_id")
 
     res_obj = {}
@@ -544,8 +568,10 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query, config_obj["projectedfields"][collection]):
         record_list.append(obj["uniprot_canonical_ac"])
 
-
-    query_obj["organism"] = {"id":query_obj["tax_id"], "name":config_obj["taxid2name"][str(query_obj["tax_id"])]}
+    taxid2name = get_taxid2name()
+    if str(query_obj["tax_id"]) not in taxid2name:
+        return {"list_id":""}
+    query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
     query_obj.pop("tax_id")
 
     res_obj = {}
