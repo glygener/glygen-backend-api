@@ -43,6 +43,10 @@ class Misc(Resource):
                     res_obj["config"][k] = os.environ[k]
                 if k in current_app.config:
                     res_obj["config"][k] = current_app.config[k]
+            res_obj["user_agent"] = request.headers.get('User-Agent')
+            res_obj["referer"] = request.headers.get('referer')
+            res_obj["origin"] = request.headers.get('Origin')
+            return res_obj
             
             init_obj = mongo_dbh["c_init"].find_one({})
             if "_id" in init_obj:
