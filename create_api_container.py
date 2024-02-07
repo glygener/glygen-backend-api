@@ -46,7 +46,6 @@ def main():
     mail_port = config_obj["mail"]["port"]
     mail_sender = config_obj["mail"]["sender"]
 
-
     conn_str = "mongodb://%s:%s@%s:27017/?authSource=%s" % (mongo_user, mongo_password, mongo_container, mongo_db)
     cmd_list = []
     cmd_list.append("sudo systemctl stop docker-glygen-api-%s.service" % (server))
@@ -63,7 +62,7 @@ def main():
             cmd_list.append("docker rm -f %s " % (container_id))
 
     cmd = "docker create --name %s --network %s -p 127.0.0.1:%s:80" % (api_container, network, port)
-    cmd += " -v %s:%s -v %s:%s -e MONGODB_CONNSTRING=%s -e DB_NAME=%s " % (downloads_path, downloads_path, data_path, data_path, conn_str, mongo_db)
+    cmd += " -v %s:%s -v %s:%s -e MONGODB_CONNSTRING=%s -e DB_NAME=%s" % (downloads_path, downloads_path, data_path, data_path, conn_str, mongo_db)
     cmd += " -e MAIL_SERVER=%s -e MAIL_PORT=%s -e MAIL_SENDER=%s -e DATA_PATH=%s -e DOWNLOADS_PATH=%s -e SERVER=%s %s" % (mail_server, mail_port, mail_sender, data_path, downloads_path, server, image) 
     
     cmd_list.append(cmd)

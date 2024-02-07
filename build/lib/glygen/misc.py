@@ -9,11 +9,13 @@ import subprocess
 import json
 import bcrypt
 import pymongo
+import requests
 
 from glygen.db import get_mongodb, log_error
 
 from glygen.misc_apilib import validate, propertylist, pathlist, messagelist, verlist, gtclist, bcolist
 from glygen.util import get_req_obj, get_filter_conf
+from glygen.auth_apilib import create_github_issue
 
 import traceback
 
@@ -32,13 +34,15 @@ class Misc(Resource):
         try:
             #ip_addr = request.remote_addr
             #ip_addr = request.environ['REMOTE_ADDR']
-            ip_addr = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
-            return {"ip":ip_addr}
+            #ip_addr = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+            #return {"ip":ip_addr}
             mongo_dbh, error_obj = get_mongodb()
             res_obj["connection_status"] = "success" if error_obj == {} else error_obj
-            for k in ["SERVER", "DATA_PATH", "DB_NAME", "MAIL_SERVER", "MAIL_PORT", "MAIL_SENDER"]:
+            for k in ["GITHUB_TOKEN", "GITHUB_ASSIGNEE", "SERVER", "DATA_PATH", "DB_NAME", "MAIL_SERVER", "MAIL_PORT", "MAIL_SENDER"]:
                 if k in os.environ:
                     res_obj["config"][k] = os.environ[k]
+                if k in current_app.config:
+                    res_obj["config"][k] = current_app.config[k]
             
             init_obj = mongo_dbh["c_init"].find_one({})
             if "_id" in init_obj:
@@ -48,6 +52,28 @@ class Misc(Resource):
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
+
+
+@api.route('/github/')
+class Misc(Resource):
+    @api.doc(False)
+    def post(self):
+        res_obj = {"config":{}}
+        try:
+            github_endpoint = "https://api.github.com/repos/glygener/glygen-issues/issues"
+            auth_token = "xxxx"
+            issue_obj = {
+                "title":" ... frontend user issue",
+                "body":"body of frontend user issue",
+                "assignees":["rykahsay"],
+                "labels":["fronten_user_issue"]
+            }
+            res_obj = create_github_issue(github_endpoint, auth_token, issue_obj)
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
 
 
 @api.route('/validate/')
