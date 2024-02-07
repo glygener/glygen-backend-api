@@ -56,7 +56,7 @@ def main():
             for p in ["password"]:
                 if p in doc:
                     doc.pop(p)
-            for p in ["_id", "createdts", "updatedts"]:
+            for p in ["_id", "createdts", "updatedts", "creation_time", "update_time"]:
                 if p in doc:
                     doc[p] = str(doc[p])
             print (json.dumps(doc, indent=4))

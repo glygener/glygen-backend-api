@@ -32,6 +32,10 @@ JWT_REFRESH_COOKIE_PATH = '/'
 JWT_COOKIE_CSRF_PROTECT = True
 JWT_CSRF_IN_COOKIES = False
 
+
+#using rykahsay's token now, please chenge to glygener github token
+GITHUB_TOKEN = "xxx"
+GITHUB_ASSIGNEE = "xxxxxx"
     
 
 

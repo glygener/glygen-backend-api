@@ -7,6 +7,7 @@ import datetime,time
 import bcrypt
 import base64
 import pytz
+import requests
 from collections import OrderedDict
 from bson.objectid import ObjectId
 
@@ -120,11 +121,24 @@ def auth_contact(query_obj, config_obj):
         "visibility":"visible"
     }
     
+    github_endpoint = "https://api.github.com/repos/glygener/glygen-issues/issues"
+    github_token = os.environ['GITHUB_TOKEN']
+    github_assignee = os.environ['GITHUB_ASSIGNEE'] 
+    issue_obj = {
+        "title":query_obj["subject"],
+        "body":msg_text,
+        "assignees":[github_assignee],
+        "labels":["fronten_user_issue"]
+    } 
     try:
         if config_obj["server"] != "dev":
             s = smtplib.SMTP('localhost')
             s.sendmail(sender, receivers, msg.as_string())
             s.quit()
+        res = create_github_issue(github_endpoint, github_token, issue_obj)
+        if "error_list" in res:
+            return res
+        store_json["github"] = res
         store_json["message_status"] = "success"
     except Exception as e:
         res_json = {"error_list":[{"error_code":str(e)}]}
@@ -135,6 +149,33 @@ def auth_contact(query_obj, config_obj):
     result = dbh[collection].insert_one(store_json)
     
     return res_json
+
+
+
+
+def create_github_issue(url, github_token, issue_obj):
+
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": "Bearer " + github_token,
+        "X-GitHub-Api-Version":"2022-11-28"
+    }
+
+    res_obj = {}
+    try:
+        response = requests.post(url, data=json.dumps(issue_obj), headers=headers)
+        code = response.status_code
+        if code == 201:
+            res = response.json()
+            res_obj = {"number":res["number"], "url":res["url"]}
+        else:
+            res_obj = {"error_list":[{"error_code": "Bad response status code: %s!" % (code)}]}
+    except Exception as e:
+        res_obj = {"error_list":[{"error_code":str(e)}]}
+
+
+    return res_obj
+
 
 
 
