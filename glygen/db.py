@@ -11,6 +11,7 @@ import json
 import click
 from flask import current_app, g
 from flask.cli import with_appcontext
+from user_agents import parse
 
 
 def get_mongodb():
@@ -37,15 +38,26 @@ def log_request(req_obj, api_name, request):
     if len(json.dumps(req_obj)) > 20000:
         return {"error_list":[{"error_code": "Too long request, unable to log request!"}]}
 
+
+    header_dict = {}
+    header_dict["user_agent"] = request.headers.get('User-Agent')
+    header_dict["referer"] = request.headers.get('referer')
+    header_dict["origin"] = request.headers.get('Origin')
+    header_dict["ip"] = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+
+    ug = parse(request.headers.get('User-Agent'))
+    header_dict["is_bot"] = ug.is_bot
+    
+ 
     try:
         ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
         ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-        #x = request.headers.get('User-Agent')
-        log_obj = {"api":api_name, "req":req_obj, "ts":ts}
+        log_obj = {"api":api_name, "req":req_obj, "ts":ts, "headers":header_dict}
         res = mongo_dbh["c_request"].insert_one(log_obj)
         return {}
     except Exception as e:
         return {"error_list":[{"error_code": "Unable to log error!"}]}
+
 
 
 
