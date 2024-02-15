@@ -11,6 +11,7 @@ import requests
 from collections import OrderedDict
 from bson.objectid import ObjectId
 
+from flask import (request, current_app)
 
 import smtplib
 from email.mime.text import MIMEText
@@ -122,8 +123,11 @@ def auth_contact(query_obj, config_obj):
     }
     
     github_endpoint = "https://api.github.com/repos/glygener/glygen-issues/issues"
-    github_token = os.environ['GITHUB_TOKEN']
-    github_assignee = os.environ['GITHUB_ASSIGNEE'] 
+    #github_token = os.environ['GITHUB_TOKEN']
+    #github_assignee = os.environ['GITHUB_ASSIGNEE'] 
+    github_token = current_app.config["GITHUB_TOKEN"]
+    github_token = current_app.config["GITHUB_ASSIGNEE"]
+
     issue_obj = {
         "title":query_obj["subject"],
         "body":msg_text,
