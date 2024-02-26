@@ -126,13 +126,13 @@ def auth_contact(query_obj, config_obj):
     #github_token = os.environ['GITHUB_TOKEN']
     #github_assignee = os.environ['GITHUB_ASSIGNEE'] 
     github_token = current_app.config["GITHUB_TOKEN"]
-    github_token = current_app.config["GITHUB_ASSIGNEE"]
+    github_assignee = current_app.config["GITHUB_ASSIGNEE"]
 
     issue_obj = {
         "title":query_obj["subject"],
         "body":msg_text,
         "assignees":[github_assignee],
-        "labels":["fronten_user_issue"]
+        "labels":["frontend_user_issue"]
     } 
     try:
         if config_obj["server"] != "dev":
