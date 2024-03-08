@@ -32,46 +32,17 @@ def search_init(config_obj):
     json_url = os.path.join(SITE_ROOT, "conf/typeahead.json")
     typeahead_dict = json.load(open(json_url))
 
-    enum_dict = {
-        "glycan":{},
-        "motif":{},
-        "protein":{},
-        "enzyme":{},
-        "site":{},
-        "species":{},
-        "gene":{},
-        "disease":{}
-    }
+    enum_dict = {}
     default_dict = {}
-    load_enum(dbh,enum_dict["glycan"], "glycan_classification")
-    site_type_list = [
-        "glycosylation_flag", "snv_flag", "phosphorylation_flag", "glycation_flag", 
-        "mutagenesis_flag"
-    ]
-
-    for f in site_type_list:
-        enum_dict["site"][f] = ["true", "false"]
-        default_dict[f] = "true"
-    for f in ["fully_determined"]:
-        enum_dict["glycan"][f] = ["yes", "no"]
-        default_dict[f] = "yes"
-    for f in ["neighbors.direction"]:
-        enum_dict["site"][f] = ["upstream", "downstream"]
-    for f in ["neighbors.categories"]:
-        enum_dict["site"][f] = site_type_list
-    
-    enum_dict["species"]["taxid"], enum_dict["species"]["name"] = [], []
-    for doc in dbh["c_species"].find({}):
-        enum_dict["species"]["taxid"].append(doc["taxid"])
-        enum_dict["species"]["name"].append(doc["common_name"])
-
     path_dict = {}
     for doc in dbh["c_path"].find({}):
         record_type = doc["record_type"]
         if record_type not in path_dict:
             path_dict[record_type] = []
         path_dict[record_type].append(doc)
-
+        if record_type not in enum_dict:
+            enum_dict[record_type] = {}
+        enum_dict[record_type][doc["path"]] = doc["enum"] if "enum" in doc else []
     
     init_dict = {}
     for record_type in config_obj["record_type_info"]:
@@ -297,6 +268,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     #return mongo_query
 
 
+         
 
     initial_hit_count = 0
     reason_dict = {}
@@ -337,7 +309,8 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
             reason = "hit-in-initial-%s-query" % (record_type)
             add_reason(reason_dict, record_type, record_id, "self", record_id)  
 
-    #return initial_hit_dict["species"]
+    #return initial_hit_dict
+
 
 
     dump_debug_timer("flag-2 loading network", DEBUG_FLAG)
@@ -349,11 +322,12 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
     final_hit_dict,final_hit_dict_split, conn_dict = {}, {}, {}
     if initial_hit_count > 0:
-        final_hit_dict,final_hit_dict_split, conn_dict = load_network_type_III(doc_list, 
-                initial_hit_dict, empty_search_flag, ignore_dict, reason_dict)
+        final_hit_dict,final_hit_dict_split, conn_dict = load_network(doc_list, 
+                initial_hit_dict, empty_search_flag, ignore_dict, reason_dict, config_obj)
     else:
         conn_dict = load_conn_dict(doc_list)
 
+    #return ignore_dict
 
 
     #After imposing edge constraints, some hits cannot be traced
@@ -364,9 +338,11 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
         return reason_dict
 
 
+
     #Now, set concept_query_list to be empty list
     if empty_search_flag == True:
         query_obj["concept_query_list"] = []
+
 
 
 
@@ -431,6 +407,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
         res_obj["results_summary"][dst_record_type]["bylinkage"] = bylinkage_obj
 
     
+
 
     id_list = []
     for dst_record_type in res_obj["results_summary"]:
@@ -507,120 +484,7 @@ def impose_edge_constraints_type_I(initial_hit_dict, final_hit_dict, final_hit_d
     return
 
 
-def load_network_type_I(doc_list, initial_hit_dict, network_dict, edge_dict, linked_record_type_dict):
 
-    for doc in doc_list:
-        for obj in doc["recordlist"]:
-            src_record_type, src_record_id = obj["record_type"], obj["record_id"]
-            if obj["linkeage"] == {}:
-                continue
-            if src_record_type not in network_dict:
-                network_dict[src_record_type] = {}
-            network_dict[src_record_type][src_record_id] = obj["linkeage"]
-            if src_record_type not in linked_record_type_dict:
-                linked_record_type_dict[src_record_type] = {}
-            for dst_record_type in network_dict[src_record_type][src_record_id]:
-                #Remove these edges for now
-                if [src_record_type, dst_record_type] == ["site", "species"]:
-                    continue
-                if [src_record_type, dst_record_type] == ["species", "site"]:
-                    continue
-                linked_record_type_dict[src_record_type][dst_record_type] = True
-                for dst_record_id in network_dict[src_record_type][src_record_id][dst_record_type]:
-                    src_node = "%s %s" % (src_record_type,src_record_id)
-                    dst_node = "%s %s" % (dst_record_type,dst_record_id)
-                    if src_node not in edge_dict:
-                        edge_dict[src_node] = {}
-                    edge_dict[src_node][dst_node] = True
-    return
-
-
-def load_network_type_II(doc_list, initial_hit_dict, empty_search_flag, config_obj, reason_dict):
-
-
-
-    edge_dict = {}
-    orphan_dict = {}
-    for doc in doc_list:
-        for obj in doc["recordlist"]:
-            src_record_type, src_record_id = obj["record_type"], obj["record_id"]
-            src_node = "%s %s" % (src_record_type, src_record_id)
-            if obj["linkeage"] == {}:
-                if src_record_type not in orphan_dict:
-                    orphan_dict[src_record_type] = {}
-                orphan_dict[src_record_type][src_record_id] = True
-            else:
-                for dst_record_type in obj["linkeage"]:
-                    for dst_record_id in obj["linkeage"][dst_record_type]:
-                        dst_node = "%s %s" % (dst_record_type, dst_record_id)
-                        if src_record_type not in edge_dict:
-                            edge_dict[src_record_type] = {}
-                        if src_record_id not in edge_dict[src_record_type]:
-                            edge_dict[src_record_type][src_record_id] = {}
-                        if dst_record_type not in edge_dict[src_record_type][src_record_id]:
-                            edge_dict[src_record_type][src_record_id][dst_record_type] = {}
-                        edge_dict[src_record_type][src_record_id][dst_record_type][dst_record_id] = True
-
-
-    record_type_list = list(initial_hit_dict.keys())
-    for record_type in edge_dict:
-        if record_type not in record_type_list:
-            record_type_list.append(record_type)
-
-    node_hit_dict = {}
-    edge_hit_dict = {}
-    for src_record_type in record_type_list:
-        for src_record_id in edge_dict[src_record_type]:
-            # if empty query search, add all src nodes including unlinked ones
-            if empty_search_flag == True and src_record_type in orphan_dict:
-                if src_record_type not in node_hit_dict:
-                    node_hit_dict[src_record_type] = {}
-                node_hit_dict[src_record_type][src_record_id] = True
-            
-            if empty_search_flag == False:
-                if filtered_out_flag_type_I(initial_hit_dict,src_record_type,src_record_id):
-                    continue
-
-            for dst_record_type in edge_dict[src_record_type][src_record_id]:
-                for dst_record_id in edge_dict[src_record_type][src_record_id][dst_record_type]:
-                    if empty_search_flag == False:
-                        
-                        if filtered_out_flag_type_I(initial_hit_dict,dst_record_type,dst_record_id):
-                            #node (dst_record_type,dst_record_id) is filtered out
-                            continue
-                    init_flag = False
-                    if dst_record_type in initial_hit_dict:
-                        if dst_record_id in initial_hit_dict[dst_record_type]:
-                            init_flag = True
-                    if init_flag == False:
-                        add_reason(reason_dict, dst_record_type, dst_record_id, src_record_type, src_record_id)
-
-
-                    # at this point both src node (src_record_type, src_record_id) and 
-                    # dst node (dst_record_type,dst_record_id) are not filtered out
-                    
-                    # adding src node (src_record_type,src_record_id) to node_hit_dict
-                    if src_record_type not in node_hit_dict:
-                        node_hit_dict[src_record_type] = {}
-                    node_hit_dict[src_record_type][src_record_id] = True
-                    
-                    # adding dst node (dst_record_type,dst_record_id) to node_hit_dict
-                    if dst_record_type not in node_hit_dict:
-                        node_hit_dict[dst_record_type] = {}
-                    node_hit_dict[dst_record_type][dst_record_id] = True
-                    e_lbl = "[%s:%s <-> %s:%s]"
-                    e_lbl = e_lbl % (src_record_type,src_record_id,dst_record_type,dst_record_id)
-                    #if "site" in [src_record_type]:
-                    #    print "considering edge ", e_lbl
-
-                    if dst_record_type not in edge_hit_dict:
-                        edge_hit_dict[dst_record_type] = {}
-                    if src_record_type not in edge_hit_dict[dst_record_type]:
-                        edge_hit_dict[dst_record_type][src_record_type] = {}
-                    edge_hit_dict[dst_record_type][src_record_type][dst_record_id] = True
-
-
-    return node_hit_dict, edge_hit_dict
 
 
 
@@ -642,8 +506,11 @@ def load_conn_dict(doc_list):
 
 
 
-def load_network_type_III(doc_list, initial_hit_dict, empty_search_flag, ignore_dict,reason_dict):
+def load_network(doc_list, initial_hit_dict, empty_search_flag, ignore_dict,reason_dict, config_obj):
 
+
+    #log_file = "/data/shared/glygen/tmp/supersearch.log"
+    #FL = open(log_file, "w")
 
     conn_dict = {}
     edge_dict = {}
@@ -677,9 +544,9 @@ def load_network_type_III(doc_list, initial_hit_dict, empty_search_flag, ignore_
                         if dst_record_type not in edge_dict[src_record_type][src_record_id]:
                             edge_dict[src_record_type][src_record_id][dst_record_type] = {}
                         edge_dict[src_record_type][src_record_id][dst_record_type][dst_record_id] = True
-
-
-    record_type_list = list(initial_hit_dict.keys())
+   
+    initial_record_list = list(initial_hit_dict.keys()) 
+    record_type_list = initial_record_list
     for record_type in edge_dict:
         if record_type not in record_type_list:
             record_type_list.append(record_type)
@@ -697,10 +564,14 @@ def load_network_type_III(doc_list, initial_hit_dict, empty_search_flag, ignore_
             node_hit_dict[src_record_type][src_record_id] = True
 
 
-    for src_record_type in record_type_list:
+    #for src_record_type in record_type_list:
+    for src_record_type in config_obj["node_order"][initial_record_list[0]]:
+        if src_record_type not in record_type_list:
+            continue
         if src_record_type not in edge_dict:
             continue
         for src_record_id in edge_dict[src_record_type]:
+            src_node = "%s:%s" % (src_record_type,src_record_id)
             # if empty query search, add all src nodes including unlinked ones
             if empty_search_flag == True and src_record_type in orphan_dict:
                 if src_record_type not in node_hit_dict:
@@ -710,30 +581,41 @@ def load_network_type_III(doc_list, initial_hit_dict, empty_search_flag, ignore_
             if empty_search_flag == False:
                 # any outgoing link/edge passes this step if src node has not been filtered out
                 # or the src node has already made it to the node_hit_dict
+                
                 if filtered_out_flag_type_I(initial_hit_dict,src_record_type,src_record_id):
                     continue
-                elif src_record_type in node_hit_dict:
-                    if src_record_id not in node_hit_dict[src_record_type]:
+                else:
+                    src_node_status = False
+                    if src_record_type in node_hit_dict:
+                        if src_record_id in node_hit_dict[src_record_type]:
+                            src_node_status = True
+                    if src_node_status == False:
+                        #FL.write("skip_1:%s\n" % (src_node))
                         continue
-
-
             for dst_record_type in edge_dict[src_record_type][src_record_id]:
                 # ignore edges in the ignore dict
                 if empty_search_flag == False:
                     if src_record_type in ignore_dict:
                         if dst_record_type in ignore_dict[src_record_type]:
                             continue
-                    
                 for dst_record_id in edge_dict[src_record_type][src_record_id][dst_record_type]:
+                    dst_node = "%s:%s" % (dst_record_type,dst_record_id)
+                    quad_id = "%s -> %s" % (src_node, dst_node)
+                    #FL.write("flag_3:%s\n" % (quad_id))
                     if empty_search_flag == False:
                         # link/edge passes this step only if dst node has not been filtered out
                         # or the src node has already made it to the node_hit_dict
                         if filtered_out_flag_type_I(initial_hit_dict,dst_record_type,dst_record_id):
                             continue
-                        elif src_record_type in node_hit_dict:
-                            if src_record_id not in node_hit_dict[src_record_type]:
+                        else:
+                            src_node_status = False
+                            if src_record_type in node_hit_dict:
+                                if src_record_id in node_hit_dict[src_record_type]:
+                                    src_node_status = True
+                            if src_node_status == False:
+                                #FL.write("skip_2:%s\n" % (quad_id))
                                 continue
-
+                    #FL.write("flag_4:%s\n" % (quad_id))
                     init_flag = False
                     if dst_record_type in initial_hit_dict:
                         if dst_record_id in initial_hit_dict[dst_record_type]:
@@ -747,14 +629,11 @@ def load_network_type_III(doc_list, initial_hit_dict, empty_search_flag, ignore_
                     # at this point both src node (src_record_type, src_record_id) and 
                     # dst node (dst_record_type,dst_record_id) are not filtered out
                     
-                    src_node = "%s:%s" % (src_record_type,src_record_id)
-                    dst_node = "%s:%s" % (dst_record_type,dst_record_id)
-                    quad_id = "%s -> %s" % (src_node, dst_node)
-                    
                     # adding src_node to node_hit_dict
                     if src_record_type not in node_hit_dict:
                         node_hit_dict[src_record_type] = {}
                     node_hit_dict[src_record_type][src_record_id] = True
+                    #FL.write("src_added:%s\n" % (quad_id))
 
                     # adding src_node to edge_hit_dict
                     if src_record_type not in edge_hit_dict:
@@ -770,6 +649,7 @@ def load_network_type_III(doc_list, initial_hit_dict, empty_search_flag, ignore_
                     if dst_record_type not in node_hit_dict:
                         node_hit_dict[dst_record_type] = {}
                     node_hit_dict[dst_record_type][dst_record_id] = True
+                    #FL.write("dst_added:%s\n" % (quad_id))
                     # adding dst_node to edge_hit_dict
                     if dst_record_type not in edge_hit_dict:
                         edge_hit_dict[dst_record_type] = {}
@@ -780,6 +660,7 @@ def load_network_type_III(doc_list, initial_hit_dict, empty_search_flag, ignore_
                     if init_flag == False:
                         add_reason(reason_dict, dst_record_type, dst_record_id, src_record_type, src_record_id)
 
+    #FL.close()
 
 
     return node_hit_dict, edge_hit_dict, conn_dict
@@ -875,21 +756,6 @@ def load_properity_lineage(in_obj, in_key, seen):
 
 
 
-
-def load_enum(dbh, enum_dict, case):
-    
-    if case == "glycan_classification":
-        field_one = "classification.type.name"
-        field_two = "classification.subtype.name"
-        enum_dict[field_one], enum_dict[field_two] = [], []
-        for doc in dbh["c_glycan"].find({}, {"classification":1}):
-            for o in doc["classification"]:
-                if o["type"]["name"] not in enum_dict[field_one]:
-                    enum_dict[field_one].append(o["type"]["name"])
-                if o["subtype"]["name"] not in enum_dict[field_two]:
-                    enum_dict[field_two].append(o["subtype"]["name"])
-
-    return
 
 
 

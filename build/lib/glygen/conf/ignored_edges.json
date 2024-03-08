@@ -468,7 +468,7 @@
             "direction": "both"
         }
     ],
-	"motif": [
+    "motif": [
         {
             "source": "species",
             "target": "glycan",
@@ -521,17 +521,17 @@
         },
         {
             "source": "site",
-            "target": "protein",
-            "direction": "single"
-        },
-        {
-            "source": "site",
             "target": "glycan",
             "direction": "single"
         },
         {
             "source": "enzyme",
             "target": "glycan",
+            "direction": "single"
+        },
+	{
+            "source": "protein",
+            "target": "site",
             "direction": "single"
         }
     ]

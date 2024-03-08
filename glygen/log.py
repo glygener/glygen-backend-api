@@ -5,6 +5,7 @@ from glygen.db import log_error, log_request
 from glygen.document import get_one, get_many, insert_one, update_one, delete_one, order_json_obj
 from werkzeug.utils import secure_filename
 import datetime
+import pytz
 import time
 import subprocess
 import json
@@ -71,6 +72,7 @@ class Log(Resource):
     @api.doc('logging')
     @api.expect(logging_query_model)
     def post(self):
+        start_ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -84,6 +86,9 @@ class Log(Resource):
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         
+        end_ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
+        res_obj["start_ts"] = start_ts
+        res_obj["end_ts"] = end_ts
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 

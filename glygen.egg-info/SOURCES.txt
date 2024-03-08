@@ -65,7 +65,6 @@ glygen/conf/backup-edgerules.json
 glygen/conf/config.json
 glygen/conf/config.json-backup
 glygen/conf/dbinfo.json
-glygen/conf/edgerules.json
 glygen/conf/fieldmap.json
 glygen/conf/global_search.2.json
 glygen/conf/global_search.3.json
@@ -76,9 +75,11 @@ glygen/conf/glycan_fields.csv
 glygen/conf/glycan_scratch.csv
 glygen/conf/graph.json
 glygen/conf/hit_scoring.json
+glygen/conf/ignored_edges.json
 glygen/conf/integrity.conf
 glygen/conf/list_filters.json
 glygen/conf/newedgerules.json
+glygen/conf/node_order.json
 glygen/conf/protein_scratch.csv
 glygen/conf/section.1.json
 glygen/conf/section.2.json

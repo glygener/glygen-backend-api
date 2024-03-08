@@ -65,6 +65,14 @@ def main():
         x = subprocess.getoutput(cmd)
         print (x)
 
+    #remove dangling images
+    cmd = "docker images -f dangling=true"
+    line_list = subprocess.getoutput(cmd).split("\n")
+    for line in line_list[1:]:
+        image_id = line.split()[2]
+        cmd = "docker image rm -f " + image_id
+        x = subprocess.getoutput(cmd)
+
 
 
 if __name__ == '__main__':

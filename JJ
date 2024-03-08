@@ -1,0 +1,18 @@
+species <-> protein
+species <-> gene
+gene <-> disease
+disease <-> protein
+disease <-> site
+
+
+
+species -> glycan
+protein -> glycan
+protein -> site
+gene -> protein
+enzyme -> protein
+enzyme -> glycan
+glycan -> motif
+site -> glycan
+
+

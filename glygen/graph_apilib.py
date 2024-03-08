@@ -15,7 +15,7 @@ def getdata (query_obj, config_obj):
     json_url = os.path.join(SITE_ROOT, "conf/graph.json")
     graph_config_obj = json.load(open(json_url))
 
-    json_url = os.path.join(SITE_ROOT, "conf/edgerules.json")
+    json_url = os.path.join(SITE_ROOT, "conf/ignored_edges.json")
     edge_rules = json.load(open(json_url))
     conn_dict = graph_config_obj["initial"]
     edge_list_all = []
