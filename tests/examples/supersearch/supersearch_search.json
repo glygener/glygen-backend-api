@@ -1,15 +1,20 @@
-{ 
-                "concept_query_list":
-                    [
-                        {
-                        "concept":"protein",
-                    "query":{
-                        "aggregator":"$and",
-                        "unaggregated_list":[
-                            {"order":1, "path":"uniprot_ac", "operator":"$eq", "string_value":"P14210"}
-                        ],
-                        "aggregated_list":[]
-                    }
-                }
-                ]
+{
+  "concept_query_list": [
+    {
+      "concept": "motif",
+      "query": {
+        "aggregator": "$and",
+        "aggregated_list": [],
+        "unaggregated_list": [
+          {
+            "path": "glytoucan_ac",
+            "order": 0,
+            "operator": "$eq",
+            "string_value": "G00054MO"
+          }
+        ]
+      }
+    }
+  ]
 }
+

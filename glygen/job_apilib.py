@@ -46,21 +46,26 @@ def job_init(config_obj, data_path):
     in_file = data_path + "/releases/data/v-%s/misc/species_info.csv" % (init_obj["dataversion"])
  
     load_species_info(species_obj, in_file)
-    opt_list = [
-        {"value":"canonicalsequences_all", "label":"All species"}        
-    ]
+    opt_list_one = [{"value":"canonicalsequences_all", "label":"All species [canonical sequences]"}]
+    opt_list_two = [{"value":"allsequences_all", "label":"All species [all sequences]"}]
+
     species_list = []
     for k in species_obj:
         obj = species_obj[k]
         if obj["short_name"] not in species_list and obj["is_reference"] == "yes":
-            o = {"value":"canonicalsequences_%s" % (obj["short_name"]),"label":obj["common_name"]}
-            opt_list.append(o) 
+            lbl = "%s [canonical sequences]" % (obj["common_name"])
+            o = {"value":"canonicalsequences_%s" % (obj["short_name"]),"label":lbl}
+            opt_list_one.append(o) 
+            lbl = "%s [all sequences]" % (obj["common_name"])
+            o = {"value":"allsequences_%s" % (obj["short_name"]),"label":lbl}
+            opt_list_two.append(o) 
             species_list.append(obj["short_name"])
 
 
     for obj in res_obj["blastp"]["paramlist"]:
         if obj["id"] == "targetdb":
-            obj["optlist"] = opt_list
+            obj["optlist"] = opt_list_one + opt_list_two
+
 
     return res_obj
 
@@ -331,7 +336,7 @@ def parse_blastp_ouput(out_file, config_obj):
                 res_obj_dict[sbj_id]["hsp_list"][hsp_idx]["aln"][aln_idx]["sbjct"] = line
 
 
-    canon_list = res_obj_dict.keys()
+    seq_id_list = res_obj_dict.keys()
 
     sec_list = ["ptm_annotation", "glycation", "snv", "site_annotation", "glycosylation",
         "site_annotation", "glycosylation", "mutagenesis", "phosphorylation"        
@@ -340,38 +345,39 @@ def parse_blastp_ouput(out_file, config_obj):
     for sec in sec_list:
         prj_obj[sec] = 1
 
-    for canon in canon_list:
-        mongo_query = {"uniprot_canonical_ac":{"$eq": canon}}
+    for seq_id in seq_id_list:
+        mongo_query = {"isoforms.isoform_ac":{"$eq": seq_id}}
         doc  = dbh["c_protein"].find_one(mongo_query,prj_obj)
         if doc == None:
             continue
-
+        canon = doc["uniprot_canonical_ac"]
         sp_obj = doc["species"][0]
         o = {"tax_id":sp_obj["taxid"], "name":sp_obj["name"],
                 "common_name":sp_obj["common_name"]}
-        res_obj_dict[canon]["details"] = {}
-        res_obj_dict[canon]["details"]["species"] = o
-        res_obj_dict[canon]["details"]["protein_name"] = ""
+        res_obj_dict[seq_id]["details"] = {}
+        res_obj_dict[seq_id]["details"]["species"] = o
+        res_obj_dict[seq_id]["details"]["protein_name"] = ""
+        res_obj_dict[seq_id]["details"]["uniprot_canonical_ac"] = canon
         if "protein_names" in doc:
             if len(doc["protein_names"]) > 0:
-                res_obj_dict[canon]["details"]["protein_name"] = doc["protein_names"][0]["name"]
-        res_obj_dict[canon]["details"]["gene_name"] = ""
+                res_obj_dict[seq_id]["details"]["protein_name"] = doc["protein_names"][0]["name"]
+        res_obj_dict[seq_id]["details"]["gene_name"] = ""
         if "gene_names" in doc:
             if len(doc["gene_names"]) > 0:
-                res_obj_dict[canon]["details"]["gene_name"] = doc["gene_names"][0]["name"]
-        res_obj_dict[canon]["details"]["uniprot_id"] = ""
+                res_obj_dict[seq_id]["details"]["gene_name"] = doc["gene_names"][0]["name"]
+        res_obj_dict[seq_id]["details"]["uniprot_id"] = ""
         if "uniprot_id" in doc:
-            res_obj_dict[canon]["details"]["uniprot_id"] = doc["uniprot_id"]
+            res_obj_dict[seq_id]["details"]["uniprot_id"] = doc["uniprot_id"]
         for o in doc["protein_names"]:
             if o["type"] == "recommended":
-                res_obj_dict[canon]["details"]["protein_name"] = o["name"]
+                res_obj_dict[seq_id]["details"]["protein_name"] = o["name"]
                 break
         for o in doc["gene_names"]:
             if o["type"] == "recommended":
-                res_obj_dict[canon]["details"]["gene_name"] = o["name"]
+                res_obj_dict[seq_id]["details"]["gene_name"] = o["name"]
                 break
         for sec in sec_list:
-            res_obj_dict[canon]["details"][sec] = doc[sec]
+            res_obj_dict[seq_id]["details"][sec] = doc[sec]
 
 
 

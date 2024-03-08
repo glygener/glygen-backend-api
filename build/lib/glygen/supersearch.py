@@ -71,8 +71,11 @@ class Supersearch(Resource):
         supersearch_config_obj = json.load(open(json_url))
         config_obj["ignored_path_list"] = supersearch_config_obj["ignored_path_list"]
         config_obj["path_map"] = supersearch_config_obj["path_map"]
-        json_url = os.path.join(SITE_ROOT, "conf/edgerules.json")
+        json_url = os.path.join(SITE_ROOT, "conf/ignored_edges.json")
         config_obj["ignored_edges"] = json.load(open(json_url))
+        json_url = os.path.join(SITE_ROOT, "conf/node_order.json")
+        config_obj["node_order"] = json.load(open(json_url))
+
 
         res_obj = {}
         try:
@@ -101,8 +104,11 @@ class Supersearch(Resource):
         supersearch_config_obj = json.load(open(json_url))
         config_obj["ignored_path_list"] = supersearch_config_obj["ignored_path_list"]
         config_obj["path_map"] = supersearch_config_obj["path_map"]
-        json_url = os.path.join(SITE_ROOT, "conf/edgerules.json")
+        json_url = os.path.join(SITE_ROOT, "conf/ignored_edges.json")
         config_obj["ignored_edges"] = json.load(open(json_url))
+        json_url = os.path.join(SITE_ROOT, "conf/node_order.json")
+        config_obj["node_order"] = json.load(open(json_url))
+
 
         
         res_obj = {}
@@ -132,8 +138,10 @@ class Supersearch(Resource):
         supersearch_config_obj = json.load(open(json_url))
         config_obj["ignored_path_list"] = supersearch_config_obj["ignored_path_list"]
         config_obj["path_map"] = supersearch_config_obj["path_map"]
-        json_url = os.path.join(SITE_ROOT, "conf/edgerules.json")
+        json_url = os.path.join(SITE_ROOT, "conf/ignored_edges.json")
         config_obj["ignored_edges"] = json.load(open(json_url))
+        json_url = os.path.join(SITE_ROOT, "conf/node_order.json")
+        config_obj["node_order"] = json.load(open(json_url))
 
         res_obj = {}
         try:
@@ -162,8 +170,10 @@ class Supersearch(Resource):
         supersearch_config_obj = json.load(open(json_url))
         config_obj["ignored_path_list"] = supersearch_config_obj["ignored_path_list"]
         config_obj["path_map"] = supersearch_config_obj["path_map"]
-        json_url = os.path.join(SITE_ROOT, "conf/edgerules.json")
+        json_url = os.path.join(SITE_ROOT, "conf/ignored_edges.json")
         config_obj["ignored_edges"] = json.load(open(json_url))
+        json_url = os.path.join(SITE_ROOT, "conf/node_order.json")
+        config_obj["node_order"] = json.load(open(json_url))
 
         res_obj = {}
         try:

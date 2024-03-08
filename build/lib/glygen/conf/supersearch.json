@@ -58,7 +58,10 @@
             "subsumption.type",
             "wurcs",
             "crossref.database",
-            "crossref.id"
+            "crossref.id",
+	    "publication.evidence.database",
+            "publication.evidence.id",
+            "publication.reference.type"
         ],
         "enzyme":[
             "cluster_types.label",
@@ -302,7 +305,6 @@
             "publication.evidence.database",
             "publication.evidence.id",
             "publication.reference.type",
-            "publication.title",
             "residues.attachedby",
             "residues.detachedby",
             "residues.id",
@@ -437,7 +439,6 @@
             "publication.evidence.database",
             "publication.evidence.id",
             "publication.reference.type",
-            "publication.title",
             "refseq.name",
             "refseq.summary",
             "sequence.header",
