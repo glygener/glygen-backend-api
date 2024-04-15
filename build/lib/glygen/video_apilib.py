@@ -35,6 +35,7 @@ def video_addnew(logged_user, query_obj, config_obj):
     if user_info["access"] != "write":
         return {"error_list":[{"error_code":"no-write-access"}]}
 
+
     res_obj = {}
     try:
         #Always keep only one document

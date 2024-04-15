@@ -34,6 +34,24 @@ def get_coll_list(db_list):
     return coll_list
 
 
+def get_archived_docs(coll):
+
+    tmp_list = []
+
+    cmd = "ls -tr " + "/data/shared/glygen/archive/%s-*.json" % (coll)
+    file_list = subprocess.getoutput(cmd).split("\n")
+    in_file = file_list[-1]
+
+    doc_list = []
+    b = open(in_file, "r").read()
+    if b.strip() != "":
+        tmp_list = json.loads(b)
+        for doc in tmp_list:
+            if "_id" in doc:
+                doc.pop("_id")
+            doc_list.append(doc)
+
+    return doc_list
 
 
 ###############################
@@ -73,6 +91,7 @@ def main():
     glydb_pass = config_obj["dbinfo"]["glydb"]["password"]
     glydb_name =  config_obj["dbinfo"]["glydb"]["db"]
     indexed_colls = ["c_protein", "c_glycan", "c_motif", "c_publication", "c_biomarker"]
+    archived_colls = ["c_video", "c_outreach", "c_event"]
 
     db_list = config_obj["downloads"]["jsondb"]
     coll_list = get_coll_list(db_list)
@@ -103,26 +122,30 @@ def main():
             tmpdb_dbh[coll].drop()
             if coll in indexed_colls:
                 tmpdb_dbh[coll].drop_indexes()
-
-            
-            json_db = coll[2:] + "db"
-            file_list = glob.glob(jsondb_dir + "/" + json_db + "/*.json")
-            nrecords_total = len(file_list)
-            nrecords = 0
-            for in_file in file_list:
-                #debug
-                #if coll == "c_publication" and nrecords > 162000:
-                #    msg = " ... now loading %s" % (in_file)
-                #    write_progress_msg(msg, "a")
-
-                doc = json.loads(open(in_file, "r").read())
-                if "_id" in doc:
-                    doc.pop("_id")
-                result = tmpdb_dbh[coll].insert_one(doc)     
-                nrecords += 1
-                if nrecords != 0 and nrecords%1000 == 0:
-                    msg = " ... loaded %s out of %s documents to tmpdb.%s" % (nrecords, nrecords_total, coll)
-                    write_progress_msg(msg, "a")
+            if coll in archived_colls:
+                doc_list = get_archived_docs(coll)
+                nrecords_total = len(doc_list)
+                nrecords = 0
+                for doc in doc_list:
+                    result = tmpdb_dbh[coll].insert_one(doc)
+                    nrecords += 1
+                    if nrecords != 0 and nrecords%1000 == 0:
+                        msg = " ... loaded %s out of %s documents to tmpdb.%s" % (nrecords, nrecords_total, coll)
+                        write_progress_msg(msg, "a") 
+            else:
+                json_db = coll[2:] + "db"
+                file_list = glob.glob(jsondb_dir + "/" + json_db + "/*.json")
+                nrecords_total = len(file_list)
+                nrecords = 0
+                for in_file in file_list:
+                    doc = json.loads(open(in_file, "r").read())
+                    if "_id" in doc:
+                        doc.pop("_id")
+                    result = tmpdb_dbh[coll].insert_one(doc)     
+                    nrecords += 1
+                    if nrecords != 0 and nrecords%1000 == 0:
+                        msg = " ... loaded %s out of %s documents to tmpdb.%s" % (nrecords, nrecords_total, coll)
+                        write_progress_msg(msg, "a")
                 
             ts = datetime.datetime.now()
             msg = " ... finished loading %s out of %s documents to tmpdb.%s" % (nrecords,nrecords_total, coll)

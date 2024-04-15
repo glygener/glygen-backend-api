@@ -33,7 +33,7 @@ def get_taxid2name():
         obj = species_obj[k]
         if obj["is_reference"] == "yes":
             tax_id = str(obj["tax_id"])
-            tmp_dict[tax_id] = obj["long_name"]
+            tmp_dict[tax_id] = obj["common_name"]
 
     return tmp_dict
 
@@ -671,10 +671,12 @@ def get_filter_conf():
     tax_id_list = []
     for k in species_obj:
         obj = species_obj[k]
-        if obj["is_reference"] == "yes":
-            long_name, common_name = obj["long_name"], obj["common_name"]
-            label_dict[long_name] = common_name
-            order_dict[long_name] = int(obj["sort_order"]) if obj["sort_order"].isdigit() else 10000
+        if True:
+        #if obj["is_reference"] == "yes":
+            common_name = obj["common_name"]
+            label_dict[common_name] = common_name
+            order_dict[common_name] = int(obj["sort_order"]) if obj["sort_order"].isdigit() else 10000
+
 
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "conf/list_filters.json")

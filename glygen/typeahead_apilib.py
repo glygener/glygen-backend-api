@@ -14,8 +14,7 @@ from glygen.util import get_errors_in_query
 
 
 
-def global_typeahead(query_obj, config_obj):
-
+def global_typeahead(query_obj, config_obj, path_dict):
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
@@ -25,64 +24,7 @@ def global_typeahead(query_obj, config_obj):
     if error_list != []:
         return {"error_list":error_list}
 
-    path_dict = {
-        "protein":{
-            "uniprot_canonical_ac":{
-                "type":"string"
-            },
-            "uniprot_id":{
-                "type":"string"
-            },
-            "crossref.id":{
-                "type":"objlist"
-            },
-            "protein_names.name":{
-                "type":"objlist"
-            },
-            "gene_names.name":{
-                "type":"objlist"
-            },
-            "refseq.ac":{
-                "type":"objlist"
-            },
-            "publication.reference.id":{
-                "type":"objlistobjlist"
-            },
-            "disease.synonyms.name":{
-                "type":"objlistobjlist"
-            },
-            "disease.recommended_name.name":{
-                "type":"objlist"
-            },
-            "go_annotation.categories.go_terms.id":{
-                "type":"goterms"
-            },
-            "go_annotation.categories.go_terms.name":{
-                "type":"goterms"
-            }
-        },
-        "glycan":{
-            "glytoucan_ac":{
-                "type":"string"
-            },
-            "crossref.id":{
-                "type":"objlist"
-            },
-            "enzyme.uniprot_canonical_ac":{
-                "type":"objlist"
-            },
-            "enzyme.gene":{
-                "type":"objlist"
-            },
-            "motifs.name":{
-                "type":"objlist"
-            },
-            "publication.reference.id":{
-                "type":"objlistobjlist"
-            }
-        }
-    }
-   
+
     record_type_list = path_dict.keys()
     if "target" in query_obj:
         if query_obj["target"] in path_dict:

@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.typeahead_apilib import glycan_typeahead, protein_typeahead, global_typeahead, categorized_typeahead
-from glygen.util import get_req_obj, get_cached_records_direct
+from glygen.util import get_req_obj, get_cached_records_direct, get_errors_in_query
 import traceback
 
 
@@ -20,7 +20,11 @@ api = Namespace("typeahead", description="IDmapping APIs")
 
 typeahead_query_model = api.model(
     'Search Init Query', 
-    { 'query': fields.String(required=True, default="", description='')}
+    {
+        "field": fields.String(required=True, default="glytoucan_ac"),
+        "value": fields.String(required=True, default="G"),
+        "limit": fields.Integer(required=True, default=10)
+    }
 )
 
 categorized_typeahead_query_model = api.model(
@@ -72,6 +76,11 @@ class Typeahead(Resource):
             ] 
             res_obj = log_request(req_obj, "/typeahead/typeahead/", request)
             if "error_list" not in res_obj:
+                #Collect errors 
+                error_list = get_errors_in_query("typeahead_protein",req_obj, config_obj)
+                if error_list != []:
+                    return {"error_list":error_list}
+
                 tmp_obj_one, tmp_obj_two = [], []
                 if req_obj["field"] in field_list_one:
                     tmp_obj_one = glycan_typeahead(req_obj, config_obj)
@@ -131,12 +140,14 @@ class Typeahead(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        json_url = os.path.join(SITE_ROOT, "conf/global_typeahead.json")
+        path_dict = json.load(open(json_url))
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/typeahead/global_typeahead/", request)
             if "error_list" not in res_obj:
-                tmp_obj = global_typeahead(req_obj, config_obj)
+                tmp_obj = global_typeahead(req_obj, config_obj, path_dict)
                 if "error_list" in tmp_obj:
                     res_obj = tmp_obj
                 else:
@@ -145,7 +156,6 @@ class Typeahead(Resource):
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
-
 
     @api.doc(False)
     def get(self):

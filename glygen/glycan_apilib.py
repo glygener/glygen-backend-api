@@ -48,11 +48,13 @@ def glycan_search_simple(query_obj, config_obj):
     if error_list != []:
         return {"error_list":error_list}
 
+    
     tv, q = is_glycan_composition(query_obj["term"])
-    if query_obj["term_category"] == "any" and tv == False:
-        query_obj["term"] = transform_query_term(query_obj["term"])
+    new_query_obj = json.loads(json.dumps(query_obj))
+    if new_query_obj["term_category"] == "any" and tv == False:
+        new_query_obj["term"] = transform_query_term(new_query_obj["term"])
 
-    mongo_query = get_simple_mongo_query(query_obj)
+    mongo_query = get_simple_mongo_query(new_query_obj)
     #return {"error_list":[{"error":mongo_query}]}
     #mongo_query = {"byonic": {"$options": "i", "$regex": "Hex\(5\)"}}
     #return mongo_query
@@ -135,18 +137,49 @@ def glycan_search(query_obj, config_obj):
             if res not in seen:
                 o = {"residue":res, "min":default_min, "max":default_max}
                 query_obj["composition"].append(o)
-        
+   
+    sp_map = { 
+        "Rat":[{"id":10114},{"id":10116}]
+    }
+
+    #new_query_obj = json.loads(json.dumps(query_obj))
+    #if "organism" in new_query_obj:
+    #    if "organism_list" in new_query_obj["organism"]:
+    #        if len(new_query_obj["organism"]["organism_list"]) == 1:
+    #            tmp_seen = {}
+    #            o = new_query_obj["organism"]["organism_list"][0]
+    #            if "id" not in o and "common_name" in o:
+    #                common_name = o["common_name"]
+    #                if common_name in sp_map:
+    #                new_query_obj["organism"]["organism_list"] = sp_map[common_name]
+    
+
+
     mongo_query = get_mongo_query(query_obj)
     #return mongo_query
+
 
     collection = "c_glycan"
     cache_collection = "c_cache"
 
+    prj_obj = {"glytoucan_ac":1, "subsumption":1, "composition":1,"composition_expanded":1, "glycan_identifier":1,"crossref.id":1}
+    cur_list = []
+    cur_list += list(dbh[collection].find(mongo_query,prj_obj))
+
+    seen_record = {}
+    if "protein_identifier" in query_obj:
+        p_id = query_obj["protein_identifier"]
+        mongo_query = {"sections.glycoprotein.uniprot_canonical_ac":{"$regex": p_id, "$options": "i"}}
+        for doc in dbh["c_batch"].find(mongo_query, {"recordid":1}):
+            if doc["recordid"] not in seen_record:
+                cur_list += list(dbh[collection].find({"glytoucan_ac":doc["recordid"]},prj_obj))
+
+            seen_record[doc["recordid"]] = True
+                    
     i = 0
     results = []
-    prj_obj = {"glytoucan_ac":1, "subsumption":1, "composition":1,"composition_expanded":1, "glycan_identifier":1,"crossref.id":1}
     doc_list = []
-    for doc in dbh[collection].find(mongo_query,prj_obj):
+    for doc in cur_list:
         comp_flag_list = []
         for k in ["composition", "composition_expanded"]:
             if k in query_obj:
@@ -157,6 +190,9 @@ def glycan_search(query_obj, config_obj):
             continue
         doc_list.append(doc)
 
+
+        
+    #"sections.glycoprotein.uniprot_canonical_ac"
 
     #Add additional glycan objects related to hits by subsumption
     if "glycan_identifier" in query_obj:
@@ -408,7 +444,7 @@ def get_simple_mongo_query(query_obj):
         cond_objs.append({"enzyme.gene":{'$regex': query_obj["term"], '$options': 'i'}})
     elif query_obj["term_category"] == "organism":
         cond_objs.append({"species.name":{'$regex': query_obj["term"], '$options': 'i'}})
-    
+        cond_objs.append({"species.common_name":{'$regex': query_obj["term"], '$options': 'i'}}) 
     
     mongo_query = {} if cond_objs == [] else { "$or": cond_objs }
     return mongo_query
@@ -534,7 +570,7 @@ def get_mongo_query(query_obj):
                         if cat_q != "":
                             tmp_q["species"]["$elemMatch"]["annotation_category"] = cat_q
                         or_list.append(tmp_q)
-                if "name" in o:
+                elif "name" in o:
                     if o["name"].strip() != "":
                         tmp_q = {
                             "species":
@@ -543,6 +579,16 @@ def get_mongo_query(query_obj):
                         if cat_q != "":
                             tmp_q["species"]["$elemMatch"]["annotation_category"] = cat_q
                         or_list.append(tmp_q)
+                elif "common_name" in o:
+                    if o["common_name"].strip() != "":
+                        tmp_q = {
+                            "species":
+                            { "$elemMatch": { "common_name": {"$regex":o["common_name"], '$options':'i'}}}
+                        }
+                        if cat_q != "":
+                            tmp_q["species"]["$elemMatch"]["annotation_category"] = cat_q
+                        or_list.append(tmp_q)
+
                 if or_list != []:
                     or_query = {"$or":or_list}
                     obj_list.append(or_query)

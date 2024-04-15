@@ -1,18 +1,10 @@
-species <-> protein
-species <-> gene
-gene <-> disease
-disease <-> protein
-disease <-> site
+home_init
+ {
+            "glycans": 7967,
+            "glycoproteins": 2677,
+            "proteins": 22897,
+            "species": "Rat"
+        },
 
-
-
-species -> glycan
-protein -> glycan
-protein -> site
-gene -> protein
-enzyme -> protein
-enzyme -> glycan
-glycan -> motif
-site -> glycan
 
 
