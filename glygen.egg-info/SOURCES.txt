@@ -71,6 +71,7 @@ glygen/conf/global_search.3.json
 glygen/conf/global_search.json
 glygen/conf/global_search.json-backup
 glygen/conf/global_search_all.json
+glygen/conf/global_typeahead.json
 glygen/conf/glycan_fields.csv
 glygen/conf/glycan_scratch.csv
 glygen/conf/graph.json

@@ -2,5 +2,5 @@
   "recordtype":"protein",
   "input_namespace":"UniProtKB",
   "output_namespace":"GeneID",
-  "input_idlist":["M9PJ12", "Q9VRR2"]
+  "input_idlist":["P18203", "P14210"]
 }

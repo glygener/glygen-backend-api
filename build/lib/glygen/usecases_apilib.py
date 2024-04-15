@@ -846,7 +846,7 @@ def get_genelocus_list_fields(dbh, uniprot_canonical_ac):
 
     protein_name = extract_name(obj["protein_names"], "recommended", "UniProtKB")
     gene_name = obj["gene"][0]["name"] if obj["gene"] != [] else ""
-    organism = obj["species"][0]["name"] if obj["species"] != [] else ""
+    organism = obj["species"][0]["common_name"] if obj["species"] != [] else ""
     tax_id = obj["species"][0]["taxid"] if obj["species"] != [] else 0
     gene_url = obj["gene"][0]["url"]
     for o in obj["isoforms"]:
@@ -947,7 +947,7 @@ def get_mongo_query(svc_name, query_obj):
             elif query_obj["evidence_type"] == "reported":
                 cond_objs.append({"glycosylation": {'$gt': []}})
                 cond_objs.append({"glycosylation.site_category":{"$regex":"reported","$options":"i"}})
-            elif query_obj["evidence_type"] == "both":
+            elif query_obj["evidence_type"] == "any":
                 cond_objs.append({"glycosylation": {'$gt': []}})
             elif query_obj["evidence_type"] == "none":
                 #to return empty list

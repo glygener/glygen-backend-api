@@ -125,7 +125,6 @@ def detail_download(query_obj, config_obj, data_path):
     data_buffer = ""
     if query_obj["download_type"] in download_type_list:
         record_obj = get_record_object(dbh, query_obj, config_obj)
-        
         if record_obj == None:
             return {"error_list":{"error_code":"non-existent-record"}}
         elif query_obj["download_type"] in ["glycan_image"] and format_lc in ["png", "svg"]:
@@ -571,7 +570,9 @@ def get_record_object(dbh, query_obj, config_obj):
     main_id = "uniprot_canonical_ac" 
 
     if query_obj["download_type"] in ["glycan_detail", "glycan_image", "glycan_section"]:
-        main_id = "glytoucan_ac" 
+        main_id = "glytoucan_ac"
+        if query_obj["id"].find("GGM.") != -1:
+            main_id, collection = "motif_ac", "c_motif"
     if query_obj["download_type"] in ["motif_detail", "motif_section"]:
         main_id = "motif_ac"
     if query_obj["download_type"] in ["site_detail", "site_section"]:
@@ -581,6 +582,7 @@ def get_record_object(dbh, query_obj, config_obj):
     if query_obj["download_type"] in ["biomarker_detail", "biomarker_section"]:
         main_id = "biomarker_id"    
     mongo_query = {main_id:{"$regex":query_obj["id"], "$options":"i"}}
+
     record_obj = dbh[collection].find_one(mongo_query)
     if record_obj == None:
         return record_obj

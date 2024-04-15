@@ -43,7 +43,28 @@ def search_init(config_obj):
         if record_type not in enum_dict:
             enum_dict[record_type] = {}
         enum_dict[record_type][doc["path"]] = doc["enum"] if "enum" in doc else []
-    
+
+
+    site_type_list = ["glycosylation_flag", "snv_flag", "phosphorylation_flag", "glycation_flag","mutagenesis_flag"]
+    for f in site_type_list:
+        enum_dict["site"][f] = ["true", "false"]
+        default_dict[f] = "true"
+    for f in ["fully_determined"]:
+        enum_dict["glycan"][f] = ["yes", "no"]
+        default_dict[f] = "yes"
+    for f in ["neighbors.direction"]:
+        enum_dict["site"][f] = ["upstream", "downstream"]
+    for f in ["neighbors.categories"]:
+        enum_dict["site"][f] = site_type_list
+
+    #enum_dict["taxid"], enum_dict["name"] = [], []
+    #for doc in dbh["c_species"].find({}):
+    #    enum_dict["taxid"].append(doc["taxid"])
+    #    enum_dict["name"].append(doc["name"])   
+
+
+
+ 
     init_dict = {}
     for record_type in config_obj["record_type_info"]:
         label = config_obj["record_type_info"][record_type]["concept_label"]

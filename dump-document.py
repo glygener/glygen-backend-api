@@ -52,6 +52,7 @@ def main():
         client.server_info()
         dbh = client[db_name]
         q = {}
+        q = {"recordid":"G49108TO"}
         for doc in dbh[coll].find(q):
             for p in ["password"]:
                 if p in doc:

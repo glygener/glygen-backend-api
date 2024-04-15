@@ -46,10 +46,11 @@ def protein_search_simple(query_obj, config_obj):
         return {"error_list":error_list}
 
 
-    if query_obj["term_category"] == "any":
-        query_obj["term"] = transform_query_term(query_obj["term"])
+    new_query_obj = json.loads(json.dumps(query_obj))
+    if new_query_obj["term_category"] == "any":
+        new_query_obj["term"] = transform_query_term(new_query_obj["term"])
 
-    mongo_query = get_simple_mongo_query(query_obj)
+    mongo_query = get_simple_mongo_query(new_query_obj)
     #return mongo_query
 
     collection = "c_protein"
@@ -422,6 +423,8 @@ def get_simple_mongo_query(query_obj):
         cond_objs.append({"pathway.name":{'$regex': query_obj["term"], '$options': 'i'}})
     elif query_obj["term_category"] == "organism":
         cond_objs.append({"species.name":{'$regex': query_obj["term"], '$options': 'i'}})
+        cond_objs.append({"species.common_name":{'$regex': query_obj["term"], '$options': 'i'}})
+
 
     mongo_query = {} if cond_objs == [] else { "$or": cond_objs }
 
@@ -482,10 +485,14 @@ def get_mongo_query(query_obj):
     
     #organism
     if "organism" in query_obj:
+        tmp_cnd_list = []
         if "id" in query_obj["organism"]:
             if type(query_obj["organism"]["id"]) is int:
-                cond_objs.append({"species.taxid": {'$eq': query_obj["organism"]["id"]}})
-    
+                tmp_cnd_list.append({"species.taxid": {'$eq': query_obj["organism"]["id"]}})
+        if "name" in query_obj["organism"]:
+            tmp_cnd_list.append({"species.common_name": {'$regex': query_obj["organism"]["name"], '$options': 'i'}})
+        if tmp_cnd_list != []:
+            cond_objs.append({"$or":tmp_cnd_list}) 
     #biomarker
     if "biomarker" in query_obj:
         if "id" in query_obj["biomarker"]:
