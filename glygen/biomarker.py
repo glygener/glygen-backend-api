@@ -10,8 +10,9 @@ import subprocess
 import json
 import bcrypt
 
-from glygen.biomarker_apilib import biomarker_detail
-from glygen.util import get_req_obj
+from glygen.biomarker_apilib import biomarker_detail, biomarker_search
+from glygen.util import get_req_obj, get_cached_records_indirect
+
 import traceback
 
 
@@ -19,9 +20,15 @@ api = Namespace("biomarker", description="Biomarker APIs")
 
 detail_query_model = api.model("Biomarker Detail Query", 
     { 
-        "id": fields.String(required=True, default="A0001")
+        "biomarker_canonical_id": fields.String(required=True, default="A0001")
     }
 )
+
+search_query_model = api.model("Biomarker Search Query",
+    { "biomarker_canonical_id": fields.String(required=True, default="A001")}
+)
+
+list_query_model = api.model("Biomarker List Query",{ "id": fields.String(required=True, default="")})
 
 
 @api.route('/detail/<biomarker_id>/')
@@ -35,7 +42,7 @@ class Biomarker(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = {"id":biomarker_id}
+            req_obj = {"biomarker_canonical_id":biomarker_id}
             req_obj_extra = get_req_obj(request)
             if req_obj_extra != None:
                 if "paginated_tables" in req_obj_extra:
@@ -54,7 +61,51 @@ class Biomarker(Resource):
 
 
 
+@api.route('/search/')
+class Biomarker(Resource):
+    @api.doc('search')
+    @api.expect(search_query_model)
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = get_req_obj(request)
+            res_obj = log_request(req_obj, "/biomarker/search/", request)
+            if "error_list" not in res_obj:
+                res_obj = biomarker_search(req_obj, config_obj)
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200 
+        return res_obj, http_code
+    
+    @api.doc(False)
+    def get(self):
+        return self.post()
 
 
 
+@api.route('/list/')
+class Protein(Resource):
+    @api.doc('list')
+    @api.expect(list_query_model)
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = get_req_obj(request)
+            res_obj = log_request(req_obj, "/biomarker/list/", request)
+            if "error_list" not in res_obj:
+                res_obj = get_cached_records_indirect(req_obj, config_obj)
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
+    @api.doc(False)
+    def get(self):
+        return self.post()
 

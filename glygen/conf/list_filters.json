@@ -206,6 +206,8 @@
             }
         }
     },
+    "biomarker":{
+    },
     "site":{
         "by_glycosylation_type":{
             "group_order":1,

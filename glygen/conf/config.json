@@ -92,7 +92,7 @@
                 "uniprot_canonical_ac":1
             }
 	    ,"c_biomarker":{
-                "biomarker_id":1
+                "biomarker_canonical_id":1
             }
 	    ,"c_motif":{
                 "motif_ac":1
@@ -382,13 +382,36 @@
         }
         ,"biomarker_detail":{
             "field_info":{
-                "id":{"type":"string", "maxlen":200}
+                "biomarker_canonical_id":{"type":"string", "maxlen":200}
             	,"paginated_tables":{"type":"string", "maxlen":10000}
 	    }
-            ,"requiredfields":["id"]
+            ,"requiredfields":["biomarker_canonical_id"]
             ,"collectionlist":["c_biomarker"]
         }
-        ,"motif_detail":{
+        ,"biomarker_search":{
+            "field_info":{
+                "biomarker_canonical_id":{"type":"string", "maxlen":200}
+            }
+            ,"requiredfields":[]
+            ,"collectionlist":["c_biomarker","c_cache"]
+        }
+        ,"biomarker_list":{
+            "field_info":{
+                "id":{"type":"string"}
+                ,"sort":{"type":"string"}
+                ,"order":{"type":"string"}
+                ,"limit":{"type":"number"}
+                ,"offset":{"type":"number"}
+            }
+            ,"returnfields":{
+                "int":["hit_score"]
+                ,"float":["mass"]
+                ,"string":["biomarker_canonical_id"]
+            }
+            ,"requiredfields":["id"]
+            ,"collectionlist":["c_cache"]
+        }
+	,"motif_detail":{
             "field_info":{
                 "motif_ac":{"type":"string", "maxlen":20}
                 ,"glytoucan_ac":{"type":"string", "maxlen":20}

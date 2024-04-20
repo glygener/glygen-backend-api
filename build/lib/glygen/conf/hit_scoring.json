@@ -82,6 +82,8 @@
             }
         }
     },
+    "biomarker":{
+    },
     "site":{
         "misc":{
             "site_top_glycan_definition_score":{
