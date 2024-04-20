@@ -166,8 +166,8 @@ class Auth(Resource):
                 error = "password does not exist for registerd user"
             else:
                 submitted_password = password.encode('utf-8')
-                stored_password = user_doc['password'].encode('utf-8')
-                #stored_password = user_doc['password']
+                #stored_password = user_doc['password'].encode('utf-8')
+                stored_password = user_doc['password']
                 if bcrypt.hashpw(submitted_password, stored_password) != stored_password:
                     error = "incorrect-email/password"
             res_obj = log_request(req_obj, "/auth/login/", request)
