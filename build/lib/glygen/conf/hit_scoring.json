@@ -83,6 +83,18 @@
         }
     },
     "biomarker":{
+    	"misc":{
+            "biomarker_exact_match": {"weight":50.0}
+        },
+        "direct_boolean":{
+
+        },
+	"direct_numeric":{
+            "biomarker_component_count":{
+                "weight":10.0,
+                "fieldlist":["component_count"]
+            }
+	}  
     },
     "site":{
         "misc":{

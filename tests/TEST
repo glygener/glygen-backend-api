@@ -128,7 +128,9 @@
   $ http POST :8082/outreach/update/ < tests/examples/outreach/outreach_update.json
 
 
-  $ http POST :8082/biomarker/detail/A0001
+  $ http POST :8082/biomarker/detail/AA4686-1
+  $ http POST :8082/biomarker/search_init/
+  $ http POST :8082/biomarker/search_simple/ < tests/examples/biomarker/search_simple.json
   $ http POST :8082/biomarker/search < tests/examples/biomarker/search.json
   $ http POST :8082/biomarker/list < tests/examples/biomarker/list.json
 

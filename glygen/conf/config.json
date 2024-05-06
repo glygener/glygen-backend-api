@@ -92,7 +92,7 @@
                 "uniprot_canonical_ac":1
             }
 	    ,"c_biomarker":{
-                "biomarker_canonical_id":1
+                "biomarker_id":1
             }
 	    ,"c_motif":{
                 "motif_ac":1
@@ -382,19 +382,47 @@
         }
         ,"biomarker_detail":{
             "field_info":{
-                "biomarker_canonical_id":{"type":"string", "maxlen":200}
+                "biomarker_id":{"type":"string", "maxlen":200}
             	,"paginated_tables":{"type":"string", "maxlen":10000}
 	    }
-            ,"requiredfields":["biomarker_canonical_id"]
+            ,"requiredfields":["biomarker_id"]
             ,"collectionlist":["c_biomarker"]
+        }
+        ,"biomarker_searchinit":{
+            "field_info":{
+            }
+            ,"requiredfields":[]
+            ,"collectionlist":["c_searchinit"]
+        }
+        ,"biomarker_search_simple":{
+            "field_info":{
+                "query_type":{"type":"string"}
+                ,"operation":{"type":"string"}
+                ,"term":{"type":"string"}
+                ,"term_category":{"type":"string"}
+            }
+            ,"requiredfields":["term", "term_category"]
+            ,"collectionlist":["c_biomarker","c_cache"]
         }
         ,"biomarker_search":{
             "field_info":{
-                "biomarker_canonical_id":{"type":"string", "maxlen":200}
-            }
+                "biomarker_id":{"type":"string", "maxlen":200},
+		"biomarker_canonical_id":{"type":"string", "maxlen":200},
+		"biomarker":{"type":"string", "maxlen":200},
+		"biomarker_entity_name":{"type":"string", "maxlen":200},
+		"biomarker_entity_id":{"type":"string", "maxlen":200},
+		"biomarker_entity_type":{"type":"string", "maxlen":200},
+		"specimen_name":{"type":"string", "maxlen":200},
+		"specimen_id":{"type":"string", "maxlen":200},
+		"specimen_loinc_code":{"type":"string", "maxlen":200},
+		"best_biomarker_role":{"type":"string", "maxlen":200},
+		"condition_id":{"type":"string", "maxlen":200},
+		"condition_name":{"type":"string", "maxlen":200},
+            	"publication_id":{"type":"string", "maxlen":200}
+	    }
             ,"requiredfields":[]
             ,"collectionlist":["c_biomarker","c_cache"]
-        }
+	}
         ,"biomarker_list":{
             "field_info":{
                 "id":{"type":"string"}
@@ -405,8 +433,7 @@
             }
             ,"returnfields":{
                 "int":["hit_score"]
-                ,"float":["mass"]
-                ,"string":["biomarker_canonical_id"]
+                ,"string":["biomarker_id"]
             }
             ,"requiredfields":["id"]
             ,"collectionlist":["c_cache"]
@@ -919,7 +946,16 @@
             ,"requiredfields":["field", "value", "limit"]
             ,"collectionlist":["c_protein"]
         }
-        ,"categorized_typeahead":{
+        ,"typeahead_biomarker":{
+            "field_info":{
+                "field":{"type":"string"}
+                ,"value":{"type":"string"}
+                ,"limit":{"type":"number"}
+            }
+            ,"requiredfields":["field", "value", "limit"]
+            ,"collectionlist":["c_biomarker"]
+        }
+	,"categorized_typeahead":{
             "field_info":{
                 "field":{"type":"string"}
                 ,"value":{"type":"string"}
@@ -1121,7 +1157,8 @@
             ,"site_detail":{"cache":"c_site", "formatlist":["json"]}
             ,"publication_detail":{"cache":"c_publication", "formatlist":["json"]}
             ,"biomarker_detail":{"cache":"c_biomarker", "formatlist":["json"]}
-            ,"protein_detail_isoformset":{"cache":"c_protein", "formatlist":["fasta"]}
+            ,"biomarker_list":{"cache":"c_cache", "formatlist":["csv","json"]}
+	    ,"protein_detail_isoformset":{"cache":"c_protein", "formatlist":["fasta"]}
             ,"protein_detail_homologset":{"cache":"c_protein", "formatlist":["fasta"]}
             ,"glycan_image":{"cache":"c_glycan", "formatlist":["png", "svg"]}
             ,"idmapping_list_mapped":{"cache":"c_cache", "formatlist":["csv"]}

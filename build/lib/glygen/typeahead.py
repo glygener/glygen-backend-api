@@ -10,7 +10,7 @@ import subprocess
 import json
 import bcrypt
 
-from glygen.typeahead_apilib import glycan_typeahead, protein_typeahead, global_typeahead, categorized_typeahead
+from glygen.typeahead_apilib import glycan_typeahead, protein_typeahead, biomarker_typeahead,global_typeahead, categorized_typeahead
 from glygen.util import get_req_obj, get_cached_records_direct, get_errors_in_query
 import traceback
 
@@ -74,6 +74,20 @@ class Typeahead(Resource):
                 "biomarker_id", "biomarker_name","biomarker_type",
                 "biomarker_disease_id", "biomarker_disease_name"
             ] 
+            field_list_three = [
+                "biomarker_id", "biomarker_canonical_id"
+                "biomarker",
+                "biomarker_entity_name",
+                "biomarker_entity_id",
+                "biomarker_entity_type",
+                "specimen_name",
+                "specimen_id",
+                "specimen_loinc_code",
+                "best_biomarker_role",
+                "condition_id",
+                "condition_name",
+                "publication_id"
+            ]
             res_obj = log_request(req_obj, "/typeahead/typeahead/", request)
             if "error_list" not in res_obj:
                 #Collect errors 
@@ -81,17 +95,21 @@ class Typeahead(Resource):
                 if error_list != []:
                     return {"error_list":error_list}
 
-                tmp_obj_one, tmp_obj_two = [], []
+                tmp_obj_one, tmp_obj_two, tmp_obj_three = [], [], []
                 if req_obj["field"] in field_list_one:
                     tmp_obj_one = glycan_typeahead(req_obj, config_obj)
                 if req_obj["field"] in field_list_two:
                     tmp_obj_two = protein_typeahead(req_obj, config_obj)
+                if req_obj["field"] in field_list_three:
+                    tmp_obj_three = biomarker_typeahead(req_obj, config_obj)
                 if "error_list" in tmp_obj_one:
                     res_obj = tmp_obj_one
                 elif "error_list" in tmp_obj_two: 
                     res_obj = tmp_obj_two
+                elif "error_list" in tmp_obj_three:
+                    res_obj = tmp_obj_three
                 else:
-                    res_obj = sorted(list(set(tmp_obj_one + tmp_obj_two)))
+                    res_obj = sorted(list(set(tmp_obj_one + tmp_obj_two + tmp_obj_three)))
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

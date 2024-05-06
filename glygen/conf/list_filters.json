@@ -207,6 +207,42 @@
         }
     },
     "biomarker":{
+        "by_assessed_entity_type":{
+            "group_order":1,
+            "group_label":"By Entity Type",
+            "record_key":"assessed_entity_type",
+            "order_dict":{
+                "protein":1,
+                "glycan":2
+            },
+            "label_dict":{
+                "protein":"Protein",
+                "glycan":"Glycan"
+            }
+        },
+	"by_biomarker_role":{
+            "group_order":2,
+            "group_label":"By Biomarker Role",
+            "record_key":"best_biomarker_role",
+            "order_dict":{
+                "diagnostic":1,
+                "monitoring":2,
+                "predictive":3,
+                "prognostic":4,
+                "risk":5,
+                "response":6,
+                "safety":7
+            },
+            "label_dict":{
+                "diagnostic":"Diagnostic",
+                "monitoring":"Monitoring",
+                "predictive":"Predictive",
+                "prognostic":"Prognostic",
+                "risk":"Risk",
+                "response":"Response",
+                "safety":"Safety"
+            }
+        }
     },
     "site":{
         "by_glycosylation_type":{

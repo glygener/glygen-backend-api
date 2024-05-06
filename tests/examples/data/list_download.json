@@ -1,8 +1,8 @@
 {
-        "id": "15dd9e3e1e0c598bb451a52be9ef140e",
-                "download_type": "genelocus_list",
-                        "format": "csv",
-                                "compressed": false
-                                    }
+	"id": "4f21c7f3a27853952adcd0838b8dc5cb",
+	"download_type": "biomarker_list",
+	"format": "json",
+	"compressed": false
+}
 
 
