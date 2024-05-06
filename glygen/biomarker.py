@@ -10,7 +10,7 @@ import subprocess
 import json
 import bcrypt
 
-from glygen.biomarker_apilib import biomarker_detail, biomarker_search
+from glygen.biomarker_apilib import biomarker_detail, biomarker_search, biomarker_search_init, biomarker_search_simple
 from glygen.util import get_req_obj, get_cached_records_indirect
 
 import traceback
@@ -18,17 +18,94 @@ import traceback
 
 api = Namespace("biomarker", description="Biomarker APIs")
 
+
+search_init_query_model = api.model("Biomarker Search Init Query", {})
+
+search_simple_query_model = api.model("Biomarker Simple Search Query",
+    {
+        "term_category": fields.String(required=True, default="biomarker"),
+        "term": fields.String(required=True, default="AA4686-1")
+    }
+)
+
 detail_query_model = api.model("Biomarker Detail Query", 
     { 
-        "biomarker_canonical_id": fields.String(required=True, default="A0001")
+        "biomarker_id": fields.String(required=True, default="AA4686-1")
     }
 )
 
 search_query_model = api.model("Biomarker Search Query",
-    { "biomarker_canonical_id": fields.String(required=True, default="A001")}
+    { 
+        "biomarker_id": fields.String(required=True, default="AA4686-1"),
+        "biomarker":fields.String(required=True, default="increased IL6 level"),
+        "biomarker_entity_name":fields.String(required=True, default="Interleukin-6"),
+        "biomarker_entity_id":fields.String(required=True, default="P05231-1"),
+        "biomarker_entity_type":fields.String(required=True, default="protein"),
+        "specimen_name":fields.String(required=True, default="blood"),
+        "specimen_id":fields.String(required=True, default="0000178"),
+        "specimen_loinc_code":fields.String(required=True, default="26881-3"),
+        "best_biomarker_role":fields.String(required=True, default="prognostic"),
+        "condition_id":fields.String(required=True, default="DOID:10283"),
+        "condition_name":fields.String(required=True, default="prostate cancer"),
+        "publication_id":fields.String(required=True, default="32234467")
+    }
 )
 
+
+
 list_query_model = api.model("Biomarker List Query",{ "id": fields.String(required=True, default="")})
+
+
+
+
+@api.route('/search_simple/')
+class Biomarker(Resource):
+    @api.doc('search_simple')
+    @api.expect(search_simple_query_model)
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = get_req_obj(request)
+            res_obj = log_request(req_obj, "/biomarker/search_simple/", request)
+            if "error_list" not in res_obj:
+                res_obj = biomarker_search_simple(req_obj, config_obj)
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
+
+
+
+@api.route('/search_init/')
+class Biomarker(Resource):
+    @api.doc('search_init')
+    @api.expect(search_init_query_model)
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            res_obj = log_request({}, "/biomarker/search_init/", request)
+            if "error_list" not in res_obj:
+                res_obj = biomarker_search_init(config_obj)
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200 
+        return res_obj, http_code
+
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
 
 
 @api.route('/detail/<biomarker_id>/')
@@ -42,7 +119,7 @@ class Biomarker(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
-            req_obj = {"biomarker_canonical_id":biomarker_id}
+            req_obj = {"biomarker_id":biomarker_id}
             req_obj_extra = get_req_obj(request)
             if req_obj_extra != None:
                 if "paginated_tables" in req_obj_extra:
@@ -87,7 +164,7 @@ class Biomarker(Resource):
 
 
 @api.route('/list/')
-class Protein(Resource):
+class Biomarker(Resource):
     @api.doc('list')
     @api.expect(list_query_model)
     def post(self):

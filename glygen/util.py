@@ -239,7 +239,21 @@ def get_hit_score(doc, cache_info, score_dict):
                 n = doc[p]
                 if n > 0:
                     cond_match_freq[cond] = n
+    elif record_type == "biomarker":
+        cond_group, cond = "direct_boolean", ""
+        for cond in score_dict[record_type][cond_group]:
+            p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
+            for p in p_list:
+                if doc[p] == "yes":
+                    cond_match_freq[cond] = 1
 
+        cond_group, cond = "direct_numeric", ""
+        for cond in score_dict[record_type][cond_group]:
+            p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
+            for p in p_list:
+                n = doc[p]
+                if n > 0:
+                    cond_match_freq[cond] = n
 
     score = 0.1
     score_info = {"contributions":[], "formula":"sum(w + 0.01*f)", 

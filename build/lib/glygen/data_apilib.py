@@ -51,7 +51,7 @@ def list_download(query_obj, config_obj, data_path):
 
     format_lc = query_obj["format"].lower()
     download_type_list = [
-        "glycan_list", "site_list", "motif_list","protein_list", "genelocus_list", "ortholog_list",
+        "glycan_list", "site_list", "biomarker_list", "motif_list","protein_list", "genelocus_list", "ortholog_list",
         "idmapping_list_mapped", "idmapping_list_unmapped", "idmapping_list_all", 
         "idmapping_list_all_collapsed"
     ]
