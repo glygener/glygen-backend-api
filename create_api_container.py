@@ -46,7 +46,11 @@ def main():
     mail_port = config_obj["mail"]["port"]
     mail_sender = config_obj["mail"]["sender"]
 
-    conn_str = "mongodb://%s:%s@%s:27017/?authSource=%s" % (mongo_user, mongo_password, mongo_container, mongo_db)
+    host_ip = "172.17.0.1"
+    #conn_str = "mongodb://%s:%s@%s:27017/?authSource=%s" % (mongo_user, mongo_password, mongo_container, mongo_db)
+    conn_str = "mongodb://%s:%s@%s:27017/?authSource=%s" % (mongo_user, mongo_password, host_ip, mongo_db)
+
+ 
     cmd_list = []
     cmd_list.append("sudo systemctl stop docker-glygen-api-%s.service" % (server))
         
