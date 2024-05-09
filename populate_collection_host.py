@@ -164,22 +164,22 @@ def main():
 
             # NOW CREARING DUMP DIR
             write_progress_msg("\n ... removing old tmpdb dump", "a")
-            cmd = "docker exec running_glygen_mongo_%s rm -rf %s/tmpdb " % (server,dump_dir)
+            cmd = "rm -rf %s/tmpdb " % (dump_dir)
             x = subprocess.getoutput(cmd)
 
 
             write_progress_msg("\n ... creating new tmpdb.%s dump" % (coll), "a")
-            cmd = "docker exec running_glygen_mongo_%s mongodump --username %s --password %s "
+            cmd = "mongodump --username %s --password %s "
             cmd += "--db tmpdb --collection %s --out %s "
-            cmd = cmd % (server, tmpdb_user, tmpdb_pass, coll, dump_dir)
+            cmd = cmd % (tmpdb_user, tmpdb_pass, coll, dump_dir)
             x = subprocess.getoutput(cmd)
 
             write_progress_msg("\n ... restoring tmpdb dump to %s.%s" % (glydb_name, coll), "a")
             cmd = "mongorestore --username %s --password %s --db %s "
             cmd += "%s/tmpdb --drop "
-            cmd = cmd % (server, glydb_user, glydb_pass, glydb_name, dump_dir)
+            cmd = cmd % (glydb_user, glydb_pass, glydb_name, dump_dir)
             x = subprocess.getoutput(cmd)
-            
+            write_progress_msg("\n ... finished restoring", "a") 
 
 
 

@@ -46,7 +46,7 @@ def main():
     mail_port = config_obj["mail"]["port"]
     mail_sender = config_obj["mail"]["sender"]
 
-    host_ip = "172.17.0.1"
+    host_ip = config_obj["host_ip"][server]
     #conn_str = "mongodb://%s:%s@%s:27017/?authSource=%s" % (mongo_user, mongo_password, mongo_container, mongo_db)
     conn_str = "mongodb://%s:%s@%s:27017/?authSource=%s" % (mongo_user, mongo_password, host_ip, mongo_db)
 
@@ -65,7 +65,9 @@ def main():
         if container_id.strip() != "":
             cmd_list.append("docker rm -f %s " % (container_id))
 
-    cmd = "docker create --name %s --network %s -p 127.0.0.1:%s:80" % (api_container, network, port)
+    
+    #cmd = "docker create --name %s --network %s -p 127.0.0.1:%s:80" % (api_container, network, port)
+    cmd = "docker create --name %s -p 127.0.0.1:%s:80" % (api_container, port)
     cmd += " -v %s:%s -v %s:%s -e MONGODB_CONNSTRING=%s -e DB_NAME=%s" % (downloads_path, downloads_path, data_path, data_path, conn_str, mongo_db)
     cmd += " -e MAIL_SERVER=%s -e MAIL_PORT=%s -e MAIL_SENDER=%s -e DATA_PATH=%s -e DOWNLOADS_PATH=%s -e SERVER=%s %s" % (mail_server, mail_port, mail_sender, data_path, downloads_path, server, image) 
     
