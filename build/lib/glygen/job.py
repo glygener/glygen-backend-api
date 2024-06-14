@@ -106,7 +106,27 @@ class Job(Resource):
         config_obj["server"] = os.environ["SERVER"]
         res_obj = {}
         try:
-            req_obj = request.json
+            req_obj_form = request.form
+            req_obj_json = request.json
+            req_obj = {}
+            if req_obj_json != None:
+                req_obj = req_obj_json
+            else:
+                req_obj["jobtype"] = "isoform_mapper"
+                req_obj["parameters"] = {}
+                req_obj["intable"] = [["isoform_ac","amino_acid_pos","amino_acid"]]
+                if "userfile" in request.files:
+                    file_buffer = request.files.get("userfile").read()
+                    file_buffer = file_buffer.decode()
+                    file_buffer = file_buffer.replace("\r", "\n").replace("\n\n", "\n")
+                    line_list = file_buffer.split("\n")
+                    for line in line_list[1:]:
+                        if line.strip() == "":
+                            continue
+                        row = []
+                        for val in line.strip().split(","):
+                            row.append(val.replace("\"", ""))
+                        req_obj["intable"].append(row)
             qry = req_obj["query"] if "query" in req_obj else req_obj
             data_path, server = os.environ["DATA_PATH"],os.environ["SERVER"]
             res_obj = log_request(req_obj, "/job/addnew/", request)

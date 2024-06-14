@@ -275,13 +275,18 @@ def section_download(query_obj, config_obj, sec_info, data_path):
                 if sec.find("snv_") != -1 and path == "sequence":
                     val_obj = "%s -> %s" % (obj["sequence_org"], obj["sequence_mut"])
 
-                # get deeper into structure for "disease" obj list 
-                if type(val_obj) is list and path == "disease":
+                if type(val_obj) is list:
                     tmp_list = []
-                    for oo in obj[path]:
-                        if "recommended_name" in oo:
-                            d = "%s (%s)" % (oo["recommended_name"]["name"], oo["recommended_name"]["id"])
-                            tmp_list.append(d)
+                    # get deeper into structure for "disease" obj list 
+                    if path == "disease":
+                        for oo in obj[path]:
+                            if "recommended_name" in oo:
+                                d = "%s (%s)" % (oo["recommended_name"]["name"], oo["recommended_name"]["id"])
+                                tmp_list.append(d)
+                    else:
+                        for val in val_obj:
+                            if type(val) in [str, int, float]:
+                                tmp_list.append(str(val))
                     val_obj = "; ".join(tmp_list)
 
                 #if type(val_obj) is list and path == "referenced_proteins":
@@ -545,7 +550,7 @@ def get_list_object(query_obj, config_obj):
         list_query = {"sort":"glycan_count","order":"desc", "limit":10000000}
         list_obj = get_cached_motif_records_direct(list_query, config_obj)
     else:
-        list_query = {"id":query_obj["id"], "limit":10000000}
+        list_query = {"id":query_obj["id"], "limit":config_obj["max_download_records"]}
         if "filters" in query_obj:
             list_query["filters"] = query_obj["filters"]
         if query_obj["download_type"] in ["idmapping_list_all", "idmapping_list_all_collapsed",

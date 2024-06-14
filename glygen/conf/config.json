@@ -8,7 +8,8 @@
         ,"max_global_search_results":1000000
         ,"max_query_value_len":10000
         ,"max_sequence_len":3000
-        ,"cache_batch_size":5000
+        ,"max_download_records":100000
+	,"cache_batch_size":5000
         ,"globalsearchcutoff":1.0
         ,"max_results_count":{
 		  "glycan":100000
@@ -23,7 +24,14 @@
 	    "structure_search":{
                 "incmdflag":"-i",
                 "outcmdflag":"-o",
-                "path":{
+                "urlcmdflag":"-u",
+		"apiurl":{
+                    "prd":"http://172.17.0.12:10980",
+                    "beta":"http://172.17.0.13:10990",
+                    "tst":"http://172.17.0.4:10980",
+                    "dev":"http://172.17.0.4:10980"
+                },
+		"path":{
                     "prd":"python /app/job_submitters/structure_search.py",
                     "beta":"python /app/job_submitters/structure_search_beta.py",
                     "tst":"python /app/job_submitters/structure_search.py",
@@ -72,7 +80,24 @@
                         "id":"num_alignments", "label":"Max number of hits (Proteins)", "type":"int", "value":250, "cmdflag":"-num_alignments"
                     }
                 ]
-            }
+            },
+	    "isoform_mapper":{
+                "incmdflag":"-i",
+		"max_input_records":10,
+                "path":{
+                    "prd":"python /app/job_submitters/isoform_mapper.py",
+                    "beta":"python /app/job_submitters/isoform_mapper.py",
+                    "tst":"python /app/job_submitters/isoform_mapper.py",
+                    "dev":"python /app/job_submitters/isoform_mapper.py"
+                },
+		"input_files":[
+                    {"name":"input.csv", "format":"csv"}
+                ],
+		"output_files":[
+                    {"name":"output.csv", "format":"csv"}
+                ],
+		"paramlist":[]
+	    }
         }
         ,"record_type_info":{
             "protein":{"field":"uniprot_canonical_ac", "label":"UniProtKB Canonical Ac", "concept_label":"Protein"}

@@ -1,8 +1,7 @@
 {
-	"id": "4f21c7f3a27853952adcd0838b8dc5cb",
-	"download_type": "biomarker_list",
-	"format": "json",
-	"compressed": false
-}
-
-
+        "id": "e5e9e8999a3451a947eb2f05508b4a29",
+        "download_type": "site_list",
+        "format": "csv",
+        "compressed": false,
+        "filters": []
+  }

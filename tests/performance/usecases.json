@@ -1,0 +1,60 @@
+{
+    "usecases_biosynthesis_enzyme_to_glycans":{
+        "url":"/usecases/biosynthesis_enzyme_to_glycans/",
+        "query":"0/P15291-1/",
+	"semantic":true
+    }
+    ,"usecases_glycan_to_biosynthesis_enzymes":{
+        "url":"/usecases/glycan_to_biosynthesis_enzymes/",
+        "query":"0/G17689DH/",
+        "semantic":true
+    }
+    ,"usecases_glycan_to_glycoproteins":{
+        "url":"/usecases/glycan_to_glycoproteins/",
+        "query":"0/G17689DH/",
+        "semantic":true
+    }
+    ,"usecases_glycan_to_enzyme_gene_loci":{
+        "url":"/usecases/glycan_to_enzyme_gene_loci/",
+        "query":"0/G17689DH/",
+        "semantic":true
+    }
+    ,"usecases_protein_to_glycosequons":{
+        "url":"/usecases/protein_to_glycosequons/",
+        "query":"P14210-1/",
+        "semantic":true
+    }
+    ,"usecases_protein_to_orthologs":{
+        "url":"/usecases/protein_to_orthologs/",
+        "query":"P14210-1",
+        "semantic":true
+    }
+    ,"usecases_biosynthesis_enzyme_to_glycans":{
+        "url":"/usecases/biosynthesis_enzyme_to_glycans/",
+        "query":"0/P26572-1/",
+        "semantic":true
+    }
+    ,"usecases_species_to_glycohydrolases":{
+        "url":"/usecases/species_to_glycohydrolases/",
+        "query":"0/",
+        "semantic":true
+    }
+    ,"usecases_species_to_glycosyltransferases":{
+       "url":"/usecases/species_to_glycosyltransferases/",
+        "query":"0/",
+        "semantic":true
+    }
+    ,"usecases_species_to_glycoproteins":{
+       "url":"/usecases/species_to_glycoproteins/",
+        "query":"0/reported/",
+        "semantic":true
+    }  
+    ,"usecases_disease_to_glycosyltransferases":{
+       "url":"/usecases/disease_to_glycosyltransferases/",
+       "query":{"tax_id":9606, "do_name":"Gilbert syndrom"}
+    }
+}
+
+
+
+

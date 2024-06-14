@@ -22,6 +22,12 @@ def motif_detail(query_obj, config_obj):
         return error_obj
 
 
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
+    ts_list = []
+    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+     
+
     #Collect errors 
     error_list = get_errors_in_query("motif_detail", query_obj, config_obj)
     if error_list != []:
@@ -43,9 +49,12 @@ def motif_detail(query_obj, config_obj):
     if mongo_query == {}:
         return {"error_list":[{"error_code":"bad-query"}]}
 
+    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     motif_doc = dbh[collection].find_one(mongo_query)
     
+    ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
     if motif_doc == None:
@@ -75,15 +84,28 @@ def motif_detail(query_obj, config_obj):
         if k in prop_list:
             res_obj[k] = motif_doc[k]
 
+    ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
     q = {"record_id":{'$eq': motif_doc["glytoucan_ac"].upper()}}
     history_obj = dbh["c_idtrack"].find_one(q)
     res_obj["history"] = history_obj["history"] if history_obj != None else []
 
+    
+    ts_list.append("4a-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+
+
+    prj_obj = {"glytoucan_ac":1, "motifs":1, "glycoprotein":1, "enzyme":1, 
+        "mass":1, "number_monosaccharides":1, "iupac":1, "glycoct":1}
 
     mongo_query = {"motifs.id": {'$eq': motif_doc["motif_ac"]}}
-    doc_list = list(dbh["c_glycan"].find(mongo_query))
+    doc_list = list(dbh["c_glycan"].find(mongo_query, prj_obj))
+
+    ts_list.append("4b-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     results = get_parent_glycans(motif_doc["motif_ac"], doc_list, res_obj)
+
+    ts_list.append("5-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     sorted_id_list = sort_objects(results, config_obj["glycan_list"]["returnfields"], 
                                         query_obj["sort"], query_obj["order"])
@@ -116,6 +138,8 @@ def motif_detail(query_obj, config_obj):
         for sec in sec_tables:
             res_obj[sec] = sec_tables[sec]
 
+    ts_list.append("7-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    #return ts_list
 
     return order_obj(res_obj, config_obj["objectorder"]["glycan"])
 

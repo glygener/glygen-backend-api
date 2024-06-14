@@ -1,0 +1,34 @@
+{
+    "biomarker_search_simple":{
+        "url":"/biomarker/search_simple"
+        ,"query":{"term_category":"biomarker","term":"G17689DH"}
+    },
+    "biomarker_search":{
+        "url":"/biomarker/search"
+        ,"querylist":[
+            {
+                "label":"",
+                "query":{
+                }
+	    }
+        ]
+    }
+    ,"biomarker_list": {
+        "url": "/biomarker/list/", 
+        "querylist":[
+            {
+                "label":"Simple listing",
+                "query":{
+                    "id":""
+                }
+            }
+        ]
+    }
+    ,"biomarker_detail": {
+        "url": "/biomarker/detail/",
+        "query":"AN4493-1|AN4461-1|AA4695-1",
+        "semantic":true
+    }
+}
+
+

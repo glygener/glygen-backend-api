@@ -1,0 +1,17 @@
+1) When the API container is accessing data from mongodb running on the host,
+   it needs to know which IP address to use. To find the IP address of mongodb,
+   use the following command on the host and place the value in conf/config.json
+   under the "host_ip" property:
+
+   $ ss -natp  | grep 27017 | grep LISTEN
+
+
+2) When the API container needs to run a command from within another container,
+   such as the "running_substructure", it needs to know the API url of "running_substructure",
+   which is set under glygen/conf/config.json under the "jobinfo" property. To identify the
+   IP address of "running_substructure", run the following command:
+
+   $ docker exec -it running_substructure ip addr | grep inet | grep eth0
+
+
+

@@ -1,0 +1,35 @@
+{
+    "protein_search_simple":{
+        "url":"/protein/search_simple/",
+        "query":{"term_category":"protein","term":"P14210"}
+    }
+    ,"protein_search": {
+        "url": "/protein/search/",
+        "querylist":[
+            {
+                "label":"Query by protein accession",
+                "query": {}
+            }
+        ]
+    }
+    ,"protein_list": {
+        "url": "/protein/list/", 
+        "query": {
+            "id": ""
+        }
+    }
+    ,"protein_detail": {
+        "url": "/protein/detail/",
+        "query":"Q8WZ42|P42336|P31749",
+	"semantic":true
+    }
+    ,"protein_alignment": {
+        "url": "/protein/alignment/",
+        "query": {
+            "uniprot_canonical_ac": "P14210-1",
+            "cluster_type": "homologset.oma"
+        }
+    }
+}
+
+

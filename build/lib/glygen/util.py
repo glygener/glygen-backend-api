@@ -33,7 +33,7 @@ def get_taxid2name():
         obj = species_obj[k]
         if obj["is_reference"] == "yes":
             tax_id = str(obj["tax_id"])
-            tmp_dict[tax_id] = obj["common_name"]
+            tmp_dict[tax_id] = obj["glygen_name"]
 
     return tmp_dict
 
@@ -73,6 +73,9 @@ def transform_query_term(term):
 
     tmp_term = tmp_term.replace("(", "\\(").replace(")", "\\)")
     tmp_term = tmp_term.replace("[", "\\[").replace("]", "\\]")
+    tmp_term = tmp_term.replace("-", " ")
+    return tmp_term
+
     w_list = []
     for w in tmp_term.split(" "):
         w = w.strip()
@@ -687,9 +690,9 @@ def get_filter_conf():
         obj = species_obj[k]
         if True:
         #if obj["is_reference"] == "yes":
-            common_name = obj["common_name"]
-            label_dict[common_name] = common_name
-            order_dict[common_name] = int(obj["sort_order"]) if obj["sort_order"].isdigit() else 10000
+            species_name = obj["glygen_name"]
+            label_dict[species_name] = species_name
+            order_dict[species_name] = int(obj["sort_order"]) if obj["sort_order"].isdigit() else 10000
 
 
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -727,9 +730,17 @@ def get_cached_records_indirect(query_obj, config_obj):
         if key not in query_obj:
             query_obj[key] = default_hash[key]
 
+
+
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts_list = []
+    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
     #Get cached object
     mongo_query = {"list_id":query_obj["id"]}
     cached_obj = dbh[cache_collection].find_one(mongo_query)
+
+    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
 
 
@@ -751,6 +762,8 @@ def get_cached_records_indirect(query_obj, config_obj):
     for doc in dbh[cache_collection].find(mongo_query):
         id_list += doc["results"]
     nparts = int(float(len(id_list))/float(config_obj["supersearch_batch_size"])) + 1
+    
+    ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     for i in range(0, nparts):
         start = i*config_obj["supersearch_batch_size"]
@@ -758,10 +771,15 @@ def get_cached_records_indirect(query_obj, config_obj):
         end = len(id_list) if end > len(id_list) else end
         mongo_query = {"record_id":{"$in": id_list[start:end]}}
         for obj in dbh["c_list"].find(mongo_query):
+            hit_score, score_info = -1.0, {}
+            #if cached_obj["cache_info"]["query"] != {}:
+            #    hit_score, score_info = get_hit_score(obj, cached_obj["cache_info"], score_dict)
             hit_score, score_info = get_hit_score(obj, cached_obj["cache_info"], score_dict)
             obj["hit_score"] = hit_score
             obj["score_info"] = score_info
             cached_obj["results"].append(obj)
+    
+    ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     filter_conf = get_filter_conf() 
     
@@ -769,7 +787,12 @@ def get_cached_records_indirect(query_obj, config_obj):
 
     #Get available list before applying filtering
     available_list_before = []
+    
+    #comment for performance testing
     update_filters(cached_obj, 1)
+    ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+ 
     for obj in cached_obj["filters"]["available"]:
         available_list_before.append(obj)
         #if obj["id"] == "by_organism":
@@ -778,13 +801,20 @@ def get_cached_records_indirect(query_obj, config_obj):
         #            print "xxx", o["id"]
 
 
+    ts_list.append("5-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     #Apply filters
+    #comment for performance testing
     filter_list(cached_obj, query_obj)
 
+    ts_list.append("6-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
     #Update filters
+    #comment for performance testing
     update_filters(cached_obj, 2)
   
+    ts_list.append("7-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
 
     #update available counts
     count_dict = {}
@@ -813,6 +843,7 @@ def get_cached_records_indirect(query_obj, config_obj):
 
     cached_obj["filters"]["available"] = available_list_before
 
+    ts_list.append("8-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     if len(cached_obj["results"]) == 0:
         res_obj = {
@@ -855,6 +886,9 @@ def get_cached_records_indirect(query_obj, config_obj):
 
     res_obj["pagination"] = {"offset":query_obj["offset"], "limit":query_obj["limit"],
         "total_length":len(cached_obj["results"]), "sort":query_obj["sort"], "order":query_obj["order"]}
+
+    ts_list.append("9-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    #return ts_list
 
 
     return res_obj
@@ -1338,5 +1372,38 @@ def get_paginated_sections(obj, query_obj, section_list):
 
 
     return sec_tables
+
+
+def cache_result_list(list_id, res_obj, config_obj):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+    cache_coll = "c_listcache"
+    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    if cached_obj == None:
+        res = dbh[cache_coll].insert_one({"list_id":list_id, "res":res_obj})
+    
+    return {}
+
+
+def get_cached_result_list(list_id):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+    cache_coll = "c_listcache"
+    res_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    if res_obj != None:
+        res_obj = res_obj["res"]
+        
+    return res_obj
+
+
+def get_hash_id(record_type, obj):
+    hash_str = record_type + json.dumps(obj)
+    hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+    return hash_obj.hexdigest()
+    
 
 

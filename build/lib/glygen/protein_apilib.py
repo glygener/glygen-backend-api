@@ -9,7 +9,8 @@ from collections import OrderedDict
 
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, get_paginated_sections, transform_query_term
+from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, get_paginated_sections, transform_query_term, get_hash_id
+
 
 def protein_search_init(config_obj):
 
@@ -50,24 +51,28 @@ def protein_search_simple(query_obj, config_obj):
     if new_query_obj["term_category"] == "any":
         new_query_obj["term"] = transform_query_term(new_query_obj["term"])
 
+    record_type = "protein"
+    list_id = get_hash_id(record_type, query_obj)
+    
+    cache_coll = "c_cache"
+    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    if cached_obj != None:
+        if len(cached_obj["results"]) > 0:
+            return {"list_id":list_id}
+
     mongo_query = get_simple_mongo_query(new_query_obj)
     #return mongo_query
 
     collection = "c_protein"
     record_list = []
-    record_type = "protein"
     prj_obj = {"uniprot_canonical_ac":1}
     for obj in dbh[collection].find(mongo_query,prj_obj):
         record_list.append(obj["uniprot_canonical_ac"])
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
-    list_id = ""
+    list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
-        hash_str = record_type + "_" + json.dumps(query_obj)
-        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-        list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
             "ts":ts,
@@ -96,6 +101,14 @@ def protein_search(query_obj, config_obj):
     if error_list != []:
         return {"error_list":error_list}
 
+    record_type = "protein"
+    list_id = get_hash_id(record_type, query_obj)
+    cache_coll = "c_cache"
+    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    if cached_obj != None:
+        if len(cached_obj["results"]) > 0:
+            return {"list_id":list_id}
+
     mongo_query = get_mongo_query(query_obj)
     #return mongo_query
 
@@ -107,7 +120,6 @@ def protein_search(query_obj, config_obj):
 
     collection = "c_protein"
     record_list = []
-    record_type = "protein"
     prj_obj = {"uniprot_canonical_ac":1, "uniprot_ac":1, "uniprot_id":1, 
             "isoforms.isoform_ac":1}
     seen_id = {}
@@ -139,12 +151,8 @@ def protein_search(query_obj, config_obj):
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
-    list_id = ""
+    list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
-        hash_str = record_type + "_" + json.dumps(query_obj)
-        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-        list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
             "ts":ts,
@@ -268,19 +276,30 @@ def protein_detail(query_obj, config_obj):
             {"uniprot_ac":{'$eq': query_obj["uniprot_canonical_ac"].upper()}}
         ]
     }
+    
+
     obj = dbh[collection].find_one(mongo_query)
+    obj["_id"] = str(obj["_id"])
+    
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts_list = []
     c_a = {"recordtype":{"$eq": "protein"}}
     c_b = {"record_id":{'$regex':query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
     c_c = {"accessions":{'$regex':","+query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
 
+    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
     q_one = {"$and":[c_a, c_b]}
-    history_obj_one = dbh["c_idtrack"].find_one(q_one)
     q_two = {"$and":[c_a, c_c]}
-    history_obj_two = dbh["c_idtrack"].find_one(q_two)
+    history_obj_one = dbh["c_idtrack"].find_one(q_one)
+    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    q_two = {"$and":[c_a, c_c]}
+    ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
     if obj == None:
+        history_obj_two = dbh["c_idtrack"].find_one(q_two)
         post_error_list.append({"error_code":"non-existent-record"})
         res_obj = {"error_list":post_error_list}
         if history_obj_one != None:
@@ -328,7 +347,7 @@ def protein_detail(query_obj, config_obj):
                 obj[sec] += batch_doc["sections"][sec]
 
 
-
+ 
     url = config_obj["urltemplate"]["uniprot"] % (obj["uniprot_canonical_ac"])
     obj["uniprot_id"] = obj["uniprot_id"] if "uniprot_id" in obj else ""
     obj["uniprot"] = {
@@ -359,6 +378,9 @@ def protein_detail(query_obj, config_obj):
 
 
     clean_obj(obj, config_obj["removelist"]["c_protein"], "c_protein")
+
+    ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    #return ts_list
 
     return obj
 
@@ -505,22 +527,20 @@ def get_mongo_query(query_obj):
                 cond_objs.append(o)
         if "type" in query_obj["biomarker"]:
             if len(query_obj["biomarker"]["type"]) > 0:
-                o = {"biomarkers.instances.best_biomarker_type": {'$regex': query_obj["biomarker"]["type"], '$options': 'i'}}
+                o = {"biomarkers.best_biomarker_role": {'$regex': query_obj["biomarker"]["type"], '$options': 'i'}}
                 cond_objs.append(o)
         if "disease_id" in query_obj["biomarker"]:
             if len(query_obj["biomarker"]["disease_id"]) > 0:
                 disease_id = query_obj["biomarker"]["disease_id"]
                 or_list = [
-                    {"biomarkers.instances.disease.recommended_name.id":{'$regex':disease_id,'$options':'i'}},
-                    {"biomarkers.instances.disease.synonyms.id":{'$regex':disease_id,'$options':'i'}},
+                    {"biomarkers.condition.id_list":{'$regex':disease_id,'$options':'i'}}
                 ]
                 cond_objs.append({'$or':or_list})
         if "disease_name" in query_obj["biomarker"]:
             if len(query_obj["biomarker"]["disease_name"]) > 0:
                 disease_name = query_obj["biomarker"]["disease_name"]
                 or_list = [
-                    {"biomarkers.instances.disease.recommended_name.name":{'$regex':disease_name,'$options':'i'}},
-                    {"biomarkers.instances.disease.synonyms.name":{'$regex':disease_name,'$options':'i'}}
+                    {"biomarkers.condition.name_list":{'$regex':disease_name,'$options':'i'}}
                 ]
                 cond_objs.append({'$or':or_list})
 
@@ -575,8 +595,7 @@ def get_mongo_query(query_obj):
         or_list = [
             {"disease.recommended_name.name":{'$regex':query_obj["disease_name"],'$options':'i'}},
             {"disease.synonyms.name":{'$regex':query_obj["disease_name"],'$options':'i'}},
-            {"biomarkers.instances.disease.recommended_name.name":{'$regex':query_obj["disease_name"],'$options':'i'}},
-            {"biomarkers.instances.disease.synonyms.name":{'$regex':query_obj["disease_name"],'$options':'i'}}
+            {"biomarkers.condition.name_list":{'$regex':query_obj["disease_name"],'$options':'i'}}
         ]
         cond_objs.append({'$or':or_list})
 
@@ -585,8 +604,7 @@ def get_mongo_query(query_obj):
         or_list = [
             {"disease.recommended_name.id":{'$regex':query_obj["disease_id"],'$options':'i'}},
             {"disease.synonyms.id":{'$regex':query_obj["disease_id"],'$options':'i'}},
-            {"biomarkers.instances.disease.recommended_name.id":{'$regex':query_obj["disease_id"],'$options':'i'}},
-            {"biomarkers.instances.disease.synonyms.id":{'$regex':query_obj["disease_id"],'$options':'i'}}
+            {"biomarkers.condition.id_list":{'$regex':query_obj["disease_id"],'$options':'i'}}
         ]
         cond_objs.append({'$or':or_list})
 

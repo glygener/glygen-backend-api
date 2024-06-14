@@ -1,0 +1,36 @@
+{
+    "supersearch_search": {
+        "url": "/supersearch/search", 
+        "querylist": [
+            {
+		"label":"",
+		"query":{
+  		    "concept_query_list": [
+    			{
+      			   "concept": "species",
+      			   "query": {
+        			"aggregator": "$and",
+        			"aggregated_list": [],
+        			"unaggregated_list": [
+          			    {"path": "name", "order": 0, "operator": "$eq", "string_value": "Mouse"}
+        			]
+      			   }
+    			}
+  		      ]
+		}
+	   }
+	]
+    }
+    ,"supersearch_list": {
+        "url": "/supersearch/list/", 
+        "querylist":[
+            {
+                "label":"Simple listing",
+                "query":{
+                    "id":""
+                }
+            }
+        ]
+    }
+}
+

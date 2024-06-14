@@ -8,10 +8,10 @@ import pytz
 from collections import OrderedDict
 from bson import json_util, ObjectId
 import collections
+from flask import current_app
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_superquery, get_errors_in_query, sort_objects, cache_record_list
-
+from glygen.util import get_errors_in_superquery, get_errors_in_query, sort_objects, cache_record_list, get_hash_id
 
 
 def search_init(config_obj):
@@ -207,6 +207,16 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
         return error_obj
 
 
+    record_type = "supersearch"
+    initial_list_id = get_hash_id(record_type, query_obj)
+
+    cached_obj = dbh["c_cache"].find_one({"list_id":initial_list_id})
+    if cached_obj != None:
+        if "res" in cached_obj:
+            return cached_obj["res"]
+
+
+
     #Collect errors 
     if query_obj == {}:
         query_obj["concept_query_list"] = []
@@ -215,6 +225,9 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
         if error_list != []:
             return {"error_list":error_list}
 
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts_list = []
+    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     results_summary_default = {}
     collection = "c_searchinit"
@@ -288,7 +301,6 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
     #return mongo_query
 
-
          
 
     initial_hit_count = 0
@@ -338,8 +350,14 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
     record_type_list = list(config_obj["record_type_info"].keys())
 
+    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
     #Load network
-    doc_list = list(dbh["c_network"].find({}))
+    #doc_list = list(dbh["c_network"].find({}))
+    doc_list = current_app.config["NETWORK_DOCLIST"]
+    
+    ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    ts_list.append(len(doc_list))
 
     final_hit_dict,final_hit_dict_split, conn_dict = {}, {}, {}
     if initial_hit_count > 0:
@@ -349,6 +367,8 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
         conn_dict = load_conn_dict(doc_list)
 
     #return ignore_dict
+
+    ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
 
     #After imposing edge constraints, some hits cannot be traced
@@ -366,6 +386,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
 
 
+    ts_list.append("6-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     res_obj = {"query":query_obj, "results_summary":{}}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
@@ -429,6 +450,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
     
 
+    ts_list.append("7-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     id_list = []
     for dst_record_type in res_obj["results_summary"]:
@@ -442,11 +464,19 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
                 if list_id != "":
                     id_list.append(list_id)
 
+    ts_list.append("8-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     for list_id in id_list:
         q_obj = {"list_id":list_id}
         update_obj = {"cache_info.result_summary":res_obj["results_summary"]}
         res = dbh["c_cache"].update_one(q_obj, {'$set':update_obj}, upsert=True)
+
+    cache_info = {"search_type":"supersearch", "record_type":"supersearch", "ts":ts}
+    cache_obj = {"list_id":initial_list_id, "res":res_obj, "cache_info":cache_info}
+    res = dbh["c_cache"].insert_one(cache_obj)
+
+    ts_list.append("9-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    #return ts_list
 
     return res_obj
 

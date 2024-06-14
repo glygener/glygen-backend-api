@@ -29,6 +29,14 @@ def get_mongodb():
     return ret_obj, error_obj
 
 
+def load_network_docs():
+
+    #doc_list = []
+    dbh, error_obj = get_mongodb()
+    doc_list = list(dbh["c_network"].find({}))
+    
+    return doc_list
+
 
 def log_request(req_obj, api_name, request):
 

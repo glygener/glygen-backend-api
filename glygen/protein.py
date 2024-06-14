@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.protein_apilib import protein_search_init, protein_search, protein_search_simple, protein_detail, protein_alignment
-from glygen.util import get_cached_records_indirect, get_req_obj
+from glygen.util import get_cached_records_indirect, get_req_obj, cache_result_list, get_hash_id, get_cached_result_list
 import traceback
 
 
@@ -128,7 +128,13 @@ class Protein(Resource):
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/protein/list/", request)
             if "error_list" not in res_obj:
-                res_obj = get_cached_records_indirect(req_obj, config_obj)
+                list_id = get_hash_id("", req_obj)
+                res_obj = get_cached_result_list(list_id)
+                if res_obj == None:
+                    res_obj = get_cached_records_indirect(req_obj, config_obj)
+                    res = cache_result_list(list_id, res_obj, config_obj)
+                    if "error_list" in res:
+                        res_obj = res
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

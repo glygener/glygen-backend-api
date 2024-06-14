@@ -31,6 +31,9 @@ class Globalsearch(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        json_url = os.path.join(SITE_ROOT, "conf/path_targets.json")
+        config_obj["path_targets"] = json.load(open(json_url))
+
         res_obj = {}
         try:
             req_obj = get_req_obj(request)

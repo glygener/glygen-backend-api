@@ -1,0 +1,50 @@
+# Download location
+
+   http://edwardslab.bmcb.georgetown.edu/~nedwards/dropbox/2sqIE5FRG7/
+
+# Installation
+   % tar xzf substructure.tgz
+   % cd substructure
+
+
+# Client setup
+   Edit submit.py and change the SubstructureSearch.developer_email
+   attribute to an appropriate value.
+
+# Client usage - JSON result goes to standard out.
+# Uses substructure.glyomics.org by default
+
+   % ./submit.py example.json
+
+# Local server/daemon setup, uses docker
+
+   Edit server/substructure.cfg as needed to choose the port number and the
+   number of concurrent searches.
+
+   % cd server
+   % ./substructure start
+
+# Client setup
+
+   Edit submit.py and change the SubstructureSearch.apiurl to an
+   appropriate value e.g. 'http://localhost:10980'
+
+
+# Set httpd_user_script_exec_t
+
+   chcon -t httpd_user_script_exec_t /software/substructure/*
+
+
+
+# Return JSON
+
+   JSON document, list of lists. Each item is a pair - GlyGen accession,
+   true/false whether the substructure alignment is strict or not.
+
+   See: https://glycomotif.glyomics.org/glycomotif/Substructure_Alignment
+   for information on strict vs non-strict substructure alignments.
+
+   Cheers!
+
+
+

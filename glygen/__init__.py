@@ -6,6 +6,8 @@ from flask_cors import CORS
 
 from flask_restx import Api, Resource, fields
 
+from glygen.db import load_network_docs
+
 from .protein import api as protein_api
 from .glycan import api as glycan_api
 from .auth import api as auth_api
@@ -90,6 +92,9 @@ def create_app():
     #app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
     app.config['JSON_SORT_KEYS'] = False
 
+
+    app.config['NETWORK_DOCLIST'] = load_network_docs()
+    
     jwt = JWTManager(app)
 
 

@@ -1,9 +1,8 @@
-server="beta"
-record_type="protein"
+server="tst"
+grp_list="protein glycan site motif publication biomarker supersearch globalsearch usecases"
 
-
-for i in {1..10}
+for grp in $grp_list
 do
-    python3 batch_api_test.py -s $server -r $record_type -b $i > logs/batch.$i.log &
+    python3 test_performance.py -s $server -g $grp
 done
 
