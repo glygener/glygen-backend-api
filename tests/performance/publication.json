@@ -1,0 +1,12 @@
+{
+    "publication_detail":{
+        "url":"/publication/detail"
+        ,"querylist":[
+            {
+                "label":"PubMed query with phosphorylation, snv, mutagenesis",
+                "query":{ "id":"20305658", "type":"PubMed"}
+            }
+        ]
+    }
+}
+

@@ -1,1 +1,6 @@
-{"organism":{"name":"Human"}}
+{
+ "biomarker":{
+    "disease_name":"ovarian cancer"
+ }
+
+}

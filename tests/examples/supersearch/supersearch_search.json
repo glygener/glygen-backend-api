@@ -1,16 +1,16 @@
 {
   "concept_query_list": [
     {
-      "concept": "motif",
+      "concept": "species",
       "query": {
         "aggregator": "$and",
         "aggregated_list": [],
         "unaggregated_list": [
           {
-            "path": "glytoucan_ac",
+            "path": "name",
             "order": 0,
             "operator": "$eq",
-            "string_value": "G00054MO"
+            "string_value": "Mouse"
           }
         ]
       }

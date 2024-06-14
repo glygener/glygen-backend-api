@@ -81,6 +81,7 @@ glygen/conf/integrity.conf
 glygen/conf/list_filters.json
 glygen/conf/newedgerules.json
 glygen/conf/node_order.json
+glygen/conf/path_targets.json
 glygen/conf/protein_scratch.csv
 glygen/conf/section.1.json
 glygen/conf/section.2.json

@@ -98,7 +98,8 @@ def home_init(config_obj, data_path):
         for k in ["createdts"]:
             if k not in doc:
                 continue
-            doc[k] = doc[k].strftime('%Y-%m-%d %H:%M:%S %Z%z').strip()
+            if type(doc[k]) is not str:
+                doc[k] = doc[k].strftime('%Y-%m-%d %H:%M:%S %Z%z').strip()
         res_obj["video"] = doc
 
 

@@ -67,11 +67,18 @@ def globalsearch_search(query_obj, config_obj):
     json_url = os.path.join(SITE_ROOT, "conf/global_search.json")
     #json_url = os.path.join(SITE_ROOT, "conf/global_search.json-backup")
 
+
+
+    protein_obj =  dbh["c_protein"].find_one({"uniprot_canonical_ac":query_obj["term"]})
+    if protein_obj != None:
+        query_obj["term"] = protein_obj["uniprot_ac"]
+
+
     search_obj = json.loads(open(json_url, "r").read())
     new_term = transform_query_term(query_obj["term"])
-   
-
-    #return query_obj
+    #new_term = query_obj["term"]
+     
+    #return search_obj
  
 
     for obj in search_obj:
@@ -136,7 +143,6 @@ def globalsearch_search(query_obj, config_obj):
         ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         time_list.append("A|%s|%s|%s" % (ts,key_one, key_two))
        
-
         m_obj = { "$text": { "$search":new_term } }
         if key_one == "glycoprotein":
             m_obj = {"$and":[ {"$text": {"$search":new_term}}, {"glycosylation": {"$gt":[]}}]}
@@ -146,20 +152,21 @@ def globalsearch_search(query_obj, config_obj):
             { "$match":{"score":{"$gt":config_obj["globalsearchcutoff"]}}},
             { "$project" : prj_obj }
         ]
-
-        #return qry_obj
-
         doc_list = list(dbh[target_collection].aggregate(qry_obj))
 
-        #if target_collection == "c_biomarker":
-        #    tmp_list = []
-        #    for doc in doc_list:
-        #        if "_id" in doc:
-        #            doc.pop("_id")
-        #        tmp_list.append(doc)
-        #    return tmp_list       
- 
 
+        #qry_obj = get_subquery(new_term, target_collection, config_obj)
+        #return qry_obj
+        
+        #tmp_dict = {}        
+        #if target_collection in config_obj["path_targets"]:
+        #    for path in config_obj["path_targets"][target_collection]:
+        #        qry_obj = {path:{'$regex': new_term, '$options': 'i'}}
+        #        doc_list = list(dbh[target_collection].find(qry_obj, prj_obj))
+        #        tmp_dict[path] = len(doc_list)
+        #return tmp_dict
+        #doc_list = list(dbh[target_collection].find(qry_obj, prj_obj)) if qry_obj != {} else []
+    
         ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S")
         time_list.append("B|%s|%s|%s" % (ts, key_one, key_two))
         for doc in doc_list:
@@ -320,3 +327,18 @@ def get_glycan_list_record(in_obj):
 
 
 
+
+
+
+def get_subquery(term, target_collection, config_obj):
+
+
+    cond_list = []
+    if target_collection in config_obj["path_targets"]:
+        for path in config_obj["path_targets"][target_collection]:
+            obj = {path:{'$regex': term, '$options': 'i'}}
+            cond_list.append(obj)
+    else:
+        return {}
+
+    return  {"$or":cond_list}

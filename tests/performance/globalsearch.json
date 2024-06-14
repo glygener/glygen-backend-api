@@ -1,0 +1,10 @@
+{
+    "globalsearch_search": {
+        "url": "/globalsearch/search/",
+        "querylist":[
+	 	{
+			"query": {"term":"Psoriasis"}
+		}
+	]
+    }
+}

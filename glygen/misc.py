@@ -36,13 +36,16 @@ class Misc(Resource):
             #ip_addr = request.environ['REMOTE_ADDR']
             #ip_addr = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
             #return {"ip":ip_addr}
-            mongo_dbh, error_obj = get_mongodb()
-            res_obj["connection_status"] = "success" if error_obj == {} else error_obj
             for k in ["GITHUB_TOKEN", "GITHUB_ASSIGNEE", "SERVER", "DATA_PATH", "DB_NAME", "MAIL_SERVER", "MAIL_PORT", "MAIL_SENDER"]:
                 if k in os.environ:
                     res_obj["config"][k] = os.environ[k]
                 if k in current_app.config:
                     res_obj["config"][k] = current_app.config[k]
+            #return res_obj
+ 
+            mongo_dbh, error_obj = get_mongodb()
+            res_obj["connection_status"] = "success" if error_obj == {} else error_obj
+            
             res_obj["user_agent"] = request.headers.get('User-Agent')
             res_obj["referer"] = request.headers.get('referer')
             res_obj["origin"] = request.headers.get('Origin')

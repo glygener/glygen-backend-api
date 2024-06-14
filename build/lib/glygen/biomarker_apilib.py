@@ -10,8 +10,7 @@ from bson import json_util, ObjectId
 
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections, cache_record_list, transform_query_term
-
+from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections, cache_record_list, transform_query_term, get_hash_id
 
 
 def biomarker_search_init(config_obj):
@@ -50,12 +49,20 @@ def biomarker_search_simple(query_obj, config_obj):
     if new_query_obj["term_category"] == "any":
         new_query_obj["term"] = transform_query_term(new_query_obj["term"])
 
+
+    record_type = "biomarker"
+    list_id = get_hash_id(record_type, query_obj)
+    cache_coll = "c_cache"
+    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    if cached_obj != None:
+        if len(cached_obj["results"]) > 0:
+            return {"list_id":list_id}
+
     mongo_query = get_simple_mongo_query(new_query_obj)
     #return mongo_query
 
     collection = "c_biomarker"
     record_list = []
-    record_type = "biomarker"
     prj_obj = {"biomarker_id":1}
     for obj in dbh[collection].find(mongo_query,prj_obj):
         record_list.append(obj["biomarker_id"])
@@ -64,11 +71,8 @@ def biomarker_search_simple(query_obj, config_obj):
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     cache_coll = "c_cache"
-    list_id = ""
+    list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
-        hash_str = record_type + "_" + json.dumps(query_obj)
-        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-        list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
             "ts":ts,
@@ -140,13 +144,21 @@ def biomarker_search(query_obj, config_obj):
     if error_list != []:
         return {"error_list":error_list}
 
+    record_type = "biomarker"
+    list_id = get_hash_id(record_type, query_obj)
+    cache_coll = "c_cache"
+    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    if cached_obj != None:
+        if len(cached_obj["results"]) > 0:
+            return {"list_id":list_id}
+
+
     mongo_query = get_mongo_query(query_obj)
     #return mongo_query
 
 
     collection = "c_biomarker"
     record_list = []
-    record_type = "biomarker"
     prj_obj = {"biomarker_id":1}
     for obj in dbh[collection].find(mongo_query,prj_obj):
         record_list.append(obj["biomarker_id"])
@@ -154,11 +166,8 @@ def biomarker_search(query_obj, config_obj):
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     cache_coll = "c_cache"
-    list_id = ""
+    list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
-        hash_str = record_type + "_" + json.dumps(query_obj)
-        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-        list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
             "ts":ts,

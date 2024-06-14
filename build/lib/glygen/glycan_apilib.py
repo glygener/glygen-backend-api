@@ -10,7 +10,7 @@ from collections import OrderedDict
 from bson import json_util, ObjectId
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, order_obj, get_paginated_sections, transform_query_term
+from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, order_obj, get_paginated_sections, transform_query_term, get_hash_id
 
     
 def glycan_search_init(config_obj):
@@ -54,6 +54,17 @@ def glycan_search_simple(query_obj, config_obj):
     if new_query_obj["term_category"] == "any" and tv == False:
         new_query_obj["term"] = transform_query_term(new_query_obj["term"])
 
+
+    record_type = "glycan"
+    list_id = get_hash_id(record_type, query_obj)
+    cache_coll = "c_cache"
+    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    if cached_obj != None:
+        if len(cached_obj["results"]) > 0:
+            return {"list_id":list_id}
+
+
+
     mongo_query = get_simple_mongo_query(new_query_obj)
     #return {"error_list":[{"error":mongo_query}]}
     #mongo_query = {"byonic": {"$options": "i", "$regex": "Hex\(5\)"}}
@@ -61,19 +72,14 @@ def glycan_search_simple(query_obj, config_obj):
 
     collection = "c_glycan"
     record_list = []
-    record_type = "glycan"
     prj_obj = {"glytoucan_ac":1}
     for doc in dbh[collection].find(mongo_query,prj_obj):
         record_list.append(doc["glytoucan_ac"])
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
-    list_id = ""
+    list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
-        hash_str = record_type + "_" + json.dumps(query_obj)
-        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-        list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
             "ts":ts,
@@ -155,16 +161,41 @@ def glycan_search(query_obj, config_obj):
     
 
 
+    record_type = "glycan"
+    list_id = get_hash_id(record_type, query_obj) 
+    cache_coll = "c_cache"
+    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    if cached_obj != None:
+        if len(cached_obj["results"]) > 0:
+            return {"list_id":list_id}
+
+
+
     mongo_query = get_mongo_query(query_obj)
     #return mongo_query
 
 
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts_list = []
+    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
     collection = "c_glycan"
     cache_collection = "c_cache"
 
-    prj_obj = {"glytoucan_ac":1, "subsumption":1, "composition":1,"composition_expanded":1, "glycan_identifier":1,"crossref.id":1}
+    prj_obj = {"glytoucan_ac":1, "glycan_identifier":1, "crossref.id":1}
+    for k in ["composition", "composition_expanded"]:
+        if k in query_obj:
+            prj_obj[k] = 1
+    if "glycan_identifier" in query_obj:
+        if "subsumption" in query_obj["glycan_identifier"]:
+            prj_obj["subsumption"] = 1
+
+
     cur_list = []
     cur_list += list(dbh[collection].find(mongo_query,prj_obj))
+    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+    #return ts_list
 
     seen_record = {}
     if "protein_identifier" in query_obj:
@@ -173,9 +204,10 @@ def glycan_search(query_obj, config_obj):
         for doc in dbh["c_batch"].find(mongo_query, {"recordid":1}):
             if doc["recordid"] not in seen_record:
                 cur_list += list(dbh[collection].find({"glytoucan_ac":doc["recordid"]},prj_obj))
-
             seen_record[doc["recordid"]] = True
-                    
+                
+    ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    
     i = 0
     results = []
     doc_list = []
@@ -190,8 +222,8 @@ def glycan_search(query_obj, config_obj):
             continue
         doc_list.append(doc)
 
+    ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-        
     #"sections.glycoprotein.uniprot_canonical_ac"
 
     #Add additional glycan objects related to hits by subsumption
@@ -216,6 +248,7 @@ def glycan_search(query_obj, config_obj):
                     extra_doc_list.append(doc)
                 doc_list += extra_doc_list
 
+    ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     record_list = []
     record_type = "glycan"
@@ -228,6 +261,7 @@ def glycan_search(query_obj, config_obj):
         for obj in doc["crossref"]:
             seen_id[obj["id"]] = True
 
+    ts_list.append("5-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     unmapped_obj_list = []
     redundancy_dict = {}
@@ -240,6 +274,8 @@ def glycan_search(query_obj, config_obj):
                 if qid_list.count(qid) > 1:
                     redundancy_dict[qid] = qid_list.count(qid)
 
+    ts_list.append("6-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
     for qid in redundancy_dict:
         for i in range(redundancy_dict[qid] - 1):
             unmapped_obj_list.append({"input_id":qid, "reason":"Duplicate ID"})
@@ -249,12 +285,8 @@ def glycan_search(query_obj, config_obj):
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
-    list_id = ""
+    list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
-        hash_str = record_type + "_" + json.dumps(query_obj)
-        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-        list_id = hash_obj.hexdigest()
         cache_info = {
             "query":query_obj,
             "ts":ts, 
@@ -265,6 +297,10 @@ def glycan_search(query_obj, config_obj):
             cache_info["batch_info"] = {"unmapped":unmapped_obj_list}
         cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
+
+    ts_list.append("7-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+
 
     return res_obj
     
@@ -316,7 +352,6 @@ def glycan_detail(query_obj, config_obj):
     q = {"batchid": 1, "recordid": glytoucan_ac, "recordtype": "glycan"}
     batch_doc = dbh["c_batch"].find_one(q)
     if batch_doc != None:
-        #return list(batch_doc["sections"].keys())
         for sec in batch_doc["sections"]:
             if sec in obj:
                 if len(batch_doc["sections"][sec]) > 1000:
@@ -531,22 +566,20 @@ def get_mongo_query(query_obj):
                 cond_objs.append(o)
         if "type" in query_obj["biomarker"]:
             if len(query_obj["biomarker"]["type"]) > 0:
-                o = {"biomarkers.instances.best_biomarker_type": {'$regex': query_obj["biomarker"]["type"], '$options': 'i'}}
+                o = {"biomarkers.best_biomarker_role": {'$regex': query_obj["biomarker"]["type"], '$options': 'i'}}
                 cond_objs.append(o)
         if "disease_id" in query_obj["biomarker"]:
             if len(query_obj["biomarker"]["disease_id"]) > 0:
                 disease_id = query_obj["biomarker"]["disease_id"]
                 or_list = [
-                    {"biomarkers.instances.disease.recommended_name.id":{'$regex':disease_id,'$options':'i'}},
-                    {"biomarkers.instances.disease.synonyms.id":{'$regex':disease_id,'$options':'i'}},
+                    {"biomarkers.condition.id_list":{'$regex':disease_id,'$options':'i'}},
                 ]
                 cond_objs.append({'$or':or_list})
         if "disease_name" in query_obj["biomarker"]:
             if len(query_obj["biomarker"]["disease_name"]) > 0:
                 disease_name = query_obj["biomarker"]["disease_name"]
                 or_list = [
-                    {"biomarkers.instances.disease.recommended_name.name":{'$regex':disease_name,'$options':'i'}},
-                    {"biomarkers.instances.disease.synonyms.name":{'$regex':disease_name,'$options':'i'}}
+                    {"biomarkers.condition.name_list":{'$regex':disease_name,'$options':'i'}}
                 ]
                 cond_objs.append({'$or':or_list})
 
@@ -584,6 +617,15 @@ def get_mongo_query(query_obj):
                         tmp_q = {
                             "species":
                             { "$elemMatch": { "common_name": {"$regex":o["common_name"], '$options':'i'}}}
+                        }
+                        if cat_q != "":
+                            tmp_q["species"]["$elemMatch"]["annotation_category"] = cat_q
+                        or_list.append(tmp_q)
+                elif "glygen_name" in o:
+                    if o["glygen_name"].strip() != "":
+                        tmp_q = {
+                            "species":
+                            { "$elemMatch": { "glygen_name": {"$regex":o["glygen_name"], '$options':'i'}}}
                         }
                         if cat_q != "":
                             tmp_q["species"]["$elemMatch"]["annotation_category"] = cat_q

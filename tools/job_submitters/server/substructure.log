@@ -1,0 +1,78 @@
+Using default tag: latest
+latest: Pulling from glyomics/substructure
+Digest: sha256:82fedb87cc5041e32cd3bf62fbec5cab3ce4e87cbf786b5adc18e71682ac2919
+Status: Image is up to date for glyomics/substructure:latest
+docker.io/glyomics/substructure:latest
+[11/21/22 21:04:02 0] Host: 0.0.0.0
+[11/21/22 21:04:02 0] Port: 10980
+[11/21/22 21:04:02 0] Max_Worker_Num: 3
+[11/21/22 21:04:02 0] glycan_list(worker para): glygen_glycan_set.tsv
+[11/21/22 21:04:02 0] max_motif_size(worker para): 10
+[11/21/22 21:04:02 0] glycan_set(worker para): glygen
+[11/21/22 21:04:02 0] Starting workers
+[11/21/22 21:04:02 0] Worker-1 is created
+[11/21/22 21:04:02 1] FLASK service started at 0.0.0.0:10980
+[11/21/22 21:04:02 0] Worker-2 is created
+[11/21/22 21:04:02 2] Worker-1 is starting up
+[11/21/22 21:04:02 0] Worker-3 is created
+[11/21/22 21:04:02 0] Downloading necessary data... please wait
+[11/21/22 21:04:02 2] Worker-2 is starting up
+[11/21/22 21:04:02 2] Worker-3 is starting up
+ * Serving Flask app "Substructure" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:10980/ (Press CTRL+C to quit)
+[11/21/22 21:04:33 2] Worker-1 is ready to take job
+[11/21/22 21:04:33 2] Worker-3 is ready to take job
+[11/21/22 21:04:33 2] Worker-2 is ready to take job
+[11/21/22 21:11:09 0] Download phase finished
+[11/21/22 21:11:09 0] Terminating previous workers with outdated data
+[11/21/22 21:11:09 0] Worker-1 is terminated
+[11/21/22 21:11:09 0] Worker-2 is terminated
+[11/21/22 21:11:09 0] Worker-3 is terminated
+[11/21/22 21:11:09 0] Starting workers with updated data
+[11/21/22 21:11:09 0] Worker-4 is created
+[11/21/22 21:11:09 0] Worker-5 is created
+[11/21/22 21:11:09 2] Worker-4 is starting up
+[11/21/22 21:11:09 2] Worker-5 is starting up
+[11/21/22 21:11:09 0] Worker-6 is created
+[11/21/22 21:11:09 2] Worker-6 is starting up
+[11/21/22 21:11:41 2] Worker-6 is ready to take job
+[11/21/22 21:11:41 2] Worker-4 is ready to take job
+[11/21/22 21:11:41 2] Worker-5 is ready to take job
+[11/21/22 21:21:41 2] Worker-6 has been idling for 10m 
+[11/21/22 21:21:42 2] Worker-4 has been idling for 10m 
+[11/21/22 21:21:42 2] Worker-5 has been idling for 10m 
+[11/21/22 21:22:10 0] Sending KILL-SIGNAL to worker
+[11/21/22 21:22:10 2] Worker-4 received KILL-SIGNAL, Bye.
+[11/21/22 21:23:10 0] Worker-4 was terminated for some reasons... Please check the log for more info
+[11/21/22 21:23:10 0] Sending KILL-SIGNAL to worker
+[11/21/22 21:23:10 2] Worker-5 received KILL-SIGNAL, Bye.
+[11/21/22 21:24:10 0] Worker-5 was terminated for some reasons... Please check the log for more info
+[11/21/22 21:31:42 2] Worker-6 has been idling for 20m 
+[11/21/22 21:41:43 2] Worker-6 has been idling for 30m 
+[11/21/22 21:51:44 2] Worker-6 has been idling for 40m 
+[11/21/22 22:01:44 2] Worker-6 has been idling for 50m 
+[11/21/22 22:11:45 2] Worker-6 has been idling for 1h 0m 
+[11/21/22 23:11:49 2] Worker-6 has been idling for 2h 0m 
+[11/22/22 00:11:53 2] Worker-6 has been idling for 3h 0m 
+[11/22/22 01:11:57 2] Worker-6 has been idling for 4h 0m 
+[11/22/22 02:12:01 2] Worker-6 has been idling for 5h 0m 
+[11/22/22 03:12:05 2] Worker-6 has been idling for 6h 0m 
+[11/22/22 04:12:09 2] Worker-6 has been idling for 7h 0m 
+[11/22/22 05:12:13 2] Worker-6 has been idling for 8h 0m 
+[11/22/22 06:12:17 2] Worker-6 has been idling for 9h 0m 
+[11/22/22 07:12:21 2] Worker-6 has been idling for 10h 0m 
+[11/22/22 08:12:26 2] Worker-6 has been idling for 11h 0m 
+[11/22/22 09:12:30 2] Worker-6 has been idling for 12h 0m 
+[11/22/22 10:12:34 2] Worker-6 has been idling for 13h 0m 
+[11/22/22 11:12:38 2] Worker-6 has been idling for 14h 0m 
+[11/22/22 12:12:42 2] Worker-6 has been idling for 15h 0m 
+[11/22/22 13:12:46 2] Worker-6 has been idling for 16h 0m 
+[11/22/22 14:12:50 2] Worker-6 has been idling for 17h 0m 
+[11/22/22 15:12:54 2] Worker-6 has been idling for 18h 0m 
+[11/22/22 16:12:58 2] Worker-6 has been idling for 19h 0m 
+[11/22/22 17:13:02 2] Worker-6 has been idling for 20h 0m 
+[11/22/22 18:13:06 2] Worker-6 has been idling for 21h 0m 

@@ -13,7 +13,7 @@ import bcrypt
 from glygen.glycan_apilib import glycan_search_init, glycan_search, glycan_search_simple, glycan_detail, glycan_image, glycan_image_svg, glycan_image_metadata
 
 
-from glygen.util import get_cached_records_indirect, get_req_obj
+from glygen.util import get_cached_records_indirect, get_req_obj, get_hash_id, get_cached_result_list, cache_result_list
 import traceback
 
 
@@ -123,7 +123,15 @@ class Glycan(Resource):
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/glycan/list/", request)
             if "error_list" not in res_obj:
-                res_obj = get_cached_records_indirect(req_obj, config_obj)
+                list_id = get_hash_id("", req_obj)
+                res_obj = get_cached_result_list(list_id)
+                if res_obj == None:
+                    res_obj = get_cached_records_indirect(req_obj, config_obj)
+                    res = cache_result_list(list_id, res_obj, config_obj)
+                    if "error_list" in res:
+                        res_obj = res
+
+
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

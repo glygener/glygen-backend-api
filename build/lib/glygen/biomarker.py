@@ -11,8 +11,7 @@ import json
 import bcrypt
 
 from glygen.biomarker_apilib import biomarker_detail, biomarker_search, biomarker_search_init, biomarker_search_simple
-from glygen.util import get_req_obj, get_cached_records_indirect
-
+from glygen.util import get_req_obj, get_cached_records_indirect, get_hash_id, cache_result_list, get_cached_result_list
 import traceback
 
 
@@ -47,7 +46,7 @@ search_query_model = api.model("Biomarker Search Query",
         "best_biomarker_role":fields.String(required=True, default="prognostic"),
         "condition_id":fields.String(required=True, default="DOID:10283"),
         "condition_name":fields.String(required=True, default="prostate cancer"),
-        "publication_id":fields.String(required=True, default="32234467")
+        "publication_id":fields.String(required=True, default="10914713")
     }
 )
 
@@ -109,7 +108,7 @@ class Biomarker(Resource):
 
 
 @api.route('/detail/<biomarker_id>/')
-@api.doc(params={"biomarker_id": {"in": "query", "default": "A0001"}})
+@api.doc(params={"biomarker_id": {"in": "query", "default": "AA4686-1"}})
 class Biomarker(Resource):
     @api.doc('detail')
     @api.expect(detail_query_model)
@@ -176,7 +175,14 @@ class Biomarker(Resource):
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/biomarker/list/", request)
             if "error_list" not in res_obj:
-                res_obj = get_cached_records_indirect(req_obj, config_obj)
+                list_id = get_hash_id("", req_obj)
+                res_obj = get_cached_result_list(list_id)
+                if res_obj == None:
+                    res_obj = get_cached_records_indirect(req_obj, config_obj)
+                    res = cache_result_list(list_id, res_obj, config_obj)
+                    if "error_list" in res:
+                        res_obj = res
+
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

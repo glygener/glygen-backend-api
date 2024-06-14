@@ -21,27 +21,29 @@ def main():
 
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
-    parser.add_option("-s","--srv",action="store",dest="srv",help="dev/tst/beta/prd")
+    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
     parser.add_option("-v","--ver",action="store",dest="ver",help="2.0/2.1 ...")
     parser.add_option("-c","--cmp",action="store",dest="cmp",help="data/api/software")
         
     (options,args) = parser.parse_args()
 
-    for key in ([options.srv, options.ver, options.cmp]):
+    for key in ([options.server, options.ver, options.cmp]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
-    srv = options.srv
+    server = options.server
     ver = options.ver
     cmp = options.cmp
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
-    mongo_port = config_obj["dbinfo"]["port"][srv]
+    #mongo_port = config_obj["dbinfo"]["port"][server]
+    mongo_port = "27017"
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
 
-    glydb_user, glydb_pass = config_obj["dbinfo"]["glydb"]["user"], config_obj["dbinfo"]["glydb"]["password"]
-    glydb_db =  config_obj["dbinfo"]["glydb"]["db"]
+    db_name = "glydb_beta" if server == "beta" else "glydb"
+    glydb_user, glydb_pass = config_obj["dbinfo"][db_name]["user"], config_obj["dbinfo"][db_name]["password"]
+    glydb_db =  config_obj["dbinfo"][db_name]["db"]
 
     try:
         client = pymongo.MongoClient(host,

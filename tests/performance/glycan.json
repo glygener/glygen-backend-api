@@ -1,0 +1,33 @@
+{
+    "glycan_search_simple":{
+        "url":"/glycan/search_simple"
+        ,"query":{"term_category":"glycan","term":"G17689DH"}
+    },
+    "glycan_search":{
+        "url":"/glycan/search"
+        ,"querylist":[
+            {
+                "label":"Query by GlyTouCan IDs",
+                "query":{
+                }
+	    }
+        ]
+    }
+    ,"glycan_list": {
+        "url": "/glycan/list/", 
+        "querylist":[
+            {
+                "label":"Simple listing",
+                "query":{
+                    "id":""
+                }
+            }
+        ]
+    }
+    ,"glycan_detail": {
+        "url": "/glycan/detail/",
+        "query":"G11314AS|G86880BF|G68490OW",
+        "semantic":true
+    }
+}
+

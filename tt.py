@@ -13,32 +13,32 @@ __version__="1.0"
 __status__ = "Dev"
 
 
-def get_first_batch(dbh, record_type, record_id):
-    
-    q = {
-        "$and":[
-            {"batchid":{"$eq":1}}, 
-            {"recordid": {"$regex":record_id, "$options":"i"}},
-            {"recordtype":{"$eq":record_type}}
-        ]
-    }
-    doc = dbh["c_batch"].find_one(q)
-    
-    return {} if doc == None else doc["sections"] 
-
 
 ###############################
 def main():
 
 
-    server = "tst"
-    coll = "c_batch"
+    usage = "\n%prog  [options]"
+    parser = OptionParser(usage,version="%prog version___")
+    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
+    parser.add_option("-c","--coll",action="store",dest="coll",help="") 
+    (options,args) = parser.parse_args()
+
+    for key in ([options.server, options.coll]):
+        if not (key):
+            parser.print_help()
+            sys.exit(0)
+
+    server = options.server
+    coll = options.coll
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     mongo_port = config_obj["dbinfo"]["port"][server]
-    mongo_container = "running_glygen_mongo_%s" % (server)
 
-    host = "mongodb://127.0.0.1:%s" % (mongo_port)
+    #host = "mongodb://127.0.0.1:%s" % (mongo_port)
+    #host = "mongodb://127.0.0.1:27017"
+    host = "mongodb://172.17.0.1:27017"
+
   
     db_obj = config_obj["dbinfo"]["glydb"]
     db_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
@@ -53,14 +53,8 @@ def main():
         )
         client.server_info()
         dbh = client[db_name]
-        
-        record_type, record_id = "publication", "pubmed.17081983"
-        record_type, record_id = "glycan", "G49108TOX"
-        record_type, record_id = "protein", "P04637"
-
-        sec_dict = get_first_batch(dbh, record_type, record_id)
-        print (json.dumps(sec_dict, indent=4))
-
+        n = dbh[coll].count_documents({})
+        print (n)
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

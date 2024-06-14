@@ -1,5 +1,11 @@
 {
     "server":"tst",
+    "host_ip":{
+	"prd":"10.10.0.6",
+	"beta":"10.10.0.6",
+	"tst":"172.17.0.1",
+	"dev":"172.17.0.1"
+    },
     "api_port":{
         "prd":"4042",
         "beta":"4442",
@@ -43,6 +49,11 @@
             "user":"glydbadmin",
             "password":"glydbpass"
         },
+	"glydb_beta":{
+            "db":"glydb_beta",
+            "user":"glydb_betaadmin",
+            "password":"glydb_betapass"
+        },
         "tmpdb":{
             "db":"tmpdb",
             "user":"glydbadmin",
@@ -52,24 +63,27 @@
     "downloads":{
         "jsondb":[
             "initdb"
+            ,"searchinitdb"
+	    ,"statdb"
+	    ,"outreachdb"
+            ,"videodb"
+            ,"eventdb"
+	    ,"speciesdb"
+            ,"diseasedb"
+            ,"biomarkerdb"
+	    ,"motifdb"
+            ,"pathdb"
+	    ,"glytoucandb"
+            ,"idtrackdb"
+	    ,"networkdb"
+	    ,"batchdb"
             ,"glycandb" 
-            ,"proteindb"
             ,"alignmentdb"
             ,"clusterdb"
-            ,"diseasedb"
-            ,"glytoucandb"
-            ,"idtrackdb"
             ,"listdb"
-            ,"motifdb"
-            ,"networkdb"
-            ,"pathdb"
             ,"publicationdb"
-            ,"searchinitdb"
             ,"sitedb"
-            ,"speciesdb"
-            ,"statdb"
-	    ,"biomarkerdb"
-            ,"historydb"
+            ,"proteindb"
 	]
     }
 }

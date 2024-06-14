@@ -13,8 +13,7 @@ from bson.objectid import ObjectId
 
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, cache_record_list, load_species_info
-
+from glygen.util import get_errors_in_query, sort_objects, cache_record_list, load_species_info, get_hash_id
 
 
 def job_init(config_obj, data_path):
@@ -53,10 +52,10 @@ def job_init(config_obj, data_path):
     for k in species_obj:
         obj = species_obj[k]
         if obj["short_name"] not in species_list and obj["is_reference"] == "yes":
-            lbl = "%s [canonical sequences]" % (obj["common_name"])
+            lbl = "%s [canonical sequences]" % (obj["glygen_name"])
             o = {"value":"canonicalsequences_%s" % (obj["short_name"]),"label":lbl}
             opt_list_one.append(o) 
-            lbl = "%s [all sequences]" % (obj["common_name"])
+            lbl = "%s [all sequences]" % (obj["glygen_name"])
             o = {"value":"allsequences_%s" % (obj["short_name"]),"label":lbl}
             opt_list_two.append(o) 
             species_list.append(obj["short_name"])
@@ -82,6 +81,9 @@ def job_addnew(query_obj, config_obj, data_path, server):
     validation_obj, error_list = validate_input(query_obj, config_obj, release_dir, server)
     if error_list != []:
         return {"error_list":error_list}
+
+    if "intable" in query_obj:
+        query_obj.pop("intable")
 
     #return query_obj
     #return validation_obj
@@ -111,8 +113,11 @@ def job_addnew(query_obj, config_obj, data_path, server):
             in_dir += str(query_obj["jobid"]) + "/"
             cmd = "mkdir -p " + in_dir
             x = subprocess.getoutput(cmd)
-            in_filename = config_obj["jobinfo"][query_obj["jobtype"]]["input_files"][0]["name"]
-            out_filename = config_obj["jobinfo"][query_obj["jobtype"]]["output_files"][0]["name"]
+            in_filename, out_filename = "", ""
+            if "input_files" in config_obj["jobinfo"][query_obj["jobtype"]]:
+                in_filename = config_obj["jobinfo"][query_obj["jobtype"]]["input_files"][0]["name"]
+            if "output_files" in config_obj["jobinfo"][query_obj["jobtype"]]:
+                out_filename = config_obj["jobinfo"][query_obj["jobtype"]]["output_files"][0]["name"]
             in_file = in_dir + in_filename
             out_file = in_dir + out_filename
             
@@ -129,10 +134,14 @@ def job_addnew(query_obj, config_obj, data_path, server):
             if "outcmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
                 out_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["outcmdflag"]
                 query_obj["cmd"] += " %s %s" % (out_cmdflag, out_file)
-            
+            if "urlcmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
+                api_url = config_obj["jobinfo"][query_obj["jobtype"]]["apiurl"][server]
+                url_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["urlcmdflag"]
+                query_obj["cmd"] += " %s %s" % (url_cmdflag, api_url)
+ 
             job_lbl = "%s_%s" % (query_obj["jobtype"], query_obj["jobid"])
             cmd = "%s -E -L %s %s" % (config_obj["jobinfo"]["tspath"],job_lbl, query_obj["cmd"])
-            
+           
             query_obj["cmdin"] = cmd
             cmdout = subprocess.getoutput(cmd)
             query_obj["cmdout"] = cmdout
@@ -200,14 +209,20 @@ def job_results(query_obj, config_obj):
 
         job_info = json.loads(open(in_file, "r").read())
         job_type = job_info["jobtype"]
+
+        # only for debug purposes
         #status_obj = get_job_status(job_info["tsid"] , config_obj)
-       
+        #return status_obj
+
+
         q_obj = {"jobid":query_obj["jobid"]}
         job_doc = dbh["c_job"].find_one(q_obj)
         if job_doc == None:
             return {"error_list":[{"error_code":"job-record-not-found"}]}
         #update job status
         status_obj = update_job_status(dbh, job_doc, config_obj)
+        #return status_obj
+
         if "error_list" in status_obj:
             return status_obj
 
@@ -219,7 +234,8 @@ def job_results(query_obj, config_obj):
                 res_obj = parse_blastp_ouput(out_file, config_obj)
             elif job_type in ["structure_search"]:
                 res_obj = parse_structure_search_ouput(out_file, config_obj, job_info)
-        
+            elif job_type in ["isoform_mapper"]:
+                res_obj = parse_isoform_mapper_ouput(out_file, config_obj, job_info) 
 
         if "error" in status_obj:
             res_obj["error"] = status_obj["error"]
@@ -231,6 +247,32 @@ def job_results(query_obj, config_obj):
         res_obj = {"error_list":[{"error_code":str(e)}]}
 
     return res_obj
+
+
+def parse_isoform_mapper_ouput(out_file, config_obj, job_info):
+
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    res_obj = {"list_id":""}
+    row_list = []
+    if os.path.isfile(out_file) == True:
+        line_list = open(out_file, "r").read().split("\n")
+        for line in line_list:
+            if line.strip() == "":
+                continue
+            row = line.strip().split("\t")
+            row_list.append(row)
+    else:
+        return {"error_list":[{"error_code":"output file not found"}]}
+
+    res_obj = {"rowlist":row_list}
+    return res_obj
+
+
+
 
 
 
@@ -259,17 +301,13 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
         #if row[1] == True:
         record_list.append(row[0])
 
-
-
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     cache_coll = "c_cache"
     list_id = ""
     record_type = "glycan"
     if len(record_list) != 0:
-        hash_str = record_type + "_" + json.dumps(job_info)
-        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-        list_id = hash_obj.hexdigest()
+        list_id = get_hash_id(record_type, job_info)
         cache_info = {
             "query":job_info,
             "ts":ts,
@@ -353,7 +391,7 @@ def parse_blastp_ouput(out_file, config_obj):
         canon = doc["uniprot_canonical_ac"]
         sp_obj = doc["species"][0]
         o = {"tax_id":sp_obj["taxid"], "name":sp_obj["name"],
-                "common_name":sp_obj["common_name"]}
+                "common_name":sp_obj["common_name"], "glygen_name":sp_obj["glygen_name"]}
         res_obj_dict[seq_id]["details"] = {}
         res_obj_dict[seq_id]["details"]["species"] = o
         res_obj_dict[seq_id]["details"]["protein_name"] = ""
@@ -387,7 +425,7 @@ def parse_blastp_ouput(out_file, config_obj):
         sbj_name = res_obj_dict[sbj_id]["details"]["protein_name"]
         sbj_uniprot_id = res_obj_dict[sbj_id]["details"]["uniprot_id"]
         sbj_tax_id = res_obj_dict[sbj_id]["details"]["species"]["tax_id"]
-        sbj_tax_name = res_obj_dict[sbj_id]["details"]["species"]["name"]
+        sbj_tax_name = res_obj_dict[sbj_id]["details"]["species"]["glygen_name"]
         #res_obj_dict[sbj_id].pop("protein_name")
         #res_obj_dict[sbj_id].pop("species")
         #res_obj_dict[sbj_id].pop("uniprot_id")
@@ -445,6 +483,7 @@ def job_status(query_obj, config_obj):
 
 
     res_obj = {}
+ 
     try:
         q_obj = {"jobid":query_obj["jobid"]}
         job_doc = dbh["c_job"].find_one(q_obj)
@@ -703,7 +742,10 @@ def validate_input(query_obj, config_obj, release_dir, server):
         hash_str = "%s %s" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
         hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         query_obj["md5sum"] = hash_obj.hexdigest()
-
+    elif query_obj["jobtype"] in ["isoform_mapper"]:
+        if "intable" in query_obj:
+            for row in query_obj["intable"]:
+                res_obj["buffer"] += ",".join(row) + "\n"
     return res_obj, error_list
 
 
@@ -714,7 +756,9 @@ def get_job_status(ts_id, config_obj):
     obj = {"tsid":ts_id}
     cmd = "%s -s %s" % (config_obj["jobinfo"]["tspath"], ts_id)
     obj["status"] = subprocess.getoutput(cmd).split(" ")[0]
+    obj["cmd_status"] = cmd
     cmd = "%s -i %s" % (config_obj["jobinfo"]["tspath"], ts_id)
+    obj["cmd_info"] = cmd
     for line in subprocess.getoutput(cmd).split("\n"):
         k = line.split(":")[0].replace(" ", "_").lower()
         obj[k] = ":".join(line.split(":")[1:])
