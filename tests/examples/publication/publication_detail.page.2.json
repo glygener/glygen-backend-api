@@ -1,0 +1,8 @@
+{
+	"id":"30379171",
+	"type":"PubMed",
+	"paginated_tables":[
+		{"table_id":"glycosylation_reported_with_glycan","offset":2,"limit":20,"sort":"start_pos","order":"asc"}
+	]
+}
+

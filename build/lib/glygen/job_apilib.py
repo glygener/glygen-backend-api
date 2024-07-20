@@ -13,7 +13,7 @@ from bson.objectid import ObjectId
 
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, cache_record_list, load_species_info, get_hash_id
+from glygen.util import get_errors_in_query, sort_objects, cache_record_list, load_species_info, get_hash_id, cache_result_list, get_cached_result_list
 
 
 def job_init(config_obj, data_path):
@@ -215,10 +215,26 @@ def job_results(query_obj, config_obj):
         #return status_obj
 
 
+        ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+        ts_list = []
+        ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+
         q_obj = {"jobid":query_obj["jobid"]}
         job_doc = dbh["c_job"].find_one(q_obj)
         if job_doc == None:
             return {"error_list":[{"error_code":"job-record-not-found"}]}
+
+
+        hash_str = "%s %s" % (job_doc["jobid"], job_doc["jobtype"])
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+        list_id = hash_obj.hexdigest()
+        
+        res = get_cached_result_list(list_id)
+        if res != None:
+            return res
+  
+
         #update job status
         status_obj = update_job_status(dbh, job_doc, config_obj)
         #return status_obj
@@ -226,6 +242,7 @@ def job_results(query_obj, config_obj):
         if "error_list" in status_obj:
             return status_obj
 
+        ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
         out_file = job_dir + config_obj["jobinfo"][job_type]["output_files"][0]["name"]
         res_obj = {"list_id":""}
@@ -237,11 +254,22 @@ def job_results(query_obj, config_obj):
             elif job_type in ["isoform_mapper"]:
                 res_obj = parse_isoform_mapper_ouput(out_file, config_obj, job_info) 
 
+        ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+
         if "error" in status_obj:
             res_obj["error"] = status_obj["error"]
         res_obj["status"] = status_obj["status"] if "error_list" not in res_obj else "error"
         res_obj["jobtype"] = job_info["jobtype"]
         res_obj["parameters"] = job_info["parameters"]
+    
+        ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+        #return ts_list
+
+        if "error" not in res_obj:
+            res = cache_result_list(list_id, res_obj, config_obj)
+            if "error_list" in res:
+                res_obj = res
 
     except Exception as e:
         res_obj = {"error_list":[{"error_code":str(e)}]}
@@ -376,8 +404,8 @@ def parse_blastp_ouput(out_file, config_obj):
 
     seq_id_list = res_obj_dict.keys()
 
-    sec_list = ["ptm_annotation", "glycation", "snv", "site_annotation", "glycosylation",
-        "site_annotation", "glycosylation", "mutagenesis", "phosphorylation"        
+    sec_list = ["ptm_annotation", "glycation", "snv", "glycosylation",
+        "site_annotation", "mutagenesis", "phosphorylation"        
     ]
     prj_obj = {"uniprot_canonical_ac":1, "uniprot_id":1, "gene_names":1, "protein_names":1, "species":1}
     for sec in sec_list:
@@ -414,9 +442,12 @@ def parse_blastp_ouput(out_file, config_obj):
             if o["type"] == "recommended":
                 res_obj_dict[seq_id]["details"]["gene_name"] = o["name"]
                 break
-        for sec in sec_list:
-            res_obj_dict[seq_id]["details"][sec] = doc[sec]
 
+        # Add sections only of seq_id == canon
+        #for sec in sec_list:
+        #    res_obj_dict[seq_id]["details"][sec] = doc[sec]
+        for sec in sec_list:
+            res_obj_dict[seq_id]["details"][sec] = doc[sec] if seq_id == canon else []
 
 
     for sbj_id in res_obj_dict:

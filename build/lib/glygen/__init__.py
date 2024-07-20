@@ -92,7 +92,6 @@ def create_app():
     #app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
     app.config['JSON_SORT_KEYS'] = False
 
-
     app.config['NETWORK_DOCLIST'] = load_network_docs()
     
     jwt = JWTManager(app)

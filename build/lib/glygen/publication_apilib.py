@@ -47,7 +47,6 @@ def publication_detail(query_obj, config_obj):
         post_error_list.append({"error_code":"non-existent-record"})
         return {"error_list":post_error_list}
 
-
     
     # Get section objects if this record was batched
     combo_id = "%s.%s" % (query_obj["type"].lower(), query_obj["id"])
@@ -57,7 +56,7 @@ def publication_detail(query_obj, config_obj):
         for sec in batch_doc["sections"]:
             if sec in obj:
                 obj[sec] += batch_doc["sections"][sec]
-
+    
 
     if "paginated_tables" in query_obj:
         table_id_list = []
