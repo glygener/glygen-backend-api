@@ -1,9 +1,12 @@
-
 {
-        "concept_query_list": [
+	"jobtype": "isoform_mapper",
+	"parameters":{},
+	"intable":[
+		["isoform_ac","amino_acid_pos","amino_acid"],
+		["A6NJB7-2","3","T"],
+		["A6NJB7-2","8","S"]
 	]
 }
-
 
 
 

@@ -1,0 +1,30 @@
+[2024-06-21 23:37:26 +0000] [7] [INFO] Using worker: sync
+[2024-06-21 23:37:26 +0000] [10] [INFO] Booting worker with pid: 10
+[2024-06-21 23:37:26 +0000] [11] [INFO] Booting worker with pid: 11
+[2024-06-21 23:37:26 +0000] [12] [INFO] Booting worker with pid: 12
+[2024-06-21 23:37:26 +0000] [13] [INFO] Booting worker with pid: 13
+[2024-06-21 23:37:26 +0000] [14] [INFO] Booting worker with pid: 14
+[2024-06-21 23:37:26 +0000] [15] [INFO] Booting worker with pid: 15
+[2024-06-21 23:37:26 +0000] [16] [INFO] Booting worker with pid: 16
+[2024-06-21 23:37:26 +0000] [19] [INFO] Booting worker with pid: 19
+[2024-06-28 19:51:55 +0000] [16] [ERROR] Error handling request /glycan/image/G96890VV
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/gunicorn/workers/sync.py", line 136, in handle
+    self.handle_request(listener, req, client, addr)
+  File "/usr/local/lib/python3.6/site-packages/gunicorn/workers/sync.py", line 182, in handle_request
+    resp.write_file(respiter)
+  File "/usr/local/lib/python3.6/site-packages/gunicorn/http/wsgi.py", line 386, in write_file
+    for item in respiter:
+  File "/usr/local/lib/python3.6/site-packages/gunicorn/http/wsgi.py", line 35, in __getitem__
+    data = self.filelike.read(self.blksize)
+AttributeError: 'dict' object has no attribute 'read'
+[2024-06-28 19:57:56 +0000] [16] [ERROR] Error handling request /glycan/image/G62081IR
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/gunicorn/workers/sync.py", line 136, in handle
+    self.handle_request(listener, req, client, addr)
+  File "/usr/local/lib/python3.6/site-packages/gunicorn/workers/sync.py", line 182, in handle_request
+    resp.write_file(respiter)
+  File "/usr/local/lib/python3.6/site-packages/gunicorn/http/wsgi.py", line 386, in write_file
+    for item in respiter:
+
+

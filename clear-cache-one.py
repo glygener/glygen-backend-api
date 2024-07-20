@@ -22,20 +22,23 @@ def main():
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
     parser.add_option("-c","--coll",action="store",dest="coll",help="") 
+    parser.add_option("-i","--listid",action="store",dest="listid",help="")
 
     (options,args) = parser.parse_args()
 
-    for key in ([options.server, options.coll ]):
+    for key in ([options.server, options.coll, options.listid]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     server = options.server
     coll = options.coll
+    list_id = options.listid
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     #mongo_port = config_obj["dbinfo"]["port"][server]
     mongo_port = "27017"
+    
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
   
     db_obj = config_obj["dbinfo"]["glydb"]
@@ -51,24 +54,8 @@ def main():
         )
         client.server_info()
         dbh = client[db_name]
-        q = {}
-        seen = {}
-        for doc in dbh[coll].find(q):
-            list_id = doc["list_id"]
-            doc = doc["res"] if coll in ["c_listcache"] else doc
-            k_one = "cache_info"
-            tmp_dict = {"query":"xxx", "ts":"xxx", "search_type":"xxx", "record_type":"xxx"}
-            if k_one in doc:
-                for k in tmp_dict:
-                    if k in doc[k_one]:
-                        tmp_dict[k] = doc[k_one][k]
-                #print(doc[k_one])
+        res = dbh[coll].delete_one({"list_id":list_id})
 
-            if list_id not in seen:
-                print (list_id, tmp_dict["ts"], tmp_dict["record_type"], tmp_dict["search_type"])
-                print (list_id, tmp_dict["query"])
-                print("//")
-                seen[list_id] = True
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

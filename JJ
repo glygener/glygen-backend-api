@@ -1,0 +1,13 @@
+            "uniprotkb_isoform_ac",
+	    "aa_pos_isoform",
+            "aa_isoform_user" --> optional
+            "aa_isoform_actual" 
+            "uniprotkb_canonical_ac",
+            "aa_pos_canonical",
+            "aa_canonical",
+            "warning",
+ 	    "error"
+
+Restructure result rowlist into list of objects
+
+

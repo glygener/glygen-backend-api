@@ -39,7 +39,8 @@ def main():
 
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
-    mongo_port = config_obj["dbinfo"]["port"][srv]
+    #mongo_port = config_obj["dbinfo"]["port"][srv]
+    mongo_port = "27017"
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
 
     glydb_user, glydb_pass = config_obj["dbinfo"]["glydb"]["user"], config_obj["dbinfo"]["glydb"]["password"]

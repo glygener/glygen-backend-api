@@ -475,9 +475,10 @@ def get_mongo_query(query_obj):
 
     #protein_name
     if "protein_name" in query_obj:
-        query_obj["protein_name"] = query_obj["protein_name"].replace("(", "\(").replace(")", "\)")
-        query_obj["protein_name"] = query_obj["protein_name"].replace("[", "\[").replace("]", "\]")
-        cond_objs.append({"protein_names.name":{'$regex': query_obj["protein_name"], '$options': 'i'}})
+        protein_name = query_obj["protein_name"]
+        protein_name = protein_name.replace("(", "\(").replace(")", "\)")
+        protein_name = protein_name.replace("[", "\[").replace("]", "\]")
+        cond_objs.append({"protein_names.name":{'$regex': protein_name, '$options': 'i'}})
 
     #binding_glycan_id
     if "binding_glycan_id" in query_obj:
