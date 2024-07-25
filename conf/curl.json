@@ -17,7 +17,11 @@
         "video_addnew":{
                 "url":"http://localhost:%s/video/addnew/",
                 "file":"tests/examples/video/video_addnew.json"
-        }
+        },
+	"event_addnew":{
+		"url":"http://localhost:%s/event/addnew/",
+                "file":"tests/examples/event/event_addnew.json"
+	}
     }
 }
 

@@ -39,26 +39,32 @@ def main():
 
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
-    mongo_port = config_obj["dbinfo"]["port"][srv]
+    #mongo_port = config_obj["dbinfo"]["port"][srv]
+    mongo_port = "27017"
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
 
-    glydb_user, glydb_pass = config_obj["dbinfo"]["glydb"]["user"], config_obj["dbinfo"]["glydb"]["password"]
-    glydb_db =  config_obj["dbinfo"]["glydb"]["db"]
+    db_name = "glydb_beta" if srv == "beta" else "glydb"
+    db_obj = config_obj["dbinfo"][db_name]
+    glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
+
+
+
 
     try:
         client = pymongo.MongoClient(host,
-            username=glydb_user,
-            password=glydb_pass,
-            authSource=glydb_db,
+            username=db_user,
+            password=db_pass,
+            authSource=glydb_name,
             authMechanism='SCRAM-SHA-1',
             serverSelectionTimeoutMS=10000
         )
         client.server_info()
-        dbh = client[glydb_db]
+        dbh = client[glydb_name]
         coll = "c_users"
         res = dbh[coll].delete_one({"email":email})
         
         password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        print (password)
         obj = {"email":email, "password":password, "access":"write", "status":1}
         res = dbh[coll].insert_one(obj)
     except pymongo.errors.ServerSelectionTimeoutError as err:

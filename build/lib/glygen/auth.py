@@ -168,6 +168,10 @@ class Auth(Resource):
                 submitted_password = password.encode('utf-8')
                 #stored_password = user_doc['password'].encode('utf-8')
                 stored_password = user_doc['password']
+                #a = user_doc['password'].encode('utf-8')
+                #b = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+                #error = "|%s|%s|" % (a, b)
+                #return {"error_list":[{"error_code":error}]}
                 if bcrypt.hashpw(submitted_password, stored_password) != stored_password:
                     error = "incorrect-email/password"
             res_obj = log_request(req_obj, "/auth/login/", request)
