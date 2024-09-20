@@ -1,1 +1,12 @@
-{"id":"200ff5ba30762923f5495131e8b7e5d3"}
+{
+	"id":"9c0f3d9a73688400a0be3dfb161496ca",
+	"filters": [
+            {
+                "id": "by_biomarker_type",
+                "operator": "OR",
+                "selected": [
+                    "diagnostic"
+                ]
+            }
+        ]
+}

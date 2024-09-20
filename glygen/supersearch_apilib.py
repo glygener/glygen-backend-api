@@ -208,7 +208,8 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
 
     record_type = "supersearch"
-    initial_list_id = get_hash_id(record_type, query_obj)
+    api_name = "superearch_search"
+    initial_list_id = get_hash_id(api_name, record_type, query_obj)
 
     cached_obj = dbh["c_cache"].find_one({"list_id":initial_list_id})
     if cached_obj != None:

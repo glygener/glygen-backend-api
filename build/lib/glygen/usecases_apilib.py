@@ -51,7 +51,8 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
 
 
     record_type = "protein"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "glycan_to_biosynthesis_enzymes"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
@@ -120,7 +121,8 @@ def glycan_to_glycoproteins(query_obj, config_obj):
         return {"error_list":error_list}
 
     record_type = "protein"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "glycan_to_glycoproteins"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
@@ -185,7 +187,8 @@ def glycan_to_enzyme_gene_loci(query_obj, config_obj):
         return {"error_list":error_list}
 
     record_type = "gene_locus"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "glycan_to_enzyme_gene_loci"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
@@ -252,7 +255,8 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
         return {"error_list":error_list}
 
     record_type = "glycan"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "biosynthesis_enzyme_to_glycans"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
@@ -309,7 +313,8 @@ def protein_to_glycosequons(query_obj, config_obj):
         return {"error_list":error_list}
 
     record_type = "glycosequon"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "protein_to_glycosequons"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
@@ -372,7 +377,8 @@ def protein_to_orthologs(query_obj, config_obj):
         return {"error_list":error_list}
 
     record_type = "protein"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "protein_to_orthologs"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
@@ -433,7 +439,8 @@ def species_to_glycosyltransferases(query_obj, config_obj):
         return {"error_list":error_list}
 
     record_type = "protein"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "species_to_glycosyltransferases"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
@@ -488,7 +495,8 @@ def species_to_glycohydrolases(query_obj, config_obj):
         return {"error_list":error_list}
 
     record_type = "protein"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "species_to_glycohydrolases"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
@@ -543,7 +551,8 @@ def species_to_glycoproteins(query_obj, config_obj):
         return {"error_list":error_list}
 
     record_type = "protein"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "species_to_glycoproteins"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
@@ -598,7 +607,8 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
         return {"error_list":error_list}
    
     record_type = "protein"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "disease_to_glycosyltransferases"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:

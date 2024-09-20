@@ -94,7 +94,7 @@
                     {"name":"input.csv", "format":"csv"}
                 ],
 		"output_files":[
-                    {"name":"output.csv", "format":"csv"}
+                    {"name":"output.tsv", "format":"tsv"}
                 ],
 		"paramlist":[]
 	    }
@@ -1196,7 +1196,7 @@
             ,"motif_section":{"cache":"c_motif", "formatlist":["csv","tsv"]}
             ,"publication_section":{"cache":"c_publication", "formatlist":["csv","tsv"]}
 	    ,"biomarker_section":{"cache":"c_biomarker", "formatlist":["csv","tsv"]}
-            
+            ,"isoform_mapper_list":{"cache":"c_listcache", "formatlist":["csv","tsv"]} 
         }
         ,"dev":{
                 "dbinfo":{

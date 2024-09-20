@@ -1,19 +1,17 @@
 {
-        "id": "661b203ddf5c331146ae942fc2b28bbf",
+        "id": "84bbf8fa3bc023050ba6ec9dd11a2b9f",
         "offset": 1,
+        "sort": "hit_score",
         "limit": 20,
         "order": "desc",
-        "sort": "hit_score",
         "filters": [
             {
-                "id": "by_data",
+                "id": "by_sequence_details",
                 "operator": "OR",
                 "selected": [
-                    "Disease"
+                    "composition"
                 ]
             }
         ]
-    }
-
-
+}
 

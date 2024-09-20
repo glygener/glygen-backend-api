@@ -91,6 +91,10 @@ class Idmapping(Resource):
                     if "input_idlist" not in req_obj:
                         req_obj["input_idlist"] = []
                     file_buffer = request.files.get("userfile").read()
+                    file_size = len(file_buffer)
+                    max_size = 50000000
+                    if file_size > max_size:
+                        return {"error_list":[{"error_code":"file-size-exceeds-%sBytes" % (max_size) }]}, 500
                     file_buffer = file_buffer.decode()
                     file_buffer = file_buffer.replace("\r", "\n").replace("\n\n", "\n")
                     line_list = file_buffer.split("\n")

@@ -18,10 +18,11 @@ def main():
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
     parser.add_option("-m","--mode",action="store",dest="mode",help="1 (using example queries), 2 (exhaustive detail API calls)")
     parser.add_option("-g","--group",action="store",dest="group",help="all/protein/glycan/...")
-        
+    parser.add_option("-v","--ver",action="store",dest="ver",help="2.5.1/2.6.1")
+    
 
     (options,args) = parser.parse_args()
-    for key in ([options.server, options.group, options.mode]):
+    for key in ([options.server, options.group, options.mode, options.ver]):
         if not (key):
             parser.print_help()
             sys.exit(0)
@@ -30,6 +31,7 @@ def main():
 
     api_grp = options.group
     mode = int(options.mode)
+    data_version = options.ver
 
     global config_obj
     global user_name
@@ -42,7 +44,6 @@ def main():
     api_url = config_obj["base_url"][server] + "/misc/info"
     res = requests.post(api_url, json={}, verify=False)
     info_obj =  json.loads(res.content)
-    data_version = info_obj["initobj"]["dataversion"]
     jsondb_dir = config_obj["data_path"] + "releases/data/v-%s/jsondb/" % (data_version)
     log_dir = config_obj["data_path"]  + "/logs/"
 

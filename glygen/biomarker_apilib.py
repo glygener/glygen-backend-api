@@ -51,7 +51,8 @@ def biomarker_search_simple(query_obj, config_obj):
 
 
     record_type = "biomarker"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "biomarker_search_simple"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
@@ -145,7 +146,8 @@ def biomarker_search(query_obj, config_obj):
         return {"error_list":error_list}
 
     record_type = "biomarker"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "biomarker_search"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
