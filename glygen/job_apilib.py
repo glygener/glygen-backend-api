@@ -3,6 +3,7 @@ import string
 import random
 import hashlib
 import json
+import glob
 import datetime,time
 import bcrypt
 import base64
@@ -10,7 +11,7 @@ import subprocess
 import pytz
 from collections import OrderedDict
 from bson.objectid import ObjectId
-
+from Bio import SeqIO
 
 from glygen.db import get_mongodb
 from glygen.util import get_errors_in_query, sort_objects, cache_record_list, load_species_info, get_hash_id, cache_result_list, get_cached_result_list
@@ -80,10 +81,10 @@ def job_addnew(query_obj, config_obj, data_path, server):
 
     validation_obj, error_list = validate_input(query_obj, config_obj, release_dir, server)
     if error_list != []:
-        return {"error_list":error_list}
+        return {"error_list":error_list, "result_count":0}
 
-    if "intable" in query_obj:
-        query_obj.pop("intable")
+    #if "intable" in query_obj:
+    #    query_obj.pop("intable")
 
     #return query_obj
     #return validation_obj
@@ -229,7 +230,6 @@ def job_results(query_obj, config_obj):
         hash_str = "%s %s" % (job_doc["jobid"], job_doc["jobtype"])
         hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
-        
         res = get_cached_result_list(list_id)
         if res != None:
             return res
@@ -245,24 +245,25 @@ def job_results(query_obj, config_obj):
         ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
         out_file = job_dir + config_obj["jobinfo"][job_type]["output_files"][0]["name"]
-        res_obj = {"list_id":""}
+        res_obj = {}
         if status_obj["status"] == "finished":
             if job_type == "blastp":
                 res_obj = parse_blastp_ouput(out_file, config_obj)
             elif job_type in ["structure_search"]:
                 res_obj = parse_structure_search_ouput(out_file, config_obj, job_info)
             elif job_type in ["isoform_mapper"]:
-                res_obj = parse_isoform_mapper_ouput(out_file, config_obj, job_info) 
+                res_obj = parse_isoform_mapper_ouput(out_file)
 
         ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-
 
         if "error" in status_obj:
             res_obj["error"] = status_obj["error"]
         res_obj["status"] = status_obj["status"] if "error_list" not in res_obj else "error"
-        res_obj["jobtype"] = job_info["jobtype"]
-        res_obj["parameters"] = job_info["parameters"]
-    
+        
+        res_obj["query"] = {}
+        for k in ["jobtype", "parameters", "sequence"]:
+            if k in job_info:
+                res_obj["query"][k] = job_info[k]
         ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
         #return ts_list
 
@@ -277,12 +278,7 @@ def job_results(query_obj, config_obj):
     return res_obj
 
 
-def parse_isoform_mapper_ouput(out_file, config_obj, job_info):
-
-
-    dbh, error_obj = get_mongodb()
-    if error_obj != {}:
-        return error_obj
+def parse_isoform_mapper_ouput(out_file):
 
     res_obj = {"list_id":""}
     row_list = []
@@ -291,12 +287,19 @@ def parse_isoform_mapper_ouput(out_file, config_obj, job_info):
         for line in line_list:
             if line.strip() == "":
                 continue
-            row = line.strip().split("\t")
+            row = line.split("\t")
             row_list.append(row)
     else:
         return {"error_list":[{"error_code":"output file not found"}]}
 
-    res_obj = {"rowlist":row_list}
+    obj_list = []
+    f_list = row_list[0]
+    for row in row_list[1:]:
+        obj = {}
+        for j in range(0, len(row)):
+            obj[f_list[j]] = row[j]
+        obj_list.append(obj)
+    res_obj = {"objlist":obj_list}
     return res_obj
 
 
@@ -335,7 +338,8 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
     list_id = ""
     record_type = "glycan"
     if len(record_list) != 0:
-        list_id = get_hash_id(record_type, job_info)
+        api_name = "parse_structure_search_ouput"
+        list_id = get_hash_id(api_name, record_type, job_info)
         cache_info = {
             "query":job_info,
             "ts":ts,
@@ -344,6 +348,7 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
         }
         cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj["list_id"] = list_id
+    
     return res_obj
 
 
@@ -564,6 +569,9 @@ def get_result_count(job_type, out_file):
     elif job_type == "blastp":
         cmd = "grep \"Score =\" %s | wc" % (out_file)
         n = int(subprocess.getoutput(cmd).strip().split(" ")[0])
+    elif job_type == "isoform_mapper":
+        cmd = "wc %s" % (out_file)
+        n = int(subprocess.getoutput(cmd).strip().split(" ")[0]) - 1
 
     return n
 
@@ -594,6 +602,14 @@ def job_detail(query_obj, config_obj):
             if k not in res_obj:
                 continue
             res_obj[k] = res_obj[k].strftime('%Y-%m-%d %H:%M:%S %Z%z')
+
+        res_obj["query"] = {}
+        for k in ["jobtype", "parameters", "sequence", "intable"]:
+            if k in res_obj:
+                res_obj["query"][k] = res_obj[k]
+                res_obj.pop(k)
+                
+
     except Exception as e:
         res_obj = {"error_list":[{"error_code":str(e)}]}
 
@@ -720,6 +736,20 @@ def validate_protein_seq(seq):
 
 
 
+def load_seq_dict(release_dir):
+    tmp_dict = {}
+    file_list = glob.glob(release_dir + "/reviewed/*_protein_allsequences.fasta")
+    for in_file in file_list:
+        for record in SeqIO.parse(in_file, "fasta"):
+            seq_id = record.id.split("|")[1]
+            seq = str(record.seq.upper())
+            if seq not in tmp_dict:
+                tmp_dict[seq] = {}
+            tmp_dict[seq][seq_id] = True
+
+    return tmp_dict
+
+
 def validate_input(query_obj, config_obj, release_dir, server):
     cmd_parts = []
     error_list = []
@@ -753,9 +783,9 @@ def validate_input(query_obj, config_obj, release_dir, server):
                 o["value"] = release_dir + "jsondb/blastdb/" + o["value"]
         query_obj["cmd"] += " %s %s" % (o["flag"], o["value"])
 
-    query_obj["seq_id"] = "QUERY"
     res_obj = {"buffer":""}
     if query_obj["jobtype"] == "blastp":
+        query_obj["seq_id"] = "QUERY"
         e_list = validate_protein_seq(query_obj["parameters"]["seq"])
         if e_list != []:
             return res_obj, e_list
@@ -767,6 +797,7 @@ def validate_input(query_obj, config_obj, release_dir, server):
         hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         query_obj["md5sum"] = hash_obj.hexdigest()
     elif query_obj["jobtype"] in ["structure_search"]:
+        query_obj["seq_id"] = "QUERY"
         res_obj["buffer"] = json.dumps(query_obj["parameters"])
         #cmd = "echo \"%s\" | /usr/bin/md5sum" % (query_obj["parameters"]["seq"])
         #query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
@@ -775,8 +806,27 @@ def validate_input(query_obj, config_obj, release_dir, server):
         query_obj["md5sum"] = hash_obj.hexdigest()
     elif query_obj["jobtype"] in ["isoform_mapper"]:
         if "intable" in query_obj:
-            for row in query_obj["intable"]:
-                res_obj["buffer"] += ",".join(row) + "\n"
+            if "sequence" in query_obj:
+                seq = query_obj["sequence"]
+                seq_dict = load_seq_dict(release_dir)
+                isoform_ac_list = []
+                if seq in seq_dict:
+                    isoform_ac_list = list(seq_dict[seq].keys())
+                if isoform_ac_list == []:
+                    error_list.append({"error_code": "no-isoform-accessions-found"})
+                    return {}, error_list
+                line_list = []
+                for ac in isoform_ac_list:
+                    for row in query_obj["intable"]:
+                        line_list.append(",".join([ac] + row))
+                res_obj["buffer"] = "\n".join(line_list) 
+            else:
+                line_list = []
+                for row in query_obj["intable"]:
+                    line_list.append(",".join(row))
+                res_obj["buffer"] = "\n".join(line_list)
+
+            
     return res_obj, error_list
 
 

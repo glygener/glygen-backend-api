@@ -16,7 +16,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list,  extract_name, get_errors_in_query, order_obj, order_list, get_cached_motif_records_direct, get_cached_records_direct, get_cached_records_indirect
+from glygen.util import cache_record_list,  extract_name, get_errors_in_query, order_obj, order_list, get_cached_motif_records_direct, get_cached_records_direct, get_cached_records_indirect, get_cached_result_list
 from glygen.motif_apilib import get_parent_glycans
 
 
@@ -53,7 +53,8 @@ def list_download(query_obj, config_obj, data_path):
     download_type_list = [
         "glycan_list", "site_list", "biomarker_list", "motif_list","protein_list", "genelocus_list", "ortholog_list",
         "idmapping_list_mapped", "idmapping_list_unmapped", "idmapping_list_all", 
-        "idmapping_list_all_collapsed"
+        "idmapping_list_all_collapsed",
+        "isoform_mapper_list"
     ]
     sequence_format_list = ["fasta", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic", "grits"]
 
@@ -441,8 +442,12 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
         else:
             list_obj["results"] = new_list_obj
 
-    if len(list_obj["results"]) > 0:
-        header_list = order_list(list_obj["results"][0].keys(), ordr_dict)
+
+
+    results_key = "objlist" if "objlist" in list_obj else "results"
+    
+    if len(list_obj[results_key]) > 0:
+        header_list = order_list(list_obj[results_key][0].keys(), ordr_dict)
         if "GlyTouCan Accession" in header_list:
             header_list.append("Glycan Image Url")
         if format_lc == "csv":
@@ -450,22 +455,18 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
         else:
             data_buffer = "\"" +  "\"\t\"".join(header_list) + "\"\n"
 
-        key_list = order_list(list_obj["results"][0].keys(), ordr_dict)
+        key_list = order_list(list_obj[results_key][0].keys(), ordr_dict)
         seen_row = {}
         line_list = []
-        for j in range(0, len(list_obj["results"])):
-            obj = list_obj["results"][j]
+        for j in range(0, len(list_obj[results_key])):
+            obj = list_obj[results_key][j]
             row = []
             for k in key_list:
                 val_k = str(obj[k]) if k in obj else ""
-                #if query_obj["download_type"] == "publication_section" and k == "referenced_proteins":
-                #    val_k = "xxxx"
                 if query_obj["download_type"] == "ortholog_list" and k == "sequence":
                     val_k = obj[k]["sequence"]
                 if query_obj["download_type"] == "ortholog_list" and k == "evidence":
                     val_k = obj[k][0]["url"]
-                #if query_obj["download_type"] == "site_list" and k in ["glycosylation", "mutagenesis", "snv","site_annotation"]:
-                #val_k = "yes" if len(obj[k]) > 0 else "no"
                 row.append(val_k)
 
             if "GlyTouCan Accession" in key_list:
@@ -541,6 +542,8 @@ def get_sequence_buffer_one(dbh, list_obj, query_obj, config_obj):
 
 def get_list_object(query_obj, config_obj):
 
+   
+    list_query = "" 
     collection = config_obj["downloadtypes"][query_obj["download_type"]]["cache"]
     mongo_query = {"list_id":query_obj["id"]}
     if query_obj["download_type"] == "motif_list":
@@ -557,13 +560,15 @@ def get_list_object(query_obj, config_obj):
             "idmapping_list_mapped","idmapping_list_unmapped", "genelocus_list", "ortholog_list"]:
             list_obj = get_cached_records_direct(list_query, config_obj)
         else:
-            list_obj = get_cached_records_indirect(list_query, config_obj)
-
-
+            if collection == "c_cache":
+                list_obj = get_cached_records_indirect(list_query, config_obj)
+            elif collection == "c_listcache":
+                list_obj = get_cached_result_list(query_obj["id"])
+                
     if "_id" in list_obj:
         list_obj.pop("_id")
     
-    
+    list_obj["xxxx"] = list_query
     return list_obj
 
 

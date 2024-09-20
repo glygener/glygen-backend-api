@@ -43,6 +43,10 @@ def log_request(req_obj, api_name, request):
     mongo_dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
+    
+    if api_name == "/job/addnew/" and "intable" in req_obj:
+        req_obj["intable"] = "removed"
+    
     if len(json.dumps(req_obj)) > 20000:
         return {"error_list":[{"error_code": "Too long request, unable to log request!"}]}
 

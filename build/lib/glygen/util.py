@@ -15,6 +15,24 @@ from glygen.db import get_mongodb
 from glygen.libgly import load_sheet
 
 
+def validate_uploaded_table(in_table, table_type):
+
+    res = {}
+    err_list = []
+    if table_type == "isoform_mapper":
+        f_list = in_table[0]
+        for idx in range(1, len(in_table)):
+            row =  in_table[idx]
+            if len(row) != len(f_list):
+                err_list.append({"error_code":"bad-row", "row_index":idx})
+            aa_pos = row[f_list.index("amino_acid_pos")]
+            if aa_pos.isdigit() == False:
+                err_list.append({"error_code":"bad-amino-acid-pos-value", "row_index":idx}) 
+    
+    res = {"error_list":err_list, "result_count":0} if len(err_list) > 0 else {}
+    return res
+
+
 
 def get_taxid2name():
 
@@ -803,9 +821,16 @@ def get_cached_records_indirect(query_obj, config_obj):
 
     ts_list.append("5-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
+
+    ts_list.append("count_1_%s" % (len(cached_obj["results"])))
+
     #Apply filters
     #comment for performance testing
     filter_list(cached_obj, query_obj)
+
+
+
+    ts_list.append("count_2_%s" % (len(cached_obj["results"])))
 
     ts_list.append("6-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
@@ -889,6 +914,7 @@ def get_cached_records_indirect(query_obj, config_obj):
 
     ts_list.append("9-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     #return ts_list
+
 
 
     return res_obj
@@ -993,7 +1019,13 @@ def filter_list(res_obj, query_obj):
                                         f_dict_two[filter_group_id].append(filter_id)
                         else:
                             for filter_id in idlist_in_group:
-                                if record_obj[k].find(filter_id) != -1:
+                                semi_colon_sep_values = record_obj[k].strip()
+                                if len(semi_colon_sep_values) > 0:
+                                    if semi_colon_sep_values[-1] != ";":
+                                        semi_colon_sep_values += ";"
+                                if filter_id == "Composition" and semi_colon_sep_values == "BaseComposition;":
+                                    continue
+                                if semi_colon_sep_values.find(filter_id + ";") != -1:
                                     if filter_id not in f_dict_two[filter_group_id]:
                                         f_dict_two[filter_group_id].append(filter_id)
             set_one = set(f_dict_one[filter_group_id])
@@ -1008,7 +1040,6 @@ def filter_list(res_obj, query_obj):
             tmp_record_list.append(record_obj)
 
     res_obj["results"] = tmp_record_list
-
 
     return
 
@@ -1400,8 +1431,8 @@ def get_cached_result_list(list_id):
     return res_obj
 
 
-def get_hash_id(record_type, obj):
-    hash_str = record_type + json.dumps(obj)
+def get_hash_id(api_name , record_type, obj):
+    hash_str = api_name + record_type + json.dumps(obj)
     hash_obj = hashlib.md5(hash_str.encode('utf-8'))
     return hash_obj.hexdigest()
     

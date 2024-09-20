@@ -41,7 +41,6 @@ def pagination_page(query_obj, config_obj):
     collection = "c_" + record_type
     doc = dbh[collection].find_one(mongo_query)
    
-     
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
     if doc == None:
@@ -50,7 +49,8 @@ def pagination_page(query_obj, config_obj):
 
 
     # Get section objects if this record was batched 
-    q = {"recordid": record_id, "recordtype": record_type}
+    #q = {"recordid": record_id, "recordtype": record_type}
+    q = {"recordid": {"$regex":record_id, "$options":"i"}, "recordtype": record_type}
     tmp_dict = {}
     for batch_doc in dbh["c_batch"].find(q):
         for sec in batch_doc["sections"]:

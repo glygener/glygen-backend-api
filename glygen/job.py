@@ -12,7 +12,7 @@ import bcrypt
 
 from glygen.job_apilib import job_addnew, job_detail, job_update, job_list, job_delete,job_clean, job_results, job_status, job_queue, job_init
 
-from glygen.util import get_req_obj
+from glygen.util import get_req_obj, validate_uploaded_table
 import traceback
 
 
@@ -96,7 +96,7 @@ class Job(Resource):
         return self.post()
 
 
-@api.route('/addnew/')
+@api.route('/addnew/', methods=['GET', 'POST'])
 class Job(Resource):
     @api.expect(addnew_query_model)
     def post(self):
@@ -112,11 +112,20 @@ class Job(Resource):
             if req_obj_json != None:
                 req_obj = req_obj_json
             else:
-                req_obj["jobtype"] = "isoform_mapper"
+                for k in req_obj_form:
+                    req_obj[k] = req_obj_form[k]
                 req_obj["parameters"] = {}
                 req_obj["intable"] = [["isoform_ac","amino_acid_pos","amino_acid"]]
                 if "userfile" in request.files:
                     file_buffer = request.files.get("userfile").read()
+                    file_size = len(file_buffer)
+                    max_size = 50000000
+                    if file_size > max_size:
+                        res_obj = {
+                            "error_list":[{"error_code":"file-size-exceeds-%sBytes" % (max_size) }],
+                            "result_count":0
+                        }
+                        return res_obj, 200
                     file_buffer = file_buffer.decode()
                     file_buffer = file_buffer.replace("\r", "\n").replace("\n\n", "\n")
                     line_list = file_buffer.split("\n")
@@ -127,15 +136,30 @@ class Job(Resource):
                         for val in line.strip().split(","):
                             row.append(val.replace("\"", ""))
                         req_obj["intable"].append(row)
+                    validation_res = validate_uploaded_table(req_obj["intable"], "isoform_mapper")
+                    if "error_list" in validation_res:
+                        return validation_res, 200
+            if req_obj["jobtype"] == "isoform_mapper":
+                if "intable" in req_obj:
+                    max_row_count = 1000
+                    if len(req_obj["intable"]) - 1 > max_row_count:
+                        res_obj = {
+                            "error_list":[{"error_code":"row-count-exceeds-%s" % (max_row_count) }],
+                            "result_count":0
+                        }
+                        return res_obj, 200
+
             qry = req_obj["query"] if "query" in req_obj else req_obj
             data_path, server = os.environ["DATA_PATH"],os.environ["SERVER"]
-            res_obj = log_request(req_obj, "/job/addnew/", request)
+            tmp_req_obj = json.loads(json.dumps(req_obj))
+            res_obj = log_request(tmp_req_obj, "/job/addnew/", request)
             if "error_list" not in res_obj:
                 res_obj = job_addnew(qry, config_obj, data_path, server)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         
-        http_code = 500 if "error_list" in res_obj else 200
+        http_code = 200
+        http_code = 500 if "error_list" in res_obj and "result_count" not in res_obj else http_code
         return res_obj, http_code
     
     @api.doc(False)

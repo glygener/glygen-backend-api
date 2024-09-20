@@ -52,7 +52,8 @@ def protein_search_simple(query_obj, config_obj):
         new_query_obj["term"] = transform_query_term(new_query_obj["term"])
 
     record_type = "protein"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "protein_search_simple"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
@@ -102,7 +103,8 @@ def protein_search(query_obj, config_obj):
         return {"error_list":error_list}
 
     record_type = "protein"
-    list_id = get_hash_id(record_type, query_obj)
+    api_name = "protein_search"
+    list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
@@ -445,7 +447,7 @@ def get_simple_mongo_query(query_obj):
         cond_objs.append({"pathway.name":{'$regex': query_obj["term"], '$options': 'i'}})
     elif query_obj["term_category"] == "organism":
         cond_objs.append({"species.name":{'$regex': query_obj["term"], '$options': 'i'}})
-        cond_objs.append({"species.common_name":{'$regex': query_obj["term"], '$options': 'i'}})
+        cond_objs.append({"species.glygen_name":{'$regex': query_obj["term"], '$options': 'i'}})
 
 
     mongo_query = {} if cond_objs == [] else { "$or": cond_objs }
@@ -513,7 +515,7 @@ def get_mongo_query(query_obj):
             if type(query_obj["organism"]["id"]) is int:
                 tmp_cnd_list.append({"species.taxid": {'$eq': query_obj["organism"]["id"]}})
         if "name" in query_obj["organism"]:
-            tmp_cnd_list.append({"species.common_name": {'$regex': query_obj["organism"]["name"], '$options': 'i'}})
+            tmp_cnd_list.append({"species.glygen_name": {'$regex': query_obj["organism"]["name"], '$options': 'i'}})
         if tmp_cnd_list != []:
             cond_objs.append({"$or":tmp_cnd_list}) 
     #biomarker

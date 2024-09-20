@@ -29,7 +29,7 @@
             "name":{"targetlist":["names.name", "synonym"]}
         },
         "species":{
-            "name":{"targetlist":["common_name", "name"]}
+            "name":{"targetlist":["glygen_name", "common_name", "name"]}
         },
         "disease":{
             "name":{"targetlist":["recommended_name.name", "synonyms.name"]},

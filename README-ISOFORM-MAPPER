@@ -1,0 +1,37 @@
+1) To update image, remove existing and pull again
+   docker image rm ebiglygen/mapper-java-jar:basic
+   docker pull ebiglygen/mapper-java-jar:basic
+
+
+2) Usage with request object
+   save the example json in a file (tests/temp/q.json) then run http POST
+
+   {
+	"jobtype": "isoform_mapper",
+	"parameters":{},
+	"intable":[
+		["isoform_ac","amino_acid_pos","amino_acid"],
+		["A6NJB7-2","3","T"],
+		["A6NJB7-2","8","S"]
+	]
+   }
+
+   $ http POST :8082/job/addnew/ < tests/temp/q.json  
+
+
+3) Usage with uploaded file
+   save input csv file (tmp/input.csv) and run test_isoform_mapper.py
+
+   isoform_ac,amino_acid_pos,amino_acid
+   A6NJB7-2,3,T
+   A6NJB7-2,8,S
+   P08697-2,36,T
+   P08697-2,37,S
+   P19827-2,514,S
+   P19827-2,516,N
+   P19827-2,517,T
+
+   $ python3 test_isoform_mapper.py
+
+
+

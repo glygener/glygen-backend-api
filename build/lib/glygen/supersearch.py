@@ -180,7 +180,8 @@ class Supersearch(Resource):
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/supersearch/list/", request)
             if "error_list" not in res_obj:
-                list_id = get_hash_id("", req_obj)
+                api_name = "supersearch_list"
+                list_id = get_hash_id(api_name, "", req_obj)
                 res_obj = get_cached_result_list(list_id)
                 if res_obj == None:
                     res_obj = get_cached_records_indirect(req_obj, config_obj)

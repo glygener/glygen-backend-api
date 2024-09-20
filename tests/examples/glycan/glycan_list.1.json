@@ -1,19 +1,17 @@
 {
-        "id": "661b203ddf5c331146ae942fc2b28bbf",
+        "id": "c204dc540b1769522e9348d641ad5803",
         "offset": 1,
+        "sort": "hit_score",
         "limit": 20,
         "order": "desc",
-        "sort": "hit_score",
         "filters": [
             {
-                "id": "by_data",
+                "id": "by_organism",
                 "operator": "OR",
                 "selected": [
-                    "Disease"
+                    "HCV"
                 ]
             }
         ]
-    }
-
-
+}
 

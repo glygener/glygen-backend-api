@@ -20,7 +20,7 @@ def main():
     in_dir = in_file.replace("/input.csv", "")
     
     try:
-        cmd = "docker run -v %s:/input ebiglygen/mapper-java-jar:basic" % (in_dir)
+        cmd = "docker run --rm -v %s:/input ebiglygen/mapper-java-jar:basic" % (in_dir)
         x,y = subprocess.getstatusoutput(cmd)
         #if x != 0:
         #    err = y.split("\n")[0]

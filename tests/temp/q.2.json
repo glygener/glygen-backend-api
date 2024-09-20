@@ -1,12 +1,26 @@
 {
-	"operation":"AND",
-	"query_type":"search_glycan",
-	"glycan_name":"",
-	"organism":{
-		"organism_list":[
-			{"name":"Homo sapiens","id":9606}
-		],
-		"operation":"or"
-	}
-}
+        "id": "661b203ddf5c331146ae942fc2b28bbf",
+        "offset": 1,
+        "limit": 20,
+        "order": "desc",
+        "sort": "hit_score",
+        "filters": [
+            {
+                "id": "by_data",
+                "operator": "OR",
+                "selected": [
+                    "Disease"
+                ]
+            },
+            {
+                "id": "by_ptm",
+                "operator": "OR",
+                "selected": [
+                    "O-Glycosylation predicted"
+                ]
+            }
+        ]
+    }
+
+
 

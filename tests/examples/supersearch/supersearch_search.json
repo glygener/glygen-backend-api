@@ -10,11 +10,12 @@
             "path": "name",
             "order": 0,
             "operator": "$eq",
-            "string_value": "Mouse"
+            "string_value": "Yeast"
           }
         ]
       }
     }
   ]
 }
+
 

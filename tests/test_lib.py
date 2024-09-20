@@ -156,7 +156,6 @@ def run_from_queries(api_grp, config_obj, server):
     try:
         summary_file = log_dir + "%s_test_summary_%s_mode_1.csv" % (user_name,api_grp)        
         FW = open(summary_file, "w")
-       
         for in_file in file_list:
             if is_valid_json(open(in_file, "r").read()) == False:
                 res_obj = {"infile":in_file, "error_code": "invalid-query-json"}
@@ -264,6 +263,8 @@ def run_from_queries(api_grp, config_obj, server):
         FW.close()
     except Exception as e:
         print (traceback.format_exc())
+
+    print ("Check output under %s" % (log_dir))
 
     return
 
