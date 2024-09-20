@@ -1,0 +1,91 @@
+record_type,category,field,label,cat_order,field_order
+protein,General,uniprot_canonical_ac,UniProtKB Accession,1,1
+protein,General,mass,Chemical Mass (Da),1,2
+protein,General,protein_name,UniProtKB Name,1,3
+protein,General,gene_name,Gene Name,1,4
+protein,General,organism,Organism,1,5
+protein,General,refseq_name,RefSeq Name,1,6
+protein,General,refseq_ac,RefSeq Accession,1,7
+protein,General,tax_id,Taxonomy ID,1,8
+protein,General,missing_score,missing_score,1,9
+protein,General,hit_score,Hit Score,1,10
+protein,Names,gene_names_uniprotkb,gene_names_uniprotkb,1,11
+protein,Names,gene_names_refseq,gene_names_refseq,1,12
+protein,Names,protein_names_uniprotkb,protein_names_uniprotkb,1,1
+protein,Names,protein_names_refseq,protein_names_refseq,1,1
+protein,Diseases,disease,Disease,1,1
+protein,Pathways,pathway,Pathway,1,1
+protein,Publications,publication_count,publication_count,1,1
+protein,Function,function,function,1,1
+protein,Glycosylation,predicted_glycosites,predicted_glycosites,1,1
+protein,Glycosylation,predicted_n_glycosites,predicted_n_glycosites,1,1
+protein,Glycosylation,predicted_o_glycosites,predicted_o_glycosites,1,1
+protein,Glycosylation,reported_n_glycosites,reported_n_glycosites,1,1
+protein,Glycosylation,reported_o_glycosites,reported_o_glycosites,1,1
+protein,Glycosylation,reported_n_glycosites_with_glycan,reported_n_glycosites_with_glycan,1,1
+protein,Glycosylation,reported_o_glycosites_with_glycan,reported_o_glycosites_with_glycan,1,1
+protein,Glycosylation,total_reported_n_glycosites,total_reported_n_glycosites,1,1
+protein,Glycosylation,total_reported_o_glycosites,total_reported_o_glycosites,1,1
+protein,Glycosylation,total_n_glycosites,total_n_glycosites,1,1
+protein,Glycosylation,total_o_glycosites,total_o_glycosites,1,1
+protein,Glycosylation,reported_fully_resolved_glycans,reported_fully_resolved_glycans,1,1
+protein,Phosphorylation,reported_phosphosites,reported_phosphosites,1,1
+protein,Mutagensis,reported_mutagensis,reported_mutagensis,1,1
+protein,Glycation,reported_glycation,reported_glycation,1,1
+protein,SNV,reported_snv,reported_snv,1,1
+protein,Interactions,reported_interactions,reported_interactions,1,1
+protein,Biomarkers,biomarker_type,biomarker_type,1,1
+glycan,General,glytoucan_ac,Glycan ID,1,1
+glycan,General,mass,Monoisotopic Mass,1,1
+glycan,General,mass_pme,Monoisotopic Mass-pMe (Da),1,1
+glycan,General,classification,classification,1,1
+glycan,General,number_monosaccharides,Monosaccharide Count,1,1
+glycan,General,hit_score,Hit Score,1,1
+glycan,Glycoproteins,number_proteins,Glycoprotein Count,1,1
+glycan,Enzymes,number_enzymes,Enzyme Count,1,1
+glycan,Organism,number_species,number_species,1,1
+glycan,Interactions,interactions,interactions,1,1
+glycan,Organism,species_list,species_list,1,1
+glycan,Sequences,sequence_details,sequence_details,1,1
+glycan,General,keywords,keywords,1,1
+glycan,General,missing_score,missing_score,1,1
+glycan,Biomarkers,biomarker_type,biomarker_type,1,1
+glycan,Sequences,iupac,iupac,1,1
+glycan,Sequences,glycoct,glycoct,1,1
+glycan,Sequences,glycam,glycam,1,1
+glycan,Sequences,wurcs,wurcs,1,1
+glycan,Sequences,inchi,inchi,1,1
+glycan,Sequences,inchi_key,inchi_key,1,1
+glycan,Sequences,byonic,byonic,1,1
+glycan,Sequences,gwb,gwb,1,1
+glycan,Enzymes,enzyme,enzyme,1,1
+glycan,Glycoproteins,glycoprotein,glycoprotein,1,1
+glycan,Motifs,motifs,motifs,1,1
+glycan,Sequences,composition,composition,1,1
+glycan,Publications,publication,publication,1,1
+site,General,uniprot_canonical_ac,uniprot_canonical_ac,1,1
+site,General,protein_name,protein_name,1,1
+site,General,start_pos,start_pos,1,1
+site,General,end_pos,end_pos,1,1
+site,General,site_seq,site_seq,1,1
+site,General,up_seq,up_seq,1,1
+site,General,down_seq,down_seq,1,1
+site,General,hit_score,Hit Score,1,1
+site,Glycosylation,glycosylation,glycosylation,1,1
+site,Glycosylation,glycosylation_count,glycosylation_count,1,1
+site,Mutagenesis,mutagenesis,mutagenesis,1,1
+site,Mutagenesis,mutagenesis_count,mutagenesis_count,1,1
+site,SNV,snv,snv,1,1
+site,SNV,snv_count,snv_count,1,1
+site,Phosphorylation,phosphorylation,phosphorylation,1,1
+site,Phosphorylation,phosphorylation_count,phosphorylation_count,1,1
+site,Glycation,glycation,glycation,1,1
+site,Glycation,glycation_count,glycation_count,1,1
+site,Biomarkers,biomarkers,biomarkers,1,1
+site,Biomarkers,biomarkers_count,biomarkers_count,1,1
+site,General,residue,residue,1,1
+site,Glycosylation,glycosylation_type,glycosylation_type,1,1
+site,SNV,snv_type,snv_type,1,1
+site,General,missing_score,missing_score,1,1
+site,Organism,tax_id,Taxonomy ID,1,1
+site,Organism,organism,Organism,1,1

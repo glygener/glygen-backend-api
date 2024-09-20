@@ -109,6 +109,27 @@ def home_init(config_obj, data_path):
 
 
 
+def list_init(config_obj, query_obj):
+
+    #Collect errors 
+    error_list = get_errors_in_query("pages_list_init",query_obj, config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+    
+    res_obj = {}
+    if query_obj["table_id"] in config_obj["list_init"]:
+        res_obj = config_obj["list_init"][query_obj["table_id"]]
+    else:
+        return {"error_list":[{"error_code":"uknown-table-id-value"}]}
+
+    return res_obj 
+
+
+
+
+
+
+
 def convert_stat_json(backend_obj, frontend_obj):
     
     frontend_key_sets = [
