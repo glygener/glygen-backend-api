@@ -1036,7 +1036,14 @@
              ,"requiredfields":[]
             ,"collectionlist":["c_version", "c_stat"]
         }
-        ,"log_logging":{
+        ,"pages_list_init":{
+             "field_info":{
+ 		"table_id":{"type":"string"}
+	     }
+             ,"requiredfields":["table_id"]
+            ,"collectionlist":[]
+        }
+	,"log_logging":{
             "field_info":{
                 "id":{"type":"string"}
                 ,"user":{"type":"string"}

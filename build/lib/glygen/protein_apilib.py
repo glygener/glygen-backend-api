@@ -281,7 +281,6 @@ def protein_detail(query_obj, config_obj):
     
 
     obj = dbh[collection].find_one(mongo_query)
-    obj["_id"] = str(obj["_id"])
     
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts_list = []
@@ -332,6 +331,8 @@ def protein_detail(query_obj, config_obj):
         else:
             res_obj["reason"] = {"type":"invalid","description": "Invalid accession"}
         return res_obj
+
+    obj["_id"] = str(obj["_id"])
 
     # Get section objects if record is batched
     canon = query_obj["uniprot_canonical_ac"].upper()

@@ -37,6 +37,7 @@
   
   $ http POST :8082/globalsearch/search/ < tests/examples/globalsearch/globalsearch_search.json
   $ http POST :8082/pages/home_init/ 
+  $ http POST :8082/pages/list_init/ < tests/examples/pages/list_init.json
   $ http POST :8082/seqmapping/search/ < tests/examples/seqmapping/seqmapping_search.json
   $ http POST :8082/publication/detail/ < tests/examples/publication/publication_detail.json
 
