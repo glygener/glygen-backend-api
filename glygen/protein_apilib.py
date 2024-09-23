@@ -285,8 +285,11 @@ def protein_detail(query_obj, config_obj):
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts_list = []
     c_a = {"recordtype":{"$eq": "protein"}}
-    c_b = {"record_id":{'$regex':query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
-    c_c = {"accessions":{'$regex':","+query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
+    c_b = {"record_id":{'$eq':query_obj["uniprot_canonical_ac"].upper()}}
+    c_c = {"accessions":{'$regex':","+query_obj["uniprot_canonical_ac"].upper() + ",","$options":"i"}}
+    if len(query_obj["uniprot_canonical_ac"]) == 6:
+        c_b = {"record_id":{'$regex':query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
+
 
     ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
