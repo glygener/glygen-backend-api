@@ -2,702 +2,1548 @@
     "protein": {
         "columns": [
             {
-                "id": "general",
-                "label": "General",
+                "id": "uniprot_canonical_ac",
+                "property_name": "uniprot_canonical_ac",
+                "label": "UniProtKB Accession",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": true,
+                "default": true,
+                "categories": [
                     {
-                        "id": "uniprot_canonical_ac",
-                        "label": "UniProtKB Accession",
-                        "order": 1
-                    },
-                    {
-                        "id": "mass",
-                        "label": "Chemical Mass (Da)",
-                        "order": 2
-                    },
-                    {
-                        "id": "protein_name",
-                        "label": "UniProtKB Name",
-                        "order": 3
-                    },
-                    {
-                        "id": "gene_name",
-                        "label": "Gene Name",
-                        "order": 4
-                    },
-                    {
-                        "id": "organism",
-                        "label": "Organism",
-                        "order": 5
-                    },
-                    {
-                        "id": "refseq_name",
-                        "label": "RefSeq Name",
-                        "order": 6
-                    },
-                    {
-                        "id": "refseq_ac",
-                        "label": "RefSeq Accession",
-                        "order": 7
-                    },
-                    {
-                        "id": "tax_id",
-                        "label": "Taxonomy ID",
-                        "order": 8
-                    },
-                    {
-                        "id": "missing_score",
-                        "label": "missing_score",
-                        "order": 9
-                    },
-                    {
-                        "id": "hit_score",
-                        "label": "Hit Score",
-                        "order": 10
+                        "id": "General",
+                        "order": "1"
                     }
                 ]
             },
             {
-                "id": "names",
-                "label": "Names",
+                "id": "mass",
+                "property_name": "mass",
+                "label": "Chemical Mass (Da)",
+                "order": 2,
+                "tooltip": "",
+                "immutable": false,
+                "default": true,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "protein_name",
+                "property_name": "protein_name",
+                "label": "UniProtKB Name",
+                "order": 3,
+                "tooltip": "",
+                "immutable": false,
+                "default": true,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "gene_name",
+                "property_name": "gene_name",
+                "label": "Gene Name",
+                "order": 4,
+                "tooltip": "",
+                "immutable": false,
+                "default": true,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "organism",
+                "property_name": "organism",
+                "label": "Organism",
+                "order": 5,
+                "tooltip": "",
+                "immutable": false,
+                "default": true,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "refseq_name",
+                "property_name": "refseq_name",
+                "label": "RefSeq Name",
+                "order": 6,
+                "tooltip": "",
+                "immutable": false,
+                "default": true,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "refseq_ac",
+                "property_name": "refseq_ac",
+                "label": "RefSeq Accession",
+                "order": 7,
+                "tooltip": "",
+                "immutable": false,
+                "default": true,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "tax_id",
+                "property_name": "tax_id",
+                "label": "Taxonomy ID",
+                "order": 8,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "missing_score",
+                "property_name": "missing_score",
+                "label": "missing_score",
+                "order": 9,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "hit_score",
+                "property_name": "hit_score",
+                "label": "Hit Score",
+                "order": 10,
+                "tooltip": "",
+                "immutable": true,
+                "default": true,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "gene_names_uniprotkb",
+                "property_name": "gene_names_uniprotkb",
+                "label": "gene_names_uniprotkb",
                 "order": 11,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "gene_names_uniprotkb",
-                        "label": "gene_names_uniprotkb",
-                        "order": 11
-                    },
-                    {
-                        "id": "gene_names_refseq",
-                        "label": "gene_names_refseq",
-                        "order": 12
-                    },
-                    {
-                        "id": "protein_names_uniprotkb",
-                        "label": "protein_names_uniprotkb",
-                        "order": 1
-                    },
-                    {
-                        "id": "protein_names_refseq",
-                        "label": "protein_names_refseq",
-                        "order": 1
+                        "id": "Names",
+                        "order": "1"
                     }
                 ]
             },
             {
-                "id": "diseases",
-                "label": "Diseases",
-                "order": 1,
+                "id": "gene_names_refseq",
+                "property_name": "gene_names_refseq",
+                "label": "gene_names_refseq",
+                "order": 12,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "disease",
-                        "label": "Disease",
-                        "order": 1
+                        "id": "Names",
+                        "order": "1"
                     }
                 ]
             },
             {
-                "id": "pathways",
-                "label": "Pathways",
+                "id": "protein_names_uniprotkb",
+                "property_name": "protein_names_uniprotkb",
+                "label": "protein_names_uniprotkb",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "pathway",
-                        "label": "Pathway",
-                        "order": 1
+                        "id": "Names",
+                        "order": "1"
                     }
                 ]
             },
             {
-                "id": "publications",
-                "label": "Publications",
+                "id": "protein_names_refseq",
+                "property_name": "protein_names_refseq",
+                "label": "protein_names_refseq",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "publication_count",
-                        "label": "publication_count",
-                        "order": 1
+                        "id": "Names",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "disease",
+                "property_name": "disease",
+                "label": "Disease",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Diseases",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "pathway",
+                "property_name": "pathway",
+                "label": "Pathway",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Pathways",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "publication_count",
+                "property_name": "publication_count",
+                "label": "publication_count",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Publications",
+                        "order": "1"
                     }
                 ]
             },
             {
                 "id": "function",
+                "property_name": "function",
+                "label": "function",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Function",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "predicted_glycosites",
+                "property_name": "predicted_glycosites",
+                "label": "predicted_glycosites",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "predicted_n_glycosites",
+                "property_name": "predicted_n_glycosites",
+                "label": "predicted_n_glycosites",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "predicted_o_glycosites",
+                "property_name": "predicted_o_glycosites",
+                "label": "predicted_o_glycosites",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "reported_n_glycosites",
+                "property_name": "reported_n_glycosites",
+                "label": "reported_n_glycosites",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "reported_o_glycosites",
+                "property_name": "reported_o_glycosites",
+                "label": "reported_o_glycosites",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "reported_n_glycosites_with_glycan",
+                "property_name": "reported_n_glycosites_with_glycan",
+                "label": "reported_n_glycosites_with_glycan",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "reported_o_glycosites_with_glycan",
+                "property_name": "reported_o_glycosites_with_glycan",
+                "label": "reported_o_glycosites_with_glycan",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "total_reported_n_glycosites",
+                "property_name": "total_reported_n_glycosites",
+                "label": "total_reported_n_glycosites",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "total_reported_o_glycosites",
+                "property_name": "total_reported_o_glycosites",
+                "label": "total_reported_o_glycosites",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "total_n_glycosites",
+                "property_name": "total_n_glycosites",
+                "label": "total_n_glycosites",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "total_o_glycosites",
+                "property_name": "total_o_glycosites",
+                "label": "total_o_glycosites",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "reported_fully_resolved_glycans",
+                "property_name": "reported_fully_resolved_glycans",
+                "label": "reported_fully_resolved_glycans",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "reported_phosphosites",
+                "property_name": "reported_phosphosites",
+                "label": "reported_phosphosites",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Phosphorylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "reported_mutagensis",
+                "property_name": "reported_mutagensis",
+                "label": "reported_mutagensis",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Mutagensis",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "reported_glycation",
+                "property_name": "reported_glycation",
+                "label": "reported_glycation",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "reported_snv",
+                "property_name": "reported_snv",
+                "label": "reported_snv",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "SNV",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "reported_interactions",
+                "property_name": "reported_interactions",
+                "label": "reported_interactions",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Interactions",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "biomarker_type",
+                "property_name": "biomarker_type",
+                "label": "biomarker_type",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Biomarkers",
+                        "order": "1"
+                    }
+                ]
+            }
+        ],
+        "categories": [
+            {
+                "id": "General",
+                "label": "General",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Names",
+                "label": "Names",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Diseases",
+                "label": "Diseases",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Pathways",
+                "label": "Pathways",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Publications",
+                "label": "Publications",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Function",
                 "label": "Function",
-                "order": 1,
-                "tooltip": "",
-                "options": [
-                    {
-                        "id": "function",
-                        "label": "function",
-                        "order": 1
-                    }
-                ]
+                "order": "1",
+                "tooltip": ""
             },
             {
-                "id": "glycosylation",
+                "id": "Glycosylation",
                 "label": "Glycosylation",
-                "order": 1,
-                "tooltip": "",
-                "options": [
-                    {
-                        "id": "predicted_glycosites",
-                        "label": "predicted_glycosites",
-                        "order": 1
-                    },
-                    {
-                        "id": "predicted_n_glycosites",
-                        "label": "predicted_n_glycosites",
-                        "order": 1
-                    },
-                    {
-                        "id": "predicted_o_glycosites",
-                        "label": "predicted_o_glycosites",
-                        "order": 1
-                    },
-                    {
-                        "id": "reported_n_glycosites",
-                        "label": "reported_n_glycosites",
-                        "order": 1
-                    },
-                    {
-                        "id": "reported_o_glycosites",
-                        "label": "reported_o_glycosites",
-                        "order": 1
-                    },
-                    {
-                        "id": "reported_n_glycosites_with_glycan",
-                        "label": "reported_n_glycosites_with_glycan",
-                        "order": 1
-                    },
-                    {
-                        "id": "reported_o_glycosites_with_glycan",
-                        "label": "reported_o_glycosites_with_glycan",
-                        "order": 1
-                    },
-                    {
-                        "id": "total_reported_n_glycosites",
-                        "label": "total_reported_n_glycosites",
-                        "order": 1
-                    },
-                    {
-                        "id": "total_reported_o_glycosites",
-                        "label": "total_reported_o_glycosites",
-                        "order": 1
-                    },
-                    {
-                        "id": "total_n_glycosites",
-                        "label": "total_n_glycosites",
-                        "order": 1
-                    },
-                    {
-                        "id": "total_o_glycosites",
-                        "label": "total_o_glycosites",
-                        "order": 1
-                    },
-                    {
-                        "id": "reported_fully_resolved_glycans",
-                        "label": "reported_fully_resolved_glycans",
-                        "order": 1
-                    }
-                ]
+                "order": "1",
+                "tooltip": ""
             },
             {
-                "id": "phosphorylation",
+                "id": "Phosphorylation",
                 "label": "Phosphorylation",
-                "order": 1,
-                "tooltip": "",
-                "options": [
-                    {
-                        "id": "reported_phosphosites",
-                        "label": "reported_phosphosites",
-                        "order": 1
-                    }
-                ]
+                "order": "1",
+                "tooltip": ""
             },
             {
-                "id": "mutagensis",
+                "id": "Mutagensis",
                 "label": "Mutagensis",
-                "order": 1,
-                "tooltip": "",
-                "options": [
-                    {
-                        "id": "reported_mutagensis",
-                        "label": "reported_mutagensis",
-                        "order": 1
-                    }
-                ]
+                "order": "1",
+                "tooltip": ""
             },
             {
-                "id": "glycation",
+                "id": "Glycation",
                 "label": "Glycation",
-                "order": 1,
-                "tooltip": "",
-                "options": [
-                    {
-                        "id": "reported_glycation",
-                        "label": "reported_glycation",
-                        "order": 1
-                    }
-                ]
+                "order": "1",
+                "tooltip": ""
             },
             {
-                "id": "snv",
+                "id": "SNV",
                 "label": "SNV",
-                "order": 1,
-                "tooltip": "",
-                "options": [
-                    {
-                        "id": "reported_snv",
-                        "label": "reported_snv",
-                        "order": 1
-                    }
-                ]
+                "order": "1",
+                "tooltip": ""
             },
             {
-                "id": "interactions",
+                "id": "Interactions",
                 "label": "Interactions",
-                "order": 1,
-                "tooltip": "",
-                "options": [
-                    {
-                        "id": "reported_interactions",
-                        "label": "reported_interactions",
-                        "order": 1
-                    }
-                ]
+                "order": "1",
+                "tooltip": ""
             },
             {
-                "id": "biomarkers",
+                "id": "Biomarkers",
                 "label": "Biomarkers",
-                "order": 1,
-                "tooltip": "",
-                "options": [
-                    {
-                        "id": "biomarker_type",
-                        "label": "biomarker_type",
-                        "order": 1
-                    }
-                ]
+                "order": "1",
+                "tooltip": ""
             }
         ]
     },
     "glycan": {
         "columns": [
             {
-                "id": "general",
-                "label": "General",
+                "id": "glytoucan_ac",
+                "property_name": "glytoucan_ac",
+                "label": "Glycan ID",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": true,
+                "default": true,
+                "categories": [
                     {
-                        "id": "glytoucan_ac",
-                        "label": "Glycan ID",
-                        "order": 1
-                    },
-                    {
-                        "id": "mass",
-                        "label": "Monoisotopic Mass",
-                        "order": 1
-                    },
-                    {
-                        "id": "mass_pme",
-                        "label": "Monoisotopic Mass-pMe (Da)",
-                        "order": 1
-                    },
-                    {
-                        "id": "classification",
-                        "label": "classification",
-                        "order": 1
-                    },
-                    {
-                        "id": "number_monosaccharides",
-                        "label": "Monosaccharide Count",
-                        "order": 1
-                    },
-                    {
-                        "id": "hit_score",
-                        "label": "Hit Score",
-                        "order": 1
-                    },
-                    {
-                        "id": "keywords",
-                        "label": "keywords",
-                        "order": 1
-                    },
-                    {
-                        "id": "missing_score",
-                        "label": "missing_score",
-                        "order": 1
+                        "id": "General",
+                        "order": "1"
                     }
                 ]
             },
             {
-                "id": "glycoproteins",
-                "label": "Glycoproteins",
+                "id": "mass",
+                "property_name": "mass",
+                "label": "Monoisotopic Mass",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "number_proteins",
-                        "label": "Glycoprotein Count",
-                        "order": 1
-                    },
-                    {
-                        "id": "glycoprotein",
-                        "label": "glycoprotein",
-                        "order": 1
+                        "id": "General",
+                        "order": "1"
                     }
                 ]
             },
             {
-                "id": "enzymes",
-                "label": "Enzymes",
+                "id": "mass_pme",
+                "property_name": "mass_pme",
+                "label": "Monoisotopic Mass-pMe (Da)",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "number_enzymes",
-                        "label": "Enzyme Count",
-                        "order": 1
-                    },
-                    {
-                        "id": "enzyme",
-                        "label": "enzyme",
-                        "order": 1
+                        "id": "General",
+                        "order": "1"
                     }
                 ]
             },
             {
-                "id": "organism",
-                "label": "Organism",
+                "id": "classification",
+                "property_name": "classification",
+                "label": "classification",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "number_species",
-                        "label": "number_species",
-                        "order": 1
-                    },
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "number_monosaccharides",
+                "property_name": "number_monosaccharides",
+                "label": "Monosaccharide Count",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "species_list",
-                        "label": "species_list",
-                        "order": 1
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "hit_score",
+                "property_name": "hit_score",
+                "label": "Hit Score",
+                "order": 1,
+                "tooltip": "",
+                "immutable": true,
+                "default": true,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "number_proteins",
+                "property_name": "number_proteins",
+                "label": "Glycoprotein Count",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycoproteins",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "number_enzymes",
+                "property_name": "number_enzymes",
+                "label": "Enzyme Count",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Enzymes",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "number_species",
+                "property_name": "number_species",
+                "label": "number_species",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Organism",
+                        "order": "1"
                     }
                 ]
             },
             {
                 "id": "interactions",
-                "label": "Interactions",
+                "property_name": "interactions",
+                "label": "interactions",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "interactions",
-                        "label": "interactions",
-                        "order": 1
+                        "id": "Interactions",
+                        "order": "1"
                     }
                 ]
             },
             {
-                "id": "sequences",
-                "label": "Sequences",
+                "id": "species_list",
+                "property_name": "species_list",
+                "label": "species_list",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "sequence_details",
-                        "label": "sequence_details",
-                        "order": 1
-                    },
-                    {
-                        "id": "iupac",
-                        "label": "iupac",
-                        "order": 1
-                    },
-                    {
-                        "id": "glycoct",
-                        "label": "glycoct",
-                        "order": 1
-                    },
-                    {
-                        "id": "glycam",
-                        "label": "glycam",
-                        "order": 1
-                    },
-                    {
-                        "id": "wurcs",
-                        "label": "wurcs",
-                        "order": 1
-                    },
-                    {
-                        "id": "inchi",
-                        "label": "inchi",
-                        "order": 1
-                    },
-                    {
-                        "id": "inchi_key",
-                        "label": "inchi_key",
-                        "order": 1
-                    },
-                    {
-                        "id": "byonic",
-                        "label": "byonic",
-                        "order": 1
-                    },
-                    {
-                        "id": "gwb",
-                        "label": "gwb",
-                        "order": 1
-                    },
-                    {
-                        "id": "composition",
-                        "label": "composition",
-                        "order": 1
+                        "id": "Organism",
+                        "order": "1"
                     }
                 ]
             },
             {
-                "id": "biomarkers",
-                "label": "Biomarkers",
+                "id": "sequence_details",
+                "property_name": "sequence_details",
+                "label": "sequence_details",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "biomarker_type",
-                        "label": "biomarker_type",
-                        "order": 1
+                        "id": "Sequences",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "keywords",
+                "property_name": "keywords",
+                "label": "keywords",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "missing_score",
+                "property_name": "missing_score",
+                "label": "missing_score",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "biomarker_type",
+                "property_name": "biomarker_type",
+                "label": "biomarker_type",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Biomarkers",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "iupac",
+                "property_name": "iupac",
+                "label": "iupac",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Sequences",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "glycoct",
+                "property_name": "glycoct",
+                "label": "glycoct",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Sequences",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "glycam",
+                "property_name": "glycam",
+                "label": "glycam",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Sequences",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "wurcs",
+                "property_name": "wurcs",
+                "label": "wurcs",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Sequences",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "inchi",
+                "property_name": "inchi",
+                "label": "inchi",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Sequences",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "inchi_key",
+                "property_name": "inchi_key",
+                "label": "inchi_key",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Sequences",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "byonic",
+                "property_name": "byonic",
+                "label": "byonic",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Sequences",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "gwb",
+                "property_name": "gwb",
+                "label": "gwb",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Sequences",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "enzyme",
+                "property_name": "enzyme",
+                "label": "enzyme",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Enzymes",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "glycoprotein",
+                "property_name": "glycoprotein",
+                "label": "glycoprotein",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycoproteins",
+                        "order": "1"
                     }
                 ]
             },
             {
                 "id": "motifs",
-                "label": "Motifs",
+                "property_name": "motifs",
+                "label": "motifs",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "motifs",
-                        "label": "motifs",
-                        "order": 1
+                        "id": "Motifs",
+                        "order": "1"
                     }
                 ]
             },
             {
-                "id": "publications",
-                "label": "Publications",
+                "id": "composition",
+                "property_name": "composition",
+                "label": "composition",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "publication",
-                        "label": "publication",
-                        "order": 1
+                        "id": "Sequences",
+                        "order": "1"
                     }
                 ]
+            },
+            {
+                "id": "publication",
+                "property_name": "publication",
+                "label": "publication",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Publications",
+                        "order": "1"
+                    }
+                ]
+            }
+        ],
+        "categories": [
+            {
+                "id": "General",
+                "label": "General",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Glycoproteins",
+                "label": "Glycoproteins",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Enzymes",
+                "label": "Enzymes",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Organism",
+                "label": "Organism",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Interactions",
+                "label": "Interactions",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Sequences",
+                "label": "Sequences",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Biomarkers",
+                "label": "Biomarkers",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Motifs",
+                "label": "Motifs",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Publications",
+                "label": "Publications",
+                "order": "1",
+                "tooltip": ""
             }
         ]
     },
     "site": {
         "columns": [
             {
-                "id": "general",
-                "label": "General",
+                "id": "uniprot_canonical_ac",
+                "property_name": "uniprot_canonical_ac",
+                "label": "uniprot_canonical_ac",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "uniprot_canonical_ac",
-                        "label": "uniprot_canonical_ac",
-                        "order": 1
-                    },
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "protein_name",
+                "property_name": "protein_name",
+                "label": "protein_name",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "protein_name",
-                        "label": "protein_name",
-                        "order": 1
-                    },
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "start_pos",
+                "property_name": "start_pos",
+                "label": "start_pos",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "start_pos",
-                        "label": "start_pos",
-                        "order": 1
-                    },
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "end_pos",
+                "property_name": "end_pos",
+                "label": "end_pos",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "end_pos",
-                        "label": "end_pos",
-                        "order": 1
-                    },
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "site_seq",
+                "property_name": "site_seq",
+                "label": "site_seq",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "site_seq",
-                        "label": "site_seq",
-                        "order": 1
-                    },
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "up_seq",
+                "property_name": "up_seq",
+                "label": "up_seq",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "up_seq",
-                        "label": "up_seq",
-                        "order": 1
-                    },
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "down_seq",
+                "property_name": "down_seq",
+                "label": "down_seq",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "down_seq",
-                        "label": "down_seq",
-                        "order": 1
-                    },
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "hit_score",
+                "property_name": "hit_score",
+                "label": "Hit Score",
+                "order": 1,
+                "tooltip": "",
+                "immutable": true,
+                "default": true,
+                "categories": [
                     {
-                        "id": "hit_score",
-                        "label": "Hit Score",
-                        "order": 1
-                    },
-                    {
-                        "id": "residue",
-                        "label": "residue",
-                        "order": 1
-                    },
-                    {
-                        "id": "missing_score",
-                        "label": "missing_score",
-                        "order": 1
+                        "id": "General",
+                        "order": "1"
                     }
                 ]
             },
             {
                 "id": "glycosylation",
-                "label": "Glycosylation",
+                "property_name": "glycosylation",
+                "label": "glycosylation",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "glycosylation",
-                        "label": "glycosylation",
-                        "order": 1
-                    },
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "glycosylation_count",
+                "property_name": "glycosylation_count",
+                "label": "glycosylation_count",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "glycosylation_count",
-                        "label": "glycosylation_count",
-                        "order": 1
-                    },
-                    {
-                        "id": "glycosylation_type",
-                        "label": "glycosylation_type",
-                        "order": 1
+                        "id": "Glycosylation",
+                        "order": "1"
                     }
                 ]
             },
             {
                 "id": "mutagenesis",
-                "label": "Mutagenesis",
+                "property_name": "mutagenesis",
+                "label": "mutagenesis",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "mutagenesis",
-                        "label": "mutagenesis",
-                        "order": 1
-                    },
+                        "id": "Mutagenesis",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "mutagenesis_count",
+                "property_name": "mutagenesis_count",
+                "label": "mutagenesis_count",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "mutagenesis_count",
-                        "label": "mutagenesis_count",
-                        "order": 1
+                        "id": "Mutagenesis",
+                        "order": "1"
                     }
                 ]
             },
             {
                 "id": "snv",
-                "label": "SNV",
+                "property_name": "snv",
+                "label": "snv",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "snv",
-                        "label": "snv",
-                        "order": 1
-                    },
+                        "id": "SNV",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "snv_count",
+                "property_name": "snv_count",
+                "label": "snv_count",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "snv_count",
-                        "label": "snv_count",
-                        "order": 1
-                    },
-                    {
-                        "id": "snv_type",
-                        "label": "snv_type",
-                        "order": 1
+                        "id": "SNV",
+                        "order": "1"
                     }
                 ]
             },
             {
                 "id": "phosphorylation",
-                "label": "Phosphorylation",
+                "property_name": "phosphorylation",
+                "label": "phosphorylation",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "phosphorylation",
-                        "label": "phosphorylation",
-                        "order": 1
-                    },
+                        "id": "Phosphorylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "phosphorylation_count",
+                "property_name": "phosphorylation_count",
+                "label": "phosphorylation_count",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "phosphorylation_count",
-                        "label": "phosphorylation_count",
-                        "order": 1
+                        "id": "Phosphorylation",
+                        "order": "1"
                     }
                 ]
             },
             {
                 "id": "glycation",
-                "label": "Glycation",
+                "property_name": "glycation",
+                "label": "glycation",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "glycation",
-                        "label": "glycation",
-                        "order": 1
-                    },
+                        "id": "Glycation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "glycation_count",
+                "property_name": "glycation_count",
+                "label": "glycation_count",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "glycation_count",
-                        "label": "glycation_count",
-                        "order": 1
+                        "id": "Glycation",
+                        "order": "1"
                     }
                 ]
             },
             {
                 "id": "biomarkers",
-                "label": "Biomarkers",
+                "property_name": "biomarkers",
+                "label": "biomarkers",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "biomarkers",
-                        "label": "biomarkers",
-                        "order": 1
-                    },
+                        "id": "Biomarkers",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "biomarkers_count",
+                "property_name": "biomarkers_count",
+                "label": "biomarkers_count",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "biomarkers_count",
-                        "label": "biomarkers_count",
-                        "order": 1
+                        "id": "Biomarkers",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "residue",
+                "property_name": "residue",
+                "label": "residue",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "glycosylation_type",
+                "property_name": "glycosylation_type",
+                "label": "glycosylation_type",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "snv_type",
+                "property_name": "snv_type",
+                "label": "snv_type",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "SNV",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "missing_score",
+                "property_name": "missing_score",
+                "label": "missing_score",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": "1"
+                    }
+                ]
+            },
+            {
+                "id": "tax_id",
+                "property_name": "tax_id",
+                "label": "Taxonomy ID",
+                "order": 1,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Organism",
+                        "order": "1"
                     }
                 ]
             },
             {
                 "id": "organism",
+                "property_name": "organism",
                 "label": "Organism",
                 "order": 1,
                 "tooltip": "",
-                "options": [
+                "immutable": false,
+                "default": false,
+                "categories": [
                     {
-                        "id": "tax_id",
-                        "label": "Taxonomy ID",
-                        "order": 1
-                    },
-                    {
-                        "id": "organism",
-                        "label": "Organism",
-                        "order": 1
+                        "id": "Organism",
+                        "order": "1"
                     }
                 ]
+            }
+        ],
+        "categories": [
+            {
+                "id": "General",
+                "label": "General",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Glycosylation",
+                "label": "Glycosylation",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Mutagenesis",
+                "label": "Mutagenesis",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "SNV",
+                "label": "SNV",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Phosphorylation",
+                "label": "Phosphorylation",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Glycation",
+                "label": "Glycation",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Biomarkers",
+                "label": "Biomarkers",
+                "order": "1",
+                "tooltip": ""
+            },
+            {
+                "id": "Organism",
+                "label": "Organism",
+                "order": "1",
+                "tooltip": ""
             }
         ]
     }

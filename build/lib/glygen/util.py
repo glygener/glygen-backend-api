@@ -1349,6 +1349,10 @@ def get_paginated_sections(obj, query_obj, section_list):
                 table_id = "expression_" + o["category"]
             if sec in ["snv"]:
                 table_id = "snv_disease" if "disease" in o["keywords"] else "snv_non_disease" 
+            if sec == "snv_disease" and "disease" not in o["keywords"]:
+                continue
+            if sec == "snv_non_disease" and "disease" in o["keywords"]:
+                continue
             if table_id in table_id_list:
                 tableid2sec[table_id] = sec_new
                 if table_id not in sec_tables:
