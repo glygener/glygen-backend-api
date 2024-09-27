@@ -5,6 +5,7 @@
     $ http POST :8082/protein/search/ < tests/examples/protein/protein_search.json
     $ http POST :8082/protein/list/ < tests/examples/protein/protein_list.json
     $ http POST :8082/protein/detail/P14210-1/
+    $ http POST :8082/protein/detail/Q8IWL2-1/ < tests/examples/protein/protein_detail_paginated.json
     $ http POST :8082/protein/alignment/ < tests/examples/protein/protein_alignment.json
 
 

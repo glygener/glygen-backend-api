@@ -1,0 +1,91 @@
+record_type,field_id,field_label,field_order,is_default,is_immutable,category_id_list
+protein,uniprot_canonical_ac,UniProtKB Accession,1,true,true,General
+protein,mass,Chemical Mass (Da),2,true,false,General
+protein,protein_name,UniProtKB Name,3,true,false,General
+protein,gene_name,Gene Name,4,true,false,General
+protein,organism,Organism,5,true,false,General
+protein,refseq_name,RefSeq Name,6,true,false,General
+protein,refseq_ac,RefSeq Accession,7,true,false,General
+protein,tax_id,Taxonomy ID,8,false,false,General
+protein,missing_score,missing_score,9,false,false,General
+protein,hit_score,Hit Score,10,true,true,General
+protein,gene_names_uniprotkb,gene_names_uniprotkb,11,false,false,Names
+protein,gene_names_refseq,gene_names_refseq,12,false,false,Names
+protein,protein_names_uniprotkb,protein_names_uniprotkb,1,false,false,Names
+protein,protein_names_refseq,protein_names_refseq,1,false,false,Names
+protein,disease,Disease,1,false,false,Diseases
+protein,pathway,Pathway,1,false,false,Pathways
+protein,publication_count,publication_count,1,false,false,Publications
+protein,function,function,1,false,false,Function
+protein,predicted_glycosites,predicted_glycosites,1,false,false,Glycosylation
+protein,predicted_n_glycosites,predicted_n_glycosites,1,false,false,Glycosylation
+protein,predicted_o_glycosites,predicted_o_glycosites,1,false,false,Glycosylation
+protein,reported_n_glycosites,reported_n_glycosites,1,false,false,Glycosylation
+protein,reported_o_glycosites,reported_o_glycosites,1,false,false,Glycosylation
+protein,reported_n_glycosites_with_glycan,reported_n_glycosites_with_glycan,1,false,false,Glycosylation
+protein,reported_o_glycosites_with_glycan,reported_o_glycosites_with_glycan,1,false,false,Glycosylation
+protein,total_reported_n_glycosites,total_reported_n_glycosites,1,false,false,Glycosylation
+protein,total_reported_o_glycosites,total_reported_o_glycosites,1,false,false,Glycosylation
+protein,total_n_glycosites,total_n_glycosites,1,false,false,Glycosylation
+protein,total_o_glycosites,total_o_glycosites,1,false,false,Glycosylation
+protein,reported_fully_resolved_glycans,reported_fully_resolved_glycans,1,false,false,Glycosylation
+protein,reported_phosphosites,reported_phosphosites,1,false,false,Phosphorylation
+protein,reported_mutagensis,reported_mutagensis,1,false,false,Mutagensis
+protein,reported_glycation,reported_glycation,1,false,false,Glycation
+protein,reported_snv,reported_snv,1,false,false,SNV
+protein,reported_interactions,reported_interactions,1,false,false,Interactions
+protein,biomarker_type,biomarker_type,1,false,false,Biomarkers
+glycan,glytoucan_ac,Glycan ID,1,true,true,General
+glycan,mass,Monoisotopic Mass,1,false,false,General
+glycan,mass_pme,Monoisotopic Mass-pMe (Da),1,false,false,General
+glycan,classification,classification,1,false,false,General
+glycan,number_monosaccharides,Monosaccharide Count,1,false,false,General
+glycan,hit_score,Hit Score,1,true,true,General
+glycan,number_proteins,Glycoprotein Count,1,false,false,Glycoproteins
+glycan,number_enzymes,Enzyme Count,1,false,false,Enzymes
+glycan,number_species,number_species,1,false,false,Organism
+glycan,interactions,interactions,1,false,false,Interactions
+glycan,species_list,species_list,1,false,false,Organism
+glycan,sequence_details,sequence_details,1,false,false,Sequences
+glycan,keywords,keywords,1,false,false,General
+glycan,missing_score,missing_score,1,false,false,General
+glycan,biomarker_type,biomarker_type,1,false,false,Biomarkers
+glycan,iupac,iupac,1,false,false,Sequences
+glycan,glycoct,glycoct,1,false,false,Sequences
+glycan,glycam,glycam,1,false,false,Sequences
+glycan,wurcs,wurcs,1,false,false,Sequences
+glycan,inchi,inchi,1,false,false,Sequences
+glycan,inchi_key,inchi_key,1,false,false,Sequences
+glycan,byonic,byonic,1,false,false,Sequences
+glycan,gwb,gwb,1,false,false,Sequences
+glycan,enzyme,enzyme,1,false,false,Enzymes
+glycan,glycoprotein,glycoprotein,1,false,false,Glycoproteins
+glycan,motifs,motifs,1,false,false,Motifs
+glycan,composition,composition,1,false,false,Sequences
+glycan,publication,publication,1,false,false,Publications
+site,uniprot_canonical_ac,uniprot_canonical_ac,1,false,false,General
+site,protein_name,protein_name,1,false,false,General
+site,start_pos,start_pos,1,false,false,General
+site,end_pos,end_pos,1,false,false,General
+site,site_seq,site_seq,1,false,false,General
+site,up_seq,up_seq,1,false,false,General
+site,down_seq,down_seq,1,false,false,General
+site,hit_score,Hit Score,1,true,true,General
+site,glycosylation,glycosylation,1,false,false,Glycosylation
+site,glycosylation_count,glycosylation_count,1,false,false,Glycosylation
+site,mutagenesis,mutagenesis,1,false,false,Mutagenesis
+site,mutagenesis_count,mutagenesis_count,1,false,false,Mutagenesis
+site,snv,snv,1,false,false,SNV
+site,snv_count,snv_count,1,false,false,SNV
+site,phosphorylation,phosphorylation,1,false,false,Phosphorylation
+site,phosphorylation_count,phosphorylation_count,1,false,false,Phosphorylation
+site,glycation,glycation,1,false,false,Glycation
+site,glycation_count,glycation_count,1,false,false,Glycation
+site,biomarkers,biomarkers,1,false,false,Biomarkers
+site,biomarkers_count,biomarkers_count,1,false,false,Biomarkers
+site,residue,residue,1,false,false,General
+site,glycosylation_type,glycosylation_type,1,false,false,Glycosylation
+site,snv_type,snv_type,1,false,false,SNV
+site,missing_score,missing_score,1,false,false,General
+site,tax_id,Taxonomy ID,1,false,false,Organism
+site,organism,Organism,1,false,false,Organism
