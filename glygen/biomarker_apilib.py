@@ -113,13 +113,12 @@ def biomarker_detail(query_obj, config_obj):
         return {"error_list":post_error_list}
 
 
-    
     if "paginated_tables" in query_obj:
         table_id_list = []
         for o in query_obj["paginated_tables"]:
             if o["table_id"] not in table_id_list:
                 table_id_list.append(o["table_id"])
-        sec_tables = get_paginated_sections(obj, query_obj, table_id_list)
+        sec_tables = get_paginated_sections(obj, query_obj, table_id_list, True)
         if "error_list" in sec_tables:
             return sec_tables
         for sec in sec_tables:

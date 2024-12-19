@@ -82,7 +82,7 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
                 elif tax_id == query_obj["tax_id"]:
                     record_list.append(o["uniprot_canonical_ac"])
 
-    taxid2name = get_taxid2name()
+    taxid2name = get_taxid2name(default=True)
     if str(query_obj["tax_id"]) not in taxid2name:
         return {"list_id":""}
     query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
@@ -150,7 +150,7 @@ def glycan_to_glycoproteins(query_obj, config_obj):
                 elif tax_id == query_obj["tax_id"]:
                     record_list.append(o["uniprot_canonical_ac"])
 
-    taxid2name = get_taxid2name()
+    taxid2name = get_taxid2name(default=True)
     if str(query_obj["tax_id"]) not in taxid2name:
         return {"list_id":""}
     query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
@@ -212,8 +212,7 @@ def glycan_to_enzyme_gene_loci(query_obj, config_obj):
                 results.append(plist_obj)
             elif tax_id == query_obj["tax_id"]:
                 results.append(plist_obj)
-
-    taxid2name = get_taxid2name()
+    taxid2name = get_taxid2name(default=True)
     if str(query_obj["tax_id"]) not in taxid2name:
         return {"list_id":""}
     
@@ -276,7 +275,7 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query, prj_obj):
         record_list.append(obj["glytoucan_ac"])
 
-    taxid2name = get_taxid2name()
+    taxid2name = get_taxid2name(default=True)
     if str(query_obj["tax_id"]) not in taxid2name:
         return {"list_id":""}
     query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
@@ -459,7 +458,7 @@ def species_to_glycosyltransferases(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query, config_obj["projectedfields"][collection]):
         record_list.append(obj["uniprot_canonical_ac"])
 
-    taxid2name = get_taxid2name()
+    taxid2name = get_taxid2name(default=True)
     if str(query_obj["tax_id"]) not in taxid2name:
         return {"list_id":""}
     query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
@@ -514,7 +513,7 @@ def species_to_glycohydrolases(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query, config_obj["projectedfields"][collection]):
         record_list.append(obj["uniprot_canonical_ac"])
 
-    taxid2name = get_taxid2name()
+    taxid2name = get_taxid2name(default=True)
     if str(query_obj["tax_id"]) not in taxid2name:
         return {"list_id":""}
     query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
@@ -571,7 +570,7 @@ def species_to_glycoproteins(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query, config_obj["projectedfields"][collection]):
         record_list.append(obj["uniprot_canonical_ac"])
 
-    taxid2name = get_taxid2name()
+    taxid2name = get_taxid2name(default=True)
     if str(query_obj["tax_id"]) not in taxid2name:
         return {"list_id":""}
     query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
@@ -627,7 +626,7 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query, config_obj["projectedfields"][collection]):
         record_list.append(obj["uniprot_canonical_ac"])
 
-    taxid2name = get_taxid2name()
+    taxid2name = get_taxid2name(default=True)
     if str(query_obj["tax_id"]) not in taxid2name:
         return {"list_id":""}
     query_obj["organism"] = {"id":query_obj["tax_id"], "name":taxid2name[str(query_obj["tax_id"])]}
@@ -660,7 +659,7 @@ def genelocus_list(query_obj, config_obj):
 
     cache_collection = "c_cache"
     if cache_collection not in dbh.collection_names():
-        return {"error_code": "open-connection-failed"}
+        return {"error_list":[{"error_code":"open-connection-failed"}]}
 
     res_obj = {}
     #check if submitted fields are allowed and contain valid values
@@ -668,24 +667,21 @@ def genelocus_list(query_obj, config_obj):
     max_query_value_len = config_obj["max_query_value_len"]
     for field in query_obj:
         if field not in field_list:
-            return {"error_code":"unexpected-field-in-query"}
+            return {"error_list":[{"error_code":"unexpected-field-in-query"}]}
         if len(str(query_obj[field])) > max_query_value_len:
-            return {"error_code":"invalid-parameter-value-length"}
-
+            return {"error_list":[{"error_code":"invalid-parameter-value-length"}]}
 
     #Check for required parameters
     key_list = ["id"]
     for key in key_list:
         if key not in query_obj:
-            return {"error_code":"missing-parameter"}
+            return {"error_list":[{"error_code":"missing-parameter"}]}
         if str(query_obj[key]).strip() == "":
-            return {"error_code":"invalid-parameter-value"}
-
-
+            return {"error_list":[{"error_code":"invalid-parameter-value"}]}
+            
     cached_obj = dbh[cache_collection].find_one({"list_id":query_obj["id"]})
     if cached_obj == None:
-        return {"error_code":"non-existent-search-results"}
-
+        return {"error_list":[{"error_code":"non-existent-search-results"}]}
 
     default_hash = {"offset":1, "limit":20, "sort":"gene_name", "order":"asc"}
     for key in default_hash:
@@ -695,12 +691,11 @@ def genelocus_list(query_obj, config_obj):
             #check type for submitted int fields
             if key in ["offset", "limit"]:
                 if type(query_obj[key]) is not int:
-                    return {"error_code":"invalid-parameter-value"}
+                    return {"error_list":[{"error_code":"invalid-parameter-value"}]}
             #check type for submitted selection fields
             if key in ["order"]:
                 if query_obj[key] not in ["asc", "desc"]:
-                    return {"error_code":"invalid-parameter-value"}
-
+                    return {"error_list":[{"error_code":"invalid-parameter-value"}]}
 
     sorted_id_list = sort_objects(cached_obj["results"], query_obj["sort"], query_obj["order"])
     res_obj = {"cache_info":cached_obj["cache_info"]}
@@ -708,8 +703,7 @@ def genelocus_list(query_obj, config_obj):
     if len(cached_obj["results"]) == 0:
         return {}
     if int(query_obj["offset"]) < 1 or int(query_obj["offset"]) > len(cached_obj["results"]):
-	    return {"error_code":"invalid-parameter-value"}
-
+            return {"error_list":[{"error_code":"invalid-parameter-value"}]}
     start_index = int(query_obj["offset"]) - 1
     stop_index = start_index + int(query_obj["limit"])
     res_obj["results"] = []
@@ -731,30 +725,29 @@ def glycosequon_list(query_obj, config_obj):
         return error_obj
     cache_collection = "c_cache"
     if cache_collection not in dbh.collection_names():
-        return {"error_code": "open-connection-failed"}
-
+        return {"error_list":[{"error_code":"open-connection-failed"}]}
     res_obj = {}
     #check if submitted fields are allowed and contain valid values
     field_list = ["id", "offset", "limit", "sort", "order"]
     max_query_value_len = config_obj["max_query_value_len"]
     for field in query_obj:
         if field not in field_list:
-            return {"error_code":"unexpected-field-in-query"}
+            return {"error_list":[{"error_code":"unexpected-field-in-query"}]}
         if len(str(query_obj[field])) > max_query_value_len:
-            return {"error_code":"invalid-parameter-value-length"}
+            return {"error_list":[{"error_code":"invalid-parameter-value-length"}]}
 
     #Check for required parameters
     key_list = ["id"]
     for key in key_list:
         if key not in query_obj:
-            return {"error_code":"missing-parameter"}
+            return {"error_list":[{"error_code":"missing-parameter"}]}
         if str(query_obj[key]).strip() == "":
-            return {"error_code":"invalid-parameter-value"}
+            return {"error_list":[{"error_code":"invalid-parameter-value"}]}
 
 
     cached_obj = dbh[cache_collection].find_one({"list_id":query_obj["id"]})
     if cached_obj == None:
-        return {"error_code":"non-existent-search-results"}
+        return {"error_list":[{"error_code":"non-existent-search-results"}]}
 
     default_hash = {"offset":1, "limit":20, "sort":"id", "order":"asc"}
     for key in default_hash:
@@ -764,11 +757,11 @@ def glycosequon_list(query_obj, config_obj):
             #check type for submitted int fields
             if key in ["offset", "limit"]:
                 if type(query_obj[key]) is not int:
-                    return {"error_code":"invalid-parameter-value"}
+                    return {"error_list":[{"error_code":"invalid-parameter-value"}]}
             #check type for submitted selection fields
             if key in ["order"]:
                 if query_obj[key] not in ["asc", "desc"]:
-                    return {"error_code":"invalid-parameter-value"}
+                    return {"error_list":[{"error_code":"invalid-parameter-value"}]}
 
     sorted_id_list = sort_objects(cached_obj["results"], query_obj["sort"], query_obj["order"])
     res_obj = {"cache_info":cached_obj["cache_info"]}
@@ -776,7 +769,7 @@ def glycosequon_list(query_obj, config_obj):
     if len(cached_obj["results"]) == 0:
         return {}
     if int(query_obj["offset"]) < 1 or int(query_obj["offset"]) > len(cached_obj["results"]):
-        return {"error_code":"invalid-parameter-value"}
+        return {"error_list":[{"error_code":"invalid-parameter-value"}]}
 
     start_index = int(query_obj["offset"]) - 1
     stop_index = start_index + int(query_obj["limit"])
@@ -800,7 +793,7 @@ def ortholog_list(query_obj, config_obj):
         return error_obj
     cache_collection = "c_cache"
     if cache_collection not in dbh.collection_names():
-        return {"error_code": "open-connection-failed"}
+        return {"error_list":[{"error_code":"open-connection-failed"}]}
 
     res_obj = {}
     #check if submitted fields are allowed and contain valid values
@@ -808,23 +801,21 @@ def ortholog_list(query_obj, config_obj):
     max_query_value_len = config_obj["max_query_value_len"]
     for field in query_obj:
         if field not in field_list:
-            return {"error_code":"unexpected-field-in-query"}
+            return {"error_list":[{"error_code":"unexpected-field-in-query"}]}
         if len(str(query_obj[field])) > max_query_value_len:
-            return {"error_code":"invalid-parameter-value-length"}
+            return {"error_list":[{"error_code":"invalid-parameter-value-length"}]}
 
     #Check for required parameters
     key_list = ["id"]
     for key in key_list:
         if key not in query_obj:
-            return {"error_code":"missing-parameter"}
+            return {"error_list":[{"error_code":"missing-parameter"}]}
         if str(query_obj[key]).strip() == "":
-            return {"error_code":"invalid-parameter-value"}
-
+            return {"error_list":[{"error_code":"invalid-parameter-value"}]}
 
     cached_obj = dbh[cache_collection].find_one({"list_id":query_obj["id"]})
     if cached_obj == None:
-        return {"error_code":"non-existent-search-results"}
-
+        return {"error_list":[{"error_code":"non-existent-search-results"}]}
     default_hash = {"offset":1, "limit":20, "sort":"id", "order":"asc"}
     for key in default_hash:
         if key not in query_obj:
@@ -833,20 +824,18 @@ def ortholog_list(query_obj, config_obj):
             #check type for submitted int fields
             if key in ["offset", "limit"]:
                 if type(query_obj[key]) is not int:
-                    return {"error_code":"invalid-parameter-value"}
+                    return {"error_list":[{"error_code":"invalid-parameter-value"}]}
             #check type for submitted selection fields
             if key in ["order"]:
                 if query_obj[key] not in ["asc", "desc"]:
-                    return {"error_code":"invalid-parameter-value"}
-
+                    return {"error_list":[{"error_code":"invalid-parameter-value"}]}
     sorted_id_list = sort_objects(cached_obj["results"], query_obj["sort"], query_obj["order"])
     res_obj = {"cache_info":cached_obj["cache_info"]}
 
     if len(cached_obj["results"]) == 0:
         return {}
     if int(query_obj["offset"]) < 1 or int(query_obj["offset"]) > len(cached_obj["results"]):
-	    return {"error_code":"invalid-parameter-value"}
-
+	    return {"error_list":[{"error_code":"invalid-parameter-value"}]}
     start_index = int(query_obj["offset"]) - 1
     stop_index = start_index + int(query_obj["limit"])
     res_obj["results"] = []
@@ -995,14 +984,17 @@ def get_mongo_query(svc_name, query_obj):
                 cond_objs.append(tax_id_q_obj)
                 #cond_objs.append({"species.taxid": {'$eq': query_obj["tax_id"]}})
             if query_obj["evidence_type"] == "predicted":
-                cond_objs.append({"glycosylation": {'$gt':[]}})
-                cond_objs.append({"glycosylation.site_category":{"$regex":"predicted","$options":"i"}})
+                cond_objs.append({"glycosylation.site_category_dict.predicted":{"$eq":True}})
                 #cond_objs.append({"glycosylation": {'$gt':[]}})
-                #cond_objs.append({"glycosylation.site_category": {'$ne':"reported"}})
-                #cond_objs.append({"glycosylation.site_category": {'$ne':"reported_with_glycan"}})
+                #cond_objs.append({"glycosylation.site_category":{"$regex":"predicted","$options":"i"}})
             elif query_obj["evidence_type"] == "reported":
-                cond_objs.append({"glycosylation": {'$gt': []}})
-                cond_objs.append({"glycosylation.site_category":{"$regex":"reported","$options":"i"}})
+                or_list = [
+                    {"glycosylation.site_category_dict.reported":{"$eq":True}},
+                    {"glycosylation.site_category_dict.reported_with_glycan":{"$eq":True}},
+                ]   
+                cond_objs.append({'$or':or_list})
+                #cond_objs.append({"glycosylation": {'$gt': []}})
+                #cond_objs.append({"glycosylation.site_category":{"$regex":"reported","$options":"i"}})
             elif query_obj["evidence_type"] == "any":
                 cond_objs.append({"glycosylation": {'$gt': []}})
             elif query_obj["evidence_type"] == "none":

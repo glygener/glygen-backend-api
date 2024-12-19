@@ -1,3 +1,5 @@
-{
-	"organism":{"id":10090,"name":"Mouse"}
+ {
+            "operation": "AND",
+            "query_type": "search_protein",
+            "uniprot_canonical_ac": "P06836"
 }

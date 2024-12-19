@@ -1,6 +1,6 @@
 {
   "recordtype":"protein",
   "input_namespace":"UniProtKB",
-  "output_namespace":"GeneID",
+  "output_namespace":"RefSeq",
   "input_idlist":["P18203", "P14210"]
 }

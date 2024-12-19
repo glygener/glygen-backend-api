@@ -12,8 +12,9 @@ import json
 import bcrypt
 
 from glygen.idmapping_apilib import search_init, search
-from glygen.util import get_req_obj, get_cached_records_direct
+from glygen.util import get_req_obj, get_cached_records_direct, get_cached_result_list, cache_result_list, get_hash_id, apply_pagination
 import traceback
+
 
 
 api = Namespace("idmapping", description="ID Mapping APIs")
@@ -135,7 +136,18 @@ class Idmapping(Resource):
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/idmapping/list/", request)
             if "error_list" not in res_obj:
-                res_obj = get_cached_records_direct(req_obj, config_obj)
+                api_name = "idmapping_list"
+                cache_id = req_obj["id"] if "id" in req_obj else ""
+                listcache_id = get_hash_id(api_name, "", req_obj)
+                res_obj = get_cached_result_list(cache_id, listcache_id)
+                if res_obj == None:
+                    res_obj = get_cached_records_direct(req_obj, config_obj, False)
+                    if "error_list" not in res_obj:
+                        res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
+                        if "error_list" in res:
+                            res_obj = res
+                if "results" in res_obj:
+                    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

@@ -1,9 +1,60 @@
+import os,sys
+import string
+from optparse import OptionParser
+import glob
 import json
+from bson import json_util
+import pymongo
+from pymongo import MongoClient
+import datetime
 
-in_file = "tmp/junk.json"
-doc = json.loads(open(in_file, "r").read())
 
-for obj in doc["snv"]:
-    flag = "disease" in obj
-    print (obj["start_pos"], flag, obj["keywords"])
+__version__="1.0"
+__status__ = "Dev"
 
+
+
+###############################
+def main():
+
+    server = "tst"
+    coll = "c_protein"
+
+    db_name = "glydb_beta" if server == "beta" else "glydb"
+
+    config_obj = json.loads(open("./conf/config.json", "r").read())
+    #mongo_port = config_obj["dbinfo"]["port"][server]
+    mongo_port = "27017"
+    host = "mongodb://127.0.0.1:%s" % (mongo_port)
+  
+    db_obj = config_obj["dbinfo"][db_name]
+    glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
+
+    try:
+        client = pymongo.MongoClient(host,
+            username=db_user,
+            password=db_pass,
+            authSource=glydb_name,
+            authMechanism='SCRAM-SHA-1',
+            serverSelectionTimeoutMS=10000
+        )
+        client.server_info()
+        dbh = client[glydb_name]
+        #q = {"glycosylation.site_category":{"$eq":"predicted"}}
+        q = {"glycosylation.site_category_dict.predicted":{"$eq":True}}
+        #doc_list = list(dbh[coll].find(q))
+        for doc in dbh[coll].find(q):
+            canon = doc["uniprot_canonical_ac"]
+            for obj in doc["glycosylation"]:
+                if obj["site_category"] == "predicted":
+                    print ("A", canon)
+
+    except pymongo.errors.ServerSelectionTimeoutError as err:
+        print (err)
+    except pymongo.errors.OperationFailure as err:
+        print (err)
+
+
+
+if __name__ == '__main__':
+    main()

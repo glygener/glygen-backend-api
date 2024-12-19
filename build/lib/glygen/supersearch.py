@@ -11,8 +11,9 @@ import json
 import bcrypt
 
 from glygen.supersearch_apilib import search_init, search
-from glygen.util import get_req_obj, get_cached_records_indirect, get_hash_id, cache_result_list, get_cached_result_list
+from glygen.util import get_req_obj, get_cached_records_indirect, get_hash_id, cache_result_list, get_cached_result_list, apply_pagination
 import traceback
+
 
 
 api = Namespace("supersearch", description="Supersearch APIs")
@@ -181,14 +182,19 @@ class Supersearch(Resource):
             res_obj = log_request(req_obj, "/supersearch/list/", request)
             if "error_list" not in res_obj:
                 api_name = "supersearch_list"
-                list_id = get_hash_id(api_name, "", req_obj)
-                res_obj = get_cached_result_list(list_id)
+                cache_id = req_obj["id"] if "id" in req_obj else ""
+                listcache_id = get_hash_id(api_name, "", req_obj)
+                res_obj = get_cached_result_list(cache_id, listcache_id)
+                #return res_obj, 200
                 if res_obj == None:
-                    res_obj = get_cached_records_indirect(req_obj, config_obj)
-                    res = cache_result_list(list_id, res_obj, config_obj)
-                    if "error_list" in res:
-                        res_obj = res
- 
+                    res_obj = get_cached_records_indirect(req_obj, config_obj, False)
+                    if "error_list" not in res_obj:
+                        res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
+                        #return res, 200
+                        if "error_list" in res:
+                            res_obj = res
+                if "results" in res_obj:
+                    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

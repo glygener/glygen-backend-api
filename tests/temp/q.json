@@ -1,11 +1,5 @@
 {
-  "record_type": "publication",
-  "table_id": "glycosylation_reported_with_glycan",
-  "record_id": "37074911",
-  "offset": 21,
-  "limit": 20,
-  "order": "asc",
-  "sort": "start_pos"
+	"organism":"human"
 }
 
 

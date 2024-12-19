@@ -23,12 +23,11 @@ from glygen.usecases_apilib import (
         species_to_glycoproteins,
         disease_to_glycosyltransferases,
         genelocus_list,
-        genelocus_list,
         ortholog_list,
         glycosequon_list
     )
 
-from glygen.util import get_req_obj
+from glygen.util import get_req_obj, get_cached_result_list, cache_result_list, get_hash_id
 import traceback
 
 
@@ -348,7 +347,16 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = log_request(req_obj, "/usecases/genelocus_list/", request)
             if "error_list" not in res_obj:
-                res_obj = genelocus_list(req_obj, config_obj)
+                api_name = "genelocus_list"
+                cache_id = req_obj["id"] if "id" in req_obj else ""
+                listcache_id = get_hash_id(api_name, "", req_obj)
+                res_obj = get_cached_result_list(cache_id, listcache_id)
+                if res_obj == None:
+                    res_obj = genelocus_list(req_obj, config_obj)
+                    if "error_list" not in res_obj:
+                        res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
+                        if "error_list" in res:
+                            res_obj = res
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -398,7 +406,16 @@ class Usecases(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = log_request(req_obj, "/usecases/ortholog_list/", request)
             if "error_list" not in res_obj:
-                res_obj = ortholog_list(req_obj, config_obj)
+                api_name = "ortholog_list"
+                cache_id = req_obj["id"] if "id" in req_obj else ""
+                listcache_id = get_hash_id(api_name, "", req_obj)
+                res_obj = get_cached_result_list(cache_id, listcache_id)
+                if res_obj == None:
+                    res_obj = ortholog_list(req_obj, config_obj)
+                    if "error_list" not in res_obj:
+                        res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
+                        if "error_list" in res:
+                            res_obj = res
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

@@ -3,7 +3,6 @@
         "by_mass":{
             "group_order":1,
             "group_label":"By Mass",
-            "record_key":"",
             "range_dict": {
                 "0k_1k":{"min":0.0, "max":1000.0},
                 "1k_2k":{"min":1000.0, "max":2000.0},
@@ -19,7 +18,6 @@
         "by_organism":{
             "group_order":2,
             "group_label":"By Organism",
-            "record_key":"species_list",
             "order_dict":{
 	    },
             "label_dict":{
@@ -28,14 +26,12 @@
         "by_glycan_type":{
             "group_order":3,
             "group_label":"By Glycan Type",
-            "record_key":"classification",
             "order_dict":{"N-linked":1, "O-linked":2, "Glycosphingolipid":3, "Other":4},
             "label_dict":{"N-linked":"N-glycan", "O-linked":"O-glycan"}
         },
         "by_sequence_details":{
             "group_order":4,
             "group_label":"By Sequence Details",
-            "record_key":"sequence_details",
             "order_dict":{"Fully defined":1, "Topology":2, "Composition":3, "BaseComposition":4,
                 "Incomplete":5
             },
@@ -44,22 +40,12 @@
         "by_data":{
             "group_order":5,
             "group_label":"By Data",
-            "record_key":"",
-            "numeric_field_map":{
-                "Enzyme":["number_enzymes"]
-            },
-            "string_field_map":{
-                "Glycosylation":["glycoprotein"],
-                "Publication":["publication"],
-                "Binding":["interactions"]
-            },
             "label_dict":{},
             "order_dict":{"Glycosylation":1,"Enzyme":2,"Binding":3,"Publication":4}
         },
         "by_monosaccharide":{
             "group_order":6,
             "group_label":"By Monosaccharide",
-            "record_key":"composition",
             "order_dict":{
                 "hex":1,
                 "hexnac":2,
@@ -88,7 +74,6 @@
 	"by_biomarker_type":{
             "group_order":7,
             "group_label":"By Biomarker Type",
-            "record_key":"biomarker_type",
             "order_dict":{
 		"diagnostic":1,
 		"monitoring":2,
@@ -113,7 +98,6 @@
         "by_mass":{
             "group_order":4,
             "group_label":"By Mass",
-            "record_key":"",
             "range_dict": {
                 "0k_100k":{"min":0.0, "max":100000.0},
                 "100k_300k":{"min":100000.0, "max":300000.0},
@@ -135,7 +119,6 @@
         "by_organism":{
             "group_order":2,
             "group_label":"By Organism",
-            "record_key":"organism",
             "order_dict":{
             },
             "label_dict":{
@@ -144,14 +127,6 @@
         "by_ptm":{
             "group_order":1,
             "group_label":"By PTM",
-            "record_key":"",
-            "numeric_field_map":{
-                "N-Glycosylation reported":["total_reported_n_glycosites"],
-                "N-Glycosylation predicted":["predicted_n_glycosites"],
-                "O-Glycosylation reported":["total_reported_o_glycosites"],
-                "O-Glycosylation predicted":["predicted_o_glycosites"],
-                "Phosphorylation reported":["reported_phosphosites"]
-            },
             "label_dict":{},
             "order_dict":{
                 "N-Glycosylation reported":1, 
@@ -164,28 +139,14 @@
         "by_data":{
             "group_order":3,
             "group_label":"By Data",
-            "record_key":"",
-            "numeric_field_map":{
-                "Mutagenesis":["reported_mutagensis"],
-                "SNV":["reported_snv"],
-                "Glycation":["reported_glycation"],
-                "Binding":["reported_interactions"],
-                "Publication":["publication_count"]
-            },
-            "string_field_map":{
-                "Disease":["disease"],
-                "Pathway":["pathway"]   
-            },
             "label_dict":{},
             "order_dict":{
-                "Mutagenesis":1,"SNV":2,"Pathway":3,"Disease":4,"Glycation":5,"Binding":6,
-                "Publication":7
+               "SNV":1, "Mutagenesis":2, "Glycation":3, "Binding":4, "Publication":5, "Disease":6, "Pathway":7
             }
         },
 	"by_biomarker_type":{
             "group_order":4,
             "group_label":"By Biomarker Type",
-            "record_key":"biomarker_type",
             "order_dict":{
                 "diagnostic":1,
                 "monitoring":2,
@@ -210,7 +171,6 @@
         "by_assessed_entity_type":{
             "group_order":1,
             "group_label":"By Entity Type",
-            "record_key":"assessed_entity_type",
             "order_dict":{
                 "protein":1,
                 "glycan":2
@@ -223,7 +183,6 @@
 	"by_biomarker_role":{
             "group_order":2,
             "group_label":"By Biomarker Role",
-            "record_key":"best_biomarker_role",
             "order_dict":{
                 "diagnostic":1,
                 "monitoring":2,
@@ -248,7 +207,6 @@
         "by_glycosylation_type":{
             "group_order":1,
             "group_label":"By Glycosylation Type",
-            "record_key":"glycosylation_type",
             "order_dict":{
                 "n-linked|complex":1,
                 "n-linked|high mannose":2,
@@ -285,7 +243,6 @@
         "by_amino_acid":{
             "group_order":2,
             "group_label":"By Amino Acid",
-            "record_key":"site_seq",
             "order_dict":{
                 "A":1,
                 "R":2, 
@@ -331,10 +288,27 @@
                 "V":"Val"
             }
         },
+        "by_site_type":{
+            "group_order":2,
+            "group_label":"By Site Type",
+            "order_dict":{
+                "glycation":"1",
+                "glycosylation":"2",
+					 "mutagenesis":"3",
+					 "phosphorylation":"4",
+                "snv":"5"
+            },
+            "label_dict":{
+                "glycation":"Glycation",
+                "glycosylation":"Glycosylation",
+                "mutagenesis":"Mutagenesis",
+                "phosphorylation":"Phosphorylation",
+                "snv":"SNV"
+            }
+        },
         "by_snv_type":{
             "group_order":2,
             "group_label":"By SNV Type",
-            "record_key":"snv_type",
             "order_dict":{
                 "somatic":"1",
                 "germline":"2"
@@ -347,7 +321,6 @@
         "by_organism":{
             "group_order":2,
             "group_label":"By Organism",
-            "record_key":"organism",
             "order_dict":{
             },
             "label_dict":{

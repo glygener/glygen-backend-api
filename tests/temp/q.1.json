@@ -1,19 +1,10 @@
-{
-        "id": "661b203ddf5c331146ae942fc2b28bbf",
-        "offset": 1,
-        "limit": 20,
-        "order": "desc",
-        "sort": "hit_score",
-        "filters": [
-            {
-                "id": "by_data",
-                "operator": "OR",
-                "selected": [
-                    "Disease"
-                ]
-            }
-        ]
-    }
+{"paginated_tables":[{"table_id":"glycosylation_reported_with_glycan","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
+{"table_id":"glycosylation_reported","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
+{"table_id":"glycosylation_predicted","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
+{"table_id":"glycosylation_automatic_literature_mining","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
+{"table_id":"phosphorylation","offset":1,"limit":20,"sort":"start_pos","order":"asc"},{"table_id":"snv_disease","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
+{"table_id":"snv_non_disease","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
+{"table_id":"publication","offset":1,"limit":200,"sort":"date","order":"desc"}]}
 
 
 

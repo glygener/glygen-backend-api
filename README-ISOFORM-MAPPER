@@ -1,6 +1,7 @@
 1) To update image, remove existing and pull again
    docker image rm ebiglygen/mapper-java-jar:basic
-   docker pull ebiglygen/mapper-java-jar:basic
+   #docker pull ebiglygen/mapper-java-jar:basic
+   docker pull glygen/isoform-mapper
 
 
 2) Usage with request object

@@ -129,7 +129,9 @@ def search(query_obj, config_obj):
     }
     list_id = ""
     if len(record_list) != 0:
-        hash_str = record_type + "_" + ",".join(query_obj["input_idlist"]).strip()
+        #hash_str = record_type + "_" + ",".join(query_obj["input_idlist"]).strip()
+        hash_str = record_type + "_" + query_obj["input_namespace"] + "_" + query_obj["output_namespace"]
+        hash_str += "_" + ",".join(query_obj["input_idlist"]).strip()
         hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
         cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)

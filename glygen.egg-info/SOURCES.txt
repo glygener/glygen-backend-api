@@ -66,6 +66,7 @@ glygen/conf/config.json
 glygen/conf/config.json-backup
 glygen/conf/dbinfo.json
 glygen/conf/fieldmap.json
+glygen/conf/filter_init.json
 glygen/conf/global_search.2.json
 glygen/conf/global_search.3.json
 glygen/conf/global_search.json
@@ -79,10 +80,8 @@ glygen/conf/hit_scoring.json
 glygen/conf/ignored_edges.json
 glygen/conf/integrity.conf
 glygen/conf/list_filters.json
-glygen/conf/list_init.csv-backup
+glygen/conf/list_filters.json-backup
 glygen/conf/list_init.json
-glygen/conf/list_init_categories.csv
-glygen/conf/list_init_fields.csv
 glygen/conf/newedgerules.json
 glygen/conf/node_order.json
 glygen/conf/path_targets.json

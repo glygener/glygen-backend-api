@@ -1,17 +1,11 @@
 {
-        "id": "84bbf8fa3bc023050ba6ec9dd11a2b9f",
+        "id": "a7e4068d39c1f9c017cb6f3c069e6ea5",
         "offset": 1,
         "sort": "hit_score",
         "limit": 20,
         "order": "desc",
-        "filters": [
-            {
-                "id": "by_sequence_details",
-                "operator": "OR",
-                "selected": [
-                    "composition"
-                ]
-            }
-        ]
+		  "columns":[
+				"mass","glytoucan_ac","image_url","hit_score","glycoprotein_count","publication"
+			]
 }
 

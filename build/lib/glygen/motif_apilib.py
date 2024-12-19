@@ -132,7 +132,7 @@ def motif_detail(query_obj, config_obj):
         for o in query_obj["paginated_tables"]:
             if o["table_id"] not in table_id_list:
                 table_id_list.append(o["table_id"])
-        sec_tables = get_paginated_sections(res_obj, query_obj, table_id_list)
+        sec_tables = get_paginated_sections(res_obj, query_obj, table_id_list, True)
         if "error_list" in sec_tables:
             return sec_tables
         for sec in sec_tables:

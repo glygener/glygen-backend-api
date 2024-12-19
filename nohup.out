@@ -1,7 +1,7 @@
 {
     "protein": {
         "list_id": "43409035ec3cd12068cbaf738ce87aa9",
-        "result_count": 165940,
+        "result_count": 193038,
         "bylinkage": {
             "glycan": {
                 "list_id": "0e0ceead236f816f98271d49ef1d7b7a",
@@ -9,29 +9,29 @@
             },
             "species": {
                 "list_id": "7fa54f030882e727106181999eba9dd9",
-                "result_count": 165940
+                "result_count": 193037
             },
             "gene": {
                 "list_id": "a2931ff1f6accbd467b3707fa885b7a3",
-                "result_count": 165940
-            },
-            "site": {
-                "list_id": "65d104ded9fb14a3ec56811da5a78584",
-                "result_count": 78311
-            },
-            "enzyme": {
-                "list_id": "ba8eef2ebfceb0dbd22bc844ddb3b59f",
-                "result_count": 28174
+                "result_count": 193037
             },
             "disease": {
                 "list_id": "577b9b4b80ba21383328bc9e3a543623",
-                "result_count": 41799
+                "result_count": 41874
+            },
+            "site": {
+                "list_id": "65d104ded9fb14a3ec56811da5a78584",
+                "result_count": 81867
+            },
+            "enzyme": {
+                "list_id": "ba8eef2ebfceb0dbd22bc844ddb3b59f",
+                "result_count": 32654
             }
         }
     },
     "enzyme": {
         "list_id": "",
-        "result_count": 28175,
+        "result_count": 32655,
         "bylinkage": {
             "glycan": {
                 "list_id": "",
@@ -39,47 +39,47 @@
             },
             "protein": {
                 "list_id": "",
-                "result_count": 28174
+                "result_count": 32654
             }
         }
     },
     "gene": {
         "list_id": "",
-        "result_count": 165940,
+        "result_count": 193038,
         "bylinkage": {
             "protein": {
                 "list_id": "",
-                "result_count": 165940
+                "result_count": 193037
             },
             "species": {
                 "list_id": "",
-                "result_count": 165940
+                "result_count": 193037
             },
             "disease": {
                 "list_id": "",
-                "result_count": 41799
+                "result_count": 41874
             }
         }
     },
     "glycan": {
         "list_id": "8addc2fae1bd90a9b923eb7c63db34a5",
-        "result_count": 53871,
+        "result_count": 55753,
         "bylinkage": {
             "species": {
                 "list_id": "522c29c7b811ea5f1a1f1705b6d866e7",
-                "result_count": 30658
-            },
-            "enzyme": {
-                "list_id": "cb7c5439fd6a1654fa4715634a0499ff",
-                "result_count": 27537
+                "result_count": 30807
             },
             "motif": {
                 "list_id": "62f1bf6d11132edc3b54997df2550991",
-                "result_count": 28535
+                "result_count": 29886
+            },
+            "enzyme": {
+                "list_id": "cb7c5439fd6a1654fa4715634a0499ff",
+                "result_count": 28621
             },
             "site": {
                 "list_id": "4061a3a1422573137dd35b0068e07686",
-                "result_count": 3018
+                "result_count": 3189
             },
             "protein": {
                 "list_id": "1754301d63f1ab4728417d66fe55532d",
@@ -99,25 +99,25 @@
     },
     "disease": {
         "list_id": "",
-        "result_count": 11060,
+        "result_count": 11081,
         "bylinkage": {
             "protein": {
                 "list_id": "",
-                "result_count": 8189
+                "result_count": 8230
             },
             "site": {
                 "list_id": "",
-                "result_count": 1343
+                "result_count": 1532
             },
             "gene": {
                 "list_id": "",
-                "result_count": 8189
+                "result_count": 8230
             }
         }
     },
     "species": {
         "list_id": "",
-        "result_count": 13,
+        "result_count": 14,
         "bylinkage": {
             "glycan": {
                 "list_id": "",
@@ -125,29 +125,29 @@
             },
             "protein": {
                 "list_id": "",
-                "result_count": 13
+                "result_count": 14
             },
             "gene": {
                 "list_id": "",
-                "result_count": 13
+                "result_count": 14
             }
         }
     },
     "site": {
         "list_id": "e5e9e8999a3451a947eb2f05508b4a29",
-        "result_count": 766708,
+        "result_count": 802912,
         "bylinkage": {
             "glycan": {
                 "list_id": "9a55aaf9081659a0fc6f404ae4455e93",
-                "result_count": 54337
+                "result_count": 54497
             },
             "protein": {
                 "list_id": "ae867e801af9c50747254064cce0dec4",
-                "result_count": 766708
+                "result_count": 794892
             },
             "disease": {
                 "list_id": "6a213129ca67c90f291ed2440694f7dd",
-                "result_count": 33331
+                "result_count": 36009
             }
         }
     }
@@ -155,7 +155,7 @@
 {
     "protein": {
         "list_id": "43409035ec3cd12068cbaf738ce87aa9",
-        "result_count": 165940,
+        "result_count": 193038,
         "bylinkage": {
             "glycan": {
                 "list_id": "0e0ceead236f816f98271d49ef1d7b7a",
@@ -163,29 +163,29 @@
             },
             "species": {
                 "list_id": "7fa54f030882e727106181999eba9dd9",
-                "result_count": 165940
+                "result_count": 193038
             },
             "gene": {
                 "list_id": "a2931ff1f6accbd467b3707fa885b7a3",
-                "result_count": 165940
-            },
-            "site": {
-                "list_id": "65d104ded9fb14a3ec56811da5a78584",
-                "result_count": 78311
-            },
-            "enzyme": {
-                "list_id": "ba8eef2ebfceb0dbd22bc844ddb3b59f",
-                "result_count": 28174
+                "result_count": 193038
             },
             "disease": {
                 "list_id": "577b9b4b80ba21383328bc9e3a543623",
-                "result_count": 41799
+                "result_count": 41875
+            },
+            "site": {
+                "list_id": "65d104ded9fb14a3ec56811da5a78584",
+                "result_count": 86370
+            },
+            "enzyme": {
+                "list_id": "ba8eef2ebfceb0dbd22bc844ddb3b59f",
+                "result_count": 32654
             }
         }
     },
     "enzyme": {
         "list_id": "",
-        "result_count": 28175,
+        "result_count": 32655,
         "bylinkage": {
             "glycan": {
                 "list_id": "",
@@ -193,47 +193,47 @@
             },
             "protein": {
                 "list_id": "",
-                "result_count": 28174
+                "result_count": 32654
             }
         }
     },
     "gene": {
         "list_id": "",
-        "result_count": 165940,
+        "result_count": 193038,
         "bylinkage": {
             "protein": {
                 "list_id": "",
-                "result_count": 165940
+                "result_count": 193038
             },
             "species": {
                 "list_id": "",
-                "result_count": 165940
+                "result_count": 193038
             },
             "disease": {
                 "list_id": "",
-                "result_count": 41799
+                "result_count": 41875
             }
         }
     },
     "glycan": {
         "list_id": "8addc2fae1bd90a9b923eb7c63db34a5",
-        "result_count": 53871,
+        "result_count": 55753,
         "bylinkage": {
             "species": {
                 "list_id": "522c29c7b811ea5f1a1f1705b6d866e7",
-                "result_count": 30658
-            },
-            "enzyme": {
-                "list_id": "cb7c5439fd6a1654fa4715634a0499ff",
-                "result_count": 27537
+                "result_count": 30807
             },
             "motif": {
                 "list_id": "62f1bf6d11132edc3b54997df2550991",
-                "result_count": 28535
+                "result_count": 29886
+            },
+            "enzyme": {
+                "list_id": "cb7c5439fd6a1654fa4715634a0499ff",
+                "result_count": 28621
             },
             "site": {
                 "list_id": "4061a3a1422573137dd35b0068e07686",
-                "result_count": 3018
+                "result_count": 3190
             },
             "protein": {
                 "list_id": "1754301d63f1ab4728417d66fe55532d",
@@ -253,25 +253,25 @@
     },
     "disease": {
         "list_id": "",
-        "result_count": 11060,
+        "result_count": 11081,
         "bylinkage": {
             "protein": {
                 "list_id": "",
-                "result_count": 8189
+                "result_count": 8233
             },
             "site": {
                 "list_id": "",
-                "result_count": 1343
+                "result_count": 1532
             },
             "gene": {
                 "list_id": "",
-                "result_count": 8189
+                "result_count": 8233
             }
         }
     },
     "species": {
         "list_id": "",
-        "result_count": 13,
+        "result_count": 14,
         "bylinkage": {
             "glycan": {
                 "list_id": "",
@@ -279,29 +279,29 @@
             },
             "protein": {
                 "list_id": "",
-                "result_count": 13
+                "result_count": 14
             },
             "gene": {
                 "list_id": "",
-                "result_count": 13
+                "result_count": 14
             }
         }
     },
     "site": {
         "list_id": "e5e9e8999a3451a947eb2f05508b4a29",
-        "result_count": 766708,
+        "result_count": 802911,
         "bylinkage": {
             "glycan": {
                 "list_id": "9a55aaf9081659a0fc6f404ae4455e93",
-                "result_count": 54337
+                "result_count": 54678
             },
             "protein": {
                 "list_id": "ae867e801af9c50747254064cce0dec4",
-                "result_count": 766708
+                "result_count": 802814
             },
             "disease": {
                 "list_id": "6a213129ca67c90f291ed2440694f7dd",
-                "result_count": 33331
+                "result_count": 36009
             }
         }
     }
