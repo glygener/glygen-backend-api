@@ -10,7 +10,7 @@ import subprocess
 import json
 import bcrypt
 
-from glygen.pages_apilib import home_init, list_init
+from glygen.pages_apilib import home_init, list_init, filter_init
 from glygen.util import trim_object, get_req_obj
 import traceback
 
@@ -20,6 +20,12 @@ api = Namespace("pages", description="Pages APIs")
 home_init_query_model = api.model("Pages Home Init Query", {})
 list_init_query_model = api.model("Pages List Init Query",{ "table_id": fields.String(required=True, default="")})
 
+filter_init_query_model = api.model("Pages Filter Init Query",
+    { 
+        "table_id": fields.String(required=True, default="glycosylation_reported_with_glycan"), 
+        "record_type":fields.String(required=True, default="protein"),
+        "record_id":fields.String(required=True, default="P14210-1")
+    })
 
 @api.route('/home_init/')
 class Pages(Resource):
@@ -46,7 +52,7 @@ class Pages(Resource):
 
 
 
-@api.route('/list_init/')
+@api.route('/list_init/', methods=['GET', 'POST'])
 class Pages(Resource):
     @api.expect(list_init_query_model)
     def post(self):
@@ -61,6 +67,31 @@ class Pages(Resource):
             res_obj = log_request(req_obj, "/pages/list_init/", request)
             if "error_list" not in res_obj:
                 res_obj = list_init(config_obj, req_obj)
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
+
+@api.route('/filter_init/', methods=['GET', 'POST'])
+class Pages(Resource):
+    @api.expect(filter_init_query_model)
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        json_url = os.path.join(SITE_ROOT, "conf/filter_init.json")
+        config_obj["filter_init"] = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = get_req_obj(request)
+            res_obj = log_request(req_obj, "/pages/filter_init/", request)
+            if "error_list" not in res_obj:
+                res_obj = filter_init(config_obj, req_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

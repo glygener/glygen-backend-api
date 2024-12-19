@@ -1,0 +1,18 @@
+{
+        "id": "4e1e51f13312f68dc1b18834205a8f19",
+        "offset": 1,
+        "limit": 20,
+        "order": "desc",
+        "sort": "hit_score",
+	"columns": [
+            "predicted_glycosites",
+            "predicted_n_glycosites",
+            "predicted_o_glycosites",
+            "reported_n_glycosites",
+            "reported_o_glycosites",
+            "reported_n_glycosites_with_glycan",
+            "reported_o_glycosites_with_glycan",
+            "length"
+        ]
+    }
+

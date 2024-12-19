@@ -14,7 +14,7 @@ from bson.objectid import ObjectId
 from Bio import SeqIO
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, cache_record_list, load_species_info, get_hash_id, cache_result_list, get_cached_result_list
+from glygen.util import get_errors_in_query, sort_objects, cache_record_list, load_species_info, get_hash_id, cache_result_list, get_cached_result_list, get_cached_records_indirect
 
 
 def job_init(config_obj, data_path):
@@ -229,8 +229,10 @@ def job_results(query_obj, config_obj):
 
         hash_str = "%s %s" % (job_doc["jobid"], job_doc["jobtype"])
         hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-        list_id = hash_obj.hexdigest()
-        res = get_cached_result_list(list_id)
+        cache_id = query_obj["id"] if "id" in query_obj else ""
+        #cache_id = "xxx"
+        listcache_id = hash_obj.hexdigest()
+        res = get_cached_result_list(cache_id, listcache_id)
         if res != None:
             return res
   
@@ -254,6 +256,7 @@ def job_results(query_obj, config_obj):
             elif job_type in ["isoform_mapper"]:
                 res_obj = parse_isoform_mapper_ouput(out_file)
 
+
         ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
         if "error" in status_obj:
@@ -267,10 +270,12 @@ def job_results(query_obj, config_obj):
         ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
         #return ts_list
 
-        if "error" not in res_obj:
-            res = cache_result_list(list_id, res_obj, config_obj)
-            if "error_list" in res:
-                res_obj = res
+        #res_obj = get_cached_records_indirect({"list_id":res_obj["list_id"]}, config_obj, False)
+        #return res_obj
+        #if "error" not in res_obj:
+        #    res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
+        #    if "error_list" in res:
+        #        res_obj = res
 
     except Exception as e:
         res_obj = {"error_list":[{"error_code":str(e)}]}
@@ -407,22 +412,35 @@ def parse_blastp_ouput(out_file, config_obj):
                 res_obj_dict[sbj_id]["hsp_list"][hsp_idx]["aln"][aln_idx]["sbjct"] = line
 
 
-    seq_id_list = res_obj_dict.keys()
+    seq_id_list = list(res_obj_dict.keys())
 
     sec_list = ["ptm_annotation", "glycation", "snv", "glycosylation",
         "site_annotation", "mutagenesis", "phosphorylation"        
     ]
-    prj_obj = {"uniprot_canonical_ac":1, "uniprot_id":1, "gene_names":1, "protein_names":1, "species":1}
+    prj_obj = {"uniprot_canonical_ac":1, "isoforms":1, "uniprot_id":1, "gene_names":1, "protein_names":1, "species":1}
     for sec in sec_list:
         prj_obj[sec] = 1
 
+
+    seqid2doc = {}
+    mongo_query = {"isoforms.isoform_ac":{"$in": seq_id_list}}
+    for doc in dbh["c_protein"].find(mongo_query,prj_obj):
+        for obj in doc["isoforms"]:
+            isoform_ac = obj["isoform_ac"]
+            seqid2doc[isoform_ac] = doc
+
+
     for seq_id in seq_id_list:
-        mongo_query = {"isoforms.isoform_ac":{"$eq": seq_id}}
-        doc  = dbh["c_protein"].find_one(mongo_query,prj_obj)
-        if doc == None:
+        #mongo_query = {"isoforms.isoform_ac":{"$eq": seq_id}}
+        #doc  = dbh["c_protein"].find_one(mongo_query,prj_obj)
+        #if doc == None:
+        #    continue
+        if seq_id not in seqid2doc:
             continue
+        doc = seqid2doc[seq_id] 
         canon = doc["uniprot_canonical_ac"]
         sp_obj = doc["species"][0]
+        
         o = {"tax_id":sp_obj["taxid"], "name":sp_obj["name"],
                 "common_name":sp_obj["common_name"], "glygen_name":sp_obj["glygen_name"]}
         res_obj_dict[seq_id]["details"] = {}
@@ -738,7 +756,8 @@ def validate_protein_seq(seq):
 
 def load_seq_dict(release_dir):
     tmp_dict = {}
-    file_list = glob.glob(release_dir + "/reviewed/*_protein_allsequences.fasta")
+    #file_list = glob.glob(release_dir + "/reviewed/*_protein_allsequences.fasta")
+    file_list = glob.glob(release_dir + "jsondb/blastdb/allsequences_all.fasta")
     for in_file in file_list:
         for record in SeqIO.parse(in_file, "fasta"):
             seq_id = record.id.split("|")[1]

@@ -15,6 +15,57 @@ from glygen.db import get_mongodb
 from glygen.libgly import load_sheet
 
 
+
+def apply_pagination(obj_list, req_obj):
+
+    offset = req_obj["offset"] if "offset" in req_obj else 1
+    limit = req_obj["limit"] if "limit" in req_obj else 20
+    start_index = int(offset) - 1
+    stop_index = start_index + int(limit)
+    start_index = 0 if start_index > len(obj_list) - 1 else start_index
+    stop_index = len(obj_list) if stop_index > len(obj_list) else stop_index
+    return obj_list[start_index:stop_index]
+
+
+    
+
+
+def get_query_filter_code(query_filters, record_type, filter_conf):
+
+    taxid2name = get_taxid2name(default=False)
+    taxid2name = dict(sorted(taxid2name.items(), key=lambda item: item[1]))
+    sp_dict = {}
+    for tax_id in taxid2name:
+        sp_dict[taxid2name[tax_id]] = tax_id
+
+    code_dict = {}
+    for grp in sorted(filter_conf[record_type]):
+        code_dict[grp] = []
+        sorted_dict = dict(sorted(filter_conf[record_type][grp]["order_dict"].items(), key=lambda item: item[1]))
+        sorted_dict = sp_dict if grp == "by_organism" else sorted_dict
+        for val in sorted_dict:
+            if val != "":
+                code_dict[grp].append({"value":val, "ptrn":"*"})
+
+    for obj in query_filters:
+        grp, op = obj["id"], obj["operator"]
+        for val in obj["selected"]:
+            if grp in code_dict:
+                for o in code_dict[grp]:
+                    if o["value"] == val:
+                        o["ptrn"] = "1"
+   
+    code_list = []
+    for grp in sorted(code_dict):
+        c_list = []
+        for o in code_dict[grp]:
+            c_list.append(o["ptrn"])
+        code_list.append("".join(c_list))
+
+    return {"dict":code_dict, "code":".".join(code_list)}
+
+
+
 def validate_uploaded_table(in_table, table_type):
 
     res = {}
@@ -34,7 +85,7 @@ def validate_uploaded_table(in_table, table_type):
 
 
 
-def get_taxid2name():
+def get_taxid2name(default=False):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -46,7 +97,9 @@ def get_taxid2name():
     in_file = data_path + "/releases/data/v-%s/misc/species_info.csv" % (init_obj["dataversion"])
     load_species_info(species_obj, in_file)
 
-    tmp_dict = {"0":"All"}
+    tmp_dict = {}
+    if default:
+        tmp_dict["0"] = "All"
     for k in species_obj:
         obj = species_obj[k]
         if obj["is_reference"] == "yes":
@@ -91,6 +144,9 @@ def transform_query_term(term):
 
     tmp_term = tmp_term.replace("(", "\\(").replace(")", "\\)")
     tmp_term = tmp_term.replace("[", "\\[").replace("]", "\\]")
+    tmp_term = tmp_term.replace("-1", "")
+    tmp_term = tmp_term.replace("-2", "")
+    tmp_term = tmp_term.replace("-3", "")
     tmp_term = tmp_term.replace("-", " ")
     return tmp_term
 
@@ -152,8 +208,7 @@ def isint(value):
   except ValueError:
     return False
 
-def get_hit_score(doc, cache_info, score_dict):
-
+def get_hit_score(doc, cache_info, score_dict, selected_p_list, score_info):
 
     ms_max, scale = 10000, 400.0
     search_query = cache_info["query"]
@@ -183,6 +238,8 @@ def get_hit_score(doc, cache_info, score_dict):
         cond_group, cond = "misc", "glycan_definition_score"
         p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
         for p in p_list:
+            if p not in selected_p_list:
+                continue
             ms = doc[p]
             if ms != ms_max:
                 cond_match_freq[cond] = scale*float(ms_max - ms)/float(ms_max)
@@ -191,7 +248,9 @@ def get_hit_score(doc, cache_info, score_dict):
         for cond in score_dict[record_type][cond_group]:
             p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
             for p in p_list:
-                n = len(doc["publication"].split(";")) if p == "publication" else doc[p]
+                if p not in selected_p_list:
+                    continue
+                n = len(doc["publication"]) if p == "publication" else doc[p]
                 if n > 0:
                     cond_match_freq[cond] = n
     
@@ -200,6 +259,8 @@ def get_hit_score(doc, cache_info, score_dict):
         cond_group, cond = "misc", "protein_exact_match"
         p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
         for p in p_list:
+            if p not in selected_p_list:
+                continue
             val_list.append(doc[p].lower())
             if p == "uniprot_canonical_ac":
                 val_list.append(doc[p].lower().split("-")[0])
@@ -227,6 +288,8 @@ def get_hit_score(doc, cache_info, score_dict):
         cond_group, cond = "misc", "protein_top_glycan_definition_score"
         p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
         for p in p_list:
+            if p not in selected_p_list:
+                continue
             ms = doc[p]
             if ms != ms_max:
                 cond_match_freq[cond] = scale*float(ms_max - ms)/float(ms_max)
@@ -235,6 +298,8 @@ def get_hit_score(doc, cache_info, score_dict):
         for cond in score_dict[record_type][cond_group]:
             p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
             for p in p_list:
+                if p not in selected_p_list:
+                    continue
                 n = doc[p]
                 if n > 0:
                     cond_match_freq[cond] = n
@@ -242,6 +307,8 @@ def get_hit_score(doc, cache_info, score_dict):
         cond_group, cond = "misc", "site_top_glycan_definition_score"
         p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
         for p in p_list:
+            if p not in selected_p_list:
+                continue
             ms = doc[p]
             if ms != ms_max: 
                 cond_match_freq[cond] = scale*float(ms_max - ms)/float(ms_max)
@@ -250,6 +317,8 @@ def get_hit_score(doc, cache_info, score_dict):
         for cond in score_dict[record_type][cond_group]:
             p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
             for p in p_list:
+                if p not in selected_p_list:
+                    continue
                 if doc[p] == "yes":
                     cond_match_freq[cond] = 1
        
@@ -257,6 +326,8 @@ def get_hit_score(doc, cache_info, score_dict):
         for cond in score_dict[record_type][cond_group]:
             p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
             for p in p_list:
+                if p not in selected_p_list:
+                    continue
                 n = doc[p]
                 if n > 0:
                     cond_match_freq[cond] = n
@@ -265,6 +336,8 @@ def get_hit_score(doc, cache_info, score_dict):
         for cond in score_dict[record_type][cond_group]:
             p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
             for p in p_list:
+                if p not in selected_p_list:
+                    continue
                 if doc[p] == "yes":
                     cond_match_freq[cond] = 1
 
@@ -272,14 +345,13 @@ def get_hit_score(doc, cache_info, score_dict):
         for cond in score_dict[record_type][cond_group]:
             p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
             for p in p_list:
+                if p not in selected_p_list:
+                    continue
                 n = doc[p]
                 if n > 0:
                     cond_match_freq[cond] = n
 
     score = 0.1
-    score_info = {"contributions":[], "formula":"sum(w + 0.01*f)", 
-            "variables":{"c":"condition name", "w":"condition weight",
-                "f":"condition match frequency"}}
     for cond_group in score_dict[record_type]:
         for cond in score_dict[record_type][cond_group]:
             freq = cond_match_freq[cond] if cond in cond_match_freq else 0
@@ -290,8 +362,8 @@ def get_hit_score(doc, cache_info, score_dict):
             o = {"c":cond, "w":weight, "f":float(freq)}
             score_info["contributions"].append(o)
 
+    return round(float(score), 2)
 
-    return round(float(score), 2), score_info
 
 
 
@@ -532,7 +604,7 @@ def gzip_str(string_):
 
 
 
-def get_cached_records_direct(query_obj, config_obj):
+def get_cached_records_direct(query_obj, config_obj, limit_flag):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -616,7 +688,8 @@ def get_cached_records_direct(query_obj, config_obj):
 
     start_index = int(query_obj["offset"]) - 1
     stop_index = start_index + int(query_obj["limit"])
-    for obj_id in sorted_id_list[start_index:stop_index]:
+    sorted_id_list = sorted_id_list[start_index:stop_index] if limit_flag else sorted_id_list
+    for obj_id in sorted_id_list:
         obj = cached_obj["results"][obj_id]
         for k in ["_id", "record_id"]:
             if k in obj:
@@ -652,6 +725,9 @@ def get_cached_motif_records_direct(query_obj, config_obj):
     id_list = []
     for doc in dbh["c_list"].find(mongo_query):
         cached_obj["results"].append(doc)
+
+    if len(cached_obj["results"]) == 0:
+        return {"error_list":[{"error_code":"no records found"}]}
 
     return_fields = {"string":[], "int":[], "float":[]}
     for f in cached_obj["results"][0].keys():
@@ -726,7 +802,7 @@ def get_filter_conf():
 
 
 
-def get_cached_records_indirect(query_obj, config_obj):
+def get_cached_records_indirect(query_obj, config_obj, limit_flag):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -734,7 +810,6 @@ def get_cached_records_indirect(query_obj, config_obj):
 
     if query_obj["id"] == "":
         return {"error_list":[{"error_code":"empty-list-id"}]}
-
 
     #Collect errors 
     error_list = get_errors_in_query("cached_list", query_obj, config_obj)
@@ -757,21 +832,26 @@ def get_cached_records_indirect(query_obj, config_obj):
     #Get cached object
     mongo_query = {"list_id":query_obj["id"]}
     cached_obj = dbh[cache_collection].find_one(mongo_query)
-
-    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-
-
-
-
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
     if cached_obj == None:
         post_error_list.append({"error_code":"non-existent-search-results"})
         return {"error_list":post_error_list}
+
+    record_type = cached_obj["cache_info"]["record_type"]
+    is_empty_query = False
+    if "query" in cached_obj["cache_info"]:
+        is_empty_query = True if cached_obj["cache_info"]["query"] == {} else is_empty_query
+        if "concept_query_list" in cached_obj["cache_info"]["query"]:
+            is_empty_query = True if cached_obj["cache_info"]["query"]["concept_query_list"] == [] else is_empty_query
+ 
+    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
    
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "conf/hit_scoring.json")
     score_dict = json.loads(open(json_url, "r").read())
+
 
 
     cached_obj.pop("_id")
@@ -779,65 +859,117 @@ def get_cached_records_indirect(query_obj, config_obj):
     id_list = []
     for doc in dbh[cache_collection].find(mongo_query):
         id_list += doc["results"]
-    nparts = int(float(len(id_list))/float(config_obj["supersearch_batch_size"])) + 1
     
-    ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "conf/list_init.json")
+    list_init_conf = json.loads(open(json_url, "r").read())
+    f_dict = {}
+    for rt in list_init_conf:
+        f_dict[rt] = {"all":[], "required":[], "default":[]}
+        for o in list_init_conf[rt]["columns"]:
+            field, is_default, is_required = o["id"], o["default"], o["immutable"]
+            if field not in f_dict[rt]["all"]:
+                f_dict[rt]["all"].append(field)
+            if is_default and field not in f_dict[rt]["default"]:
+                f_dict[rt]["default"].append(field)
+            if is_required and field not in f_dict[rt]["required"]:
+                f_dict[rt]["required"].append(field)
+    
+    query_fields = []
+    if "columns" in query_obj:
+        for f in query_obj["columns"]:
+            if f in f_dict[record_type]["all"] and f not in query_fields:
+                query_fields.append(f)
+    final_fields = ["filter_code"]
+    if record_type in f_dict:
+        if len(query_fields) == 0:
+            final_fields +=  sorted(set(f_dict[record_type]["required"] + f_dict[record_type]["default"]))
+        else:
+            final_fields +=  sorted(set(f_dict[record_type]["required"] + query_fields))
+    
+    
+    prj_obj = {}
+    for f in final_fields:
+        prj_obj[f] = 1
+
+    if final_fields == ["filter_code"]:
+        prj_obj = {}
+
+
+    batch_size = config_obj["supersearch_batch_size"]
+    record_count = len(id_list)
+    nparts = int(float(record_count)/float(batch_size)) + 1
+    ts_list.append("2-record_count=%s,batch_size=%s,nparts=%s" % (record_count, batch_size, nparts))
+    ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     for i in range(0, nparts):
-        start = i*config_obj["supersearch_batch_size"]
-        end = (i+1)*config_obj["supersearch_batch_size"]
+        start = i*batch_size
+        end = (i+1)*batch_size
         end = len(id_list) if end > len(id_list) else end
         mongo_query = {"record_id":{"$in": id_list[start:end]}}
-        for obj in dbh["c_list"].find(mongo_query):
-            hit_score, score_info = -1.0, {}
-            #if cached_obj["cache_info"]["query"] != {}:
-            #    hit_score, score_info = get_hit_score(obj, cached_obj["cache_info"], score_dict)
-            hit_score, score_info = get_hit_score(obj, cached_obj["cache_info"], score_dict)
+        for obj in dbh["c_list"].find(mongo_query, prj_obj):
+            if "_id" in obj:
+                obj.pop("_id")
+            var_dict = {"c":"condition name","w":"condition weight","f":"condition match frequency"}
+            score_info = {"contributions":[], "formula":"sum(w + 0.01*f)", "variables":var_dict}
+            hit_score = -1.0
+            if is_empty_query == False:
+                hit_score = get_hit_score(obj, cached_obj["cache_info"], score_dict, final_fields, score_info)
             obj["hit_score"] = hit_score
             obj["score_info"] = score_info
             cached_obj["results"].append(obj)
-    
     ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    
 
     filter_conf = get_filter_conf() 
-    
-    record_type = cached_obj["cache_info"]["record_type"]
+    query_filters = query_obj["filters"] if "filters" in query_obj else []
+    res = get_query_filter_code(query_filters, record_type, filter_conf)
+    query_filter_code, code_dict = res["code"], res["dict"]
 
     #Get available list before applying filtering
     available_list_before = []
-    
     #comment for performance testing
-    update_filters(cached_obj, 1)
-    ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    
+    #return code_dict
 
- 
+    if "filters" not in cached_obj:
+        cached_obj["filters"] = {"applied":[]}
+    cached_obj["filters"]["available"] = []
+    update_res = update_filters(record_type, cached_obj["results"], cached_obj["filters"], 1, code_dict, filter_conf)
+    if "error_list" in update_res:
+        return update_res
+    #return {"error_list":update_res}
+
+
+    ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     for obj in cached_obj["filters"]["available"]:
         available_list_before.append(obj)
-        #if obj["id"] == "by_organism":
-        #    for o in obj["options"]:
-        #        if o["count"] > 0:
-        #            print "xxx", o["id"]
-
 
     ts_list.append("5-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-
-
     ts_list.append("count_1_%s" % (len(cached_obj["results"])))
+    n_one = len(cached_obj["results"])
 
     #Apply filters
     #comment for performance testing
-    filter_list(cached_obj, query_obj)
+    filter_list(cached_obj, query_obj, query_filter_code, code_dict)
+    n_two = len(cached_obj["results"])
 
-
+    #return {"n1":n_one, "n2":n_two}
+    #return filter_conf
+    #return {"code":query_filter_code}
+    #return code_dict
+    #return cached_obj["results"]
 
     ts_list.append("count_2_%s" % (len(cached_obj["results"])))
-
     ts_list.append("6-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     #Update filters
     #comment for performance testing
-    update_filters(cached_obj, 2)
-  
+    cached_obj["filters"]["available"] = []
+    update_res = update_filters(record_type, cached_obj["results"], cached_obj["filters"], 2, code_dict, filter_conf) 
+    #return update_res
+
+ 
     ts_list.append("7-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
 
@@ -901,7 +1033,8 @@ def get_cached_records_indirect(query_obj, config_obj):
     start_index = int(query_obj["offset"]) - 1
     stop_index = start_index + int(query_obj["limit"])
     res_obj["results"] = []
-    for obj_id in sorted_id_list[start_index:stop_index]:
+    sorted_id_list = sorted_id_list[start_index:stop_index] if limit_flag else sorted_id_list
+    for obj_id in sorted_id_list:
         obj = cached_obj["results"][obj_id]
         for k in ["_id", "record_id"]:
             if k in obj:
@@ -914,8 +1047,7 @@ def get_cached_records_indirect(query_obj, config_obj):
 
     ts_list.append("9-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     #return ts_list
-
-
+    res_obj["query"] = query_obj
 
     return res_obj
 
@@ -944,196 +1076,127 @@ def cache_record_list(dbh,list_id, record_list, cache_info, cache_coll, config_o
     return
 
 
-def filter_list(res_obj, query_obj):
+def compare_filter_codes(record_filter_code, query_filter_code, filter_obj_list, code_dict):
+
+    flag = False    
+    op_dict = {}
+    for obj in filter_obj_list:
+        op_dict[obj["id"]] = obj["operator"]
+
+    record_code_parts, query_code_parts = record_filter_code.split("."), query_filter_code.split(".")
+    
+    failed_flag_list = []
+    grp_id_list = sorted(code_dict.keys())
+    for grp_idx in range(0, len(grp_id_list)):
+        grp = grp_id_list[grp_idx]
+        if grp not in op_dict:
+            continue
+        op = op_dict[grp]
+        row = []
+        for j in range(0, len(query_code_parts[grp_idx])):
+            if query_code_parts[grp_idx][j] != "*":
+                row.append(query_code_parts[grp_idx][j] == record_code_parts[grp_idx][j])
+        failed = False
+        if op.lower() == "or" and len(row) > 0 and True not in row:
+            failed = True
+        if op.lower() == "and" and len(row) > 0 and False in row:
+            failed = True
+        failed_flag_list.append(failed)
+
+    flag = True not in failed_flag_list
+    return flag
+
+
+def filter_list(res_obj, query_obj, query_filter_code, code_dict):
 
     record_type = res_obj["cache_info"]["record_type"]
     filter_conf = get_filter_conf()
-
-
     if "filters" not in res_obj:
         res_obj["filters"] = {"available":[], "applied":[]}
     if "filters" in query_obj:
         res_obj["filters"]["applied"] = query_obj["filters"]
         if query_obj["filters"] == []:
-            return 
+            return
     else:
-        return 
-
-
+        return
+    
     tmp_record_list = []
     for record_obj in res_obj["results"]:
-        f_dict_one, f_dict_two = {}, {}
-        passed_group_id_dict = {}
-        for filter_obj in query_obj["filters"]:
-            filter_group_id = filter_obj["id"]
-            idlist_in_group = filter_obj["selected"]
-            f_dict_one[filter_group_id] = idlist_in_group
-            f_dict_two[filter_group_id] = []
-            operator = filter_obj["operator"]
-            if filter_group_id == "by_mass":
-                if "mass" in record_obj:
-                    id_list = []
-                    if filter_group_id in filter_conf[record_type]:
-                        for filter_id in filter_conf[record_type][filter_group_id]["range_dict"]:
-                            if filter_id in idlist_in_group:
-                                r = filter_conf[record_type][filter_group_id]["range_dict"][filter_id]
-
-                                if record_obj["mass"] >= r["min"] and record_obj["mass"] < r["max"]:
-                                    if filter_id not in f_dict_two[filter_group_id]:
-                                        f_dict_two[filter_group_id].append(filter_id)
-                else:
-                    filter_id = "no_mass"
-                    if filter_id not in f_dict_two[filter_group_id]:
-                        f_dict_two[filter_group_id].append(filter_id)
-            else:
-                field_map_one, field_map_two = {}, {}
-                if "numeric_field_map" in filter_conf[record_type][filter_group_id]:
-                    field_map_one = filter_conf[record_type][filter_group_id]["numeric_field_map"]
-                if "string_field_map" in filter_conf[record_type][filter_group_id]:
-                    field_map_two = filter_conf[record_type][filter_group_id]["string_field_map"]
-                if field_map_one != {} or field_map_two != {}:
-
-                    for filter_id in idlist_in_group:
-                        if filter_id in field_map_one:
-                            for p in field_map_one[filter_id]:
-                                if p in record_obj:
-                                    if record_obj[p] > 0:
-                                        if filter_id not in f_dict_two[filter_group_id]:
-                                            f_dict_two[filter_group_id].append(filter_id)
-                        if filter_id in field_map_two:
-                            for p in field_map_two[filter_id]:
-                                if record_obj[p] != "":
-                                    if filter_id not in f_dict_two[filter_group_id]:
-                                        f_dict_two[filter_group_id].append(filter_id)
-                else:
-                    tmp_list = []
-                    k = filter_conf[record_type][filter_group_id]["record_key"]
-                    if k in record_obj:
-                        if filter_group_id == "by_monosaccharide":
-                            res_list = []
-                            for s in record_obj[k].split(";"):
-                                res_list.append(s.strip().split(" ")[0])
-                            for filter_id in idlist_in_group:
-                                if filter_id in res_list:
-                                    if filter_id not in f_dict_two[filter_group_id]:
-                                        f_dict_two[filter_group_id].append(filter_id)
-                        else:
-                            for filter_id in idlist_in_group:
-                                semi_colon_sep_values = record_obj[k].strip()
-                                if len(semi_colon_sep_values) > 0:
-                                    if semi_colon_sep_values[-1] != ";":
-                                        semi_colon_sep_values += ";"
-                                if filter_id == "Composition" and semi_colon_sep_values == "BaseComposition;":
-                                    continue
-                                if semi_colon_sep_values.find(filter_id + ";") != -1:
-                                    if filter_id not in f_dict_two[filter_group_id]:
-                                        f_dict_two[filter_group_id].append(filter_id)
-            set_one = set(f_dict_one[filter_group_id])
-            set_two = set(f_dict_two[filter_group_id])
-            if operator.upper() == "AND" and set_one == set_two:
-                passed_group_id_dict[filter_group_id] = True
-            elif operator.upper() == "OR" and set_one.intersection(set_two) != set([]):
-                passed_group_id_dict[filter_group_id] = True
-
-        #cross filter groups are connected by AND
-        if sorted(f_dict_one.keys()) == sorted(passed_group_id_dict.keys()):
+        if "_id" in record_obj:
+            record_obj.pop("_id")
+        flag = compare_filter_codes(record_obj["filter_code"], query_filter_code, query_obj["filters"], code_dict)
+        if flag:
             tmp_record_list.append(record_obj)
-
     res_obj["results"] = tmp_record_list
 
     return
 
 
-def update_filters(res_obj, step):
 
 
-    filter_conf = get_filter_conf()
-
-    record_type = res_obj["cache_info"]["record_type"]
-
-    if "filters" not in res_obj:
-        res_obj["filters"] = {"applied":[]}
-    res_obj["filters"]["available"] = []
-
-    group_id_list = list(filter_conf[record_type].keys())
-    for filter_group_id in filter_conf[record_type]:
-        group_label = filter_conf[record_type][filter_group_id]["group_label"]
-        group_ordr = filter_conf[record_type][filter_group_id]["group_order"]
-        obj = {"id":filter_group_id, "label":group_label, "order":group_ordr, 
-                "tooltip":"", "tmp_options":{}}
-        for option_id in filter_conf[record_type][filter_group_id]["order_dict"]:
-            label = option_id
-            option_ordr = filter_conf[record_type][filter_group_id]["order_dict"][option_id]
-            if option_id in filter_conf[record_type][filter_group_id]["label_dict"]:
-                label = filter_conf[record_type][filter_group_id]["label_dict"][option_id]
-            obj["tmp_options"][option_id] = {"id":option_id, "label":label, 
-                    "count":0,"order":option_ordr}
-        res_obj["filters"]["available"].append(obj)
 
    
+def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf):
+    
+    grp_id_list = sorted(code_dict.keys())
+    n_11 = len(grp_id_list)
 
-    for record_obj in res_obj["results"]:
-        for filter_group_id in group_id_list:
-            group_idx = group_id_list.index(filter_group_id)
-            seen_option_id = {}
-            if filter_group_id in ["by_mass"]:
-                if "mass" not in record_obj:
-                    o_id = "no_mass"
-                    res_obj["filters"]["available"][group_idx]["tmp_options"][o_id]["count"] += 1
-                else:
-                    for o_id in filter_conf[record_type][filter_group_id]["range_dict"]:
-                        r = filter_conf[record_type][filter_group_id]["range_dict"][o_id]
-                        if record_obj["mass"] >= r["min"] and record_obj["mass"] < r["max"]:
-                            res_obj["filters"]["available"][group_idx]["tmp_options"][o_id]["count"] += 1
-            else:
-                tmp_list = []
-                k = filter_conf[record_type][filter_group_id]["record_key"] 
-                if filter_group_id == "by_data":
-                    field_map = filter_conf[record_type][filter_group_id]["numeric_field_map"]
-                    for opt in field_map:
-                        for k in field_map[opt]:
-                            if k in record_obj:
-                                if record_obj[k] > 0:
-                                    tmp_list.append(opt)
-                    field_map = filter_conf[record_type][filter_group_id]["string_field_map"]
-                    for opt in field_map:
-                        for k in field_map[opt]:
-                            if k in record_obj:
-                                if record_obj[k] != "":
-                                    tmp_list.append(opt)
-                elif filter_group_id == "by_ptm":
-                    field_map = filter_conf[record_type][filter_group_id]["numeric_field_map"]
-                    for opt in field_map:
-                        for k in field_map[opt]:
-                            if k in record_obj:
-                                if record_obj[k] > 0:
-                                    tmp_list.append(opt)
-                elif k in record_obj:
-                    tmp_list = record_obj[k].split(";")
+    seen_filter_code = {}
+    count_dict = {}
+    debug_list = []
+    for record_obj in obj_list:
+        seen_filter_code[record_obj["filter_code"].replace(".", "_")] = True
+        record_code_parts = record_obj["filter_code"].split(".")
+        debug_list.append(record_code_parts)
+        n_12 = len(record_code_parts)
+        if n_11 != n_12:
+            return {"error_list":[{"error_code": "filter_grp_count mismatch %s!=%s" % (n_11, n_12)}]}
+        for grp_idx in range(0, len(grp_id_list)):
+            grp = grp_id_list[grp_idx]
+            n_21 = len(code_dict[grp])
+            n_22 = len(record_code_parts[grp_idx])
+            if n_21 != n_22:
+                return {"error_list":[{"error_code": "filter_value_count mismatch %s!=%s"%(n_21,n_22)}]}
+            for j in range(0, n_22):
+                # bug in this is caused by incomplete glygen/conf/list_filters.json
+                label = code_dict[grp][j]["value"]
+                #label = grp + " | " + str(j) 
+                if record_code_parts[grp_idx][j] == "1":
+                    s = "%s|%s|%s|%s" % (grp,record_code_parts[grp_idx], label, j)
+                    debug_list.append(s)
+                    if grp not in count_dict:
+                        count_dict[grp] = {}
+                    if label not in count_dict[grp]:
+                        count_dict[grp][label] = 0
+                    count_dict[grp][label] += 1
+    #return {"a":code_dict, "b":count_dict, "c":seen_filter_code, "d":debug_list}
 
-                for option_id in tmp_list:
-                    option_id = option_id.strip()
-                    if option_id != "":
-                        if filter_group_id == "by_glycan_type":
-                            option_id = option_id.split("/")[0]
-                        if filter_group_id == "by_monosaccharide":
-                            option_id = option_id.split(" ")[0]
-                        seen_option_id[option_id] = True
-                
-                for option_id in seen_option_id:
-                    if option_id not in filter_conf[record_type][filter_group_id]["order_dict"]:
-                        continue
-                    option_ordr = filter_conf[record_type][filter_group_id]["order_dict"][option_id]
-                    label = option_id
-                    if option_id in filter_conf[record_type][filter_group_id]["label_dict"]:
-                        label = filter_conf[record_type][filter_group_id]["label_dict"][option_id]
-                    o = {"id":option_id, "count":0, "label":label, "order":option_ordr}
-                    if option_id not in res_obj["filters"]["available"][group_idx]["tmp_options"]:
-                        res_obj["filters"]["available"][group_idx]["tmp_options"][option_id] = o
-                    res_obj["filters"]["available"][group_idx]["tmp_options"][option_id]["count"] += 1
+
+    tmp_seen = {}
+    for grp in filter_conf[record_type]:
+        label_dict = filter_conf[record_type][grp]["label_dict"] if "label_dict" in filter_conf[record_type][grp] else {}
+        group_label = filter_conf[record_type][grp]["group_label"]
+        group_ordr = filter_conf[record_type][grp]["group_order"]
+        obj = {"id":grp, "label":group_label, "order":group_ordr, "tooltip":"", "tmp_options":{}}
+        for option_id in filter_conf[record_type][grp]["order_dict"]:
+            label = option_id
+            option_ordr = filter_conf[record_type][grp]["order_dict"][option_id]
+            if grp not in tmp_seen:
+                tmp_seen[grp] = {}
+            tmp_seen[grp][label] = True
+            count = 0
+            if grp in count_dict:
+                if label in count_dict[grp]:
+                    count = count_dict[grp][label]
+           
+            label = label_dict[option_id] if option_id in label_dict else label
+            obj["tmp_options"][option_id] = {"id":option_id, "label":label, "count":count,"order":option_ordr}
+        filters["available"].append(obj)
+        #xxxxx
 
     seen = {}
-    for grp_obj in res_obj["filters"]["available"]:
+    non_empty_grp_obj_list = []
+    for grp_obj in filters["available"]:
         filter_group_id = grp_obj["id"]
         grp_obj["options"] = []
         for option_id in grp_obj["tmp_options"]:
@@ -1146,11 +1209,17 @@ def update_filters(res_obj, step):
             if option_id not in seen[filter_group_id]:
                 seen[filter_group_id][option_id] = True
         grp_obj.pop("tmp_options")
+        if grp_obj["options"] != []:
+            non_empty_grp_obj_list.append(grp_obj)
+    
+    filters["available"] = non_empty_grp_obj_list
+
+
+    return {}
 
 
 
 
-    return
 
 
 
@@ -1173,6 +1242,9 @@ def get_errors_in_superquery(query_obj, config_obj):
 
 
 def get_errors_in_query(svc_name, query_obj, config_obj):
+
+    if query_obj == None:
+        return {"error_list":[{"error_code": "missing query object"}]}
 
     for key1 in query_obj:
         if type(query_obj[key1]) in [str]:
@@ -1274,7 +1346,9 @@ def get_errors_in_query(svc_name, query_obj, config_obj):
                     max_query_value_len = field_info[key1]["maxlen"] 
                 if len(str(query_obj[key1])) > max_query_value_len:
                     error_list.append({"error_code":"invalid-parameter-value-length", "field":key1})
-                if val_type != field_info[key1]["type"]:
+                if "type" not in field_info[key1]:
+                    error_list.append({"error_code":"invalid-parameter-value", "field":key1})
+                elif val_type != field_info[key1]["type"]:
                     error_list.append({"error_code":"invalid-parameter-value", "field":key1})
 
 
@@ -1314,25 +1388,24 @@ def get_error_obj(error_code, error_log, log_path):
 
 
 
-def get_paginated_sections(obj, query_obj, section_list):
-
+def get_paginated_sections(obj, query_obj, section_list, limit_flag):
 
     sec_map = {
         "glycosylation_reported_with_glycan":"glycosylation",
         "glycosylation_reported":"glycosylation",
         "glycosylation_predicted":"glycosylation",
-        "glycosylation_text_mining":"glycosylation",
+        "glycosylation_automatic_literature_mining":"glycosylation",
         "snv_disease":"snv",
         "snv_non_disease":"snv", 
         "expression_tissue":"expression", 
         "expression_cell_line":"expression"
     }
-    site_cat_list = ["reported", "reported_with_glycan", "predicted", "text_mining"]
-   
+    site_cat_list_all = ["reported", "reported_with_glycan", "predicted", "automatic_literature_mining"] 
     table_id_list = []
     for o in query_obj["paginated_tables"]:
         table_id_list.append(o["table_id"])
-  
+ 
+    debug_dict = {} 
     sec_tables = {}
     tableid2sec = {}
     seen_obj = {}
@@ -1342,29 +1415,53 @@ def get_paginated_sections(obj, query_obj, section_list):
         if sec_new not in obj:
             continue
         for o in obj[sec_new]:
-            table_id = sec
-            if sec.find("glycosylation_") != -1 and o["site_category"] in site_cat_list:
-                table_id = "glycosylation_" + o["site_category"]
+            #table_id = sec
+            tmp_table_id_list = [sec]
+            if sec.find("glycosylation_") != -1:
+                start_pos = o["start_pos"] if "start_pos" in o else "x"
+                gtc = o["glytoucan_ac"] if "glytoucan_ac" in o else "x"
+                site_cat_list_seen = list(o["site_category_dict"].keys())
+                tmp_table_id_list = [] 
+                for site_cat in site_cat_list_seen:
+                    if site_cat in site_cat_list_all:
+                        table_id = "glycosylation_" + site_cat
+                        tmp_table_id_list.append(table_id)
+                        cmb = "%s|%s|%s" % (table_id,start_pos, gtc)
+                        debug_dict[cmb] = True
+                 
+            #if sec.find("glycosylation_") != -1 and o["site_category"] in site_cat_list_all:
+            #    table_id = "glycosylation_" + o["site_category"]
+            #    cmb = "%s|%s|%s" % (table_id,start_pos, gtc)
+            #    debug_dict[cmb] = True
             if sec in ["expression_tissue", "expression_cell_line"]:
-                table_id = "expression_" + o["category"]
+                tmp_table_id_list = ["expression_" + o["category"]]
             if sec in ["snv"]:
-                table_id = "snv_disease" if "disease" in o["keywords"] else "snv_non_disease" 
+                tmp_table_id_list = ["snv_disease"] if "disease" in o["keywords"] else ["snv_non_disease"]
             #Fix to remove redundant svn objects
             if sec == "snv_disease" and "disease" not in o["keywords"]:
                 continue
             if sec == "snv_non_disease" and "disease" in o["keywords"]:
                 continue
-            if table_id in table_id_list:
-                tableid2sec[table_id] = sec_new
-                if table_id not in sec_tables:
-                    sec_tables[table_id] = []
-                s = json.dumps(o)
-                if table_id not in seen_obj:
-                    seen_obj[table_id] = {}
-                if s not in seen_obj[table_id]:
-                    sec_tables[table_id].append(o)
-                seen_obj[table_id][s] = True
-                 
+            for table_id in tmp_table_id_list:
+                site_cat = table_id.replace("glycosylation_", "")
+                if table_id in table_id_list:
+                    tableid2sec[table_id] = sec_new
+                    if table_id not in sec_tables:
+                        sec_tables[table_id] = []
+                    oo = {}
+                    for k in o:
+                        oo[k] = o[k]
+                    oo["site_category"] = site_cat
+                    s = json.dumps(oo)
+                    if table_id not in seen_obj:
+                        seen_obj[table_id] = {}
+                    if s not in seen_obj[table_id]:
+                        sec_tables[table_id].append(oo)
+                    seen_obj[table_id][s] = True
+                    if site_cat in ["reported", "automatic_literature_mining"]:
+                        debug_dict[site_cat] = oo
+ 
+    #return debug_dict 
     #return sec_tables
 
 
@@ -1392,7 +1489,8 @@ def get_paginated_sections(obj, query_obj, section_list):
             stop_index = start_index + int(limit)
             start_index = 0 if start_index > len(sorted_idx_list) - 1 else start_index
             stop_index = len(sorted_idx_list) if stop_index > len(sorted_idx_list) else stop_index
-            sorted_idx_list = sorted_idx_list[start_index:stop_index]
+            if limit_flag:
+                sorted_idx_list = sorted_idx_list[start_index:stop_index]
             tmp_table = []
             for idx in sorted_idx_list:
                 tmp_table.append(sec_tables[table_id][idx])
@@ -1410,36 +1508,122 @@ def get_paginated_sections(obj, query_obj, section_list):
     return sec_tables
 
 
-def cache_result_list(list_id, res_obj, config_obj):
+def get_partition_ranges(n, batch_size):
 
+    range_list = []
+    i = 0
+    while True:
+        s, e = i*batch_size, (i+1)*batch_size
+        e = n if e > n else e
+        range_list.append({"s":s, "e":e})
+        if e == n:
+            break
+        i += 1
+    return range_list
+
+
+def cache_result_list(cache_id, listcache_id, res_obj, config_obj):
+
+    batch_size = 1000
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
     cache_coll = "c_listcache"
-    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    cached_obj = dbh[cache_coll].find_one({"list_id":listcache_id})
     if cached_obj == None:
-        res = dbh[cache_coll].insert_one({"list_id":list_id, "res":res_obj})
+        if "cache_info" not in res_obj:
+            res_obj["cache_info"] = {}
+        res_obj["cache_info"]["cache_id"] = cache_id
+        res_obj["cache_info"]["listcache_id"] = listcache_id
+        glbl_obj = {}
+        for k in res_obj:
+            if k != "results":
+                glbl_obj[k] = res_obj[k]
+        if len(res_obj["results"]) > batch_size:
+            range_list = get_partition_ranges(len(res_obj["results"]), batch_size)           
+            oo_list = []
+            for o in range_list:
+                s, e = o["s"], o["e"]
+                tmp_glbl_obj = glbl_obj if s == 0 else {}
+                tmp_obj_list = res_obj["results"][s:e] 
+                oo = {"list_id":listcache_id, "results":tmp_obj_list,"glbl":tmp_glbl_obj, "start":s}
+                oo_list.append(len(json.dumps(oo)))
+                res = dbh[cache_coll].insert_one(oo)
+            #return oo_list 
+        else:
+            oo = {"list_id":listcache_id, "results":res_obj["results"], "glbl":glbl_obj, "start":0}
+            res = dbh[cache_coll].insert_one(oo)
     
     return {}
 
 
-def get_cached_result_list(list_id):
+def get_cached_result_list(cache_id, listcache_id):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
     cache_coll = "c_listcache"
-    res_obj = dbh[cache_coll].find_one({"list_id":list_id})
-    if res_obj != None:
-        res_obj = res_obj["res"]
-        
+    res_obj = {"results":[]}
+    oo_list = []
+    for doc in dbh[cache_coll].find({"list_id":listcache_id}):
+        for k in doc["glbl"]:
+            res_obj[k] = doc["glbl"][k]
+        res_obj["results"] += doc["results"]
+        oo_list.append(doc["start"])
+    #return oo_list
+
+    if len(res_obj["results"]) == 0:
+        return None
+
+    if "cache_info" not in res_obj:
+        res_obj["cache_info"] = {}
+    res_obj["cache_info"]["cache_id"] = cache_id
+    res_obj["cache_info"]["listcache_id"] = listcache_id
+    
     return res_obj
 
 
 def get_hash_id(api_name , record_type, obj):
-    hash_str = api_name + record_type + json.dumps(obj)
+    
+    new_obj = {}
+    for k in obj:
+        if k not in ["offset", "limit"]:
+            new_obj[k] = obj[k]
+
+    hash_str = api_name + record_type + json.dumps(new_obj)
     hash_obj = hashlib.md5(hash_str.encode('utf-8'))
     return hash_obj.hexdigest()
     
+
+
+
+def filter_glyco_obj_list(table_id, obj_list, query_filters , config_obj):
+
+    filter_init = config_obj["filter_init"]
+    filters_obj = {"applied":query_filters, "available":[]}
+   
+    query_site_category = table_id.replace("glycosylation_", "")
+    table_obj_list, other_table_obj_list = [], []
+    for gly_obj in obj_list:
+        if query_site_category == gly_obj["site_category"]:
+            table_obj_list.append(gly_obj)
+        else:
+            other_table_obj_list.append(gly_obj)
+    res = get_query_filter_code(query_filters, table_id, filter_init)
+    query_filter_code, code_dict = res["code"], res["dict"]
+    update_res = update_filters(table_id, table_obj_list, filters_obj, 1, code_dict, filter_init)
+    if "error_list" in update_res:
+        return update_res
+        
+    passed_obj_list = []
+    for gly_obj in table_obj_list:
+        flag = compare_filter_codes(gly_obj["filter_code"], query_filter_code, query_filters, code_dict)
+        if flag:
+            passed_obj_list.append(gly_obj)
+    
+    res = {"a":table_obj_list,"b":passed_obj_list, "c":other_table_obj_list, "d":filters_obj}
+    return res
+
+
 
 

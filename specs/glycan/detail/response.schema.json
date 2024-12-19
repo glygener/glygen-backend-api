@@ -65,9 +65,7 @@
                                 }
                             },
                             "required": [
-                                "database",
-                                "id",
-                                "url"
+                                "database","url","id"
                             ]
                         }
                     },
@@ -157,9 +155,7 @@
                                 }
                             },
                             "required": [
-                                "database",
-                                "id",
-                                "url"
+                                "database","url","id"
                             ]
                         }
                     },
@@ -227,9 +223,7 @@
                                 }
                             },
                             "required": [
-                                "database",
-                                "id",
-                                "url"
+                                "database","url","id"
                             ]
                         }
                     }
@@ -262,9 +256,7 @@
                     }
                 },
                 "required": [
-                    "database",
-                    "id",
-                    "url"
+                    "database","id"
                 ]
             }
         },
@@ -339,8 +331,7 @@
                 }
             },
             "required": [
-                "key",
-                "url"
+                "key"
             ]
         },
         "byonic": {
@@ -382,8 +373,7 @@
                                 }
                             },
                             "required": [
-                                "database",
-                                "id"
+                                "database","url","id"
                             ]
                         }
                     },
@@ -393,10 +383,7 @@
                             "type": "object",
                             "properties": {
                                 "type": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
+                                   "type": "string"
                                 },
                                 "id": {
                                     "type": "string"
@@ -407,8 +394,7 @@
                             },
                             "required": [
                                 "id",
-                                "type",
-                                "url"
+                                "type"
                             ]
                         }
                     }
@@ -565,9 +551,7 @@
                                 }
                             },
                             "required": [
-                                "database",
-                                "id",
-                                "url"
+                                "database","url","id"
                             ]
                         }
                     },
@@ -590,8 +574,7 @@
                         "required": [
                             "name",
                             "namespace",
-                            "id",
-                            "url"
+                            "id"
                         ]
                     },
                     "tissue": {
@@ -613,8 +596,7 @@
                         "required": [
                             "name",
                             "namespace",
-                            "id",
-                            "url"
+                            "id"
                         ]
                     },
                     "abundance": {
@@ -622,11 +604,7 @@
                     }
                 },
                 "required": [
-                    "end_pos",
-                    "evidence",
-                    "residue",
-                    "start_pos",
-                    "uniprot_canonical_ac"
+                    "evidence"
                 ]
             }
         },
@@ -715,9 +693,7 @@
                             }
                         },
                         "required": [
-                            "database",
-                            "id",
-                            "url"
+                            "database","url","id"
                         ]
                     }
                 },
@@ -770,9 +746,7 @@
                                 }
                             },
                             "required": [
-                                "database",
-                                "id",
-                                "url"
+                                "database","url","id"
                             ]
                         }
                     }

@@ -3,7 +3,8 @@
     $ http POST :8082/protein/search_init/ 
     $ http POST :8082/protein/search_simple/ < tests/examples/protein/protein_search_simple.json
     $ http POST :8082/protein/search/ < tests/examples/protein/protein_search.json
-    $ http POST :8082/protein/list/ < tests/examples/protein/protein_list.json
+    $ http POST :8082/protein/list/ < tests/examples/protein/protein_list.1.json
+    $ http POST :8082/protein/list/ < tests/examples/protein/protein_list.2.json
     $ http POST :8082/protein/detail/P14210-1/
     $ http POST :8082/protein/detail/Q8IWL2-1/ < tests/examples/protein/protein_detail_paginated.json
     $ http POST :8082/protein/alignment/ < tests/examples/protein/protein_alignment.json
@@ -12,7 +13,8 @@
     $ http POST :8082/glycan/search_init/ 
     $ http POST :8082/glycan/search_simple/ < tests/examples/glycan/glycan_search_simple.json
     $ http POST :8082/glycan/search/ < tests/examples/glycan/glycan_search.json
-    $ http POST :8082/glycan/list/ < tests/examples/glycan/glycan_list.json
+    $ http POST :8082/glycan/list/ < tests/examples/glycan/glycan_list.1.json
+    $ http POST :8082/glycan/list/ < tests/examples/glycan/glycan_list.2.json
     $ http POST :8082/glycan/detail/G17689DH/
     $ http POST :8082/glycan/image/G17689DH/
     $ http POST :8082/glycan/image_svg/G17689DH/
@@ -39,6 +41,10 @@
   $ http POST :8082/globalsearch/search/ < tests/examples/globalsearch/globalsearch_search.json
   $ http POST :8082/pages/home_init/ 
   $ http POST :8082/pages/list_init/ < tests/examples/pages/list_init.json
+  $ http POST :8082/pages/filter_init/ < tests/examples/pages/filter_init.1.json
+  $ http POST :8082/pages/filter_init/ < tests/examples/pages/filter_init.2.json
+  $ http POST :8082/pages/filter_init/ < tests/examples/pages/filter_init.3.json
+  $ http POST :8082/pages/filter_init/ < tests/examples/pages/filter_init.4.json
   $ http POST :8082/seqmapping/search/ < tests/examples/seqmapping/seqmapping_search.json
   $ http POST :8082/publication/detail/ < tests/examples/publication/publication_detail.json
 
@@ -73,8 +79,8 @@
   $ http POST :8082/supersearch/search_init/ 
   $ http POST :8082/supersearch/search/ < tests/examples/supersearch/supersearch_search.json
   $ http POST :8082/supersearch/reason/ < tests/examples/supersearch/supersearch_reason.json
-  $ http POST :8082/supersearch/list/ < tests/examples/supersearch/supersearch_list.json
-
+  $ http POST :8082/supersearch/list/ < tests/examples/supersearch/supersearch_list.1.json
+  $ http POST :8082/supersearch/list/ < tests/examples/supersearch/supersearch_list.2.json
   $ http POST :8082/event/addnew/ < tests/examples/event/event_addnew.json
   $ http POST :8082/event/list/ < tests/examples/event/event_list.json
   $ http POST :8082/event/detail/ < tests/examples/event/event_detail.json
@@ -135,5 +141,23 @@
   $ http POST :8082/biomarker/search_simple/ < tests/examples/biomarker/search_simple.json
   $ http POST :8082/biomarker/search < tests/examples/biomarker/search.json
   $ http POST :8082/biomarker/list < tests/examples/biomarker/list.json
+
+  $ http POST :8082/pagination/page < tests/examples/pagination/protein.json
+  $ http POST :8082/pagination/page < tests/examples/pagination/site.json
+  $ http POST :8082/pagination/page < tests/examples/pagination/glycan.json
+  $ http POST :8082/pagination/page < tests/examples/pagination/motif.json
+  $ http POST :8082/pagination/page < tests/examples/pagination/publication.json
+  $ http POST :8082/pagination/page < tests/examples/pagination/biomarker.json
+
+  $ http POST :8082/data/section_download < tests/examples/data/section_download.protein.glycosylation.json
+  $ http POST :8082/data/section_download < tests/examples/data/section_download.site.glycosylation.json
+  $ http POST :8082/data/section_download < tests/examples/data/section_download.glycan.glycoprotein.json
+  $ http POST :8082/data/section_download < tests/examples/data/section_download.motif.glycans.json
+  $ http POST :8082/data/section_download < tests/examples/data/section_download.publication.glycosylation.json
+  $ http POST :8082/data/section_download < tests/examples/data/section_download.biomarker.biomarker_component.json
+ 
+ 
+
+
 
 

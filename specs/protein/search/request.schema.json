@@ -87,11 +87,27 @@
           "$id": "/properties/query/properties/organism",
           "type": "object",
           "description": "This field is set if a search by organism (e.g. human) is performed. The value can either be a scientific species name (NCBI Taxonomy), a synonym or a NCBI Taxonomy ID.",
-          "default": "Homo sapiens (9606)",
-          "examples": [
-            "Homo sapiens (9606)"
-          ]
-        },
+        	 "properties": {
+            "id": {
+              "$id": "/properties/query/properties/organism/properties/id",
+              "type": "integer",
+              "description": "Taxonomy ID value",
+              "default": 9606,
+              "examples": [
+                9606
+              ]
+            },
+            "name": {
+              "$id": "/properties/query/properties/organism/properties/name",
+              "type": "string",
+              "description": "Taxonomy name",
+              "default": "human",
+              "examples": [
+                "human"
+              ]
+            }
+          }
+		  },
         "protein_name": {
           "$id": "/properties/query/properties/protein_name",
           "type": "string",

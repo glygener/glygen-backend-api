@@ -10,7 +10,7 @@ from bson import json_util, ObjectId
 
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections
+from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections, filter_glyco_obj_list
 
 
 
@@ -28,7 +28,9 @@ def pagination_page(query_obj, config_obj):
 
     main_id_dict = {
         "protein":"uniprot_canonical_ac",
+        "site":"id",
         "glycan":"glytoucan_ac",
+        "motif":"motif_ac",
         "publication":"record_id",
         "biomarker":"biomarker_id"
     }
@@ -66,16 +68,29 @@ def pagination_page(query_obj, config_obj):
      
     table_id = query_obj["table_id"]
     sec = table_id
-    #sec = table_id.split("_")[0] if table_id.find("glycosylation_") != -1 else sec
-    #sec = table_id.split("_")[0] if table_id.find("snv_") != -1 else sec
-    #sec = table_id.split("_")[0] if table_id.find("expression_") != -1 else sec
     section_list = [sec]
+   
+
+    # apply filters for glycosylation tables 
+
+    filters_obj = {}    
+    if record_type in ["protein"] and "filters" in query_obj and table_id.find("glycosylation_") != -1:
+        r = filter_glyco_obj_list(table_id, doc["glycosylation"],query_obj["filters"],config_obj)
+        if "error_list" in r:
+            return r
+        table_obj_list, passed_obj_list, other_table_obj_list, filters_obj = r["a"], r["b"],r["c"],r["d"]
+        doc["filters"] = filters_obj
+        doc["glycosylation"] = passed_obj_list + other_table_obj_list
+        #return {"all":len(table_obj_list), "passed":len(passed_obj_list)}
+
+ 
+
  
     if "_id" in doc:
         doc.pop("_id")
 
     q = {"paginated_tables":[query_obj]}
-    sec_tables = get_paginated_sections(doc, q, section_list)
+    sec_tables = get_paginated_sections(doc, q, section_list, False)
    
     #return sec_tables
 
@@ -88,7 +103,7 @@ def pagination_page(query_obj, config_obj):
     if sec not in sec_tables:
         sec_tables[sec] = []
  
-    res_obj = {"query":query_obj, "results":sec_tables[sec]}    
+    res_obj = {"query":query_obj, "filters":filters_obj, "results":sec_tables[sec]}    
     return res_obj
 
 

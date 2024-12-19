@@ -81,6 +81,9 @@ def get_archived_docs(coll):
         for doc in tmp_list:
             if "_id" in doc:
                 doc.pop("_id")
+            for p in ["start_date", "end_date", "createdts", "updatedts"]:
+                if p in doc:
+                    doc[p] = datetime.datetime.strptime(doc[p].split(".")[0], '%Y-%m-%d %H:%M:%S')
             doc_list.append(doc)
 
     return doc_list

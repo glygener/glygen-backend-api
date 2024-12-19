@@ -15,7 +15,7 @@ from email.mime.text import MIMEText
 
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list,  extract_name, get_errors_in_query, order_obj, load_species_info
+from glygen.util import cache_record_list,  extract_name, get_errors_in_query, order_obj, load_species_info, get_taxid2name
 
 
 def home_init(config_obj, data_path):
@@ -123,6 +123,169 @@ def list_init(config_obj, query_obj):
         return {"error_list":[{"error_code":"uknown-table-id-value"}]}
 
     return res_obj 
+
+
+
+def filter_init(config_obj, query_obj):
+    
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+
+    #Collect errors 
+    error_list = get_errors_in_query("pages_filter_init",query_obj, config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+
+    main_id_dict = {
+        "protein":"uniprot_canonical_ac",
+        "glycan":"glytoucan_ac",
+        "publication":"record_id",
+        "biomarker":"biomarker_id"
+    }
+
+    table_id, record_type, record_id = query_obj["table_id"],query_obj["record_type"], query_obj["record_id"]
+    main_id_field = main_id_dict[record_type]
+    mongo_query = {main_id_field:{"$regex":record_id, "$options":"i"}}
+    #return mongo_query
+
+    collection = "c_" + record_type
+    doc = dbh[collection].find_one(mongo_query)
+    if doc == None:
+        return {"error_list":[{"error_code":"no record found for %s=%s" % (main_id_field, record_id)}]}
+
+    sec_map = {
+        "glycosylation_reported_with_glycan":"glycosylation",
+        "glycosylation_reported":"glycosylation",
+        "glycosylation_predicted":"glycosylation",
+        "glycosylation_automatic_literature_mining":"glycosylation",
+        "snv_disease":"snv",
+        "snv_non_disease":"snv",
+        "expression_tissue":"expression",
+        "expression_cell_line":"expression"
+    }
+  
+    if table_id not in sec_map:
+        return {"error_list":[{"error_code":"no section found for table_id=%s" % (table_id)}]}
+    sec = sec_map[table_id] 
+    res_obj = {}
+
+    if table_id not in config_obj["filter_init"]:
+        return {"error_list":[{"error_code":"no filter_init found for table_id=%s" % (table_id)}]}
+    filter_conf = config_obj["filter_init"][table_id] 
+
+    taxid2name = get_taxid2name(default=True)
+    taxid2name = dict(sorted(taxid2name.items(), key=lambda item: item[1]))
+    sp_dict = {}
+    for tax_id in taxid2name:
+        sp_dict[taxid2name[tax_id]] = tax_id
+
+    code_dict = {}
+    for grp in sorted(filter_conf):
+        code_dict[grp] = []
+        sorted_dict = dict(sorted(filter_conf[grp]["order_dict"].items(), key=lambda item: item[1]))
+        sorted_dict = sp_dict if grp == "by_organism" else sorted_dict
+        for val in sorted_dict:
+            if val != "":
+                code_dict[grp].append({"value":val, "ptrn":"*"})
+
+    #return code_dict
+
+    grp_id_list = sorted(code_dict.keys())
+   
+    filter_code_list = [] 
+    count_dict = {}
+    query_site_cat = table_id.replace("glycosylation_", "")
+    for obj in doc[sec]:
+        #this fill filter out objects that are coming from tables that are not glycosylation
+        #later this should be relaxed to include other tables
+        if "site_category_dict" not in obj:
+            continue
+        if query_site_cat not in obj["site_category_dict"]:
+            continue 
+        if "filter_code" not in obj:
+            continue
+        code_parts = obj["filter_code"].split(".")
+        filter_code_list.append(obj["filter_code"])
+        for grp_idx in range(0, len(grp_id_list)):
+            grp = grp_id_list[grp_idx]
+            filter_code_list.append("%s-%s-%s" % (grp,len(code_dict[grp]), code_parts[grp_idx]))
+            for j in range(0, len(code_parts[grp_idx])):
+                label = code_dict[grp][j]["value"]
+                if code_parts[grp_idx][j] == "1":
+                    if grp not in count_dict:
+                        count_dict[grp] = {}
+                    if label not in count_dict[grp]:
+                        count_dict[grp][label] = 0
+                    count_dict[grp][label] += 1
+    
+    #return filter_code_list
+    #return count_dict
+
+
+    if "by_organism" in filter_conf:
+        label_dict = {}
+        for tax_id in taxid2name:
+            species_name = taxid2name[tax_id]
+            label_dict[species_name] = species_name
+        order_dict = {}
+        ordr = 1
+        for species_name in sorted(label_dict):
+            order_dict[species_name] = ordr
+            ordr += 1
+        filter_conf["by_organism"]["label_dict"] = label_dict
+        filter_conf["by_organism"]["order_dict"] = order_dict
+
+
+    res_obj["available"] = []
+    tmp_seen = {}
+    for grp in filter_conf:
+        group_label = filter_conf[grp]["group_label"]
+        group_ordr = filter_conf[grp]["group_order"]
+        obj = {"id":grp, "label":group_label, "order":group_ordr, "tooltip":"", "tmp_options":{}}
+        for option_id in filter_conf[grp]["order_dict"]:
+            label = option_id
+            option_ordr = filter_conf[grp]["order_dict"][option_id]
+            if grp not in tmp_seen:
+                tmp_seen[grp] = {}
+            tmp_seen[grp][label] = True
+            count = 0
+            if grp in count_dict:
+                if label in count_dict[grp]:
+                    count = count_dict[grp][label]
+            lbl = filter_conf[grp]["label_dict"][option_id] if option_id in filter_conf[grp]["label_dict"] else option_id
+            obj["tmp_options"][option_id] = {"id":option_id, "label":lbl, "count":count,"order":option_ordr}
+        res_obj["available"].append(obj)
+
+    #return res_obj
+
+
+    seen = {}
+    obj_list = []
+    for grp_obj in res_obj["available"]:
+        filter_group_id = grp_obj["id"]
+        grp_obj["options"] = []
+        for option_id in grp_obj["tmp_options"]:
+            obj = grp_obj["tmp_options"][option_id]
+            if obj["count"] == 0:
+                continue
+            grp_obj["options"].append(obj)
+            if filter_group_id not in seen:
+                seen[filter_group_id] = {}
+            if option_id not in seen[filter_group_id]:
+                seen[filter_group_id][option_id] = True
+        grp_obj.pop("tmp_options")
+        if grp_obj["options"] != []:
+            obj_list.append(grp_obj)
+
+    res_obj["available"] = obj_list
+
+
+    return res_obj
+
+
+
 
 
 

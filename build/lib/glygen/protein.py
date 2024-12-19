@@ -11,8 +11,9 @@ import json
 import bcrypt
 
 from glygen.protein_apilib import protein_search_init, protein_search, protein_search_simple, protein_detail, protein_alignment
-from glygen.util import get_cached_records_indirect, get_req_obj, cache_result_list, get_hash_id, get_cached_result_list
+from glygen.util import get_cached_records_indirect, get_req_obj, cache_result_list, get_hash_id, get_cached_result_list, apply_pagination
 import traceback
+
 
 
 
@@ -129,13 +130,18 @@ class Protein(Resource):
             res_obj = log_request(req_obj, "/protein/list/", request)
             if "error_list" not in res_obj:
                 api_name = "protein_list"
-                list_id = get_hash_id(api_name, "", req_obj)
-                res_obj = get_cached_result_list(list_id)
+                cache_id = req_obj["id"] if "id" in req_obj else ""
+                listcache_id = get_hash_id(api_name, "", req_obj)
+                res_obj = get_cached_result_list(cache_id, listcache_id)
                 if res_obj == None:
-                    res_obj = get_cached_records_indirect(req_obj, config_obj)
-                    res = cache_result_list(list_id, res_obj, config_obj)
-                    if "error_list" in res:
-                        res_obj = res
+                    res_obj = get_cached_records_indirect(req_obj, config_obj, False)
+                    if "error_list" not in res_obj:
+                        res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
+                        if "error_list" in res:
+                            res_obj = res
+                if "results" in res_obj:
+                    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
+
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -158,13 +164,15 @@ class Protein(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        json_url = os.path.join(SITE_ROOT, "conf/filter_init.json")
+        config_obj["filter_init"] = json.load(open(json_url))
         res_obj = {}
         try:
             req_obj = {"uniprot_canonical_ac":uniprot_canonical_ac}
             req_obj_extra = get_req_obj(request)
             if req_obj_extra != None:
-                if "paginated_tables" in req_obj_extra:
-                    req_obj["paginated_tables"] = req_obj_extra["paginated_tables"]
+                for k in req_obj_extra:
+                    req_obj[k] = req_obj_extra[k]
             res_obj = log_request(req_obj, "/protein/detail/", request)
             if "error_list" not in res_obj:
                 res_obj = protein_detail(req_obj, config_obj)

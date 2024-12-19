@@ -49,6 +49,8 @@ def list_download(query_obj, config_obj, data_path):
         error_list.append({"error_code":"non-existent-mime-type-for-submitted-format"})
         return {"error_list":error_list}
 
+
+
     format_lc = query_obj["format"].lower()
     download_type_list = [
         "glycan_list", "site_list", "biomarker_list", "motif_list","protein_list", "genelocus_list", "ortholog_list",
@@ -69,6 +71,7 @@ def list_download(query_obj, config_obj, data_path):
             data_buffer = get_tabular_buffer(list_obj, query_obj, config_obj)
         elif format_lc in sequence_format_list:
             data_buffer = get_sequence_buffer_one(dbh, list_obj, query_obj, config_obj)
+
 
     #Now that we have data_buffer, let's worry about compression
     if query_obj["compressed"] == True:
@@ -208,43 +211,46 @@ def section_download(query_obj, config_obj, sec_info, data_path):
 
     data_buffer = ""
     if query_obj["download_type"] in download_type_list:
-        record_obj = get_record_object(dbh, query_obj, config_obj)
-        if record_obj == None:
-            return {"error_list":{"error_code":"non-existent-record"}}
         if "section" not in query_obj:
             return {"error_list":{"error_code":"missing-required-field (section)"}}
-        
         sec = query_obj["section"]
         record_type = query_obj["download_type"].split("_")[0] 
         if record_type not in sec_info:
             return {"error_list":{"error_code":"unknown-record-type"}}
         if sec not in sec_info[record_type]:
             return {"error_list":{"error_code":"unknown-section"}}
-
         if "sectionfield" not in sec_info[record_type][sec]:
             return {"error_list":{"error_code":"unknown-section-field"}}
 
-        sec_field = sec_info[record_type][sec]["sectionfield"]
-        if sec_field not in record_obj:
-            return {"error_list":{"error_code":"missing-section-field"}}
-       
         filter_info = sec_info[record_type][sec]["filterinfo"]
         filter_type = filter_info["filtertype"] if "filtertype" in filter_info else ""
-
         lbl_dict = {}
         for o in sec_info[record_type][sec]["fieldmap"]:
             lbl_dict[o["path"]] = o["label"]
-       
-     
+    
+        #record_obj = get_record_object(dbh, query_obj, config_obj)
+        cache_id, listcache_id = "", query_obj["id"]
+        res = get_cached_result_list(cache_id, listcache_id)
+        if res == None:
+            res = get_results_from_record_id(dbh, query_obj)
+            if "error_list" in res:
+                return res
+        obj_list = res["results"]
+        #return obj_list
+        
+        #record_obj = {} 
+        #if record_obj == None:
+        #    return {"error_list":{"error_code":"non-existent-record"}}
+        #sec_field = sec_info[record_type][sec]["sectionfield"]
+        #if sec_field not in record_obj:
+        #    return {"error_list":{"error_code":"missing-section-field"}}
+        #obj_list = record_obj[sec_field]
+        #if record_type == "biomarker" and query_obj["section"] == "component_glycan":
+        #    obj_list = record_obj[sec_field]["glycan"]
+        #elif record_type == "biomarker" and query_obj["section"] == "component_protein":
+        #    obj_list = record_obj[sec_field]["protein"] 
 
         list_obj = {"results":[]}
-        obj_list = record_obj[sec_field]
-        
-        if record_type == "biomarker" and query_obj["section"] == "component_glycan":
-            obj_list = record_obj[sec_field]["glycan"]
-        elif record_type == "biomarker" and query_obj["section"] == "component_protein":
-            obj_list = record_obj[sec_field]["protein"] 
-
         for obj in obj_list:
             if filter_info["field"] != "":
                 if filter_info["field"] in obj:
@@ -412,13 +418,12 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
 
             new_obj = {}
             for k in obj:
-                if k in ["category", "hit_score"]:
+                if k in ["category", "hit_score", "score_info"]:
                     continue
                 new_obj[legend_dict[k]] = obj[k]
                 if k in ordr_dict:
                     ordr_dict[legend_dict[k]] = ordr_dict[k]
             new_list_obj.append(new_obj)
-                                
         if query_obj["download_type"] == "idmapping_list_all_collapsed":
             collapse_dict = {}
             list_obj["results"] = []
@@ -445,9 +450,27 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
 
 
     results_key = "objlist" if "objlist" in list_obj else "results"
-    
+   
+    col_list = []
+    if "query" in list_obj:
+        if "columns" in list_obj["query"]:
+            col_list = list_obj["query"]["columns"]
+
     if len(list_obj[results_key]) > 0:
-        header_list = order_list(list_obj[results_key][0].keys(), ordr_dict)
+        key_list = order_list(list_obj[results_key][0].keys(), ordr_dict)
+        #Adjust column list if based on col_list
+        k_list_one, k_list_two = [], []
+        for k in col_list:
+            if k in key_list:
+                k_list_one.append(k)
+        for k in key_list:
+            if k not in col_list:
+                k_list_two.append(k)
+        key_list = k_list_one + k_list_two
+        header_list = []
+        for hh in key_list:
+            if hh not in ["hit_score", "score_info"]:
+                header_list.append(hh)
         if "GlyTouCan Accession" in header_list:
             header_list.append("Glycan Image Url")
         if format_lc == "csv":
@@ -455,13 +478,14 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
         else:
             data_buffer = "\"" +  "\"\t\"".join(header_list) + "\"\n"
 
-        key_list = order_list(list_obj[results_key][0].keys(), ordr_dict)
         seen_row = {}
         line_list = []
         for j in range(0, len(list_obj[results_key])):
             obj = list_obj[results_key][j]
             row = []
             for k in key_list:
+                if k in ["hit_score", "score_info"]:
+                    continue
                 val_k = str(obj[k]) if k in obj else ""
                 if query_obj["download_type"] == "ortholog_list" and k == "sequence":
                     val_k = obj[k]["sequence"]
@@ -554,21 +578,27 @@ def get_list_object(query_obj, config_obj):
         list_obj = get_cached_motif_records_direct(list_query, config_obj)
     else:
         list_query = {"id":query_obj["id"], "limit":config_obj["max_download_records"]}
+        cache_id = "xxx"
+        listcache_id = query_obj["id"]
         if "filters" in query_obj:
             list_query["filters"] = query_obj["filters"]
         if query_obj["download_type"] in ["idmapping_list_all", "idmapping_list_all_collapsed",
             "idmapping_list_mapped","idmapping_list_unmapped", "genelocus_list", "ortholog_list"]:
-            list_obj = get_cached_records_direct(list_query, config_obj)
+            if collection == "c_listcache":
+                list_obj = get_cached_result_list(cache_id, listcache_id)
+            else:
+                list_obj = get_cached_records_direct(list_query, config_obj, False)
         else:
             if collection == "c_cache":
-                list_obj = get_cached_records_indirect(list_query, config_obj)
+                list_obj = get_cached_records_indirect(list_query, config_obj, False)
             elif collection == "c_listcache":
-                list_obj = get_cached_result_list(query_obj["id"])
-                
+                list_obj = get_cached_result_list(cache_id, listcache_id)
+
+    if list_obj == None:
+        return {"error_list":[{"error_code":"list object not found"}]}
+
     if "_id" in list_obj:
         list_obj.pop("_id")
-    
-    list_obj["xxxx"] = list_query
     return list_obj
 
 
@@ -653,3 +683,50 @@ def get_sequence_buffer_two(dbh, record_obj, query_obj):
 
     return data_buffer
 
+
+
+def get_results_from_record_id(dbh, query_obj):
+
+
+
+    main_id_dict = {
+        "protein":"uniprot_canonical_ac",
+        "glycan":"glytoucan_ac",
+        "publication":"record_id",
+        "biomarker":"biomarker_id"
+    }
+    table_id, record_id = query_obj["section"], query_obj["id"]
+    record_type = query_obj["download_type"].split("_")[0]
+    if record_type not in main_id_dict:
+        return {"error_list":{"error_code":"non-existent-results (bad record_type)"}}
+    main_id_field = main_id_dict[record_type]
+    mongo_query = {main_id_field:{"$eq":record_id}}
+    #return mongo_query
+    collection = "c_" + record_type
+    doc = dbh[collection].find_one(mongo_query)
+    if doc == None:
+        return {"error_list":[{"error_code":"no record found for %s=%s" % (main_id_field, record_id)}]}
+    
+    obj_list = []
+    sec = table_id.split("_")[0] if table_id.find("referenced_") == -1 else table_id
+    for obj in doc[sec]:
+        if sec == "glycosylation":
+            flag = False
+            for site_cat in obj["site_category_dict"]:
+                if table_id == sec + "_" + site_cat:
+                    flag = True           
+            if flag:
+                obj_list.append(obj)
+        elif sec == "expression" and table_id == sec + "_" + obj["category"]:
+                obj_list.append(obj)
+        elif sec == "snv" and table_id == "snv_disease":
+            if "disease" in obj["keywords"]:
+                obj_list.append(obj)
+        elif sec == "snv" and table_id == "snv_non_disease":
+            if "disease" not in obj["keywords"]:
+                obj_list.append(obj)
+        else:
+            obj_list.append(obj)
+
+
+    return {"results":obj_list}

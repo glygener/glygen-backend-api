@@ -9,7 +9,7 @@ from collections import OrderedDict
 
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, get_paginated_sections, transform_query_term, get_hash_id
+from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, get_paginated_sections, transform_query_term, get_hash_id, filter_glyco_obj_list
 
 
 def protein_search_init(config_obj):
@@ -363,11 +363,22 @@ def protein_detail(query_obj, config_obj):
         "length": obj["sequence"]["length"]
     }
     obj["history"] = history_obj_one["history"] if history_obj_one != None else []
-
-    #for o in obj["gene"]:
-    #    if len(obj["synonyms"]["gene"]["uniprotkb"]) > 1:
-    #        o["name"] += "; " + "; ".join(obj["synonyms"]["gene"]["uniprotkb"][1:]) + ";"
     truncate_go_terms(obj)
+
+
+    return obj["section_stats"]    
+
+
+    # Implementing filtering of glyco objects
+    # this is expected to be done on pagination/page API, and is left here incase
+    # someone sends "filtering" in payload
+    if "filtering" in query_obj:
+        query_filters, table_id = query_obj["filtering"]["filters"], query_obj["filtering"]["table_id"]
+        r = filter_glyco_obj_list(table_id, obj["glycosylation"],query_filters,config_obj)
+        table_obj_list, passed_obj_list, other_table_obj_list, filters_obj = r["a"], r["b"],r["c"],r["d"]
+        obj["filters"] = filters_obj
+        obj["glycosylation"] = passed_obj_list + other_table_obj_list
+        #return {"all":len(table_obj_list), "passed":len(passed_obj_list)}
 
 
     if "paginated_tables" in query_obj:
@@ -375,12 +386,14 @@ def protein_detail(query_obj, config_obj):
         for o in query_obj["paginated_tables"]:
             if o["table_id"] not in table_id_list:
                 table_id_list.append(o["table_id"])
-        sec_tables = get_paginated_sections(obj, query_obj, table_id_list)
+        sec_tables = get_paginated_sections(obj, query_obj, table_id_list, True)
         #return sec_tables
         if "error_list" in sec_tables:
             return sec_tables
         for sec in sec_tables:
             obj[sec] = sec_tables[sec]
+
+
 
 
     clean_obj(obj, config_obj["removelist"]["c_protein"], "c_protein")
@@ -563,7 +576,9 @@ def get_mongo_query(query_obj):
 
     #pathway_id
     if "pathway_id" in query_obj:
-        cond_objs.append({"pathway.id" : {'$regex': query_obj["pathway_id"], '$options': 'i'}})
+        #cond_objs.append({"pathway.id" : {'$regex': query_obj["pathway_id"], '$options': 'i'}})
+        cond_objs.append({"pathway.id" : {'$eq':query_obj["pathway_id"]}})
+
 
     #pmid
     if "pmid" in query_obj:
@@ -618,12 +633,18 @@ def get_mongo_query(query_obj):
     #glycosylation_evidence
     if "glycosylation_evidence" in query_obj:
         if query_obj["glycosylation_evidence"] == "predicted":
-            cond_objs.append({"glycosylation": {'$gt': []}})
-            cond_objs.append({"glycosylation.site_category": {'$ne':"reported"}})
-            cond_objs.append({"glycosylation.site_category": {'$ne':"reported_with_glycan"}})
+            cond_objs.append({"glycosylation.site_category_dict.predicted":{"$eq":True}})
+            #cond_objs.append({"glycosylation": {'$gt': []}})
+            #cond_objs.append({"glycosylation.site_category": {'$ne':"reported"}})
+            #cond_objs.append({"glycosylation.site_category": {'$ne':"reported_with_glycan"}})
         elif query_obj["glycosylation_evidence"] == "reported":
-            cond_objs.append({"glycosylation": {'$gt': []}})
-            cond_objs.append({"glycosylation.site_category":{"$regex":"reported","$options":"i"}})
+            or_list = [
+                {"glycosylation.site_category_dict.reported":{"$eq":True}},
+                {"glycosylation.site_category_dict.reported_with_glycan":{"$eq":True}},
+            ]
+            cond_objs.append({'$or':or_list})
+            #cond_objs.append({"glycosylation": {'$gt': []}})
+            #cond_objs.append({"glycosylation.site_category":{"$regex":"reported","$options":"i"}})
         elif query_obj["glycosylation_evidence"] == "both":
             cond_objs.append({"glycosylation": {'$gt': []}})
 
@@ -767,15 +788,15 @@ def get_protein_list_object(obj):
             #    continue
             site_type = o["type"].lower()
 
-            if o["site_category"] == "predicted":
+            if "predicted" in o["site_category_dict"]:
                 predicted_glycosites += 1
-            elif site_type == "n-linked" and o["site_category"] == "reported":
+            if site_type == "n-linked" and "reported" in o["site_category_dict"]:
                 reported_n_glycosites += 1
-            elif site_type == "o-linked" and o["site_category"] == "reported":
+            if site_type == "o-linked" and "reported" in o["site_category_dict"]: 
                 reported_o_glycosites += 1
-            elif site_type == "n-linked" and o["site_category"] == "reported_with_glycan":
+            if site_type == "n-linked" and "reported_with_glycan" in o["site_category_dict"]:
                 reported_n_glycosites_with_glycan += 1
-            elif site_type == "o-linked" and o["site_category"] == "reported_with_glycan":
+            if site_type == "o-linked" and "reported_with_glycan" in o["site_category_dict"]: 
                 reported_o_glycosites_with_glycan += 1
 
     o = {

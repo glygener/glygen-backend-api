@@ -13,7 +13,7 @@ import bcrypt
 from glygen.glycan_apilib import glycan_search_init, glycan_search, glycan_search_simple, glycan_detail, glycan_image, glycan_image_svg, glycan_image_metadata
 
 
-from glygen.util import get_cached_records_indirect, get_req_obj, get_hash_id, get_cached_result_list, cache_result_list
+from glygen.util import get_cached_records_indirect, get_req_obj, get_hash_id, get_cached_result_list, cache_result_list, apply_pagination
 import traceback
 
 
@@ -124,15 +124,17 @@ class Glycan(Resource):
             res_obj = log_request(req_obj, "/glycan/list/", request)
             if "error_list" not in res_obj:
                 api_name = "glycan_list"
-                list_id = get_hash_id(api_name, "", req_obj)
-                res_obj = get_cached_result_list(list_id)
+                cache_id = req_obj["id"] if "id" in req_obj else ""
+                listcache_id = get_hash_id(api_name, "", req_obj)
+                res_obj = get_cached_result_list(cache_id, listcache_id)
                 if res_obj == None:
-                    res_obj = get_cached_records_indirect(req_obj, config_obj)
-                    res = cache_result_list(list_id, res_obj, config_obj)
-                    if "error_list" in res:
-                        res_obj = res
-
-
+                    res_obj = get_cached_records_indirect(req_obj, config_obj, False)
+                    if "error_list" not in res_obj:
+                        res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
+                        if "error_list" in res:
+                            res_obj = res
+                if "results" in res_obj:
+                    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
