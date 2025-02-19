@@ -10,7 +10,7 @@ import subprocess
 import json
 import bcrypt
 
-from glygen.job_apilib import job_addnew, job_detail, job_update, job_list, job_delete,job_clean, job_results, job_status, job_queue, job_init
+from glygen.job_apilib import job_addnew, job_detail, job_update, job_list, job_delete,job_clean, job_results, job_status, job_queue, job_init, job_status_many
 
 from glygen.util import get_req_obj, validate_uploaded_table
 import traceback
@@ -66,6 +66,13 @@ status_query_model = api.model(
     'Job Status Query',
     { 'jobid': fields.Integer(required=True, default=1)}
 )   
+status_many_query_model = api.model(
+    'Job Status Many Query',
+    {"jobidlist":fields.List(fields.Integer(), required=True, default=[])}
+)
+
+
+
 clean_query_model = api.model('Job Clean Query', {})
 queue_query_model = api.model('Job Queue Query', {})
 init_query_model = api.model('Job Init Query', {})
@@ -309,6 +316,31 @@ class Job(Resource):
     @api.doc(False)
     def get(self):
         return self.post()
+
+@api.route('/status_many/')
+class Job(Resource):
+    @api.expect(status_many_query_model)
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        config_obj["server"] = os.environ["SERVER"]
+        res_obj = {}
+        try:
+            req_obj = get_req_obj(request)
+            res_obj = log_request(req_obj, "/job/status_many/", request)
+            if "error_list" not in res_obj:
+                res_obj = job_status_many(req_obj, config_obj)
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
 
 
 @api.route('/queue/')

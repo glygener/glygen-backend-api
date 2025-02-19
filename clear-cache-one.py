@@ -54,7 +54,9 @@ def main():
         )
         client.server_info()
         dbh = client[db_name]
-        res = dbh[coll].delete_one({"list_id":list_id})
+        res = dbh[coll].delete_many({"list_id":list_id})
+        for doc in dbh[coll].find({"list_id":list_id}):
+            print (doc["list_id"])
 
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)

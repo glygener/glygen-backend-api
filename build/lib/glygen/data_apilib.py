@@ -231,8 +231,10 @@ def section_download(query_obj, config_obj, sec_info, data_path):
         #record_obj = get_record_object(dbh, query_obj, config_obj)
         cache_id, listcache_id = "", query_obj["id"]
         res = get_cached_result_list(cache_id, listcache_id)
+         
         if res == None:
-            res = get_results_from_record_id(dbh, query_obj)
+            section_field = sec_info[record_type][sec]["sectionfield"]
+            res = get_results_from_record_id(dbh, query_obj, section_field)
             if "error_list" in res:
                 return res
         obj_list = res["results"]
@@ -469,7 +471,7 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
         key_list = k_list_one + k_list_two
         header_list = []
         for hh in key_list:
-            if hh not in ["hit_score", "score_info"]:
+            if hh not in ["hit_score", "score_info", "filter_code"]:
                 header_list.append(hh)
         if "GlyTouCan Accession" in header_list:
             header_list.append("Glycan Image Url")
@@ -484,7 +486,7 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
             obj = list_obj[results_key][j]
             row = []
             for k in key_list:
-                if k in ["hit_score", "score_info"]:
+                if k in ["hit_score", "score_info", "filter_code"]:
                     continue
                 val_k = str(obj[k]) if k in obj else ""
                 if query_obj["download_type"] == "ortholog_list" and k == "sequence":
@@ -685,17 +687,20 @@ def get_sequence_buffer_two(dbh, record_obj, query_obj):
 
 
 
-def get_results_from_record_id(dbh, query_obj):
-
+def get_results_from_record_id(dbh, query_obj, section_field):
 
 
     main_id_dict = {
         "protein":"uniprot_canonical_ac",
         "glycan":"glytoucan_ac",
         "publication":"record_id",
-        "biomarker":"biomarker_id"
+        "biomarker":"biomarker_id",
+        "motif":"motif_ac"
     }
     table_id, record_id = query_obj["section"], query_obj["id"]
+    if table_id == "glycosylation_reported_with_glycans":
+        table_id = "glycosylation_reported_with_glycan"
+
     record_type = query_obj["download_type"].split("_")[0]
     if record_type not in main_id_dict:
         return {"error_list":{"error_code":"non-existent-results (bad record_type)"}}
@@ -706,9 +711,20 @@ def get_results_from_record_id(dbh, query_obj):
     doc = dbh[collection].find_one(mongo_query)
     if doc == None:
         return {"error_list":[{"error_code":"no record found for %s=%s" % (main_id_field, record_id)}]}
-    
+   
     obj_list = []
-    sec = table_id.split("_")[0] if table_id.find("referenced_") == -1 else table_id
+    sec = section_field
+    #sec = table_id
+    #table_id_parts = table_id.split("_")
+    #for k in ["glycosylation_", "snv_"]:
+    #    if table_id.find(k) != -1:
+    #        sec = table_id_parts[0]
+    #if record_type in ["glycan"]:
+    #    for k in ["expression_"]:
+    #        if table_id.find(k) != -1:
+    #            sec = table_id_parts[0]
+
+
     for obj in doc[sec]:
         if sec == "glycosylation":
             flag = False

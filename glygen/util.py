@@ -237,6 +237,8 @@ def get_hit_score(doc, cache_info, score_dict, selected_p_list, score_info):
        
         cond_group, cond = "misc", "glycan_definition_score"
         p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
+        #return 0, {"plist":p_list, "selected_p_list":selected_p_list}
+
         for p in p_list:
             if p not in selected_p_list:
                 continue
@@ -250,7 +252,7 @@ def get_hit_score(doc, cache_info, score_dict, selected_p_list, score_info):
             for p in p_list:
                 if p not in selected_p_list:
                     continue
-                n = len(doc["publication"]) if p == "publication" else doc[p]
+                n = doc[p]
                 if n > 0:
                     cond_match_freq[cond] = n
     
@@ -362,7 +364,7 @@ def get_hit_score(doc, cache_info, score_dict, selected_p_list, score_info):
             o = {"c":cond, "w":weight, "f":float(freq)}
             score_info["contributions"].append(o)
 
-    return round(float(score), 2)
+    return round(float(score), 2), cond_match_freq
 
 
 
@@ -643,8 +645,10 @@ def get_cached_records_direct(query_obj, config_obj, limit_flag):
 
     cached_obj["results"] = [] 
     id_list = []
+    x = 0
     for doc in dbh[cache_collection].find(mongo_query):
         for obj in doc["results"]:
+            x += 1
             if "hit_score" not in obj:
                 obj["hit_score"] = -1
             if "category" in query_obj:
@@ -660,6 +664,7 @@ def get_cached_records_direct(query_obj, config_obj, limit_flag):
         "offset":query_obj["offset"], 
         "limit":query_obj["limit"],
         "total_length":len(cached_obj["results"]), 
+        "x":x,
         "sort":query_obj["sort"], 
         "order":query_obj["order"]
     }
@@ -888,6 +893,15 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
         else:
             final_fields +=  sorted(set(f_dict[record_type]["required"] + query_fields))
     
+    for cat in score_dict[record_type]:
+        for f in score_dict[record_type][cat]:
+            if "fieldlist" not in score_dict[record_type][cat][f]:
+                continue
+            ll = score_dict[record_type][cat][f]["fieldlist"]
+            for ff in score_dict[record_type][cat][f]["fieldlist"]:
+                if ff not in final_fields:
+                    final_fields.append(ff)
+
     
     prj_obj = {}
     for f in final_fields:
@@ -902,6 +916,7 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
     nparts = int(float(record_count)/float(batch_size)) + 1
     ts_list.append("2-record_count=%s,batch_size=%s,nparts=%s" % (record_count, batch_size, nparts))
     ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    debug_obj_list = []
     for i in range(0, nparts):
         start = i*batch_size
         end = (i+1)*batch_size
@@ -914,12 +929,14 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
             score_info = {"contributions":[], "formula":"sum(w + 0.01*f)", "variables":var_dict}
             hit_score = -1.0
             if is_empty_query == False:
-                hit_score = get_hit_score(obj, cached_obj["cache_info"], score_dict, final_fields, score_info)
+                hit_score, cond_match_freq = get_hit_score(obj, cached_obj["cache_info"], score_dict, final_fields, score_info)
+                debug_obj_list.append(cond_match_freq)
             obj["hit_score"] = hit_score
             obj["score_info"] = score_info
             cached_obj["results"].append(obj)
     ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-    
+    #return {"error_list":debug_obj_list}
+
 
     filter_conf = get_filter_conf() 
     query_filters = query_obj["filters"] if "filters" in query_obj else []
@@ -938,8 +955,8 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
     update_res = update_filters(record_type, cached_obj["results"], cached_obj["filters"], 1, code_dict, filter_conf)
     if "error_list" in update_res:
         return update_res
-    #return {"error_list":update_res}
-
+    #return {"error_list":filter_conf}
+    #return {"error_list":code_dict, "av":cached_obj["filters"]["available"], "conf":filter_conf[record_type]}
 
     ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     for obj in cached_obj["filters"]["available"]:
@@ -1147,7 +1164,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
     for record_obj in obj_list:
         seen_filter_code[record_obj["filter_code"].replace(".", "_")] = True
         record_code_parts = record_obj["filter_code"].split(".")
-        debug_list.append(record_code_parts)
+        #debug_list.append(record_code_parts)
         n_12 = len(record_code_parts)
         if n_11 != n_12:
             return {"error_list":[{"error_code": "filter_grp_count mismatch %s!=%s" % (n_11, n_12)}]}
@@ -1155,6 +1172,8 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
             grp = grp_id_list[grp_idx]
             n_21 = len(code_dict[grp])
             n_22 = len(record_code_parts[grp_idx])
+            if grp == "by_sequence_details":
+                debug_list.append([code_dict[grp], record_code_parts[grp_idx]])
             if n_21 != n_22:
                 return {"error_list":[{"error_code": "filter_value_count mismatch %s!=%s"%(n_21,n_22)}]}
             for j in range(0, n_22):
@@ -1163,7 +1182,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
                 #label = grp + " | " + str(j) 
                 if record_code_parts[grp_idx][j] == "1":
                     s = "%s|%s|%s|%s" % (grp,record_code_parts[grp_idx], label, j)
-                    debug_list.append(s)
+                    #debug_list.append(s)
                     if grp not in count_dict:
                         count_dict[grp] = {}
                     if label not in count_dict[grp]:
@@ -1179,6 +1198,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
         group_ordr = filter_conf[record_type][grp]["group_order"]
         obj = {"id":grp, "label":group_label, "order":group_ordr, "tooltip":"", "tmp_options":{}}
         for option_id in filter_conf[record_type][grp]["order_dict"]:
+            #debug_list.append(grp + "|" + option_id + "|" + str(grp in count_dict))
             label = option_id
             option_ordr = filter_conf[record_type][grp]["order_dict"][option_id]
             if grp not in tmp_seen:
@@ -1193,6 +1213,9 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
             obj["tmp_options"][option_id] = {"id":option_id, "label":label, "count":count,"order":option_ordr}
         filters["available"].append(obj)
         #xxxxx
+
+    #return {"error_list":debug_list}
+
 
     seen = {}
     non_empty_grp_obj_list = []
@@ -1524,6 +1547,10 @@ def get_partition_ranges(n, batch_size):
 
 def cache_result_list(cache_id, listcache_id, res_obj, config_obj):
 
+
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
+
     batch_size = 1000
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -1546,12 +1573,12 @@ def cache_result_list(cache_id, listcache_id, res_obj, config_obj):
                 s, e = o["s"], o["e"]
                 tmp_glbl_obj = glbl_obj if s == 0 else {}
                 tmp_obj_list = res_obj["results"][s:e] 
-                oo = {"list_id":listcache_id, "results":tmp_obj_list,"glbl":tmp_glbl_obj, "start":s}
+                oo = {"list_id":listcache_id, "ts":ts, "results":tmp_obj_list,"glbl":tmp_glbl_obj, "start":s}
                 oo_list.append(len(json.dumps(oo)))
                 res = dbh[cache_coll].insert_one(oo)
             #return oo_list 
         else:
-            oo = {"list_id":listcache_id, "results":res_obj["results"], "glbl":glbl_obj, "start":0}
+            oo = {"list_id":listcache_id, "ts":ts, "results":res_obj["results"], "glbl":glbl_obj, "start":0}
             res = dbh[cache_coll].insert_one(oo)
     
     return {}

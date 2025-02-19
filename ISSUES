@@ -1,0 +1,18 @@
+0|Limited version history view on data.glygen.org bug #2039
+0|Select version transition dropdown does not display anything in data.glygen.org  #2037
+0|Duplicate Entries in data.glygen.org bug #2035
+
+1|Bovine missing following all proteins search bug #2022
+0|I do not see Bovine in the Super Search bug #2021
+
+0|Pathway ID should only return exact matches bug #2020
+0|GTC accessions within list page with no mention in subsumption. bug #2019
+0|GO name and ID protein search returns incorrect results bug #2018
+0|Simple protein pathway search returns incorrect entries bug #2015
+
+0|section stats data structure changed on tst needs to be restored. backend_api bug priority #2002
+0|"Fully Defined" Filter not Found in glycan "By Sequence Details" Section of List Page bug #2028
+0|Organism protein search is missing proteins bug #2025
+
+
+

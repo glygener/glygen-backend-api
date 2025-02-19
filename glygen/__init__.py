@@ -18,6 +18,7 @@ from .pages import api as pages_api
 from .seqmapping import api as seqmapping_api
 from .motif import api as motif_api
 from .publication import api as publication_api
+from .cart import api as cart_api
 from .site import api as site_api
 from .idmapping import api as idmapping_api
 from .typeahead import api as typeahead_api
@@ -65,7 +66,7 @@ def create_app():
     api.add_namespace(video_api)
     api.add_namespace(event_api)
     api.add_namespace(job_api)
-     
+    api.add_namespace(cart_api) 
     api.add_namespace(misc_api)
     #api.add_namespace(graph_api)
     api.add_namespace(biomarker_api)
@@ -92,8 +93,10 @@ def create_app():
     #app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
     app.config['JSON_SORT_KEYS'] = False
 
-    app.config['NETWORK_DOCLIST'] = load_network_docs()
     
+    app.config['NETWORK_DOCLIST'] = load_network_docs()
+    #app.config['NETWORK_DOCLIST'] = {}
+ 
     jwt = JWTManager(app)
 
 

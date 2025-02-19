@@ -17,6 +17,8 @@ import traceback
 
 
 
+
+
 api = Namespace("protein", description="Protein APIs")
 
 search_init_query_model = api.model("Protein Search Init Query", {})

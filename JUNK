@@ -1,9 +1,0 @@
-,"isoform_mapper_list":{"cache":"c_listcache", "formatlist":["csv","tsv"]}
-            ,"motif_list":{"cache":"c_motif", "formatlist":["csv","json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic"]}
-            ,"genelocus_list":{"cache":"c_cache", "formatlist":["csv","json","fasta"]}
-            ,"ortholog_list":{"cache":"c_cache", "formatlist":["csv","json","fasta"]}
-            ,"idmapping_list_mapped":{"cache":"c_cache", "formatlist":["csv"]}
-            ,"idmapping_list_unmapped":{"cache":"c_cache", "formatlist":["csv"]}
-            ,"idmapping_list_all":{"cache":"c_cache", "formatlist":["csv"]}
-            ,"idmapping_list_all_collapsed":{"cache":"c_cache", "formatlist":["csv"]}
-

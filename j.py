@@ -1,59 +1,36 @@
 import os,sys
 import string
-from optparse import OptionParser
 import glob
 import json
-from bson import json_util
-import pymongo
-from pymongo import MongoClient
-import datetime
-
-
-__version__="1.0"
-__status__ = "Dev"
+import subprocess
 
 
 
 ###############################
 def main():
 
-    server = "tst"
-    coll = "c_protein"
+    doc = json.load(open("junk"))
+    for obj in doc:
+        print (obj["id"])
+    exit()
 
-    db_name = "glydb_beta" if server == "beta" else "glydb"
+    file_list = glob.glob("glygen/*.py")
+    for in_file in file_list:
+        file_name = in_file.split("/")[-1]
+        sbr = ""
+        with open(in_file, "r") as FR:
+            for line in FR:
+                if line[0:4] == "def ":
+                    sbr = line.split("(")[0].split(" ")[1]
+                if line.find("get_mongodb") != -1:
+                    print (file_name, sbr)    
+    exit()
 
-    config_obj = json.loads(open("./conf/config.json", "r").read())
-    #mongo_port = config_obj["dbinfo"]["port"][server]
-    mongo_port = "27017"
-    host = "mongodb://127.0.0.1:%s" % (mongo_port)
-  
-    db_obj = config_obj["dbinfo"][db_name]
-    glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
 
-    try:
-        client = pymongo.MongoClient(host,
-            username=db_user,
-            password=db_pass,
-            authSource=glydb_name,
-            authMechanism='SCRAM-SHA-1',
-            serverSelectionTimeoutMS=10000
-        )
-        client.server_info()
-        dbh = client[glydb_name]
-        #q = {"glycosylation.site_category":{"$eq":"predicted"}}
-        q = {"glycosylation.site_category_dict.predicted":{"$eq":True}}
-        #doc_list = list(dbh[coll].find(q))
-        for doc in dbh[coll].find(q):
-            canon = doc["uniprot_canonical_ac"]
-            for obj in doc["glycosylation"]:
-                if obj["site_category"] == "predicted":
-                    print ("A", canon)
-
-    except pymongo.errors.ServerSelectionTimeoutError as err:
-        print (err)
-    except pymongo.errors.OperationFailure as err:
-        print (err)
-
+    cmd = "http POST :8082/protein/detail/P14210-1/"
+    for i in range(0, 10):
+        x = subprocess.getoutput(cmd)
+        print (i)
 
 
 if __name__ == '__main__':
