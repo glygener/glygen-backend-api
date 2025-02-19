@@ -53,7 +53,7 @@ def main():
         dbh = client[db_name]
         q = {}
         seen = {}
-        for doc in dbh[coll].find(q):
+        for doc in dbh[coll].find(q, {"list_id":1, "ts":1, "cache_info":1}):
             #list_id = doc["list_id"]
             #doc = doc["res"] if coll in ["c_listcache"] else doc
             k_one = "cache_info"
@@ -63,9 +63,9 @@ def main():
                     if k in doc[k_one]:
                         tmp_dict[k] = doc[k_one][k]
                 #print(doc[k_one])
-            print (tmp_dict["ts"])
-            print (list(doc.keys()))
-            exit()
+            ts = doc["ts"] if coll == "c_listcache" else  doc["cache_info"]["ts"]
+            cache_id = doc["list_id"]
+            print (ts, cache_id)
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:
