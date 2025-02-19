@@ -366,9 +366,6 @@ def protein_detail(query_obj, config_obj):
     truncate_go_terms(obj)
 
 
-    return obj["section_stats"]    
-
-
     # Implementing filtering of glyco objects
     # this is expected to be done on pagination/page API, and is left here incase
     # someone sends "filtering" in payload
