@@ -366,7 +366,7 @@ def protein_detail(query_obj, config_obj):
     truncate_go_terms(obj)
 
 
-    return obj["section_stats"]    
+    #return obj["section_stats"]    
 
 
     # Implementing filtering of glyco objects

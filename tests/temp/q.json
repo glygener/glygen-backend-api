@@ -1,5 +1,22 @@
 {
-	"organism":"human"
+  "concept_query_list": [
+    {
+      "concept": "species",
+      "query": {
+        "aggregator": "$and",
+        "aggregated_list": [],
+        "unaggregated_list": [
+          {
+            "path": "name",
+            "order": 0,
+            "operator": "$eq",
+            "string_value": "Bovine"
+          }
+        ]
+      }
+    }
+  ]
 }
+
 
 

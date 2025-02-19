@@ -157,6 +157,102 @@ def auth_contact(query_obj, config_obj):
 
 
 
+
+def auth_notify(query_obj, config_obj):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+
+    #Collect errors 
+    error_list = get_errors_in_query("auth_notify",query_obj, config_obj)
+    if error_list != []: 
+        return {"error_list":error_list}
+    
+
+    collection = "c_message"
+    sender = config_obj[config_obj["server"]]["notifyemailreceivers"][0]
+    receivers = [config_obj[config_obj["server"]]["notifyemailreceivers"]]
+    query_obj["page"] = query_obj["page"] if "page" in query_obj else ""
+
+    msg_text = "\n\n%s,\n"  % (query_obj["user"])
+    msg_text += "We have received your message and will make every effort "
+    msg_text += "to respond to you within a reasonable amount of time.\n\n"
+    param_dict = {
+        "user":"User", "subject":"Subject", 
+        "page":"Page", "message":"Message"
+    }
+    param_list = ["user",  "subject", "page", "message"]
+    for param in param_list:
+        if param in query_obj:
+            if query_obj[param].strip() != "":
+                msg_text += "%s: %s\n" % (param_dict[param], query_obj[param].strip())
+    
+
+    page_url = query_obj["page"] if "page" in query_obj else ""
+
+    res_json = {
+        "type":"alert-success",
+        "message":msg_text
+    }
+
+    msg = MIMEText(msg_text)
+    msg['Subject'] = query_obj["subject"]
+    msg['From'] = sender
+    msg['To'] = receivers[0]
+    store_json = {
+        "user":query_obj["user"],
+        "email":sender,
+        "subject":query_obj["subject"], 
+        "message":query_obj["message"], 
+        "page":page_url,
+        "agent":"",
+        "comment":"",
+        "creation_time":"",
+        "update_time":"",
+        "status":"new",
+        "visibility":"visible"
+    }
+    
+    github_endpoint = "https://api.github.com/repos/glygener/glygen-issues/issues"
+    #github_token = os.environ['GITHUB_TOKEN']
+    #github_assignee = os.environ['GITHUB_ASSIGNEE'] 
+    github_token = current_app.config["GITHUB_TOKEN"]
+    github_assignee = current_app.config["GITHUB_ASSIGNEE_NOTIFY"]
+
+    issue_obj = {
+        "title":query_obj["subject"],
+        "body":msg_text,
+        "assignees":[github_assignee],
+        "labels":["frontend_user_issue"]
+    } 
+    try:
+        if config_obj["server"] != "dev":
+            s = smtplib.SMTP('localhost')
+            s.sendmail(sender, receivers, msg.as_string())
+            s.quit()
+        res = create_github_issue(github_endpoint, github_token, issue_obj)
+        if "error_list" in res:
+            return res
+        store_json["github"] = res
+        store_json["message_status"] = "success"
+    except Exception as e:
+        res_json = {"error_list":[{"error_code":str(e)}]}
+        store_json["message_status"] = "failed"
+
+    store_json["creation_time"] = datetime.datetime.now()
+    store_json["update_time"] = store_json["creation_time"] 
+    result = dbh[collection].insert_one(store_json)
+    
+    return res_json
+
+
+
+
+
+
+
 def create_github_issue(url, github_token, issue_obj):
 
     headers = {

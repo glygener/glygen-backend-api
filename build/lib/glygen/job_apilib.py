@@ -86,16 +86,20 @@ def job_addnew(query_obj, config_obj, data_path, server):
     #if "intable" in query_obj:
     #    query_obj.pop("intable")
 
+    rel_parts_one = int(init_obj["dataversion"].split(".")[0])
+    rel_parts_two = int(init_obj["dataversion"].split(".")[1])
+    job_id_offset = (rel_parts_one*10 + rel_parts_two) * 100000
+    #return {"rel":init_obj["dataversion"]}
     #return query_obj
     #return validation_obj
 
     res_obj = {}
     try:
-        query_obj["jobid"] = 1
+        query_obj["jobid"] = job_id_offset + 1
         if dbh["c_job"].find_one({"jobid":1}) != None:
             agg_obj = {"$group":{"_id":"","max_id":{"$max":"$jobid"}}}
             res = list(dbh["c_job"].aggregate([agg_obj]))
-            query_obj["jobid"] = res[0]["max_id"] + 1
+            query_obj["jobid"] = job_id_offset + res[0]["max_id"] + 1
 
         q_obj = {}
         for p in query_obj:
@@ -320,6 +324,13 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
     if error_obj != {}:
         return error_obj
 
+
+    qry_obj = {}
+    prj_obj = {"glytoucan_ac":1}
+    in_glygen = {}
+    for doc in dbh["c_glycan"].find(qry_obj, prj_obj):
+        in_glygen[doc["glytoucan_ac"]] = True
+ 
     res_obj = {"list_id":""} 
     row_list = []
     if os.path.isfile(out_file) == True:
@@ -335,7 +346,9 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
     record_list = []
     for row in row_list:
         #if row[1] == True:
-        record_list.append(row[0])
+        if row[0] in in_glygen:
+            record_list.append(row[0])
+
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
@@ -349,6 +362,7 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
             "query":job_info,
             "ts":ts,
             "record_type":record_type,
+            "record_count":len(record_list),
             "search_type":job_info["jobtype"]
         }
         cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
@@ -535,9 +549,7 @@ def job_status(query_obj, config_obj):
     if error_obj != {}:
         return error_obj
 
-
     res_obj = {}
- 
     try:
         q_obj = {"jobid":query_obj["jobid"]}
         job_doc = dbh["c_job"].find_one(q_obj)
@@ -567,7 +579,7 @@ def job_status(query_obj, config_obj):
                     if os.path.isfile(out_file) == False:
                         err = "invalid-file jobid=%s, filename=%s" % (job_doc["jobid"],f_obj["name"])
                         return {"error_list":[{"error_code":err}]}
-                    res_obj["result_count"] = get_result_count(job_doc["jobtype"], out_file)
+                    res_obj["result_count"] = get_result_count(dbh, job_doc["jobtype"], out_file)
                 idx += 1
     except Exception as e:
         res_obj = {"error_list":[{"error_code":str(e)}]}
@@ -575,15 +587,79 @@ def job_status(query_obj, config_obj):
     return res_obj
   
 
+def job_status_many(query_obj, config_obj):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    res_obj = {"status_obj_list":[]}
+    try:
+        for job_id in query_obj["jobidlist"]:
+            q_obj = {"jobid":job_id}
+            job_doc = dbh["c_job"].find_one(q_obj)
+            
+            tmp_res_obj = {}
+            if job_doc == None:
+                tmp_res_obj["jobid"] = job_id
+                tmp_res_obj["error_list"] = [{"error_code":"job-record-not-found for job_id=%s" % (job_id)}]
+                #return {"error_list":[{"error_code":"job-record-not-found for job_id=%s" % (job_id)}]}
+            else:
+                #update job status
+                status_obj = update_job_status(dbh, job_doc, config_obj)
+                if "error_list" in status_obj:
+                    tmp_res_obj["jobid"] = job_id
+                    tmp_res_obj["error_list"] = status_obj["error_list"]
+                elif status_obj["status"] == "finished":
+                    tmp_res_obj = status_obj
+                    tmp_res_obj["jobid"] = job_id
+                    tmp_res_obj["output_files"] = []
+                    idx = 0
+                    for f_obj in config_obj["jobinfo"][job_doc["jobtype"]]["output_files"]:
+                        url = "https://data.glygen.org"
+                        if config_obj["server"] in ["dev", "tst"]:
+                            url = "https://data.%s.glygen.org" % (config_obj["server"])
+                        elif config_obj["server"] in ["beta"]:
+                            url = "https://beta-data.glygen.org"
+                        url += "/ln2data/userdata/%s/jobs/%s/%s" % (config_obj["server"], job_doc["jobid"], f_obj["name"])
+                        o = {"format":f_obj["format"], "url":url}
+                        tmp_res_obj["output_files"].append(o)
+                        if idx == 0:
+                            in_dir = config_obj[config_obj["server"]]["pathinfo"]["userdata"]
+                            in_dir += str(job_doc["jobid"])
+                            out_file = in_dir + "/" + f_obj["name"]
+                            if os.path.isfile(out_file) == False:
+                                err = "invalid-file jobid=%s, filename=%s" % (job_doc["jobid"],f_obj["name"])
+                                tmp_res_obj["error_list"] = [{"error_code":err}]
+                            else:
+                                tmp_res_obj["result_count"] = get_result_count(dbh, job_doc["jobtype"], out_file)
+                        idx += 1
+            res_obj["status_obj_list"].append(tmp_res_obj)
+    except Exception as e:
+        res_obj = {"error_list":[{"error_code":str(e)}]}
+
+    return res_obj
 
 
-def get_result_count(job_type, out_file):
+
+
+
+def get_result_count(dbh, job_type, out_file):
 
     n = 0
     if job_type in ["structure_search"]:
         doc = json.loads(open(out_file, "r").read())
         if "result" in doc:
-            n = len(doc["result"])
+            dbh, error_obj = get_mongodb()
+            if error_obj != {}:
+                return error_obj
+            qry_obj = {}
+            prj_obj = {"glytoucan_ac":1}
+            in_glygen = {}
+            for obj in dbh["c_glycan"].find(qry_obj, prj_obj):
+                in_glygen[obj["glytoucan_ac"]] = True
+            for row in doc["result"]:
+                n += 1 if row[0] in in_glygen else 0
     elif job_type == "blastp":
         cmd = "grep \"Score =\" %s | wc" % (out_file)
         n = int(subprocess.getoutput(cmd).strip().split(" ")[0])
@@ -883,12 +959,13 @@ def update_job_status(dbh, job_doc, config_obj):
             in_dir = config_obj[config_obj["server"]]["pathinfo"]["userdata"]
             in_dir += str(job_doc["jobid"])
             out_file = in_dir + "/" + f_obj["name"]
-            job_doc["status"]["result_count"] = get_result_count(job_doc["jobtype"], out_file)
+            job_doc["status"]["result_count"] = get_result_count(dbh, job_doc["jobtype"], out_file)
             return job_doc["status"]
 
     res_obj = {}
     try:
         res_obj = get_job_status(job_doc["tsid"], config_obj)
+        res_obj["jobid"] = job_doc["jobid"]
         q_obj = {"jobid":job_doc["jobid"]}
         update_obj = {"status":res_obj}
         res = dbh["c_job"].update_one(q_obj, {'$set':update_obj}, upsert=True)

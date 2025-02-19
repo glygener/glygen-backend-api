@@ -28,6 +28,7 @@
     $ http POST :8082/auth/login/ < tests/examples/auth/auth_login.json
     $ http POST :8082/auth/userid/ < tests/examples/auth/auth_userid.json
     $ http POST :8082/auth/contact/ < tests/examples/auth/auth_contact.json
+	 $ http POST :8082/auth/notify/ < tests/examples/auth/auth_notify.json
     $ http POST :8082/auth/contactlist/ < tests/examples/auth/auth_contactlist.json
     $ http POST :8082/auth/contactupdate/ < tests/examples/auth/auth_contactupdate.json
     $ http POST :8082/auth/contactdelete/ < tests/examples/auth/auth_contactdelete.json
@@ -126,6 +127,7 @@
   $ http POST :8082/job/delete/ < tests/examples/job/job_delete.json
   $ http POST :8082/job/results/ < tests/examples/job/job_results.json
   $ http POST :8082/job/status/ < tests/examples/job/job_status.json
+  $ http POST :8082/job/status_many/ < tests/examples/job/job_status_many.json
   $ http POST :8082/job/queue/ < tests/examples/job/job_queue.json
 
 
@@ -160,4 +162,7 @@
 
 
 
+
+
+	$ http POST :8082/cart/list/ < tests/examples/cart/list.json
 

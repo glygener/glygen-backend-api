@@ -7,6 +7,8 @@ glygen/auth.py
 glygen/auth_apilib.py
 glygen/biomarker.py
 glygen/biomarker_apilib.py
+glygen/cart.py
+glygen/cart_apilib.py
 glygen/data.py
 glygen/data_apilib.py
 glygen/db.py

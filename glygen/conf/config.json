@@ -123,8 +123,8 @@
                 "motif_ac":1
             }
 	    ,"c_publication":{
-		"record_id":1
-	    }
+				"record_id":1
+	    	}
         }
         ,"projectedfields":{
             "c_glycan":{
@@ -406,6 +406,15 @@
             }
             ,"requiredfields":["id", "type"]
             ,"collectionlist":["c_publication"]
+      
+	}
+	,"cart_list":{
+            "field_info":{
+                "id":{"type":"string", "maxlen":200},
+                "type":{"type":"string", "maxlen":20}
+            }
+            ,"requiredfields":["id", "type"]
+            ,"collectionlist":["c_cache"]
         }
         ,"biomarker_detail":{
             "field_info":{
@@ -796,7 +805,17 @@
             ,"requiredfields":["fname", "lname", "email", "subject", "message"]
             ,"collectionlist":["c_message"]
         }
-        ,"auth_contactupdate":{
+        ,"auth_notify":{
+            "field_info":{
+                "user":{"type":"string"}
+                ,"subject":{"type":"string"}
+                ,"page":{"type":"string"}
+                ,"message":{"type":"string"}
+            }
+            ,"requiredfields":["user", "subject", "message"]
+            ,"collectionlist":["c_message"]
+        }
+		  ,"auth_contactupdate":{
             "field_info":{
                 "id":{"type":"string"}
                 ,"comment":{"type":"string"}
@@ -1235,6 +1254,7 @@
                         }
                 }
                 ,"contactemailreceivers":["rykahsay@gwu.edu"]
+					 ,"notifyemailreceivers":["rykahsay@gwu.edu"]
 		,"rootinfo":{
 			"baseurl":"/datasetviewer"
                 	,"ghtmlroot":"/datasetviewer"
@@ -1275,8 +1295,9 @@
                             ,"alignment":"c_alignment"
                         }
                 }
-                ,"contactemailreceivers":[ "myGlyGen@gmail.com", "rykahsay@gwu.edu", "tvwillia@gmail.com"]
-                ,"rootinfo":{
+                ,"contactemailreceivers":[ "myGlyGen@gmail.com", "rykahsay@gwu.edu"]
+                ,"notifyemailreceivers":["rykahsay@gwu.edu"]
+					 ,"rootinfo":{
                         "baseurl":"/datasetviewer"
                         ,"ghtmlroot":"/datasetviewer"
                         ,"htmlroot":"/datasetviewer"
@@ -1315,6 +1336,7 @@
                             ,"alignment":"c_alignment"
                         }
                 }
+					,"notifyemailreceivers":["rykahsay@gwu.edu"]
                 ,"contactemailreceivers":[ "myGlyGen@gmail.com", "mazumder@gwu.edu", "will@ccrc.uga.edu", "rene@ccrc.uga.edu", "jeetvora@gwu.edu", "rykahsay@gwu.edu", "tvwillia@gmail.com", "karinamartinez@gwu.edu", "mtiemeyer@ccrc.uga.edu","tylerjstewart@email.gwu.edu"]
                 ,"rootinfo":{
                         "baseurl":"/datasetviewer"
@@ -1355,7 +1377,8 @@
                             ,"alignment":"c_alignment"
                         }
                 }
-                ,"contactemailreceivers":[ "myGlyGen@gmail.com", "mazumder@gwu.edu", "will@ccrc.uga.edu", "rene@ccrc.uga.edu", "jeetvora@gwu.edu", "rykahsay@gwu.edu", "tvwillia@gmail.com", "karinamartinez@gwu.edu", "mtiemeyer@ccrc.uga.edu","tylerjstewart@email.gwu.edu"]
+               ,"notifyemailreceivers":["rykahsay@gwu.edu"] 
+ 					,"contactemailreceivers":[ "myGlyGen@gmail.com", "mazumder@gwu.edu", "will@ccrc.uga.edu", "rene@ccrc.uga.edu", "jeetvora@gwu.edu", "rykahsay@gwu.edu", "tvwillia@gmail.com", "karinamartinez@gwu.edu", "mtiemeyer@ccrc.uga.edu","tylerjstewart@email.gwu.edu"]
                 ,"rootinfo":{
                         "baseurl":"/datasetviewer"
                         ,"ghtmlroot":"/datasetviewer"
@@ -1394,6 +1417,7 @@
                             ,"alignment":"c_alignment"
                         }
                 }
+					 ,"notifyemailreceivers":["rykahsay@gwu.edu"]
                 ,"contactemailreceivers":[ "myGlyGen@gmail.com", "mazumder@gwu.edu", "will@ccrc.uga.edu", "rene@ccrc.uga.edu", "jeetvora@gwu.edu", "rykahsay@gwu.edu", "tvwillia@gmail.com", "karinamartinez@gwu.edu", "mtiemeyer@ccrc.uga.edu","tylerjstewart@email.gwu.edu"]
 		,"rootinfo":{
 			"baseurl":"/datasetviewer"

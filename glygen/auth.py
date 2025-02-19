@@ -17,7 +17,7 @@ from flask_jwt_extended import (
     set_refresh_cookies, unset_jwt_cookies
     )
 
-from glygen.auth_apilib import auth_userid, auth_contact, auth_register, auth_login,  auth_userinfo, auth_userupdate, auth_userdelete, auth_contactlist, auth_contactupdate, auth_contactdelete
+from glygen.auth_apilib import auth_userid, auth_notify, auth_contact, auth_register, auth_login,  auth_userinfo, auth_userupdate, auth_userdelete, auth_contactlist, auth_contactupdate, auth_contactdelete
 
 from glygen.util import get_req_obj
 import traceback
@@ -70,6 +70,15 @@ contact_query_model = api.model("Auth Contact Query",
     }
 )
 
+notify_query_model = api.model("Auth Notify Query",
+    {
+        "fname":fields.String(required=True, default=""),
+        "lname":fields.String(required=True, default=""),
+        "subject":fields.String(required=True, default=""),
+        "message":fields.String(required=True, default="")
+    }
+)
+
 
 
 @api.route('/userid/')
@@ -115,6 +124,30 @@ class Auth(Resource):
     @api.doc(False)
     def get(self):
         return self.post()
+
+
+@api.route('/notify/')
+class Auth(Resource):
+    @api.expect(notify_query_model)
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = get_req_obj(request)
+            res_obj = log_request(req_obj, "/auth/notify/", request)
+            if "error_list" not in res_obj:
+                res_obj = auth_notify(req_obj, config_obj)
+        except Exception as e:
+            res_obj =  log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
 
 
 @api.route('/register/')
