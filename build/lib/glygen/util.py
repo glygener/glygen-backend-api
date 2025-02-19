@@ -1524,6 +1524,9 @@ def get_partition_ranges(n, batch_size):
 
 def cache_result_list(cache_id, listcache_id, res_obj, config_obj):
 
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
+    
     batch_size = 1000
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -1546,12 +1549,12 @@ def cache_result_list(cache_id, listcache_id, res_obj, config_obj):
                 s, e = o["s"], o["e"]
                 tmp_glbl_obj = glbl_obj if s == 0 else {}
                 tmp_obj_list = res_obj["results"][s:e] 
-                oo = {"list_id":listcache_id, "results":tmp_obj_list,"glbl":tmp_glbl_obj, "start":s}
+                oo = {"list_id":listcache_id, "ts":ts, "results":tmp_obj_list,"glbl":tmp_glbl_obj, "start":s}
                 oo_list.append(len(json.dumps(oo)))
                 res = dbh[cache_coll].insert_one(oo)
             #return oo_list 
         else:
-            oo = {"list_id":listcache_id, "results":res_obj["results"], "glbl":glbl_obj, "start":0}
+            oo = {"list_id":listcache_id, "ts":ts, "results":res_obj["results"], "glbl":glbl_obj, "start":0}
             res = dbh[cache_coll].insert_one(oo)
     
     return {}
