@@ -137,6 +137,11 @@ def main():
         coll_list =  options.coll.split(",")
 
 
+    #coll_list.remove("c_protein")
+    #coll_list.remove("c_list")
+    #print (coll_list)
+    #exit()
+
 
     try:
         tmpdb_client = pymongo.MongoClient(host,

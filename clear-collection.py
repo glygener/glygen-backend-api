@@ -38,19 +38,22 @@ def main():
     
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
   
-    db_obj = config_obj["dbinfo"]["glydb"]
-    db_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
+    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_obj = config_obj["dbinfo"][db_name]
+    glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
+
+
 
     try:
         client = pymongo.MongoClient(host,
             username=db_user,
             password=db_pass,
-            authSource=db_name,
+            authSource=glydb_name,
             authMechanism='SCRAM-SHA-1',
             serverSelectionTimeoutMS=10000
         )
         client.server_info()
-        dbh = client[db_name]
+        dbh = client[glydb_name]
         res = dbh[coll].delete_many({})
 
     except pymongo.errors.ServerSelectionTimeoutError as err:

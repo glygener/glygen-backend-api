@@ -1,7 +1,2 @@
-{
-        "id": "fffa630fbc2f061d8af1a9c565916569",
-        "download_type": "glycan_list",
-        "format": "csv",
-        "compressed": false,
-        "filters": []
-  }
+{"id":"9fefe7c18a736a7ac13e8a7f3d5f62ff","download_type":"genelocus_list","format":"csv","compressed":false}
+

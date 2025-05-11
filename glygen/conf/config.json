@@ -33,7 +33,7 @@
                 },
 		"path":{
                     "prd":"python /app/job_submitters/structure_search.py",
-                    "beta":"python /app/job_submitters/structure_search_beta.py",
+                    "beta":"python /app/job_submitters/structure_search.py",
                     "tst":"python /app/job_submitters/structure_search.py",
                     "dev":"python /app/job_submitters/structure_search.py"
                 },
@@ -1215,11 +1215,11 @@
 	    ,"biomarker_list":{"cache":"c_listcache", "formatlist":["csv","json"]}
 	    ,"isoform_mapper_list":{"cache":"c_listcache", "formatlist":["csv","tsv"]}
 	    ,"genelocus_list":{"cache":"c_listcache", "formatlist":["csv","json","fasta"]}
-            ,"ortholog_list":{"cache":"c_listcache", "formatlist":["csv","json","fasta"]}
-            ,"idmapping_list_mapped":{"cache":"c_listcache", "formatlist":["csv"]}
-            ,"idmapping_list_unmapped":{"cache":"c_listcache", "formatlist":["csv"]}
-            ,"idmapping_list_all":{"cache":"c_listcache", "formatlist":["csv"]}
-            ,"idmapping_list_all_collapsed":{"cache":"c_listcache", "formatlist":["csv"]}
+            ,"ortholog_list":{"cache":"c_cache", "formatlist":["csv","json","fasta"]}
+            ,"idmapping_list_mapped":{"cache":"c_cache", "formatlist":["csv"]}
+            ,"idmapping_list_unmapped":{"cache":"c_cache", "formatlist":["csv"]}
+            ,"idmapping_list_all":{"cache":"c_cache", "formatlist":["csv"]}
+            ,"idmapping_list_all_collapsed":{"cache":"c_cache", "formatlist":["csv"]}
 	    ,"motif_list":{"cache":"c_listcache", "formatlist":["csv","json", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic"]}
 	    ,"protein_section":{"cache":"c_listcache", "formatlist":["csv","tsv"]}
             ,"site_section":{"cache":"c_listcache", "formatlist":["csv","tsv"]}

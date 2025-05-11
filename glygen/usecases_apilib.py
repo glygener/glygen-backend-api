@@ -983,20 +983,30 @@ def get_mongo_query(svc_name, query_obj):
                 }
                 cond_objs.append(tax_id_q_obj)
                 #cond_objs.append({"species.taxid": {'$eq': query_obj["tax_id"]}})
-            if query_obj["evidence_type"] == "predicted":
-                cond_objs.append({"glycosylation.site_category_dict.predicted":{"$eq":True}})
-                #cond_objs.append({"glycosylation": {'$gt':[]}})
-                #cond_objs.append({"glycosylation.site_category":{"$regex":"predicted","$options":"i"}})
-            elif query_obj["evidence_type"] == "reported":
-                or_list = [
-                    {"glycosylation.site_category_dict.reported":{"$eq":True}},
-                    {"glycosylation.site_category_dict.reported_with_glycan":{"$eq":True}},
-                ]   
-                cond_objs.append({'$or':or_list})
-                #cond_objs.append({"glycosylation": {'$gt': []}})
-                #cond_objs.append({"glycosylation.site_category":{"$regex":"reported","$options":"i"}})
-            elif query_obj["evidence_type"] == "any":
+            
+            if query_obj["evidence_type"] == "all_sites":
                 cond_objs.append({"glycosylation": {'$gt': []}})
+            elif query_obj["evidence_type"] == "sites_reported_with_glycans":
+                oo = {"glycosylation.site_category_dict.reported_with_glycan":{"$eq":True}}
+                cond_objs.append(oo)
+            elif query_obj["evidence_type"] == "sites_reported_without_glycans":
+                oo = {"glycosylation.site_category_dict.reported":{"$eq":True}}
+                cond_objs.append(oo)
+            elif query_obj["evidence_type"] == "all_reported_sites_with_without_glycans":
+                or_list = [
+                    {"glycosylation.site_category_dict.reported_with_glycan":{"$eq":True}},
+                    {"glycosylation.site_category_dict.reported":{"$eq":True}}
+                ]
+                cond_objs.append({"$or":or_list})
+            elif query_obj["evidence_type"] == "sites_detected_by_literature_mining":
+                oo = {"glycosylation.site_category_dict.automatic_literature_mining":{"$eq":True}}
+                cond_objs.append(oo)
+            elif query_obj["evidence_type"] == "predicted_sites":
+                or_list = [
+                    {"glycosylation.site_category_dict.predicted":{"$eq":True}},
+                    {"glycosylation.site_category_dict.predicted_with_glycan":{"$eq":True}}
+                ]
+                cond_objs.append({"$or":or_list})
             elif query_obj["evidence_type"] == "none":
                 #to return empty list
                 cond_objs.append({"glycosylation.evidence.database": {'$eq':"XYZzyz"}})

@@ -1,7 +1,8 @@
 {
     "glycosylation_reported_with_glycan":{
 	"by_amino_acid":{
-            "group_order":1,
+            "grp_idx":0,
+				"group_order":1,
             "group_label":"By Amino Acid",
             "order_dict":{
                 "A":1,
@@ -49,7 +50,8 @@
             }
         },
 	"by_biomarker_type":{
-            "group_order":2,
+            "grp_idx":1,
+				"group_order":2,
             "group_label":"By Biomarker Type",
             "order_dict":{
                 "diagnostic":1,
@@ -71,7 +73,8 @@
             }
         },
 	"by_glycosylation_type":{
-            "group_order":3,
+            "grp_idx":2,
+				"group_order":3,
             "group_label":"By Glycosylation Type",
             "order_dict":{
                 "n-linked|complex":1,
@@ -107,7 +110,8 @@
             }
         },
 	"by_mass":{
-            "group_order":4,
+            "grp_idx":3,
+				"group_order":4,
             "group_label":"By Mass",
             "range_dict": {
                 "0k_1k":{"min":0.0, "max":1000.0},
@@ -122,7 +126,8 @@
             "order_dict":{"0k_1k":1, "1k_2k":2, "2k_3k":3, "3k_4k":4, "4k_5k":5, "5k_0k":6, "no_mass":7}
         },
 	"by_monosaccharide":{
-            "group_order":5,
+            "grp_idx":4,
+				"group_order":5,
             "group_label":"By Monosaccharide",
             "order_dict":{
                 "hex":1,
@@ -150,7 +155,8 @@
             }   
         },
 	"by_organism":{
-            "group_order":6,
+            "grp_idx":5,
+				"group_order":6,
             "group_label":"By Organism",
             "order_dict":{
             },
@@ -158,7 +164,8 @@
             }
         },
 	"by_sequence_details":{
-            "group_order":7,
+            "grp_idx":6,
+				"group_order":7,
             "group_label":"By Sequence Details",
             "order_dict":{"Fully defined":1, "Topology":2, "Composition":3, "BaseComposition":4,
                 "Incomplete":5
@@ -166,7 +173,8 @@
             "label_dict":{"BaseComposition":"Base composition"}
         },
 	      "by_site_type":{
-            "group_order":8,
+            "grp_idx":7,
+				"group_order":8,
             "group_label":"By Site Type",
             "order_dict":{
                 "glycation":1,
@@ -186,7 +194,8 @@
     },
     "glycosylation_reported":{
         "by_amino_acid":{
-            "group_order":1,
+            "grp_idx":0,
+				"group_order":1,
             "group_label":"By Amino Acid",
             "order_dict":{
                 "A":1,
@@ -234,7 +243,8 @@
             }
         },
 	     "by_glycosylation_type":{
-            "group_order":2,
+            "grp_idx":1,
+				"group_order":2,
             "group_label":"By Glycosylation Type",
             "order_dict":{
                 "n-linked|complex":1,
@@ -270,7 +280,8 @@
             }
         },
         "by_mining_tool":{
-            "group_order":3,
+            "grp_idx":2,
+				"group_order":3,
             "group_label":"By Mining Tool",
             "order_dict":{
                 "glycositeminer":1,
@@ -282,7 +293,8 @@
             }
         },
 	     "by_site_type":{
-            "group_order":3,
+            "grp_idx":3,
+				"group_order":3,
             "group_label":"By Site Type",
             "order_dict":{
                 "glycation":1,
@@ -302,7 +314,8 @@
     },
     "glycosylation_predicted":{
     	"by_amino_acid":{
-            "group_order":1,
+            "grp_idx":1,
+				"group_order":1,
             "group_label":"By Amino Acid",
             "order_dict":{
                 "A":1,
@@ -350,6 +363,7 @@
             }
         },
 	     "by_glycosylation_type":{
+            "grp_idx":1,
             "group_order":2,
             "group_label":"By Glycosylation Type",
             "order_dict":{
@@ -386,7 +400,8 @@
             }
         },
 	     "by_prd_tool":{
-	        "group_order":3,
+	        "grp_idx":2,
+           "group_order":3,
            "group_label":"By Prediction Tool",
             "order_dict":{
                 "isoglyp":1
@@ -396,6 +411,7 @@
             }  
 	      },
          "by_site_type":{
+            "grp_idx":3,
             "group_order":8,
             "group_label":"By Site Type",
             "order_dict":{
@@ -416,6 +432,7 @@
     },
     "glycosylation_automatic_literature_mining":{
 	     "by_amino_acid":{
+            "grp_idx":1,
             "group_order":1,
             "group_label":"By Amino Acid",
             "order_dict":{
@@ -464,6 +481,7 @@
             }
         },
 	     "by_glycosylation_type":{
+            "grp_idx":1,
             "group_order":2,
             "group_label":"By Glycosylation Type",
             "order_dict":{
@@ -500,6 +518,7 @@
             }
         },
         "by_mining_tool":{
+            "grp_idx":2,
             "group_order":3,
             "group_label":"By Mining Tool",
             "order_dict":{
@@ -512,7 +531,8 @@
             }
         },
         "by_site_type":{
-            "group_order":8,
+            "grp_idx":3,
+            "group_order":4,
             "group_label":"By Site Type",
             "order_dict":{
                 "glycation":1,

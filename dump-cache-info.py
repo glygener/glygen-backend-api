@@ -21,17 +21,16 @@ def main():
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
-    parser.add_option("-c","--coll",action="store",dest="coll",help="") 
 
     (options,args) = parser.parse_args()
 
-    for key in ([options.server, options.coll ]):
+    for key in ([options.server]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     server = options.server
-    coll = options.coll
+    coll = "c_listcache"
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     #mongo_port = config_obj["dbinfo"]["port"][server]
@@ -53,19 +52,15 @@ def main():
         dbh = client[db_name]
         q = {}
         seen = {}
-        for doc in dbh[coll].find(q, {"list_id":1, "ts":1, "cache_info":1}):
-            #list_id = doc["list_id"]
-            #doc = doc["res"] if coll in ["c_listcache"] else doc
-            k_one = "cache_info"
-            tmp_dict = {"query":"xxx", "ts":"xxx", "search_type":"xxx", "record_type":"xxx"}
-            if k_one in doc:
-                for k in tmp_dict:
-                    if k in doc[k_one]:
-                        tmp_dict[k] = doc[k_one][k]
-                #print(doc[k_one])
-            ts = doc["ts"] if coll == "c_listcache" else  doc["cache_info"]["ts"]
-            cache_id = doc["list_id"]
-            print (ts, cache_id)
+        for doc in dbh[coll].find(q, {"glbl":1, "ts":1, "start":1}):
+            if "cache_info" not in doc["glbl"]:
+                continue
+            cache_id = doc["glbl"]["cache_info"]["cache_id"]
+            listcache_id = doc["glbl"]["cache_info"]["listcache_id"]
+            ts = doc["ts"] 
+            start = doc["start"]
+            print (cache_id, listcache_id, ts, start)
+
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

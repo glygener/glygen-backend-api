@@ -89,31 +89,49 @@ def job_addnew(query_obj, config_obj, data_path, server):
     rel_parts_one = int(init_obj["dataversion"].split(".")[0])
     rel_parts_two = int(init_obj["dataversion"].split(".")[1])
     job_id_offset = (rel_parts_one*10 + rel_parts_two) * 100000
-    #return {"rel":init_obj["dataversion"]}
+    
+    #return {"rel":init_obj["dataversion"], "offset":job_id_offset}
     #return query_obj
     #return validation_obj
 
     res_obj = {}
     try:
+        max_job_id = -10000
+        for obj in dbh["c_job"].find({}, {"jobid":1}):
+            max_job_id = int(obj["jobid"]) if int(obj["jobid"]) > max_job_id else max_job_id
+        d_list = glob.glob( data_path + "/userdata/" + server + "/jobs/*")
+        for d in d_list:
+            dd = d.split("/")[-1]
+            max_job_id = int(dd) if int(dd) > max_job_id else max_job_id
+ 
         query_obj["jobid"] = job_id_offset + 1
-        if dbh["c_job"].find_one({"jobid":1}) != None:
-            agg_obj = {"$group":{"_id":"","max_id":{"$max":"$jobid"}}}
-            res = list(dbh["c_job"].aggregate([agg_obj]))
-            query_obj["jobid"] = job_id_offset + res[0]["max_id"] + 1
+        if max_job_id > job_id_offset:
+            query_obj["jobid"] =  max_job_id + 1
+    
 
         q_obj = {}
         for p in query_obj:
             if p not in ["cmd", "status", "jobid"]:
                 q_obj[p] = query_obj[p]
 
-        #old_doc = dbh["c_job"].find_one(q_obj)
-        old_doc = None
-        if old_doc != None:
-            status_obj = update_job_status(dbh, old_doc, config_obj)
-            if "error_list" in status_obj:
-                return status_obj
-            res_obj = {"submission":"old", "status":status_obj, "jobid":old_doc["jobid"]}
-        else:
+        old_doc_flag = False
+        for old_doc in dbh["c_job"].find(q_obj):
+            in_dir = data_path + "/userdata/" + server + "/jobs/"
+            in_dir += str(old_doc["jobid"]) + "/"
+            if os.path.isdir(in_dir):
+                old_doc_flag = True
+                status_obj = update_job_status(dbh, old_doc, config_obj)
+                if "error_list" in status_obj:
+                    old_doc_flag = False
+                elif "status" in status_obj:
+                    if status_obj["status"] == "Error":
+                        old_doc_flag = False
+                if old_doc_flag == True:
+                    res_obj = {"submission":"old", "status":status_obj, "jobid":old_doc["jobid"]}
+                    break
+        #return {"flag":old_doc_flag, "res":res_obj}
+
+        if old_doc_flag == False:
             in_dir = data_path + "/userdata/" + server + "/jobs/"
             in_dir += str(query_obj["jobid"]) + "/"
             cmd = "mkdir -p " + in_dir
@@ -125,7 +143,6 @@ def job_addnew(query_obj, config_obj, data_path, server):
                 out_filename = config_obj["jobinfo"][query_obj["jobtype"]]["output_files"][0]["name"]
             in_file = in_dir + in_filename
             out_file = in_dir + out_filename
-            
             
             with open(in_file, "w") as FW:
                 if query_obj["jobtype"] in ["structure_search"]:
@@ -159,7 +176,6 @@ def job_addnew(query_obj, config_obj, data_path, server):
                 if "_id" in query_obj:
                     query_obj.pop("_id")
                 FW.write("%s\n" % (json.dumps(query_obj, indent=4)))
-
             res_obj = {"submission":"new", "status":query_obj["status"], "jobid":query_obj["jobid"]}
     except Exception as e:
         res_obj = {"error_list":[{"error_code":str(e)}]}
@@ -634,6 +650,16 @@ def job_status_many(query_obj, config_obj):
                             else:
                                 tmp_res_obj["result_count"] = get_result_count(dbh, job_doc["jobtype"], out_file)
                         idx += 1
+                else:
+                    #tmp_res_obj["jobid"] = job_id
+                    #tmp_res_obj["status_obj"] = status_obj
+                    tmp_res_obj = status_obj
+                    if "error" in tmp_res_obj:
+                        job_id, err = tmp_res_obj["jobid"], tmp_res_obj["error"]
+                        tmp_res_obj = {"jobid":job_id, "error_list":[{"error_code":err}]} 
+            if "status" in tmp_res_obj:
+                if tmp_res_obj["status"] == "queued":
+                    tmp_res_obj["status"] = "running"
             res_obj["status_obj_list"].append(tmp_res_obj)
     except Exception as e:
         res_obj = {"error_list":[{"error_code":str(e)}]}
@@ -954,13 +980,32 @@ def update_job_status(dbh, job_doc, config_obj):
 
     #If job is finished, don't do anything
     if "status" in job_doc:
+        f_obj = config_obj["jobinfo"][job_doc["jobtype"]]["output_files"][0]
+        in_dir = config_obj[config_obj["server"]]["pathinfo"]["userdata"]
+        in_dir += str(job_doc["jobid"])
+        out_file = in_dir + "/" + f_obj["name"]
         if job_doc["status"]["status"] == "finished":
-            f_obj = config_obj["jobinfo"][job_doc["jobtype"]]["output_files"][0]
-            in_dir = config_obj[config_obj["server"]]["pathinfo"]["userdata"]
-            in_dir += str(job_doc["jobid"])
-            out_file = in_dir + "/" + f_obj["name"]
-            job_doc["status"]["result_count"] = get_result_count(dbh, job_doc["jobtype"], out_file)
-            return job_doc["status"]
+            job_doc["status"]["result_count"] = 0
+            if os.path.isfile(out_file):
+                job_doc["status"]["result_count"] = get_result_count(dbh, job_doc["jobtype"], out_file)
+                return job_doc["status"]
+            else:
+                err = "no-output-file-for-job-id=%s" % (job_doc["jobid"])
+                return {"error_list":[{"error_code":err}]}
+        elif job_doc["status"]["status"] == "Error":
+            if out_file.find(".json") != -1:
+                if os.path.isfile(out_file):
+                    out_doc = json.load(open(out_file))
+                    if "error" in out_doc:
+                        if type(out_doc["error"]) is list:
+                            err = ";".join(out_doc["error"])
+                            return {"error_list":[{"error_code":err}]}
+            else:
+                # output has not been created
+                return {"error_list":[{"error_code":"Unknow error, try later for details!"}]}
+
+
+
 
     res_obj = {}
     try:

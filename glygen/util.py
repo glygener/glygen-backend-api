@@ -56,7 +56,9 @@ def get_query_filter_code(query_filters, record_type, filter_conf):
                         o["ptrn"] = "1"
    
     code_list = []
-    for grp in sorted(code_dict):
+    grp_id_list = get_grp_id_list(record_type, filter_conf)
+    
+    for grp in grp_id_list:
         c_list = []
         for o in code_dict[grp]:
             c_list.append(o["ptrn"])
@@ -968,14 +970,16 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
 
     #Apply filters
     #comment for performance testing
-    filter_list(cached_obj, query_obj, query_filter_code, code_dict)
+    res = filter_list(cached_obj, query_obj, query_filter_code, code_dict)
+    if "error_list" in res:
+        return res
     n_two = len(cached_obj["results"])
 
     #return {"n1":n_one, "n2":n_two}
     #return filter_conf
     #return {"code":query_filter_code}
     #return code_dict
-    #return cached_obj["results"]
+
 
     ts_list.append("count_2_%s" % (len(cached_obj["results"])))
     ts_list.append("6-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
@@ -1063,7 +1067,8 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
         "total_length":len(cached_obj["results"]), "sort":query_obj["sort"], "order":query_obj["order"]}
 
     ts_list.append("9-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-    #return ts_list
+    #return {"error_list":ts_list}
+
     res_obj["query"] = query_obj
 
     return res_obj
@@ -1082,6 +1087,7 @@ def cache_record_list(dbh,list_id, record_list, cache_info, cache_coll, config_o
         start = i*config_obj["cache_batch_size"]
         end = start + config_obj["cache_batch_size"]
         end = record_count if end > record_count else end
+        cache_info["start"] = start
         if start < record_count:
             cache_obj = {
                 "list_id":list_id, 
@@ -1093,7 +1099,7 @@ def cache_record_list(dbh,list_id, record_list, cache_info, cache_coll, config_o
     return
 
 
-def compare_filter_codes(record_filter_code, query_filter_code, filter_obj_list, code_dict):
+def compare_filter_codes(record_filter_code, query_filter_code, filter_obj_list, code_dict, grp_id_list):
 
     flag = False    
     op_dict = {}
@@ -1103,7 +1109,7 @@ def compare_filter_codes(record_filter_code, query_filter_code, filter_obj_list,
     record_code_parts, query_code_parts = record_filter_code.split("."), query_filter_code.split(".")
     
     failed_flag_list = []
-    grp_id_list = sorted(code_dict.keys())
+    debug_list = [] 
     for grp_idx in range(0, len(grp_id_list)):
         grp = grp_id_list[grp_idx]
         if grp not in op_dict:
@@ -1113,14 +1119,16 @@ def compare_filter_codes(record_filter_code, query_filter_code, filter_obj_list,
         for j in range(0, len(query_code_parts[grp_idx])):
             if query_code_parts[grp_idx][j] != "*":
                 row.append(query_code_parts[grp_idx][j] == record_code_parts[grp_idx][j])
+        debug_list.append({"grp_idx":grp_idx, "row":row, "query_code_parts":query_code_parts[grp_idx]})
         failed = False
         if op.lower() == "or" and len(row) > 0 and True not in row:
             failed = True
         if op.lower() == "and" and len(row) > 0 and False in row:
             failed = True
         failed_flag_list.append(failed)
-
     flag = True not in failed_flag_list
+    #flag = {"error_list":debug_list} 
+
     return flag
 
 
@@ -1133,38 +1141,60 @@ def filter_list(res_obj, query_obj, query_filter_code, code_dict):
     if "filters" in query_obj:
         res_obj["filters"]["applied"] = query_obj["filters"]
         if query_obj["filters"] == []:
-            return
+            return {}
     else:
-        return
-    
+        return {} 
+
+    debug_list = []
+ 
+    grp_id_list = get_grp_id_list(record_type, filter_conf)
     tmp_record_list = []
     for record_obj in res_obj["results"]:
         if "_id" in record_obj:
             record_obj.pop("_id")
-        flag = compare_filter_codes(record_obj["filter_code"], query_filter_code, query_obj["filters"], code_dict)
+        flag = compare_filter_codes(record_obj["filter_code"], query_filter_code, query_obj["filters"], code_dict, grp_id_list)
+        if type(flag) is dict:
+            if "error_list" in flag:
+                return flag
         if flag:
             tmp_record_list.append(record_obj)
+
+    #return {"error_list":debug_list}
     res_obj["results"] = tmp_record_list
 
-    return
+    return {}
 
 
 
 
+def get_grp_id_list(record_type, filter_conf):
+    
+    idx2grp = {}
+    for grp in filter_conf[record_type]:
+        grp_idx = filter_conf[record_type][grp]["grp_idx"]
+        idx2grp[grp_idx] = grp
+    grp_id_list = []
+    for grp_idx in sorted(idx2grp):
+        grp_id_list.append(idx2grp[grp_idx])
+    
+    return grp_id_list
 
    
 def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf):
-    
-    grp_id_list = sorted(code_dict.keys())
-    n_11 = len(grp_id_list)
 
+    #grp_id_list = sorted(code_dict.keys())
+    grp_id_list = get_grp_id_list(record_type, filter_conf)
+    
+    n_11 = len(grp_id_list)
     seen_filter_code = {}
     count_dict = {}
     debug_list = []
     for record_obj in obj_list:
+        if "filter_code" not in record_obj:
+            return {"error_list":[{"error_code": "list_obj_without_filter_code","record":record_obj}]}
         seen_filter_code[record_obj["filter_code"].replace(".", "_")] = True
         record_code_parts = record_obj["filter_code"].split(".")
-        #debug_list.append(record_code_parts)
+        debug_list.append(record_code_parts)
         n_12 = len(record_code_parts)
         if n_11 != n_12:
             return {"error_list":[{"error_code": "filter_grp_count mismatch %s!=%s" % (n_11, n_12)}]}
@@ -1175,19 +1205,22 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
             if grp == "by_sequence_details":
                 debug_list.append([code_dict[grp], record_code_parts[grp_idx]])
             if n_21 != n_22:
+                return {"error_list":[{"grp_id_list":grp_id_list, "grp":grp, "grp_idx":grp_idx, "code_dict":code_dict, "record_code_parts":record_code_parts}]}
                 return {"error_list":[{"error_code": "filter_value_count mismatch %s!=%s"%(n_21,n_22)}]}
             for j in range(0, n_22):
                 # bug in this is caused by incomplete glygen/conf/list_filters.json
                 label = code_dict[grp][j]["value"]
                 #label = grp + " | " + str(j) 
                 if record_code_parts[grp_idx][j] == "1":
-                    s = "%s|%s|%s|%s" % (grp,record_code_parts[grp_idx], label, j)
-                    #debug_list.append(s)
+                    #s = "%s|%s|%s|%s" % (grp,record_code_parts[grp_idx], label, j)
+                    s = "%s|%s|%s" % (grp,record_code_parts[grp_idx], code_dict[grp])
+                    debug_list.append(s)
                     if grp not in count_dict:
                         count_dict[grp] = {}
                     if label not in count_dict[grp]:
                         count_dict[grp][label] = 0
                     count_dict[grp][label] += 1
+    #return {"error_list":debug_list}
     #return {"a":code_dict, "b":count_dict, "c":seen_filter_code, "d":debug_list}
 
 
@@ -1551,7 +1584,7 @@ def cache_result_list(cache_id, listcache_id, res_obj, config_obj):
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
 
-    batch_size = 1000
+    batch_size = 100
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
@@ -1641,13 +1674,19 @@ def filter_glyco_obj_list(table_id, obj_list, query_filters , config_obj):
     update_res = update_filters(table_id, table_obj_list, filters_obj, 1, code_dict, filter_init)
     if "error_list" in update_res:
         return update_res
-        
+ 
+
+    
+ 
+    grp_id_list = get_grp_id_list(table_id, filter_init)
     passed_obj_list = []
     for gly_obj in table_obj_list:
-        flag = compare_filter_codes(gly_obj["filter_code"], query_filter_code, query_filters, code_dict)
+        flag = compare_filter_codes(gly_obj["filter_code"], query_filter_code, query_filters, code_dict, grp_id_list)
+        if type(flag) is dict:
+            if "error_list" in flag:
+                return flag
         if flag:
             passed_obj_list.append(gly_obj)
-    
     res = {"a":table_obj_list,"b":passed_obj_list, "c":other_table_obj_list, "d":filters_obj}
     return res
 
