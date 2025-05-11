@@ -93,6 +93,10 @@ def protein_search_simple(query_obj, config_obj):
 def protein_search(query_obj, config_obj):
 
 
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts_list = []
+    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
@@ -113,6 +117,7 @@ def protein_search(query_obj, config_obj):
 
     mongo_query = get_mongo_query(query_obj)
     #return mongo_query
+    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     #path_obj = config_obj[config_obj["server"]]["htmlpath"]
     #blast_db = path_obj["datareleasespath"] + "data/v-%s/blastdb/canonicalsequences"
@@ -133,6 +138,8 @@ def protein_search(query_obj, config_obj):
         for o in obj["isoforms"]:
             seen_id[o["isoform_ac"]] = True
 
+    ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
 
     unmapped_obj_list = []
     redundancy_dict = {}
@@ -150,8 +157,9 @@ def protein_search(query_obj, config_obj):
             unmapped_obj_list.append({"input_id":qid, "reason":"Duplicate ID"})
 
 
+    ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
@@ -165,6 +173,10 @@ def protein_search(query_obj, config_obj):
             cache_info["batch_info"] = {"unmapped":unmapped_obj_list}
         cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
+
+    ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+    #return ts_list
 
     return res_obj
 
@@ -194,7 +206,6 @@ def protein_alignment(query_obj, config_obj):
 
     selected_cls_id = ""
     for cls_id in obj["clusterlist"]:
-        
         if cls_id.find(query_obj["cluster_type"]) != -1:
             selected_cls_id = cls_id
             break
@@ -339,19 +350,32 @@ def protein_detail(query_obj, config_obj):
 
     # Get section objects if record is batched
     canon = query_obj["uniprot_canonical_ac"].upper()
-    q = {
-        "$and":[
-            {"batchid":{"$eq":1}}, 
-            {"recordid": {"$regex":canon, "$options":"i"}},
-            {"recordtype":{"$eq":"protein"}}
-        ]
-    }
-    batch_doc = dbh["c_batch"].find_one(q)
-    if batch_doc != None:
+    cond_list = []
+    #cond_list.append({"batchid":{"$eq":1}})
+    cond_list.append({"recordid": {"$regex":canon, "$options":"i"}})
+    cond_list.append({"recordtype":{"$eq":"protein"}})
+    q = {"$and":cond_list}
+   
+    #batch_doc = dbh["c_batch"].find_one(q)
+    #if batch_doc != None:
+    #    for sec in batch_doc["sections"]:
+    #        if sec in obj:
+    #            obj[sec] += batch_doc["sections"][sec]
+ 
+    n_disease, n_non_disease = 0, 0
+    for batch_doc in dbh["c_batch"].find(q):
         for sec in batch_doc["sections"]:
             if sec in obj:
-                obj[sec] += batch_doc["sections"][sec]
-
+                if sec == "snv":
+                    for o in batch_doc["sections"][sec]:
+                        if "disease" in o["keywords"] and n_disease < 20:
+                            obj[sec].append(o)
+                            n_disease += 1
+                        if "disease" not in o["keywords"] and n_non_disease < 20:
+                            obj[sec].append(o)
+                            n_non_disease += 1
+                else:
+                    obj[sec] += batch_doc["sections"][sec]
 
  
     url = config_obj["urltemplate"]["uniprot"] % (obj["uniprot_canonical_ac"])
@@ -435,6 +459,7 @@ def get_simple_mongo_query(query_obj):
         return {'$text': { '$search': query_term}}
     elif query_obj["term_category"] == "glycan":
         cond_objs.append({"glycosylation.glytoucan_ac":{'$regex': query_obj["term"], '$options': 'i'}})
+        cond_objs.append({"interactions.interactor_id":{'$regex': query_obj["term"], '$options': 'i'}})
     elif query_obj["term_category"] == "protein":
         cond_objs.append({"uniprot_canonical_ac":{'$regex': query_obj["term"], '$options': 'i'}})
         cond_objs.append({"gene_names.name":{'$regex': query_obj["term"], '$options': 'i'}})
@@ -632,21 +657,35 @@ def get_mongo_query(query_obj):
 
     #glycosylation_evidence
     if "glycosylation_evidence" in query_obj:
-        if query_obj["glycosylation_evidence"] == "predicted":
-            cond_objs.append({"glycosylation.site_category_dict.predicted":{"$eq":True}})
-            #cond_objs.append({"glycosylation": {'$gt': []}})
-            #cond_objs.append({"glycosylation.site_category": {'$ne':"reported"}})
-            #cond_objs.append({"glycosylation.site_category": {'$ne':"reported_with_glycan"}})
-        elif query_obj["glycosylation_evidence"] == "reported":
-            or_list = [
-                {"glycosylation.site_category_dict.reported":{"$eq":True}},
-                {"glycosylation.site_category_dict.reported_with_glycan":{"$eq":True}},
-            ]
-            cond_objs.append({'$or':or_list})
-            #cond_objs.append({"glycosylation": {'$gt': []}})
-            #cond_objs.append({"glycosylation.site_category":{"$regex":"reported","$options":"i"}})
-        elif query_obj["glycosylation_evidence"] == "both":
+        #if query_obj["glycosylation_evidence"] == "predicted":
+        #    cond_objs.append({"glycosylation.site_category_dict.predicted":{"$eq":True}})
+        #elif query_obj["glycosylation_evidence"] == "reported":
+        #    or_list = [
+        #        {"glycosylation.site_category_dict.reported":{"$eq":True}},
+        #        {"glycosylation.site_category_dict.reported_with_glycan":{"$eq":True}},
+        #    ]
+        #    cond_objs.append({'$or':or_list})
+        #elif query_obj["glycosylation_evidence"] == "both":
+        #    cond_objs.append({"glycosylation": {'$gt': []}})
+        if query_obj["glycosylation_evidence"] == "all_sites":
             cond_objs.append({"glycosylation": {'$gt': []}})
+        elif query_obj["glycosylation_evidence"] == "sites_reported_with_glycans":
+            oo = {"glycosylation.site_category_dict.reported_with_glycan":{"$eq":True}}
+            cond_objs.append(oo)
+        elif query_obj["glycosylation_evidence"] == "sites_reported_without_glycans":
+            oo = {"glycosylation.site_category_dict.reported":{"$eq":True}}
+            cond_objs.append(oo)
+        elif query_obj["glycosylation_evidence"] == "sites_detected_by_literature_mining":
+            oo = {"glycosylation.site_category_dict.automatic_literature_mining":{"$eq":True}}
+            cond_objs.append(oo)
+        elif query_obj["glycosylation_evidence"] == "predicted_sites":
+            or_list = [
+                {"glycosylation.site_category_dict.predicted":{"$eq":True}},
+                {"glycosylation.site_category_dict.predicted_with_glycan":{"$eq":True}}
+            ]
+            cond_objs.append({"$or":or_list})
+            
+
 
     aa_map = {
         "A":"Ala",

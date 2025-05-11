@@ -1,6 +1,30 @@
-#site_predicted:  by_amino_acid by_glycosylation_type by_prd_tool by_site_type
+{
+    "status_obj_list": [
+        {
+            "status_obj": {
+                "start_time": "Mon Apr 28 16:07:31 2025",
+                "end_time": "Mon Apr 28 16:07:34 2025",
+                "time_run": "2.613186s",
+                "jobid": 2800002
+            }
+        }
+    ]
+}
 
-"filter_code": "00100000000000000000.00010000000000.0.01000"
 
+{
+  "status_obj_list": [
+    {
+      "result_count": 2,
+      "output_files": [
+        {
+          "format": "tsv",
+          "url": "https://data.glygen.org/ln2data/userdata/prd/jobs/2800003/output.tsv"
+        }
+      ]
+    }
+  ]
+}
+           
  
 

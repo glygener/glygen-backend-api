@@ -52,14 +52,14 @@ def home_init(config_obj, data_path):
             if tax_id not in tax_id_list:
                 tax_id_list.append(tax_id)
 
+
     for doc in dbh["c_stat"].find({}):
         doc.pop("_id")
         for tax_id in list(set(tax_id_list)):
             if tax_id in doc["oldstat"]:
                 res_obj["statistics"].append(doc["oldstat"][tax_id])
         #uncomment this when the frontend is ready to consume new stat format
-        res_obj["statistics_new"] = doc["newstat"]
-
+        #res_obj["statistics_new"] = doc["newstat"]
 
 
     now_est = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%m/%d/%Y %H:%M:%S')

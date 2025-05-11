@@ -1,0 +1,36 @@
+
+
+Glycan APIs
+	- search APIs
+		$ http POST :8082/glycan/search_simple/ < tests/examples/glycan/glycan_search_simple.json
+    	$ http POST :8082/glycan/search/ < tests/examples/glycan/glycan_search.json
+   - list API
+		$ http POST :8082/glycan/list/ < tests/examples/glycan/glycan_list.1.json
+    	$ http POST :8082/glycan/list/ < tests/examples/glycan/glycan_list.2.json
+	- detail API
+		$ http POST :8082/glycan/detail/G17689DH/
+
+Protein APIs
+	- search APIs
+		$ http POST :8082/protein/search_simple/ < tests/examples/protein/protein_search_simple.json
+    	$ http POST :8082/protein/search/ < tests/examples/protein/protein_search.json
+	- list API
+		$ http POST :8082/protein/list/ < tests/examples/protein/protein_list.1.json
+    	$ http POST :8082/protein/list/ < tests/examples/protein/protein_list.2.json
+	- detail API
+    	$ http POST :8082/protein/detail/P14210-1/
+    	$ http POST :8082/protein/detail/Q8IWL2-1/ < tests/examples/protein/protein_detail_paginated.json
+
+
+Biomarker APIs
+	- search APIs
+   	$ http POST :8082/biomarker/search_simple/ < tests/examples/biomarker/search_simple.json
+  		$ http POST :8082/biomarker/search < tests/examples/biomarker/search.json
+	- list API
+   	$ http POST :8082/biomarker/list < tests/examples/biomarker/list.json
+	- detail API
+		$ http POST :8082/biomarker/detail/AA4686-1
+
+
+
+

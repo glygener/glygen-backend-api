@@ -79,7 +79,7 @@ def globalsearch_search(query_obj, config_obj):
     #new_term = query_obj["term"]
      
     #return search_obj
- 
+         
 
     for obj in search_obj:
         if "$text" in obj["mongoquery"]:
@@ -153,7 +153,6 @@ def globalsearch_search(query_obj, config_obj):
             { "$project" : prj_obj }
         ]
         doc_list = list(dbh[target_collection].aggregate(qry_obj))
-
 
         #qry_obj = get_subquery(new_term, target_collection, config_obj)
         #return qry_obj

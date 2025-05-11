@@ -98,9 +98,10 @@ if __name__ == '__main__':
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-i","--infile",action="store",dest="infile",help="Input file")
     parser.add_option("-o","--outfile",action="store",dest="outfile",help="Output file")
-    
+    parser.add_option("-u","--apiurl",action="store",dest="apiurl",help="API URL")
+ 
     (options,args) = parser.parse_args()
-    for key in ([options.infile, options.outfile]):
+    for key in ([options.infile, options.outfile, options.apiurl]):
         if not (key):
             parser.print_help()
             sys.exit(0)

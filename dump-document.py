@@ -53,6 +53,7 @@ def main():
         )
         client.server_info()
         dbh = client[glydb_name]
+        #q = {"glytoucan_ac": "G17689DH"}
         q = {}
         for doc in dbh[coll].find(q):
             for p in ["password"]:

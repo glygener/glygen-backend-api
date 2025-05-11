@@ -587,6 +587,7 @@ def get_list_object(query_obj, config_obj):
         if query_obj["download_type"] in ["idmapping_list_all", "idmapping_list_all_collapsed",
             "idmapping_list_mapped","idmapping_list_unmapped", "genelocus_list", "ortholog_list"]:
             if collection == "c_listcache":
+                #return {"error_list":[{"error_code":"aaaaa"}]}
                 list_obj = get_cached_result_list(cache_id, listcache_id)
             else:
                 list_obj = get_cached_records_direct(list_query, config_obj, False)
@@ -597,8 +598,7 @@ def get_list_object(query_obj, config_obj):
                 list_obj = get_cached_result_list(cache_id, listcache_id)
 
     if list_obj == None:
-        return {"error_list":[{"error_code":"list object not found"}]}
-
+        return {"error_list":[{"error_code":"list object not found", "coll":collection, "list_query":list_query}]}
     if "_id" in list_obj:
         list_obj.pop("_id")
     return list_obj

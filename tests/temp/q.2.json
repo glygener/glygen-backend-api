@@ -1,11 +1,2 @@
-{"paginated_tables":[
-{"table_id":"glycosylation_reported_with_glycan","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
-{"table_id":"glycosylation_reported","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
-{"table_id":"glycosylation_automatic_literature_mining","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
-{"table_id":"glycosylation_predicted","offset":1,"limit":20,"sort":"start_pos","order":"asc"}
-]}
-
-
-
-
+{"id":"9fefe7c18a736a7ac13e8a7f3d5f62ff","download_type":"genelocus_list","format":"csv","compressed":false}
 

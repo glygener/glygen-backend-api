@@ -27,7 +27,7 @@ def cart_list(query_obj, config_obj):
     error_list = get_errors_in_query("cart_list", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
-    cache_collection = "c_cache"
+    cache_collection = "c_listcache"
 
 
     #Get cached object
@@ -39,10 +39,20 @@ def cart_list(query_obj, config_obj):
     if cached_obj == None:
         return {"error_list":[{"error_code":"non-existent-search-results"}]}
 
+    recordtype2idfield = {
+        "glycan":"glytoucan_ac",
+        "protein":"uniprot_canonical_ac"
+    }
+    if query_obj["type"] not in recordtype2idfield:
+        return {"error_list":[{"error_code":"record-type-not-supported"}]}
+    
+    id_field = recordtype2idfield[query_obj["type"]]
+
     res_obj = []
     for doc in dbh[cache_collection].find(mongo_query):
-        for record_id in doc["results"]:
-            res_obj.append({"id":record_id})
+        #for record_id in doc["results"]:
+        for obj in doc["results"]:
+            res_obj.append({"id":obj[id_field]})
 
     return res_obj
 
