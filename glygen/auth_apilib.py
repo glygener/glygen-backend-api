@@ -76,6 +76,9 @@ def auth_contact(query_obj, config_obj):
     if error_list != []: 
         return {"error_list":error_list}
     
+    black_list_emails = ["https://en.wikipedia.org/wiki/Example.com", "example@example.com"]
+    if query_obj["email"] in black_list_emails:
+        return {"error_list":[{"error_code": "black-listed-email"}]}
 
     collection = "c_message"
     sender = config_obj[config_obj["server"]]["contactemailreceivers"][0]
