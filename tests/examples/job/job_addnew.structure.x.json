@@ -1,7 +1,10 @@
 {
-    "jobtype": "structure_search",
-    "parameters": {
-        "seq": "RES\n1b:b-dglc-HEX-1:5\n2s:n-acetyl\n3b:b-1:7\nLIN\n1:1d(2+1)2n\nd\ny\nj\nD\nK\no\nZ\nS\nF",
-        "align": "substructure"
-    }
+	"jobtype":"structure_search",
+	"parameters":{
+		"seq":"RES\n1b:o-dglc-HEX-0:0|1:aldi\n2s:n-acetyl\nLIN\n1:1d(2 1)2n",
+		"align":"wholeglycan"
+	}
 }
+
+
+

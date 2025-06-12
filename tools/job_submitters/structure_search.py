@@ -51,8 +51,8 @@ class APIFrameworkClient:
     def get(self, **kwargs):
         api_url = kwargs["api_url"]
         task_id = self.submit(kwargs, api_url)
-        if task_id == -1:
-            return {"error":["container is not running!"], "status":-1}
+        #if task_id == -1:
+        #    return {"error":["container is not running!"], "status":-1}
 
         resjson = self.retrieve(task_id, api_url)
         return resjson
