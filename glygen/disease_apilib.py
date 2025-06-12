@@ -1,0 +1,282 @@
+import os
+import string
+import random
+import hashlib
+import json
+import datetime,time
+import pytz
+from collections import OrderedDict
+from bson import json_util, ObjectId
+
+
+from glygen.db import get_mongodb
+from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections, cache_record_list, transform_query_term, get_hash_id
+
+
+def disease_search_init(config_obj):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    #Collect errors 
+    error_list = get_errors_in_query("disease_searchinit",{}, config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+
+    collection = "c_searchinit"
+    res_obj =  dbh[collection].find_one({})
+
+    
+    return res_obj["disease"] if "disease" in res_obj else {}
+
+
+
+
+def disease_search_simple(query_obj, config_obj):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+
+    #Collect errors 
+    error_list = get_errors_in_query("disease_search_simple", query_obj,config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+
+
+    new_query_obj = json.loads(json.dumps(query_obj))
+    if new_query_obj["term_category"] == "any":
+        new_query_obj["term"] = transform_query_term(new_query_obj["term"])
+
+
+    record_type = "disease"
+    api_name = "disease_search_simple"
+    list_id = get_hash_id(api_name, record_type, query_obj)
+    cache_coll = "c_cache"
+    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    if cached_obj != None:
+        if len(cached_obj["results"]) > 0:
+            return {"list_id":list_id}
+
+    mongo_query = get_simple_mongo_query(new_query_obj)
+    #return mongo_query
+
+    collection = "c_disease"
+    record_list = []
+    prj_obj = {"record_id":1}
+    for obj in dbh[collection].find(mongo_query,prj_obj):
+        record_list.append(obj["record_id"])
+    #return record_list
+
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
+    cache_coll = "c_cache"
+    list_id = "" if len(record_list) == 0 else list_id
+    if len(record_list) != 0:
+        cache_info = {
+            "query":query_obj,
+            "ts":ts,
+            "record_type":record_type,
+            "search_type":"search_simple"
+        }
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+    res_obj = {"list_id":list_id}
+    res_obj["query"] = query_obj
+    res_obj["resultcount"] = len(record_list)
+
+    return res_obj
+
+
+
+
+
+def disease_detail(query_obj, config_obj):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+
+    #Collect errors 
+    error_list = get_errors_in_query("disease_detail", query_obj, config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+    collection = "c_disease"
+
+    mongo_query = {"record_id":{"$eq":query_obj["record_id"]}}
+    obj = dbh[collection].find_one(mongo_query)
+    #check for post-access error, error_list should be empty upto this line
+    post_error_list = []
+    if obj == None:
+        post_error_list.append({"error_code":"non-existent-record"})
+        return {"error_list":post_error_list}
+
+    if "_id" in obj:
+        obj.pop("_id")
+
+    if "paginated_tables" in query_obj:
+        table_id_list = []
+        for o in query_obj["paginated_tables"]:
+            if o["table_id"] not in table_id_list:
+                table_id_list.append(o["table_id"])
+        sec_tables = get_paginated_sections(obj, query_obj, table_id_list, True)
+        if "error_list" in sec_tables:
+            return sec_tables
+        for sec in sec_tables:
+            obj[sec] = sec_tables[sec]
+
+
+
+    return obj
+
+
+
+
+def disease_search(query_obj, config_obj):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    #Collect errors 
+    error_list = get_errors_in_query("disease_search", query_obj,config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+
+    record_type = "disease"
+    api_name = "disease_search"
+    list_id = get_hash_id(api_name, record_type, query_obj)
+    cache_coll = "c_cache"
+    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    if cached_obj != None:
+        if len(cached_obj["results"]) > 0:
+            return {"list_id":list_id}
+
+
+    mongo_query = get_mongo_query(query_obj)
+    #return mongo_query
+
+
+    collection = "c_disease"
+    record_list = []
+    prj_obj = {"record_id":1}
+    for obj in dbh[collection].find(mongo_query,prj_obj):
+        record_list.append(obj["record_id"])
+
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
+    cache_coll = "c_cache"
+    list_id = "" if len(record_list) == 0 else list_id
+    if len(record_list) != 0:
+        cache_info = {
+            "query":query_obj,
+            "ts":ts,
+            "record_type":record_type,
+            "search_type":"search"
+        }
+        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+    res_obj = {"list_id":list_id}
+
+    return res_obj
+
+
+
+
+def get_mongo_query(query_obj):
+
+
+    f_map = {
+        "record_id":"record_id",
+        "disease":"disease_component.disease",
+        "disease_entity_name":"disease_component.assessed_disease_entity.recommended_name",
+        "disease_entity_id":"disease_component.assessed_disease_entity_id",
+        "disease_entity_type":"disease_component.assessed_entity_type",
+        "specimen_name":"disease_component.specimen.name",
+        "specimen_id":"disease_component.specimen.id",
+        "specimen_loinc_code":"disease_component.specimen.loinc_code",
+        "best_disease_role":"best_disease_role.role",
+        "condition_id":"condition.recommended_name.id",
+        "condition_name":"condition.recommended_name.name",
+        "publication_id":"citation.reference.id"
+    }
+
+
+
+                        
+    cond_objs = []
+    for f in f_map:
+        if f in query_obj:
+            val = query_obj[f]
+            path = f_map[f]
+            if f == "condition_id":
+                cond_objs.append({"$or":[
+                    {"condition.recommended_name.id":{'$regex': val, '$options': 'i'}},
+                    {"condition.synonyms.id":{'$regex': val, '$options': 'i'}}
+                ]})
+            elif f == "condition_name":
+                cond_objs.append({"$or":[
+                    {"condition.recommended_name.name":{'$regex': val, '$options': 'i'}},
+                    {"condition.synonyms.name":{'$regex': val, '$options': 'i'}}
+                ]}) 
+            else:
+                cond_objs.append({path:{'$regex': val, '$options': 'i'}})
+
+    operation = query_obj["operation"].lower() if "operation" in query_obj else "and"
+    mongo_query = {} if cond_objs == [] else { "$"+operation+"": cond_objs }
+       
+    return mongo_query
+
+
+
+
+
+
+
+
+
+
+
+def get_simple_mongo_query(query_obj):
+
+
+    f_map = {
+        "record_id":"record_id",
+        "disease":"disease_component.disease",
+        "disease_entity_name":"disease_component.assessed_disease_entity.recommended_name",
+        "disease_entity_id":"disease_component.assessed_disease_entity_id",
+        "disease_entity_type":"disease_component.assessed_entity_type",
+        "specimen_name":"disease_component.specimen.name",
+        "specimen_id":"disease_component.specimen.id",
+        "specimen_loinc_code":"disease_component.specimen.loinc_code",
+        "best_disease_role":"best_disease_role.role",
+        "publication_id":"citation.reference.id"
+    }
+
+
+    #query_term = "\"%s\"" % (query_obj["term"])
+    query_term = query_obj["term"]
+    cond_objs = []
+    if query_obj["term_category"] == "any":
+        return {'$text': { '$search': query_term}}
+    elif query_obj["term_category"] == "disease":
+        for f in f_map:
+            if f in ["condition_id", "condition_name"]:
+                continue    
+            path = f_map[f]
+            cond_objs.append({path:{'$regex': query_term, '$options': 'i'}})   
+    elif query_obj["term_category"] == "condition":
+        cond_objs = [
+            {"condition.recommended_name.id":{'$regex': query_term, '$options': 'i'}},
+            {"condition.synonyms.id":{'$regex': query_term, '$options': 'i'}},
+            {"condition.recommended_name.name":{'$regex': query_term, '$options': 'i'}},
+            {"condition.synonyms.name":{'$regex': query_term, '$options': 'i'}}
+        ]
+
+    mongo_query = {} if cond_objs == [] else { "$or": cond_objs }
+
+    return mongo_query
+
+
+
