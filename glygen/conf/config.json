@@ -420,7 +420,7 @@
             "field_info":{
                 "biomarker_id":{"type":"string", "maxlen":200}
             	,"paginated_tables":{"type":"string", "maxlen":10000}
-	    }
+	    		}
             ,"requiredfields":["biomarker_id"]
             ,"collectionlist":["c_biomarker"]
         }
@@ -442,23 +442,23 @@
         }
         ,"biomarker_search":{
             "field_info":{
-                "biomarker_id":{"type":"string", "maxlen":200},
-		"biomarker_canonical_id":{"type":"string", "maxlen":200},
-		"biomarker":{"type":"string", "maxlen":200},
-		"biomarker_entity_name":{"type":"string", "maxlen":200},
-		"biomarker_entity_id":{"type":"string", "maxlen":200},
-		"biomarker_entity_type":{"type":"string", "maxlen":200},
-		"specimen_name":{"type":"string", "maxlen":200},
-		"specimen_id":{"type":"string", "maxlen":200},
-		"specimen_loinc_code":{"type":"string", "maxlen":200},
-		"best_biomarker_role":{"type":"string", "maxlen":200},
-		"condition_id":{"type":"string", "maxlen":200},
-		"condition_name":{"type":"string", "maxlen":200},
-            	"publication_id":{"type":"string", "maxlen":200}
-	    }
+               "biomarker_id":{"type":"string", "maxlen":200},
+					"biomarker_canonical_id":{"type":"string", "maxlen":200},
+					"biomarker":{"type":"string", "maxlen":200},
+					"biomarker_entity_name":{"type":"string", "maxlen":200},
+					"biomarker_entity_id":{"type":"string", "maxlen":200},
+					"biomarker_entity_type":{"type":"string", "maxlen":200},
+					"specimen_name":{"type":"string", "maxlen":200},
+					"specimen_id":{"type":"string", "maxlen":200},
+					"specimen_loinc_code":{"type":"string", "maxlen":200},
+					"best_biomarker_role":{"type":"string", "maxlen":200},
+					"condition_id":{"type":"string", "maxlen":200},
+					"condition_name":{"type":"string", "maxlen":200},
+            		"publication_id":{"type":"string", "maxlen":200}
+	    		}
             ,"requiredfields":[]
             ,"collectionlist":["c_biomarker","c_cache"]
-	}
+			}
         ,"biomarker_list":{
             "field_info":{
                 "id":{"type":"string"}
@@ -473,8 +473,54 @@
             }
             ,"requiredfields":["id"]
             ,"collectionlist":["c_cache"]
+       	}
+			,"disease_detail":{
+            "field_info":{
+                "record_id":{"type":"string", "maxlen":200}
+               ,"paginated_tables":{"type":"string", "maxlen":10000}
+            }
+            ,"requiredfields":["record_id"]
+            ,"collectionlist":["c_disease"]
         }
-	,"motif_detail":{
+        ,"disease_searchinit":{
+            "field_info":{
+            }
+            ,"requiredfields":[]
+            ,"collectionlist":["c_searchinit"]
+        }
+        ,"disease_search_simple":{
+            "field_info":{
+                "query_type":{"type":"string"}
+                ,"operation":{"type":"string"}
+                ,"term":{"type":"string"}
+                ,"term_category":{"type":"string"}
+            }
+            ,"requiredfields":["term", "term_category"]
+            ,"collectionlist":["c_disease","c_cache"]
+         }
+ 			,"disease_search":{
+            "field_info":{
+               "record_id":{"type":"string", "maxlen":200}
+				}
+            ,"requiredfields":[]
+            ,"collectionlist":["c_disease","c_cache"]
+         }
+			,"disease_list":{
+            "field_info":{
+                "id":{"type":"string"}
+                ,"sort":{"type":"string"}
+                ,"order":{"type":"string"}
+                ,"limit":{"type":"number"}
+                ,"offset":{"type":"number"}
+            }
+            ,"returnfields":{
+                "int":["hit_score"]
+                ,"string":["record_id"]
+            }
+            ,"requiredfields":["id"]
+            ,"collectionlist":["c_cache"]
+         }
+		 	,"motif_detail":{
             "field_info":{
                 "motif_ac":{"type":"string", "maxlen":20}
                 ,"glytoucan_ac":{"type":"string", "maxlen":20}

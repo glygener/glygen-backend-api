@@ -110,6 +110,12 @@
 	"/biomarker/search_simple/ < tests/examples/biomarker/search_simple.json",
 	"/biomarker/search < tests/examples/biomarker/search.json",
 	"/biomarker/list < tests/examples/biomarker/list.json",
+	"/disease/detail/doid.1612  ",
+   "/disease/search_init/  ",
+   "/disease/search_simple/ < tests/examples/disease/search_simple.json",
+   "/disease/search < tests/examples/disease/search.json",
+   "/disease/list < tests/examples/disease/list.json",
+
 	"/pagination/page < tests/examples/pagination/protein.json",
 	"/pagination/page < tests/examples/pagination/site.json",
 	"/pagination/page < tests/examples/pagination/glycan.json",

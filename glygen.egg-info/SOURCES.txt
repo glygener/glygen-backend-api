@@ -14,6 +14,8 @@ glygen/data_apilib.py
 glygen/db.py
 glygen/directsearch.py
 glygen/directsearch_apilib.py
+glygen/disease.py
+glygen/disease_apilib.py
 glygen/document.py
 glygen/event.py
 glygen/event_apilib.py
