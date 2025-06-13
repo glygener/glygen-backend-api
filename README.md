@@ -23,112 +23,106 @@ the second command should show that you are are in 2.0 branch.
 Visit https://data.glygen.org/ftp/ to see what data release/version $VER you want to 
 download (for example 2.0.2), and run the python script given to download from
 that release. Since this will take long, use nohup as shown below.
-
-   ```
-   nohup python3 download_data.py -v $VER > logfile.log & 
-   ```
-
-
-## Step-2: Creating and starting docker container for mongodb
-Run the python script given to create a mongodb container with admin
-authentication creditials given in the conf/config.json file.
-   ```
-   python3 create_mongodb_container.py -s $DEP
-   docker ps --all 
-   ```
-where $DEP is your deployment server which can be  dev, tst, beta or prd.
-The last command should list docker all containers and you should see the container
-you created 'running_glygen_mongo_$DEP'. To start this container, the best way is
-to create a service file (/usr/lib/systemd/system/docker-glygen-mongo-$DEP.service),
-and place the following content in it. 
-   ```
-   [Unit]
-   Description=Glygen MONGODB Container ($DEP)
-   Requires=docker.service
-   After=docker.service
-
-   [Service]
-   Restart=always
-   ExecStart=/usr/bin/docker start -a running_glygen_mongo_$DEP
-   ExecStop=/usr/bin/docker stop -t 2 running_glygen_mongo_$DEP
-
-   [Install]
-   WantedBy=default.target
-   ```
-
-This will allow you to start/stop the container with the following commands, and ensure
-that the container will start on server reboot.
-   ```
-   $ sudo systemctl daemon-reload 
-   $ sudo systemctl enable docker-glygen-mongo-$DEP.service
-   $ sudo systemctl start docker-glygen-mongo-$DEP.service
-   $ sudo systemctl stop docker-glygen-mongo-$DEP.service
-   ```
+```
+nohup python3 download_data.py -v $VER > logfile.log & 
+```
 
 
-## Step-3: Initialize and populate your mongodb database
- Run the command given below to create the "glydb" database and glydb user
-(this should be done only one time). 
-   ```
-   python3 init_mongodb.py
-   ```
+## Step-2: Installing and initializing MongoDB
+To install MongoDB Community Edition, follow instructions give at
+https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-red-hat/
+
+a) To initialize MongoDB for the first time, make sure sure authorization is 
+disabled -- meaning the following lines in /etc/mongod.conf are commented:
+```   
+#security:
+#   authorization: "enabled"    
+```
+    
+To start mongod service run:
+```
+$ sudo systemctl restart mongod
+```
+
+b)	Run the following commands to create admin user for your MongoDB installation
+```
+$ mongosh
+> use admin
+> db.createUser({ user: "$admin_userid", pwd: "$admin_password", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
+```
+where $admin_userid and $admin_password are user_id and password for the admin user
+
+
+
+c)	Uncomment the lines in step (a) to enable authorization and restart mongod
+```
+$ sudo systemctl restart mongod
+```
+
+d) Run the following commands to create database user
+```
+$ mongosh
+> use admin
+> db.auth("$admin_userid", "$admin_password")
+> use $db_name
+> db.createUser({user: "$db_userid", pwd: "$db_password", roles: [ { role: "readWrite", db: "$db_name" } ]})
+```
+where $db_name, $db_userid, $db_password are database name, user_id and password for your specific database
+
+
+e)	Now you can login and execute commands 
+```
+$ mongosh --username $db_userid --password $db_password --authenticationDatabase $db_name
+> use $db_name
+> show collections
+```
+
+## Step-3: Loading JSON objects to various collections
 You can populate collections using the following commands:
-   ```
-   python3 populate_all_collections.py -s $DEP -v $VER -m full
-   ```
-To update a single collection, you can use:
-   ```
-   python3 populate_one_collection.py -s $DEP -v $VER -c $COLL
-   ```
-where the variable $COLL is collection name (e.g., c_glycan)
-=======
-   python3 init_mongodb.py -s $DEP
-   ```
-You can populate collections using the following commands:
-   ```
-   python3 populate_collections.py -s $DEP -v $VER
-   ```
+```
+$ python3 populate_collection_host.py -s prd -v $VER
+```
+	
 To update a few collections, you can use:
-   ```
-   python3 populate_collection.py -s $DEP -v $VER -c $COLLS
-   ```
+```  
+python3 populate_collection_host.py -s prd -v $VER -c $COLLS   
+```
 where the variable $COLLS is collection names separated by comma (e.g., c_glycan,c_motif)
-
 
 
 ## Step-4: Creating and starting docker container for mongodb
 Run the python script given to build and create the API container:
-   ```
-   python3 create_api_container.py -s $DEP
-   docker ps --all 
-   ```
-where $DEP is your deployment server which can be  dev, tst, beta or prd.
+```
+python3 create_api_container.py -s prd
+docker ps --all 
+```
+where "prd" is your deployment server which can be  dev, tst, beta or prd.
 The last command should list docker all containers and you should see the container
-you created "running_glygen_api_$DEP". To start this container, the best way is
-to create a service file (/usr/lib/systemd/system/docker-glygen-api-$DEP.service),
+you created "running_glygen_api_prd". To start this container, the best way is
+to create a service file (/usr/lib/systemd/system/docker-glygen-api-prd.service),
 and place the following content in it. 
-   ```
+```
    [Unit]
-   Description=Glygen API Container ($DEP)
+   Description=Glygen API Container (prd)
    Requires=docker.service
    After=docker.service
 
    [Service]
    Restart=always
-   ExecStart=/usr/bin/docker start -a running_glygen_api_$DEP
-   ExecStop=/usr/bin/docker stop -t 2 running_glygen_api_$DEP
+   ExecStart=/usr/bin/docker start -a running_glygen_api_prd
+   ExecStop=/usr/bin/docker stop -t 2 running_glygen_api_prd
 
    [Install]
    WantedBy=default.target
-   ```
+```
 
 This will allow you to start/stop the container with the following commands, and ensure
 that the container will start on server reboot.
    ```
    $ sudo systemctl daemon-reload 
-   $ sudo systemctl enable docker-glygen-api-$DEP.service
-   $ sudo systemctl start docker-glygen-api-$DEP.service
-   $ sudo systemctl stop docker-glygen-api-$DEP.service
+   $ sudo systemctl enable docker-glygen-api-prd.service
+   $ sudo systemctl start docker-glygen-api-prd.service
+   $ sudo systemctl stop docker-glygen-api-prd.service
    ```
 
 You can also edit the "Dockerfile" to add "-w $n" to the ENTRYPOINT line
@@ -149,7 +143,7 @@ Run the python script given to build and create the API container:
    python3 create_substructure_container.py 
    docker ps --all 
    ```
-where $DEP is your deployment server which can be  dev, tst, beta or prd.
+where prd is your deployment server which can be  dev, tst, beta or prd.
 The last command should list docker all containers and you should see the container
 you created "running_substructure". To start this container, the best way is
 to create a service file (/usr/lib/systemd/system/docker-glygen-substructure.service),

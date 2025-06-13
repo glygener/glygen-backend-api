@@ -2087,6 +2087,40 @@
             }
         ]
     },
+	 "disease":{
+		"columns": [
+			{   
+                "id": "disease_id",
+                "property_name": "disease_id",
+                "label": "Disease ID",
+                "order": 1,
+                "tooltip": "",
+                "immutable": true,
+                "default": true,
+                "categories": [
+                    {   
+                        "id": "General",
+                        "order": 1
+                    }
+                ]
+        	},
+			{
+                "id": "recommended_name",
+                "property_name": "recommended_name",
+                "label": "Disease Name",
+                "order": 2,
+                "tooltip": "",
+                "immutable": true,
+                "default": true,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": 2
+                    }
+                ]
+         }
+		]
+	 },
     "biomarker": {
         "columns": [
             {

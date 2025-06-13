@@ -228,6 +228,47 @@
             }
         }
     },
+	 "disease":{
+		"by_biomarker_type":{
+               "grp_idx": 0,
+               "group_order":0,
+               "group_label":"By Biomarker Type",
+               "order_dict":{
+                  "diagnostic":1,
+                  "monitoring":2,
+                  "predictive":3,
+                  "prognostic":4,
+                  "risk":5,
+                  "response":6,
+                  "safety":7
+               },
+               "label_dict":{
+                  "diagnostic":"Diagnostic",
+                  "monitoring":"Monitoring",
+                  "predictive":"Predictive",
+                  "prognostic":"Prognostic",
+                  "risk":"Risk",
+                  "response":"Response",
+                  "safety":"Safety"
+               }
+		},
+		"by_data":{
+         "grp_idx": 1,
+         "group_order":1,
+         "group_label":"By Data",
+         "label_dict":{},
+         "order_dict":{"Protein":1,"Glycan":2,"Biomaker":3}
+		},
+     	"by_organism":{
+            "grp_idx": 3,
+            "group_order":3,
+            "group_label":"By Organism",
+            "order_dict":{
+            },
+            "label_dict":{
+            }
+      } 
+	 },
     "site":{
         "by_glycosylation_type":{
             "grp_idx": 1,

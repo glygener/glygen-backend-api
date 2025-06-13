@@ -24,19 +24,19 @@ search_init_query_model = api.model("Disease Search Init Query", {})
 search_simple_query_model = api.model("Disease Simple Search Query",
     {
         "term_category": fields.String(required=True, default="disease"),
-        "term": fields.String(required=True, default="AA4686-1")
+        "term": fields.String(required=True, default="doid.1612")
     }
 )
 
 detail_query_model = api.model("Disease Detail Query", 
     { 
-        "disease_id": fields.String(required=True, default="AA4686-1")
+        "record_id": fields.String(required=True, default="doid.1612")
     }
 )
 
 search_query_model = api.model("Disease Search Query",
     { 
-        "disease_id": fields.String(required=True, default="AA4686-1"),
+        "record_id": fields.String(required=True, default="doid.1612"),
         "disease":fields.String(required=True, default="increased IL6 level"),
         "disease_entity_name":fields.String(required=True, default="Interleukin-6"),
         "disease_entity_id":fields.String(required=True, default="P05231-1"),
@@ -133,8 +133,8 @@ class Disease(Resource):
         return res_obj, http_code
 
     @api.doc(False)
-    def get(self, disease_id):
-        return self.post(disease_id)
+    def get(self, record_id):
+        return self.post(record_id)
 
 
 

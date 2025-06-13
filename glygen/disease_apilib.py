@@ -165,6 +165,8 @@ def disease_search(query_obj, config_obj):
     for obj in dbh[collection].find(mongo_query,prj_obj):
         record_list.append(obj["record_id"])
 
+    #return {"recordlist":record_list, "n":len(record_list)}
+
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     cache_coll = "c_cache"
@@ -187,44 +189,126 @@ def disease_search(query_obj, config_obj):
 def get_mongo_query(query_obj):
 
 
-    f_map = {
-        "record_id":"record_id",
-        "disease":"disease_component.disease",
-        "disease_entity_name":"disease_component.assessed_disease_entity.recommended_name",
-        "disease_entity_id":"disease_component.assessed_disease_entity_id",
-        "disease_entity_type":"disease_component.assessed_entity_type",
-        "specimen_name":"disease_component.specimen.name",
-        "specimen_id":"disease_component.specimen.id",
-        "specimen_loinc_code":"disease_component.specimen.loinc_code",
-        "best_disease_role":"best_disease_role.role",
-        "condition_id":"condition.recommended_name.id",
-        "condition_name":"condition.recommended_name.name",
-        "publication_id":"citation.reference.id"
-    }
-
-
-
-                        
-    cond_objs = []
-    for f in f_map:
-        if f in query_obj:
-            val = query_obj[f]
-            path = f_map[f]
-            if f == "condition_id":
-                cond_objs.append({"$or":[
-                    {"condition.recommended_name.id":{'$regex': val, '$options': 'i'}},
-                    {"condition.synonyms.id":{'$regex': val, '$options': 'i'}}
-                ]})
-            elif f == "condition_name":
-                cond_objs.append({"$or":[
-                    {"condition.recommended_name.name":{'$regex': val, '$options': 'i'}},
-                    {"condition.synonyms.name":{'$regex': val, '$options': 'i'}}
-                ]}) 
-            else:
-                cond_objs.append({path:{'$regex': val, '$options': 'i'}})
+    cond_obj_list = []
+    f = "disease_id"
+    if f in query_obj:
+        val = query_obj[f]
+        cond_obj_list.append({
+            "$or":[
+                {"record_id":{'$eq': val.lower()}},
+                {"disease_id":{'$eq': val.upper()}},
+                {"recommended_name.id":{'$eq': val.upper()}},
+                {"synonyms.id":{'$eq': val.upper()}}
+            ]
+        })
+    f = "disease_name"
+    if f in query_obj:
+        val = query_obj[f]
+        cond_obj_list.append({
+            "$or":[
+                {"recommended_name.name":{'$regex': val, '$options': 'i'}},
+                {"synonyms.name":{'$regex': val, '$options': 'i'}}
+            ]   
+        })              
+    f = "protein_id"
+    if f in query_obj:
+        val = query_obj[f]
+        cond_obj_list.append({
+            "$or":[
+                {"proteins.uniprot_canonical_ac":{'$eq': val.upper()}},
+                {"proteins.uniprot_ac":{'$eq': val.upper()}},
+                {"proteins.uniprot_id":{'$eq': val}},
+                {"proteins.refseq_ac":{'$eq': val}}
+            ]   
+        })   
+    f = "tax_id"
+    if f in query_obj:
+        val = query_obj[f]
+        cond_obj_list.append({
+            "$or":[
+                {"proteins.species.taxid":{'$eq': val}},
+                {"glycans.species.taxid":{'$eq': val}}
+            ]   
+        })   
+    f = "tax_name"
+    if f in query_obj:
+        val = query_obj[f]
+        cond_obj_list.append({
+            "$or":[
+                {"proteins.species.name":{'$regex': val, '$options': 'i'}},
+                {"proteins.species.common_name":{'$regex': val, '$options': 'i'}},
+                {"proteins.species.glygen_name":{'$regex': val, '$options': 'i'}},
+                {"proteins.species.reference_species":{'$regex': val, '$options': 'i'}},
+                {"glycans.species.name":{'$regex': val, '$options': 'i'}},
+                {"glycans.species.common_name":{'$regex': val, '$options': 'i'}},
+                {"glycans.species.glygen_name":{'$regex': val, '$options': 'i'}},
+                {"glycans.species.reference_species":{'$regex': val, '$options': 'i'}}
+            ]   
+        })   
+    f = "protein_name"
+    if f in query_obj:
+        val = query_obj[f]
+        cond_obj_list.append({
+            "$or":[
+                {"proteins.protein_names.name":{'$regex': val, '$options': 'i'}}
+            ]
+        })
+    f = "gene_name"
+    if f in query_obj:
+        val = query_obj[f]
+        cond_obj_list.append({
+            "$or":[
+                {"proteins.gene_names.name":{'$regex': val, '$options': 'i'}}
+            ]
+        })
+    f = "glycan_id"
+    if f in query_obj:
+        val = query_obj[f]
+        cond_obj_list.append({
+            "$or":[
+                {"glycans.glytoucan_ac":{'$eq': val.upper()}}
+            ]
+        })
+    f = "glycan_name"
+    if f in query_obj:
+        val = query_obj[f]
+        cond_obj_list.append({
+            "$or":[
+                {"glycans.names.name":{'$regex': val, '$options': 'i'}}
+            ]
+        })
+    f = "biomarker_id"
+    if f in query_obj:
+        val = query_obj[f]
+        cond_obj_list.append({
+            "$or":[
+                {"biomarkers.biomarker_id":{'$eq': val.upper()}},
+                {"biomarkers.biomarker_canonical_id":{'$eq': val.upper()}}
+            ]
+        })
+    f = "biomarker_type"
+    if f in query_obj:
+        val = query_obj[f]
+        cond_obj_list.append({
+            "$or":[
+                {"biomarkers.best_biomarker_role.role":{'$regex': val, '$options': 'i'}}
+            ]
+        })
+    f = "biomarker_component"
+    if f in query_obj:
+        val = query_obj[f]
+        cond_obj_list.append({
+            "$or":[
+                {"biomarkers.biomarker_component.assessed_biomarker_entity.recommended_name":{'$regex': val, '$options': 'i'}},
+                {"biomarkers.biomarker_component.assessed_biomarker_entity.synonyms":{'$regex': val, '$options': 'i'}},
+                {"biomarkers.biomarker_component.biomarker":{'$regex': val, '$options': 'i'}},
+                {"biomarkers.biomarker_component.assessed_biomarker_entity_id":{'$regex': val, '$options': 'i'}},
+                {"biomarkers.biomarker_component.evidence.id":{'$regex': val, '$options': 'i'}}
+            ]
+        })
 
     operation = query_obj["operation"].lower() if "operation" in query_obj else "and"
-    mongo_query = {} if cond_objs == [] else { "$"+operation+"": cond_objs }
+    mongo_query = {} if cond_obj_list == [] else { "$"+operation+"": cond_obj_list }
        
     return mongo_query
 
@@ -241,39 +325,57 @@ def get_mongo_query(query_obj):
 def get_simple_mongo_query(query_obj):
 
 
-    f_map = {
-        "record_id":"record_id",
-        "disease":"disease_component.disease",
-        "disease_entity_name":"disease_component.assessed_disease_entity.recommended_name",
-        "disease_entity_id":"disease_component.assessed_disease_entity_id",
-        "disease_entity_type":"disease_component.assessed_entity_type",
-        "specimen_name":"disease_component.specimen.name",
-        "specimen_id":"disease_component.specimen.id",
-        "specimen_loinc_code":"disease_component.specimen.loinc_code",
-        "best_disease_role":"best_disease_role.role",
-        "publication_id":"citation.reference.id"
-    }
-
-
-    #query_term = "\"%s\"" % (query_obj["term"])
     query_term = query_obj["term"]
     cond_objs = []
     if query_obj["term_category"] == "any":
         return {'$text': { '$search': query_term}}
     elif query_obj["term_category"] == "disease":
-        for f in f_map:
-            if f in ["condition_id", "condition_name"]:
-                continue    
-            path = f_map[f]
-            cond_objs.append({path:{'$regex': query_term, '$options': 'i'}})   
-    elif query_obj["term_category"] == "condition":
         cond_objs = [
-            {"condition.recommended_name.id":{'$regex': query_term, '$options': 'i'}},
-            {"condition.synonyms.id":{'$regex': query_term, '$options': 'i'}},
-            {"condition.recommended_name.name":{'$regex': query_term, '$options': 'i'}},
-            {"condition.synonyms.name":{'$regex': query_term, '$options': 'i'}}
+            {"recommended_name.id":{'$regex': query_term, '$options': 'i'}},
+            {"recommended_name.name":{'$regex': query_term, '$options': 'i'}},
+            {"synonyms.id":{'$regex': query_term, '$options': 'i'}},
+            {"synonyms.name":{'$regex': query_term, '$options': 'i'}}
+        ]
+    elif query_obj["term_category"] == "protein":
+        cond_objs = [
+            {"proteins.uniprot_canonical_ac":{'$regex': query_term, '$options': 'i'}},
+            {"proteins.uniprot_ac":{'$regex': query_term, '$options': 'i'}},
+            {"proteins.uniprot_id":{'$regex': query_term, '$options': 'i'}},
+            {"proteins.refseq_ac":{'$regex': query_term, '$options': 'i'}},
+            {"proteins.protein_names.name":{'$regex': query_term, '$options': 'i'}},
+            {"proteins.gene_names.name":{'$regex': query_term, '$options': 'i'}}
+        ]
+    elif query_obj["term_category"] == "glycan":
+        cond_objs = [
+            {"glycans.glytoucan_ac":{'$regex': query_term, '$options': 'i'}},
+            {"glycans.names":{'$regex': query_term, '$options': 'i'}}
+        ]
+    elif query_obj["term_category"] == "organism":
+        cond_objs = [
+            {"proteins.species.taxid":{'$regex': query_term, '$options': 'i'}},
+            {"proteins.species.name":{'$regex': query_term, '$options': 'i'}},
+            {"proteins.species.common_name":{'$regex': query_term, '$options': 'i'}},
+            {"proteins.species.glygen_name":{'$regex': query_term, '$options': 'i'}},
+            {"proteins.species.reference_species":{'$regex': query_term, '$options': 'i'}},
+            {"glycans.species.taxid":{'$regex': query_term, '$options': 'i'}},
+            {"glycans.species.name":{'$regex': query_term, '$options': 'i'}},
+            {"glycans.species.common_name":{'$regex': query_term, '$options': 'i'}},
+            {"glycans.species.glygen_name":{'$regex': query_term, '$options': 'i'}},
+            {"glycans.species.reference_species":{'$regex': query_term, '$options': 'i'}}
+        ]
+    elif query_obj["term_category"] == "biomarker":
+        cond_objs = [
+            {"biomarkers.biomarker_id":{'$regex': query_term, '$options': 'i'}},
+            {"biomarkers.biomarker_canonical_id":{'$regex': query_term, '$options': 'i'}},
+            {"biomarkers.biomarker_component.assessed_biomarker_entity.recommended_name":{'$regex': query_term, '$options': 'i'}},
+            {"biomarkers.biomarker_component.assessed_biomarker_entity.synonyms.synonym":{'$regex': query_term, '$options': 'i'}},
+            {"biomarkers.biomarker_component.biomarker":{'$regex': query_term, '$options': 'i'}},
+            {"biomarkers.biomarker_component.assessed_biomarker_entity_id":{'$regex': query_term, '$options': 'i'}},
+            {"biomarkers.biomarker_component.evidence.id":{'$regex': query_term, '$options': 'i'}}
         ]
 
+
+ 
     mongo_query = {} if cond_objs == [] else { "$or": cond_objs }
 
     return mongo_query
