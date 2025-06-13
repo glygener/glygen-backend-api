@@ -128,7 +128,10 @@ def main():
     glydb_user = config_obj["dbinfo"][db_name]["user"]
     glydb_pass = config_obj["dbinfo"][db_name]["password"]
     glydb_name =  config_obj["dbinfo"][db_name]["db"]
-    indexed_colls = ["c_protein", "c_glycan", "c_motif", "c_publication", "c_biomarker","c_idtrack", "c_network"]
+    indexed_colls = [
+        "c_protein", "c_glycan", "c_motif", "c_publication", "c_biomarker","c_idtrack", 
+        "c_network", "c_disease"
+    ]
     archived_colls = ["c_video", "c_outreach", "c_event"]
 
     db_list = config_obj["downloads"]["jsondb"]

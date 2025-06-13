@@ -1,30 +1,54 @@
-{
-    "status_obj_list": [
-        {
-            "status_obj": {
-                "start_time": "Mon Apr 28 16:07:31 2025",
-                "end_time": "Mon Apr 28 16:07:34 2025",
-                "time_run": "2.613186s",
-                "jobid": 2800002
-            }
-        }
-    ]
-}
+ 	"disease_id":{"type":"string", "maxlen":200}
+               ,"disease_name":{"type":"string", "maxlen":200}
+               ,"protein_id":{"type":"string", "maxlen":200}
+               ,"tax_id":{"type":"number"}
+               ,"tax_name":{"type":"string", "maxlen":200}
+               ,"protein_name":{"type":"string", "maxlen":200}
+               ,"gene_name":{"type":"string", "maxlen":200}
+               ,"glycan_id":{"type":"string", "maxlen":200}
+               ,"glycan_name":{"type":"string", "maxlen":200}
+               ,"biomarker_id":{"type":"string", "maxlen":200}
+               ,"biomarker_type":{"type":"string", "maxlen":200}
+               ,"biomarker_component":{"type":"string", "maxlen":200}
 
 
-{
-  "status_obj_list": [
-    {
-      "result_count": 2,
-      "output_files": [
-        {
-          "format": "tsv",
-          "url": "https://data.glygen.org/ln2data/userdata/prd/jobs/2800003/output.tsv"
-        }
-      ]
-    }
-  ]
-}
-           
- 
 
+   disease_id
+  	recommended_name.id
+ 	recommended_name.name
+  	synonyms.id
+  	synonyms.name
+	proteins.uniprot_canonical_ac
+	proteins.uniprot_ac
+	proteins.uniprot_id
+	proteins.refseq_ac
+	proteins.species.taxid
+	proteins.species.name
+	proteins.species.common_name
+	proteins.species.glygen_name
+	proteins.species.reference_species
+	proteins.protein_names.name
+	proteins.gene_names.name
+	glycans.glytoucan_ac
+	glycans.names
+	glycans.species.taxid
+	glycans.species.name
+	glycans.species.common_name
+	glycans.species.glygen_name
+	glycans.species.reference_species
+	biomarkers.biomarker_id
+	biomarkers.biomarker_canonical_id
+	biomarkers.best_biomarker_role.role
+	biomarkers.biomarker_component.assessed_biomarker_entity.recommended_name
+	biomarkers.biomarker_component.assessed_biomarker_entity.synonyms
+	biomarkers.biomarker_component.biomarker
+	biomarkers.biomarker_component.assessed_biomarker_entity_id
+	biomarkers.biomarker_component.evidence.id
+
+
+
+
+
+
+
+		

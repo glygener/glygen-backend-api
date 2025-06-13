@@ -500,7 +500,18 @@
          }
  			,"disease_search":{
             "field_info":{
-               "record_id":{"type":"string", "maxlen":200}
+               "disease_id":{"type":"string", "maxlen":200}
+    				,"disease_name":{"type":"string", "maxlen":200}
+    				,"protein_id":{"type":"string", "maxlen":200}
+    				,"tax_id":{"type":"number"}
+    				,"tax_name":{"type":"string", "maxlen":200}
+   	 			,"protein_name":{"type":"string", "maxlen":200}
+    				,"gene_name":{"type":"string", "maxlen":200}
+    				,"glycan_id":{"type":"string", "maxlen":200}
+    				,"glycan_name":{"type":"string", "maxlen":200}
+    				,"biomarker_id":{"type":"string", "maxlen":200}
+    				,"biomarker_type":{"type":"string", "maxlen":200}
+    				,"biomarker_component":{"type":"string", "maxlen":200}
 				}
             ,"requiredfields":[]
             ,"collectionlist":["c_disease","c_cache"]
