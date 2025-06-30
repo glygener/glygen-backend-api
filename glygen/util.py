@@ -585,12 +585,15 @@ def clean_obj(obj, prop_list, obj_type):
             elif type(obj[k1]) in [dict, list]:
                 clean_obj(obj[k1], [], obj_type)
     elif type(obj) is list:
+        empty_idx_list = []
         for k1 in range(0, len(obj)):
             if obj[k1] in["", [], {}]:
-                del obj[k1]
+                #del obj[k1]
+                empty_idx_list.append(k1)
             elif type(obj[k1]) in [dict, list]:
                 clean_obj(obj[k1], [], obj_type)
-    
+        for k1 in empty_idx_list:
+            del obj[k1] 
    
     return
 
