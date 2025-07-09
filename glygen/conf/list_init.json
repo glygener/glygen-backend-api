@@ -1182,7 +1182,7 @@
                 "order": 25,
                 "tooltip": "",
                 "immutable": false,
-                "default": false,
+                "default": true,
                 "categories": [
                     {
                         "id": "Sequence",

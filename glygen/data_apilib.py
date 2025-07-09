@@ -516,6 +516,7 @@ def get_sequence_buffer_one(dbh, list_obj, query_obj, config_obj):
 
     data_buffer = ""
 
+
     format_list_one = ["iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic", "grits"]
     format_list_two = ["fasta"]
 
@@ -526,6 +527,7 @@ def get_sequence_buffer_one(dbh, list_obj, query_obj, config_obj):
         seq_lines = []
         for j in range(0, res_count):
             obj = list_obj["results"][j]
+            
             if format_lc not in obj:
                 continue
             if format_lc == "byonic":

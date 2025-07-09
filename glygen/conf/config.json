@@ -371,7 +371,7 @@
             ,"returnfields":{
                 "int":["hit_score", "number_proteins", "number_monosaccharides", "number_enzymes"]
                 ,"float":["mass", "mass_pme"]
-                ,"string":["glytoucan_ac", "iupac", "glycoct", "wurcs"]
+                ,"string":["glytoucan_ac", "iupac", "glycoct", "wurcs","byonic"]
             }
             ,"requiredfields":["id"]
             ,"collectionlist":["c_cache"]
