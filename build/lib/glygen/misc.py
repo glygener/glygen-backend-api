@@ -45,7 +45,8 @@ class Misc(Resource):
  
             mongo_dbh, error_obj = get_mongodb()
             res_obj["connection_status"] = "success" if error_obj == {} else error_obj
-            
+            #return res_obj
+    
             res_obj["user_agent"] = request.headers.get('User-Agent')
             res_obj["referer"] = request.headers.get('referer')
             res_obj["origin"] = request.headers.get('Origin')

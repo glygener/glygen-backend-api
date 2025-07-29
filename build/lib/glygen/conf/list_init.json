@@ -1319,9 +1319,9 @@
                 ]
             },
             {
-                "id": "pubchem_id",
-                "property_name": "pubchem_id",
-                "label": "PubChem ID",
+                "id": "pubchem_compound_id",
+                "property_name": "pubchem_compound_id",
+                "label": "PubChem Compound ID",
                 "order": 34,
                 "tooltip": "",
                 "immutable": false,
@@ -1333,6 +1333,21 @@
                     }
                 ]
             },
+				{
+                "id": "pubchem_substance_id",
+                "property_name": "pubchem_substance_id",
+                "label": "PubChem Substance ID",
+                "order": 34,
+                "tooltip": "",
+                "immutable": false,
+                "default": false,
+                "categories": [
+                    {
+                        "id": "Identifier",
+                        "order": 30
+                    }
+                ]
+            },	
             {
                 "id": "chebi_id",
                 "property_name": "chebi_id",

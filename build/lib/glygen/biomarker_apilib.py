@@ -126,7 +126,7 @@ def biomarker_detail(query_obj, config_obj):
 
 
     clean_obj(obj, config_obj["removelist"]["c_biomarker"], "c_biomarker")
-    obj["crossref"] = []
+    #obj["crossref"] = []
 
     if "condition" in obj:
         if "synonyms" in obj["condition"]:

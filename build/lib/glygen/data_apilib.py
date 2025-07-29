@@ -53,7 +53,8 @@ def list_download(query_obj, config_obj, data_path):
 
     format_lc = query_obj["format"].lower()
     download_type_list = [
-        "glycan_list", "site_list", "biomarker_list", "motif_list","protein_list", "genelocus_list", "ortholog_list",
+        "glycan_list", "site_list", "biomarker_list", "motif_list","protein_list", "genelocus_list", 
+        "disease_list","ortholog_list",
         "idmapping_list_mapped", "idmapping_list_unmapped", "idmapping_list_all", 
         "idmapping_list_all_collapsed",
         "isoform_mapper_list"
@@ -63,6 +64,7 @@ def list_download(query_obj, config_obj, data_path):
     data_buffer = ""
     if query_obj["download_type"] in download_type_list:
         list_obj = get_list_object(query_obj, config_obj)
+        #return {"list_obj":list_obj}
         if "error_list" in list_obj:
             return list_obj
         if format_lc in ["json"]:
@@ -122,7 +124,7 @@ def detail_download(query_obj, config_obj, data_path):
  
     download_type_list =  [
         "glycan_detail", "motif_detail", "protein_detail","protein_detail_isoformset","protein_detail_homologset", 
-        "site_detail", "publication_detail", "glycan_image", "biomarker_detail"
+        "site_detail", "publication_detail", "glycan_image", "biomarker_detail", "disease_detail"
     ]
     sequence_format_list = ["fasta", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic", "grits"]
 
@@ -177,6 +179,24 @@ def detail_download(query_obj, config_obj, data_path):
 
 
 
+def get_path_value(path, obj):
+
+    p_list = path.split(".")
+    val_obj = obj
+    for p in p_list:
+        if type(val_obj) is dict:
+            val_obj = val_obj[p] if p in val_obj else ""
+        elif type(val_obj) is list:
+            tmp_list = []
+            for val in val_obj:
+                if type(val) is dict:
+                    if type(val[p]) in [int, float, str]:
+                        tmp_list.append(str(val[p]))
+            val_obj = ";".join(tmp_list)
+    return val_obj
+
+
+
 
 
 def section_download(query_obj, config_obj, sec_info, data_path):
@@ -206,7 +226,7 @@ def section_download(query_obj, config_obj, sec_info, data_path):
    
     format_lc = query_obj["format"].lower()
     download_type_list =  [ "protein_section", "site_section", "glycan_section", 
-        "motif_section", "publication_section", "biomarker_section"]
+        "motif_section", "publication_section", "biomarker_section", "disease_section"]
 
 
     data_buffer = ""
@@ -237,6 +257,7 @@ def section_download(query_obj, config_obj, sec_info, data_path):
             res = get_results_from_record_id(dbh, query_obj, section_field)
             if "error_list" in res:
                 return res
+        #return res
         obj_list = res["results"]
         #return obj_list
         
@@ -276,10 +297,11 @@ def section_download(query_obj, config_obj, sec_info, data_path):
 
             o = {}
             for path in lbl_dict:
-                p_list = path.split(".")
-                val_obj = obj
-                for p in p_list:
-                    val_obj = val_obj[p] if p in val_obj else val_obj
+                val_obj = get_path_value(path, obj)
+                #p_list = path.split(".")
+                #val_obj = obj
+                #for p in p_list:
+                #    val_obj = val_obj[p] if p in val_obj else val_obj
            
                 if sec.find("snv_") != -1 and path == "sequence":
                     val_obj = "%s -> %s" % (obj["sequence_org"], obj["sequence_mut"])
@@ -296,6 +318,7 @@ def section_download(query_obj, config_obj, sec_info, data_path):
                         for val in val_obj:
                             if type(val) in [str, int, float]:
                                 tmp_list.append(str(val))
+                            
                     val_obj = "; ".join(tmp_list)
 
                 #if type(val_obj) is list and path == "referenced_proteins":
@@ -622,7 +645,10 @@ def get_record_object(dbh, query_obj, config_obj):
     if query_obj["download_type"] in ["publication_detail", "publication_section"]:
         main_id = "record_id"
     if query_obj["download_type"] in ["biomarker_detail", "biomarker_section"]:
-        main_id = "biomarker_id"    
+        main_id = "biomarker_id"   
+    if query_obj["download_type"] in ["disease_detail", "disease_section"]:
+        main_id = "disease_id"
+ 
     mongo_query = {main_id:{"$regex":query_obj["id"], "$options":"i"}}
 
     record_obj = dbh[collection].find_one(mongo_query)
@@ -695,7 +721,8 @@ def get_results_from_record_id(dbh, query_obj, section_field):
         "glycan":"glytoucan_ac",
         "publication":"record_id",
         "biomarker":"biomarker_id",
-        "motif":"motif_ac"
+        "motif":"motif_ac",
+        "disease":"disease_id"
     }
     table_id, record_id = query_obj["section"], query_obj["id"]
     if table_id == "glycosylation_reported_with_glycans":
@@ -712,6 +739,8 @@ def get_results_from_record_id(dbh, query_obj, section_field):
     if doc == None:
         return {"error_list":[{"error_code":"no record found for %s=%s" % (main_id_field, record_id)}]}
    
+    #return doc["disease"]
+
     obj_list = []
     sec = section_field
     #sec = table_id

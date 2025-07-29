@@ -188,6 +188,7 @@ class Supersearch(Resource):
                 #return res_obj, 200
                 if res_obj == None:
                     res_obj = get_cached_records_indirect(req_obj, config_obj, False)
+                    #return res_obj, 200
                     if "error_list" not in res_obj:
                         res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
                         #return res, 200

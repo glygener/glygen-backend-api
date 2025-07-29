@@ -162,9 +162,17 @@ def disease_search(query_obj, config_obj):
     collection = "c_disease"
     record_list = []
     prj_obj = {"record_id":1}
+    if "search_type" in query_obj:
+        if query_obj["search_type"] == "hierarchy":
+            prj_obj["id_list"] = 1
+ 
     for obj in dbh[collection].find(mongo_query,prj_obj):
         record_list.append(obj["record_id"])
-
+        if "search_type" in query_obj:
+            if query_obj["search_type"] == "hierarchy":
+                for child_id in obj["id_list"]:
+                    record_list.append(child_id.lower().replace(":","."))
+    record_list = list(set(record_list))
     #return {"recordlist":record_list, "n":len(record_list)}
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
@@ -193,23 +201,44 @@ def get_mongo_query(query_obj):
     f = "disease_id"
     if f in query_obj:
         val = query_obj[f]
-        cond_obj_list.append({
-            "$or":[
-                {"record_id":{'$eq': val.lower()}},
-                {"disease_id":{'$eq': val.upper()}},
-                {"recommended_name.id":{'$eq': val.upper()}},
-                {"synonyms.id":{'$eq': val.upper()}}
-            ]
-        })
+        tmp_list = val.replace(" ", "").split(",")
+        qid_list = []
+        for qid in tmp_list:
+            if qid.strip() != "":
+                qid_list.append(qid)
+        or_list = [
+            {"record_id":{'$in': qid_list}},
+            {"disease_id":{'$in': qid_list}},
+            {"recommended_name.id":{'$in': qid_list}},
+            {"synonyms.id":{'$in': qid_list}}
+        ]
+        #or_list = [
+        #    {"record_id":{'$eq': val.lower()}},
+        #    {"disease_id":{'$eq': val.upper()}},
+        #    {"recommended_name.id":{'$eq': val.upper()}},
+        #    {"synonyms.id":{'$eq': val.upper()}}
+        #]
+        #if "search_type" in query_obj:
+        #    if query_obj["search_type"] == "hierarchy":
+        #        or_list.append({"id_list":{'$eq':val.upper()}})
+        cond_obj_list.append({"$or":or_list})
+
+
+
+
     f = "disease_name"
     if f in query_obj:
         val = query_obj[f]
-        cond_obj_list.append({
-            "$or":[
-                {"recommended_name.name":{'$regex': val, '$options': 'i'}},
-                {"synonyms.name":{'$regex': val, '$options': 'i'}}
-            ]   
-        })              
+        or_list = [
+            {"recommended_name.name":{'$regex': val, '$options': 'i'}},
+            {"synonyms.name":{'$regex': val, '$options': 'i'}}
+        ]
+        #if "search_type" in query_obj:
+        #    if query_obj["search_type"] == "hierarchy":
+        #        or_list.append({"name_list":{'$regex':val, '$options':'i'}})
+        cond_obj_list.append({"$or":or_list})
+ 
+              
     f = "protein_id"
     if f in query_obj:
         val = query_obj[f]
