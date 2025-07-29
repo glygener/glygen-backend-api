@@ -1,0 +1,6 @@
+#Get container IP address
+container_name="running_substructure"
+
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $container_name
+
+
