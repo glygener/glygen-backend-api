@@ -190,10 +190,10 @@
                     "path": "biomarker_id",
                     "label": "Biomarker ID"
                 },
-                {
+					 {
                     "path": "biomarker_canonical_id",
-                    "label": "Canonical Biomarker ID"
-                },
+                    "label": "Biomarker Canonical ID"
+                },	
                 {
                     "path": "best_biomarker_role",
                     "label": "Best Biomarker Role"
@@ -201,7 +201,15 @@
                 {
                     "path":"assessed_biomarker_entity",
                     "label": "Assessed Biomarker Entity"
-                }
+                },
+					{
+                  "path":"condition.recommended_name.id",
+                  "label":"Disease ID"
+               },
+               {
+                  "path":"condition.recommended_name.name",
+                  "label":"Disease Name"
+               }
             ],
             "sectionfield": "biomarkers"
         }
@@ -673,7 +681,32 @@
             ],
             "sectionfield": "expression_disease"
         },
-	"biomarkers": {
+		  "disease": {
+            "filterinfo": {
+                "field": "",
+                "valuelist": []
+            },
+            "fieldmap": [
+                {
+                    "path": "disease_id",
+                    "label": "Disease Recommended ID"
+                },
+					 {
+                    "path": "recommended_name.name",
+                    "label": "Disease Recommended Name"
+                },
+					 {
+                    "path": "synonyms.id",
+                    "label": "Disease Synonym IDs"
+                },
+					 {
+                    "path": "synonyms.name",
+                    "label": "Disease Synonyms"
+                }
+            ],
+            "sectionfield": "disease"
+        },
+		  "biomarkers": {
             "filterinfo": {
                 "field": "",
                 "valuelist": []
@@ -684,17 +717,25 @@
                     "label": "Biomarker ID"
                 },
                 {
-		    "path": "biomarker_canonical_id",
-                    "label": "Canonical Biomarker ID"
+                    "path": "biomarker_canonical_id",
+                    "label": "Biomarker Canonical ID"
                 },
-                {
+					 {
                     "path": "best_biomarker_role",
                     "label": "Best Biomarker Role"
                 },
-		{
-		    "path":"assessed_biomarker_entity",
+					{
+		    				"path":"assessed_biomarker_entity",
                     "label": "Assessed Biomarker Entity"
-		}
+					},
+					{
+						"path":"condition.recommended_name.id",
+						"label":"Disease ID"
+					},
+					{
+                  "path":"condition.recommended_name.name",
+                  "label":"Disease Name"
+               }
             ],
             "sectionfield": "biomarkers"
         }
@@ -1406,9 +1447,9 @@
                     "path": "biomarker_id",
                     "label": "Biomarker ID"
                 },
-                {
+					 {
                     "path": "biomarker_canonical_id",
-                    "label": "Canonical Biomarker ID"
+                    "label": "Biomarker Canonical ID"
                 },
                 {
                     "path": "best_biomarker_role",
@@ -1417,7 +1458,15 @@
                 {
                     "path":"assessed_biomarker_entity",
                     "label": "Assessed Biomarker Entity"
-                }
+                },
+					{
+                  "path":"condition.recommended_name.id",
+                  "label":"Disease ID"
+               },
+               {
+                  "path":"condition.recommended_name.name",
+                  "label":"Disease Name"
+               }
             ],
             "sectionfield": "biomarkers"
         }
@@ -1446,9 +1495,9 @@
                     "path": "biomarker_id",
                     "label": "Biomarker ID"
                 },
-                {
+				 	 {
                     "path": "biomarker_canonical_id",
-                    "label": "Canonical Biomarker ID"
+                    "label": "Biomarker Canonical ID"
                 },
                 {
                     "path": "best_biomarker_role",
@@ -1457,7 +1506,15 @@
                 {
                     "path":"assessed_biomarker_entity",
                     "label": "Assessed Biomarker Entity"
-                }
+                },
+					{
+                  "path":"condition.recommended_name.id",
+                  "label":"Disease ID"
+               },
+               {
+                  "path":"condition.recommended_name.name",
+                  "label":"Disease Name"
+               }
             ],
             "sectionfield": "biomarkers"
         }
@@ -1488,5 +1545,47 @@
             ],
             "sectionfield": "biomarker_component"
         }
-    }
+   },
+	"disease": {
+        	"proteins": {
+            "filterinfo": {
+                "field": "",
+                "valuelist": []
+            },
+            "fieldmap": [
+           	 	{"path":"uniprot_canonical_ac", "label":"UniProtKB Canonical AC"},
+            	{"path":"uniprot_id", "label":"UniProtKB ID"},
+            	{"path":"refseq_ac", "label":"RefSeq AC"},
+            	{"path":"glycoprotein", "label":"Glycoprotein"},
+            	{"path":"species.taxid", "label":"Tax ID"},
+					{"path":"species.name", "label":"Organism"},
+            	{"path":"protein_names.name", "label":"Protein Name"},
+            	{"path":"gene_names.name", "label":"Gene Name"}
+				],
+            "sectionfield": "proteins"
+       	},
+			"glycans": {
+            "filterinfo": {
+                "field": "",
+                "valuelist": []
+            },
+            "fieldmap": [
+               {"path":"glytoucan_ac", "label":"GlyTouCan AC"},
+               {"path":"species.taxid", "label":"Tax ID"},
+               {"path":"species.name", "label":"Organism"}
+            ],
+            "sectionfield": "glycans"
+        },
+		  "biomarkers": {
+            "filterinfo": {
+                "field": "",
+                "valuelist": []
+            },
+            "fieldmap": [
+               {"path":"biomarker_id", "label":"Biomarker ID"},
+               {"path":"best_biomarker_role.role", "label":"Biomarker Role"}
+            ],
+            "sectionfield": "biomarkers"
+        }
+    } 
 }

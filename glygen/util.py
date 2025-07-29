@@ -867,7 +867,6 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
     for doc in dbh[cache_collection].find(mongo_query):
         id_list += doc["results"]
     
-
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "conf/list_init.json")
     list_init_conf = json.loads(open(json_url, "r").read())
@@ -911,6 +910,8 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
 
     if final_fields == ["filter_code"]:
         prj_obj = {}
+
+    #return {"error_list":prj_obj}
 
 
     batch_size = config_obj["supersearch_batch_size"]
@@ -1068,6 +1069,7 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
 
     ts_list.append("9-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     #return {"error_list":ts_list}
+    #return {"error_list":cached_obj["results"]}
 
     res_obj["query"] = query_obj
 

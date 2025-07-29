@@ -1,0 +1,3 @@
+mongostat --username superadmin --password superpass  --authenticationDatabase admin
+mongotop --username superadmin --password superpass  --authenticationDatabase admin
+

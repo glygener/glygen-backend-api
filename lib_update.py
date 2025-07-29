@@ -259,7 +259,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     cache_coll = "c_cache"
-    cachable_list = ["protein","glycan","site"]
+    cachable_list = ["protein","glycan","site","disease"]
     for dst_record_type in record_type_list:
         n = len(list(final_hit_dict[dst_record_type].keys())) if dst_record_type in final_hit_dict else 0
         list_id = ""
@@ -482,7 +482,7 @@ def load_network(doc_list, initial_hit_dict, empty_search_flag, ignore_dict,reas
             if src_record_type not in node_hit_dict:
                 node_hit_dict[src_record_type] = {}
             node_hit_dict[src_record_type][src_record_id] = True
-
+            #print ("flag-1", src_record_type, src_record_id)
 
     #for src_record_type in record_type_list:
     for src_record_type in config_obj["node_order"][initial_record_list[0]]:
@@ -497,7 +497,8 @@ def load_network(doc_list, initial_hit_dict, empty_search_flag, ignore_dict,reas
                 if src_record_type not in node_hit_dict:
                     node_hit_dict[src_record_type] = {}
                 node_hit_dict[src_record_type][src_record_id] = True
-
+                #print ("flag-2",src_record_type, src_record_id)
+ 
             if empty_search_flag == False:
                 # any outgoing link/edge passes this step if src node has not been filtered out
                 # or the src node has already made it to the node_hit_dict
@@ -554,7 +555,7 @@ def load_network(doc_list, initial_hit_dict, empty_search_flag, ignore_dict,reas
                         node_hit_dict[src_record_type] = {}
                     node_hit_dict[src_record_type][src_record_id] = True
                     #FL.write("src_added:%s\n" % (quad_id))
-
+                    #print ("flag-3",src_record_type, src_record_id)
                     # adding src_node to edge_hit_dict
                     if src_record_type not in edge_hit_dict:
                         edge_hit_dict[src_record_type] = {}
@@ -569,6 +570,7 @@ def load_network(doc_list, initial_hit_dict, empty_search_flag, ignore_dict,reas
                     if dst_record_type not in node_hit_dict:
                         node_hit_dict[dst_record_type] = {}
                     node_hit_dict[dst_record_type][dst_record_id] = True
+                    #print ("flag-4",dst_record_type, dst_record_id)
                     #FL.write("dst_added:%s\n" % (quad_id))
                     # adding dst_node to edge_hit_dict
                     if dst_record_type not in edge_hit_dict:

@@ -343,7 +343,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
             reason = "hit-in-initial-%s-query" % (record_type)
             add_reason(reason_dict, record_type, record_id, "self", record_id)  
 
-    #return initial_hit_dict
+    return initial_hit_dict
 
 
 
@@ -393,7 +393,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     cache_coll = "c_cache"
-    cachable_list = ["protein","glycan","site"]
+    cachable_list = ["protein","glycan","site", "disease"]
     for dst_record_type in record_type_list:
         n = len(list(final_hit_dict[dst_record_type].keys())) if dst_record_type in final_hit_dict else 0
         list_id = ""

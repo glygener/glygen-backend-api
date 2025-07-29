@@ -24,19 +24,19 @@ search_init_query_model = api.model("Biomarker Search Init Query", {})
 search_simple_query_model = api.model("Biomarker Simple Search Query",
     {
         "term_category": fields.String(required=True, default="biomarker"),
-        "term": fields.String(required=True, default="AA4686-1")
+        "term": fields.String(required=True, default="AN6278-5")
     }
 )
 
 detail_query_model = api.model("Biomarker Detail Query", 
     { 
-        "biomarker_id": fields.String(required=True, default="AA4686-1")
+        "biomarker_id": fields.String(required=True, default="AN6278-5")
     }
 )
 
 search_query_model = api.model("Biomarker Search Query",
     { 
-        "biomarker_id": fields.String(required=True, default="AA4686-1"),
+        "biomarker_id": fields.String(required=True, default="AN6278-5"),
         "biomarker":fields.String(required=True, default="increased IL6 level"),
         "biomarker_entity_name":fields.String(required=True, default="Interleukin-6"),
         "biomarker_entity_id":fields.String(required=True, default="P05231-1"),
@@ -109,7 +109,7 @@ class Biomarker(Resource):
 
 
 @api.route('/detail/<biomarker_id>/')
-@api.doc(params={"biomarker_id": {"in": "query", "default": "AA4686-1"}})
+@api.doc(params={"biomarker_id": {"in": "query", "default": "AN6278-5"}})
 class Biomarker(Resource):
     @api.doc('detail')
     @api.expect(detail_query_model)

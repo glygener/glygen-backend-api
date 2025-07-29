@@ -104,7 +104,7 @@ http POST :8082/job/queue/ < tests/examples/job/job_queue.json
 http POST :8082/outreach/addnew/ < tests/examples/outreach/outreach_addnew.json
 http POST :8082/outreach/list/ < tests/examples/outreach/outreach_list.json
 http POST :8082/outreach/update/ < tests/examples/outreach/outreach_update.json
-http POST :8082/biomarker/detail/AA4686-1  
+http POST :8082/biomarker/detail/AN6278-5
 http POST :8082/biomarker/search_init/  
 http POST :8082/biomarker/search_simple/ < tests/examples/biomarker/search_simple.json
 http POST :8082/biomarker/search < tests/examples/biomarker/search.json
