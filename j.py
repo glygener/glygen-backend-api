@@ -25,10 +25,8 @@ def get_path_value(path, obj):
 ###############################
 def main():
 
-    doc = json.load(open("junk"))
-    for obj in doc:
-        if obj["id"] == "disease":
-            print (json.dumps(obj, indent=4))
+    doc = json.load(open("glygen/conf/config.json"))
+    print (json.dumps(doc, indent=4))
     exit()
 
 

@@ -212,15 +212,6 @@ def get_mongo_query(query_obj):
             {"recommended_name.id":{'$in': qid_list}},
             {"synonyms.id":{'$in': qid_list}}
         ]
-        #or_list = [
-        #    {"record_id":{'$eq': val.lower()}},
-        #    {"disease_id":{'$eq': val.upper()}},
-        #    {"recommended_name.id":{'$eq': val.upper()}},
-        #    {"synonyms.id":{'$eq': val.upper()}}
-        #]
-        #if "search_type" in query_obj:
-        #    if query_obj["search_type"] == "hierarchy":
-        #        or_list.append({"id_list":{'$eq':val.upper()}})
         cond_obj_list.append({"$or":or_list})
 
 
@@ -233,9 +224,6 @@ def get_mongo_query(query_obj):
             {"recommended_name.name":{'$regex': val, '$options': 'i'}},
             {"synonyms.name":{'$regex': val, '$options': 'i'}}
         ]
-        #if "search_type" in query_obj:
-        #    if query_obj["search_type"] == "hierarchy":
-        #        or_list.append({"name_list":{'$regex':val, '$options':'i'}})
         cond_obj_list.append({"$or":or_list})
  
               
