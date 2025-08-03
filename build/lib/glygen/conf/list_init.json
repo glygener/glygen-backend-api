@@ -2133,6 +2133,21 @@
                         "order": 2
                     }
                 ]
+         },
+			{
+                "id": "synonyms",
+                "property_name": "synonyms",
+                "label": "Disease Synonyms",
+                "order": 3,
+                "tooltip": "",
+                "immutable": true,
+                "default": true,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": 2
+                    }
+                ]
          }
 		]
 	 },

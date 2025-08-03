@@ -507,7 +507,7 @@
     				,"tax_id":{"type":"number"}
     				,"tax_name":{"type":"string", "maxlen":200}
    	 			,"protein_name":{"type":"string", "maxlen":200}
-    				,"gene_name":{"type":"string", "maxlen":200}
+					,"gene_name":{"type":"string", "maxlen":200}
     				,"glycan_id":{"type":"string", "maxlen":200}
     				,"glycan_name":{"type":"string", "maxlen":200}
     				,"biomarker_id":{"type":"string", "maxlen":200}

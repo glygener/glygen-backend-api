@@ -1122,3 +1122,19 @@ patch.sh: line 15:  4087 Killed                  python3 update-search-init.py -
 ['c_init', 'c_searchinit', 'c_stat', 'c_outreach', 'c_video', 'c_event', 'c_species', 'c_disease', 'c_biomarker', 'c_motif', 'c_path', 'c_glytoucan', 'c_idtrack', 'c_network', 'c_batch', 'c_glycan', 'c_publication', 'c_site']
 patch.sh: line 18: 27969 Killed                  python3 populate_collection_host.py -s $ser -v $ver -c $colls
 1229102
+243606
+158426
+211173
+1229102
+243606
+319615
+916902
+38323
+11371
+1229319
+patch.sh: line 19:   910 Killed                  python3 populate_collection_host.py -s $ser -v $ver -c $colls
+patch.sh: line 19:  3002 Killed                  python3 populate_collection_host.py -s $ser -v $ver -c $colls
+38323
+9037
+1226985
+38511
