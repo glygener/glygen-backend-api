@@ -67,7 +67,7 @@ class Typeahead(Resource):
                 "biomarker_id", "biomarker_name","biomarker_type",
                 "biomarker_disease_id", "biomarker_disease_name"
             ]
-            field_list_two = ["uniprot_canonical_ac", "uniprot_id", "refseq_ac", 
+            field_list_two = ["uniprot_canonical_ac", "uniprot_id", "refseq_ac", "protein_id",
                 "protein_name", "gene_name", "pathway_id", "pathway_name", 
                 "disease_name","disease_id", 
                 "go_id", "go_term", "protein_pmid",

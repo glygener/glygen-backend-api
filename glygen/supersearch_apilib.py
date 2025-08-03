@@ -343,7 +343,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
             reason = "hit-in-initial-%s-query" % (record_type)
             add_reason(reason_dict, record_type, record_id, "self", record_id)  
 
-    return initial_hit_dict
+    #return initial_hit_dict
 
 
 

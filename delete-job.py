@@ -21,14 +21,17 @@ def main():
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
+    parser.add_option("-i","--jobid",action="store",dest="jobid",help="1/2/3/...")
+
     (options,args) = parser.parse_args()
 
-    for key in ([options.server]):
+    for key in ([options.server, options.jobid]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     server = options.server
+    job_id = int(options.jobid)
     coll = "c_job"
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
@@ -52,10 +55,20 @@ def main():
         )
         client.server_info()
         dbh = client[glydb_name]
-        res = dbh[coll].delete_many({})
-        cmd = "sudo rm -rf /data/shared/glygen/userdata/%s/jobs/*" % (server)
-        x = subprocess.getoutput(cmd)
+        q = {"jobid":job_id}
+        doc = dbh[coll].find_one(q)
+        if doc != None:
+            res = dbh[coll].delete_many(q)
+        else:
+            print ("Job %s is not in c_job" % (job_id))
 
+        job_dir = "/data/shared/glygen/userdata/%s/jobs/%s/" % (server, job_id)
+        if os.path.isdir(job_dir):
+            cmd = "sudo rm -rf " + job_dir
+            x = subprocess.getoutput(cmd)
+            #print (cmd)
+        else:
+             print ("out dir %s does not exist " % (job_dir))
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

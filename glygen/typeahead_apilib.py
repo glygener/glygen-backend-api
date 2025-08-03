@@ -264,14 +264,31 @@ def protein_typeahead(query_obj, config_obj):
 
     res_obj = []
     mongo_query = {}
+    
     if query_obj["field"] == "uniprot_canonical_ac":
         mongo_query = {
             "$or":[
+                {"uniprot_canonical_ac":{'$regex': query_obj["value"], '$options': 'i'}}
+            ]
+        }
+        prj_obj = {"uniprot_canonical_ac":1}
+        for obj in dbh[collection].find(mongo_query,prj_obj):
+            val = obj["uniprot_canonical_ac"]
+            if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
+                res_obj.append(val)
+                if len(res_obj) >= query_obj["limit"]:
+                    return sorted(res_obj)
+
+    if query_obj["field"] == "protein_id":
+        mongo_query = {
+            "$or":[
                 {"uniprot_canonical_ac":{'$regex': query_obj["value"], '$options': 'i'}},
+                {"refseq.ac":{'$regex': query_obj["value"], '$options': 'i'}},
                 {"uniprot_id":{'$regex': query_obj["value"], '$options': 'i'}}
             ]
         }
-        prj_obj = {"uniprot_canonical_ac":1, "uniprot_id":1}
+        prj_obj = {"uniprot_canonical_ac":1, "uniprot_id":1, "refseq":1}
+        #return prj_obj
         for obj in dbh[collection].find(mongo_query,prj_obj):
             val = obj["uniprot_canonical_ac"]
             if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
@@ -283,6 +300,16 @@ def protein_typeahead(query_obj, config_obj):
                 res_obj.append(val)
                 if len(res_obj) >= query_obj["limit"]:
                     return sorted(res_obj)
+            if "refseq" in obj:
+                if "ac" in obj["refseq"]:
+                    val = obj["refseq"]["ac"]
+                    if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
+                        res_obj.append(val)
+                        if len(res_obj) >= query_obj["limit"]:
+                            return sorted(res_obj)
+
+    
+
     if query_obj["field"] == "go_id":
         q_obj = {'$regex': query_obj["value"], '$options': 'i'}
         mongo_query = {"go_annotation.categories.go_terms.id":q_obj}
