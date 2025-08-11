@@ -1,24 +1,15 @@
+{
+	"record_type":"protein",
+	"id_type":"uniprot_canonical_ac",   	
+	"columns":[
+	],
+	"filters": [
+		{
+			"id": "by_mass",
+			"operator": "OR",
+			"selected": [ "0k_1k" ]
+		}
+	]
+}
 
-0 glycosylation_reported_with_glycan by_amino_acid
-1 glycosylation_reported_with_glycan by_biomarker_type
-2 glycosylation_reported_with_glycan by_glycosylation_type
-3 glycosylation_reported_with_glycan by_mass
-4 glycosylation_reported_with_glycan by_monosaccharide
-5 glycosylation_reported_with_glycan by_organism
-6 glycosylation_reported_with_glycan by_sequence_details
-7 glycosylation_reported_with_glycan by_site_type
 
-0 glycosylation_reported by_amino_acid
-1 glycosylation_reported by_glycosylation_type
-2 glycosylation_reported by_mining_tool
-3 glycosylation_reported by_site_type
-
-0 glycosylation_predicted by_amino_acid
-1 glycosylation_predicted by_glycosylation_type
-2 glycosylation_predicted by_prd_tool
-3 glycosylation_predicted by_site_type
-
-0 glycosylation_automatic_literature_mining by_amino_acid
-1 glycosylation_automatic_literature_mining by_glycosylation_type
-2 glycosylation_automatic_literature_mining by_mining_tool
-3 glycosylation_automatic_literature_mining by_site_type

@@ -1138,3 +1138,38 @@ patch.sh: line 19:  3002 Killed                  python3 populate_collection_hos
 9037
 1226985
 38511
+1
+1
+1
+16
+11254
+335
+121
+754
+1
+701693
+38511
+2488
+56984
+211173
+158426
+1226985
+319615
+Traceback (most recent call last):
+  File "populate_collection_host.py", line 252, in <module>
+    main()
+  File "populate_collection_host.py", line 169, in main
+    tmpdb_dbh[coll].drop()
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/collection.py", line 936, in drop
+    dbo.drop_collection(self.__name, session=session)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/database.py", line 743, in drop_collection
+    session=session)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/database.py", line 504, in _command
+    client=self.__client)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/pool.py", line 730, in command
+    exhaust_allowed=exhaust_allowed)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/network.py", line 160, in command
+    parse_write_concern_error=parse_write_concern_error)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/helpers.py", line 157, in _check_command_response
+    raise NotPrimaryError(errmsg, response)
+pymongo.errors.NotPrimaryError: interrupted at shutdown, full error: {'ok': 0.0, 'errmsg': 'interrupted at shutdown', 'code': 11600, 'codeName': 'InterruptedAtShutdown'}

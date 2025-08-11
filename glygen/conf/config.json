@@ -18,7 +18,10 @@
     "admin_list": [
         "rykahsay@gwu.edu"
     ],
-    "jobinfo": {
+    "perf_test":{
+			"testdb_path":"/local/glygen/testdb/"
+	 },
+	 "jobinfo": {
         "tspath": "/usr/local/bin/ts",
         "maxjobs": 5,
         "structure_search": {
@@ -115,8 +118,33 @@
                     "cmdflag": "-num_alignments"
                 }
             ]
-        },
-		  "clustalw": {
+        	},
+		  	"batch_retrieval":{
+				"incmdflag": "-i",
+            "outcmdflag": "-o",
+            "max_input_records": 100,
+            "path": {
+                "prd": "python /app/job_submitters/batch_retrieval.py",
+                "beta": "python /app/job_submitters/batch_retrieval.py",
+                "tst": "python /app/job_submitters/batch_retrieval.py",
+                "dev": "python /app/job_submitters/batch_retrieval.py"
+            },
+            "input_files": [
+                {
+                    "name": "input.json",
+                    "format": "json"
+                }
+            ],
+            "output_files": [
+                {
+                    "name": "output.json",
+                    "format": "json"
+                }
+            ],
+				"paramlist": [
+				]
+			},
+			"clustalw": {
             "incmdflag": "-infile",
             "outcmdflag": "-outfile",
             "max_input_records": 100,
@@ -140,16 +168,25 @@
             ],
 				"paramlist": [
                 {
-						"id": "seq_dict",
+						  "id": "ac_list",
+                    "label": "AC list",
+                    "type": "list",
+                    "value": "xxx",
+						  "optional":true
+					 },
+					 {
+                    "id": "seq_dict",
                     "label": "Sequences",
                     "type": "dict",
-                    "value": "xxx"
-					 },
+                    "value": "xxx",
+							"optional":true
+                },
 					 {
                     "id": "output",
                     "label": "Output Format",
                     "type": "str",
-                    "value": "fasta"
+                    "value": "fasta",
+						  "cmdflag":"-output"
                 }
 				]
 		  },

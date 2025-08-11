@@ -79,9 +79,11 @@ def job_addnew(query_obj, config_obj, data_path, server):
     init_obj = dbh["c_init"].find_one({})
     release_dir = data_path + "/releases/data/v-%s/" % (init_obj["dataversion"])
 
-    validation_obj, error_list = validate_input(query_obj, config_obj, release_dir, server)
+    validation_obj, error_list = validate_input(dbh, query_obj, config_obj, release_dir, server)
     if error_list != []:
         return {"error_list":error_list, "result_count":0}
+
+    #return {"v":validation_obj, "q":query_obj}
 
     #if "intable" in query_obj:
     #    query_obj.pop("intable")
@@ -149,13 +151,14 @@ def job_addnew(query_obj, config_obj, data_path, server):
                     FW.write("%s\n" % (json.dumps(json.loads(validation_obj["buffer"]))))
                 else:
                     FW.write("%s\n" % (validation_obj["buffer"]))
+            gap = "=" if query_obj["jobtype"] in ["clustalw"] else " "
 
             if "incmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
                 in_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["incmdflag"]
-                query_obj["cmd"] += " %s %s" % (in_cmdflag, in_file)
+                query_obj["cmd"] += " %s%s%s" % (in_cmdflag,gap, in_file)
             if "outcmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
                 out_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["outcmdflag"]
-                query_obj["cmd"] += " %s %s" % (out_cmdflag, out_file)
+                query_obj["cmd"] += " %s%s%s" % (out_cmdflag,gap, out_file)
             if "urlcmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
                 api_url = config_obj["jobinfo"][query_obj["jobtype"]]["apiurl"][server]
                 url_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["urlcmdflag"]
@@ -271,10 +274,14 @@ def job_results(query_obj, config_obj):
         if status_obj["status"] == "finished":
             if job_type == "blastp":
                 res_obj = parse_blastp_ouput(out_file, config_obj)
+            elif job_type == "clustalw":
+                res_obj = parse_clustalw_ouput(out_file, config_obj)
             elif job_type in ["structure_search"]:
                 res_obj = parse_structure_search_ouput(out_file, config_obj, job_info)
             elif job_type in ["isoform_mapper"]:
                 res_obj = parse_isoform_mapper_ouput(out_file)
+            elif job_type in ["batch_retrieval"]:
+                res_obj = parse_batch_retrieval_ouput(out_file, config_obj, job_info)
 
 
         ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
@@ -328,6 +335,12 @@ def parse_isoform_mapper_ouput(out_file):
     return res_obj
 
 
+
+def parse_batch_retrieval_ouput(out_file, config_obj, job_info):
+
+    out_json = json.loads(open(out_file, "r").read())
+
+    return out_json
 
 
 
@@ -385,6 +398,89 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
     res_obj["list_id"] = list_id
     
     return res_obj
+
+
+
+
+
+def parse_clustalw_ouput(out_file, config_obj):
+
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+  
+    out_dict = {"alignment":{}, "annotation":{}} 
+    for record in SeqIO.parse(out_file, "fasta"):
+        seq_id = record.id.strip()
+        seq = str(record.seq)
+        out_dict["alignment"][seq_id] = seq
+
+
+    seq_id_list = list(out_dict["alignment"].keys())
+
+    sec_list = ["ptm_annotation", "glycation", "snv", "glycosylation",
+        "site_annotation", "mutagenesis", "phosphorylation"
+    ]
+    prj_obj = {"uniprot_canonical_ac":1, "isoforms":1, "uniprot_id":1, "gene_names":1, "protein_names":1, "species":1}
+    for sec in sec_list:
+        prj_obj[sec] = 1
+
+    seqid2doc = {}
+    mongo_query = {"isoforms.isoform_ac":{"$in": seq_id_list}}
+    for doc in dbh["c_protein"].find(mongo_query,prj_obj):
+        for sec in ["snv", "expression_disease"]:
+            if sec in doc:
+                for obj in doc[sec]:
+                    if "disease" not in obj:
+                        continue
+                    for o in obj["disease"]:
+                        o.pop("synonyms")
+        for obj in doc["isoforms"]:
+            isoform_ac = obj["isoform_ac"]
+            seqid2doc[isoform_ac] = doc
+
+
+    for seq_id in seq_id_list:
+        if seq_id not in seqid2doc:
+            continue
+        doc = seqid2doc[seq_id]
+        canon = doc["uniprot_canonical_ac"]
+        sp_obj = doc["species"][0]
+
+        o = {"tax_id":sp_obj["taxid"], "name":sp_obj["name"],
+                "common_name":sp_obj["common_name"], "glygen_name":sp_obj["glygen_name"]}
+        if seq_id not in out_dict["annotation"]:
+            out_dict["annotation"][seq_id] = {}
+        out_dict["annotation"][seq_id]["species"] = o
+        out_dict["annotation"][seq_id]["protein_name"] = ""
+        out_dict["annotation"][seq_id]["uniprot_canonical_ac"] = canon
+        if "protein_names" in doc:
+            if len(doc["protein_names"]) > 0:
+                out_dict["annotation"][seq_id]["protein_name"] = doc["protein_names"][0]["name"]
+        out_dict["annotation"][seq_id]["gene_name"] = ""
+        if "gene_names" in doc:
+            if len(doc["gene_names"]) > 0:
+                out_dict["annotation"][seq_id]["gene_name"] = doc["gene_names"][0]["name"]
+        out_dict["annotation"][seq_id]["uniprot_id"] = ""
+        if "uniprot_id" in doc:
+            out_dict["annotation"][seq_id]["uniprot_id"] = doc["uniprot_id"]
+        for o in doc["protein_names"]:
+            if o["type"] == "recommended":
+                out_dict["annotation"][seq_id]["protein_name"] = o["name"]
+                break
+        for o in doc["gene_names"]:
+            if o["type"] == "recommended":
+                out_dict["annotation"][seq_id]["gene_name"] = o["name"]
+                break
+
+        for sec in sec_list:
+            out_dict["annotation"][seq_id][sec] = doc[sec] if seq_id == canon else []
+
+
+    return out_dict
+
 
 
 
@@ -455,6 +551,13 @@ def parse_blastp_ouput(out_file, config_obj):
     seqid2doc = {}
     mongo_query = {"isoforms.isoform_ac":{"$in": seq_id_list}}
     for doc in dbh["c_protein"].find(mongo_query,prj_obj):
+        for sec in ["snv", "expression_disease"]:
+            if sec in doc:
+                for obj in doc[sec]:
+                    if "disease" not in obj:
+                        continue
+                    for o in obj["disease"]:
+                        o.pop("synonyms")
         for obj in doc["isoforms"]:
             isoform_ac = obj["isoform_ac"]
             seqid2doc[isoform_ac] = doc
@@ -871,7 +974,32 @@ def load_seq_dict(release_dir):
     return tmp_dict
 
 
-def validate_input(query_obj, config_obj, release_dir, server):
+def get_input_seq_dict(dbh, query_obj):
+
+    max_seq_count = 20
+    seq_count = 0
+    seq_dict = {}
+    if "seq_dict" in query_obj["parameters"]:
+        for seq_id in query_obj["parameters"]["seq_dict"]:
+            if seq_count < max_seq_count:
+                seq_dict[seq_id] = query_obj["parameters"]["seq_dict"][seq_id]
+            seq_count += 1
+
+    if "ac_list" in query_obj["parameters"]:
+        ac_list = query_obj["parameters"]["ac_list"]
+        mongo_query = {"isoforms.isoform_ac":{"$in": ac_list}}
+        for doc in dbh["c_protein"].find(mongo_query,{"isoforms":1}):
+            for obj in doc["isoforms"]:
+                isoform_ac = obj["isoform_ac"]
+                if seq_count < max_seq_count:
+                    seq_dict[isoform_ac] = obj["sequence"]["sequence"]
+                    seq_count += 1
+
+    return seq_dict
+
+
+
+def validate_input(dbh, query_obj, config_obj, release_dir, server):
     cmd_parts = []
     error_list = []
     if query_obj["jobtype"] not in config_obj["jobinfo"]:
@@ -881,7 +1009,8 @@ def validate_input(query_obj, config_obj, release_dir, server):
     else:
         for obj in config_obj["jobinfo"][query_obj["jobtype"]]["paramlist"]:
             if obj["id"] not in query_obj["parameters"]:
-                error_list.append({"error_code": "missing paramter = %s" % (obj["id"])})
+                if "optional" not in obj:
+                    error_list.append({"error_code": "missing paramter = %s" % (obj["id"])})
             else:
                 val_type = str(type(query_obj["parameters"][obj["id"]])).split(" ")[-1].replace(">","")
                 val_type = val_type.replace("'","")
@@ -898,11 +1027,12 @@ def validate_input(query_obj, config_obj, release_dir, server):
     query_obj["cmd"] = "%s" % (config_obj["jobinfo"][query_obj["jobtype"]]["path"][server])
 
 
+    gap = "=" if query_obj["jobtype"] in ["clustalw"] else " "
     for o in cmd_parts:
         if query_obj["jobtype"] == "blastp":
             if o["flag"] == "-db":
                 o["value"] = release_dir + "jsondb/blastdb/" + o["value"]
-        query_obj["cmd"] += " %s %s" % (o["flag"], o["value"])
+        query_obj["cmd"] += " %s%s%s" % (o["flag"], gap, o["value"])
 
     res_obj = {"buffer":""}
     if query_obj["jobtype"] == "blastp":
@@ -917,12 +1047,31 @@ def validate_input(query_obj, config_obj, release_dir, server):
         hash_str = "%s %s" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
         hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         query_obj["md5sum"] = hash_obj.hexdigest()
+    elif query_obj["jobtype"] == "clustalw":
+        seq_dict = get_input_seq_dict(dbh, query_obj)
+
+        e_list = []
+        for seq_id in seq_dict:
+            e_list += validate_protein_seq(seq_dict[seq_id])
+        if e_list != []:
+            return res_obj, e_list
+        res_obj["buffer"] = ""
+        for seq_id in seq_dict:
+            res_obj["buffer"] += ">%s\n%s\n\n" % (seq_id, seq_dict[seq_id])
+        hash_str = "%s" % (res_obj["buffer"])
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+        query_obj["md5sum"] = hash_obj.hexdigest()
     elif query_obj["jobtype"] in ["structure_search"]:
         query_obj["seq_id"] = "QUERY"
         res_obj["buffer"] = json.dumps(query_obj["parameters"])
-        #cmd = "echo \"%s\" | /usr/bin/md5sum" % (query_obj["parameters"]["seq"])
-        #query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
         hash_str = "%s %s" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
+        hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+        query_obj["md5sum"] = hash_obj.hexdigest()
+    elif query_obj["jobtype"] in ["batch_retrieval"]:
+        res_obj["buffer"] = json.dumps(query_obj["parameters"])
+        ns = query_obj["parameters"]["inputnamespace"] if "inputnamespace" in query_obj["parameters"] else ""
+        ac_list = query_obj["parameters"]["acclist"] if "acclist" in query_obj["parameters"] else []
+        hash_str = "%s %s" % (ns, " ".join(ac_list))
         hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         query_obj["md5sum"] = hash_obj.hexdigest()
     elif query_obj["jobtype"] in ["isoform_mapper"]:

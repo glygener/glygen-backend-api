@@ -28,6 +28,8 @@ RUN pip3 install glygen-1.0-py3-none-any.whl
 
 RUN mkdir -p /data/shared/glygen
 
+RUN mkdir -p /local/glygen/testdb
+
 RUN mkdir -p /usr/local/var/glygen-instance
 
 COPY ./instance/config.py /usr/local/var/glygen-instance/config.py
