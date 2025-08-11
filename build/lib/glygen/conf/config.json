@@ -1,27 +1,30 @@
 {
 	"server":"dev"
 	,"moduleversion":"0.0.0"
-        ,"datarelease":"2.0.2"
-        ,"session_life":24.0
-        ,"max_batch_size":100
-        ,"supersearch_batch_size":300000
-        ,"max_global_search_results":1000000
-        ,"max_query_value_len":10000
-        ,"max_sequence_len":3000
-        ,"max_download_records":100000
+	,"datarelease":"2.0.2"
+	,"session_life":24.0
+	,"max_batch_size":100
+	,"supersearch_batch_size":300000
+	,"max_global_search_results":1000000
+	,"max_query_value_len":10000
+	,"max_sequence_len":3000
+	,"max_download_records":100000
 	,"cache_batch_size":5000
-        ,"globalsearchcutoff":1.0
-        ,"max_results_count":{
-		  "glycan":100000
+	,"globalsearchcutoff":1.0
+	,"max_results_count":{
+		"glycan":100000
 		,"protein":100000
 	}
-        ,"admin_list":[
-            "rykahsay@gwu.edu"
-         ]
-        ,"jobinfo":{
-            "tspath":"/usr/local/bin/ts",
-            "maxjobs":5,
-	    "structure_search":{
+	,"admin_list":[
+		"rykahsay@gwu.edu"
+	]
+	,"perf_test":{
+		"testdb_path":"/local/glygen/testdb/"
+	}  
+	,"jobinfo":{
+		"tspath":"/usr/local/bin/ts",
+		"maxjobs":5,
+	   "structure_search":{
                 "incmdflag":"-i",
                 "outcmdflag":"-o",
                 "urlcmdflag":"-u",

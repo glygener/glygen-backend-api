@@ -1,0 +1,18 @@
+{
+	"id":"O14686-1", "size":"14M", "type":"protein", "id_field":"uniprot_canonical_ac", 
+	"mode":"mongodb",
+	"pagination":{
+		"paginated_tables":[                                                                                                         {"table_id":"glycosylation_reported_with_glycan","offset":1,"limit":20,"sort":"start_pos","order":"asc"},                {"table_id":"glycosylation_reported","offset":1,"limit":20,"sort":"start_pos","order":"asc"},                            {"table_id":"glycosylation_predicted","offset":1,"limit":20,"sort":"start_pos","order":"asc"},                         {"table_id":"glycosylation_automatic_literature_mining","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
+            {"table_id":"phosphorylation","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
+            {"table_id":"snv_disease","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
+            {"table_id":"snv_non_disease","offset":1,"limit":20,"sort":"start_pos","order":"asc"},
+            {"table_id":"publication","offset":1,"limit":200,"sort":"date","order":"desc"}
+        ],
+        "filtering":{
+            "table_id":"glycosylation_reported_with_glycan",
+            "filters": [
+                    {"id": "by_mass", "operator": "OR", "selected": [ "0k_1k" ]}
+            ]
+        }
+	}
+}

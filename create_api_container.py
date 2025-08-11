@@ -36,6 +36,8 @@ def main():
     mongo_container = "running_glygen_mongo_%s" %(server)
     port = config_obj["api_port"][server]
     data_path = config_obj["data_path"]
+    testdb_path = "/local/glygen/testdb"
+
     downloads_path = config_obj["downloads_path"]
     #network = config_obj["dbinfo"]["bridge_network"] 
     #if server in ["prd", "beta"]:
@@ -72,7 +74,7 @@ def main():
     #cmd = "docker create --name %s --network %s -p 127.0.0.1:%s:80" % (api_container, network, port)
     cmd = "docker create --name %s -p 127.0.0.1:%s:80" % (api_container, port)
     cmd += " -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker"
-    cmd += " -v %s:%s -v %s:%s -e MONGODB_CONNSTRING=%s -e DB_NAME=%s" % (downloads_path, downloads_path, data_path, data_path, conn_str, mongo_db)
+    cmd += " -v %s:%s -v %s:%s -v %s:%s -e MONGODB_CONNSTRING=%s -e DB_NAME=%s" % (downloads_path, downloads_path, data_path, data_path, testdb_path, testdb_path, conn_str, mongo_db)
     cmd += " -e MAIL_SERVER=%s -e MAIL_PORT=%s -e MAIL_SENDER=%s -e DATA_PATH=%s -e DOWNLOADS_PATH=%s -e SERVER=%s %s" % (mail_server, mail_port, mail_sender, data_path, downloads_path, server, image) 
     
     cmd_list.append(cmd)
