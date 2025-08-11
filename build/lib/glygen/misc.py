@@ -5,6 +5,7 @@ from glygen.document import get_one, get_many, insert_one, update_one, delete_on
 from werkzeug.utils import secure_filename
 import datetime
 import time
+import pytz
 import subprocess
 import json
 import bcrypt
@@ -80,6 +81,43 @@ class Misc(Resource):
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
+
+
+
+
+@api.route('/get_object/')
+class Misc(Resource):
+    @api.doc(False)
+    def post(self):
+        start_ts = datetime.datetime.now(pytz.timezone('US/Eastern'))
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = get_req_obj(request)
+            # objects are placed in local disk space (/local/glygen/testdb/)
+            # to avoid I/O issue ... this path needs to be mounted to 
+            # the API container
+            testdb_path = config_obj["perf_test"]["testdb_path"]
+            file_path = "%s%s.json" % (testdb_path, req_obj["id"])
+            res_obj = {"error_list":["file-not-found"]}
+            if os.path.isfile(file_path):
+                res_obj = json.load(open(file_path))
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        
+        end_ts = datetime.datetime.now(pytz.timezone('US/Eastern'))
+
+        ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+        start_ts_f = start_ts.strftime(ts_format)
+        end_ts_f = end_ts.strftime(ts_format)
+        elapsed = str(end_ts - start_ts)
+        res_obj["api_overhead"] = {"start_ts":start_ts_f, "end_ts":end_ts_f, "elapsed":elapsed}
+
         return res_obj, http_code
 
 

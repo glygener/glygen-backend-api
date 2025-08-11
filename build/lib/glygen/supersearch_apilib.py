@@ -280,6 +280,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
                         ignore_dict[o["target"]] = {}
                     ignore_dict[o["target"]][o["source"]] = True
 
+    #return ignore_dict
 
 
     for i in range(0, len(query_obj["concept_query_list"])):
