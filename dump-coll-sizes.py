@@ -22,6 +22,7 @@ def main():
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
     parser.add_option("-v","--dataversion",action="store",dest="dataversion",help="2.0.2/2.0.3 ...")
+    parser.add_option("-c","--coll",action="store",dest="coll",help="")
     (options,args) = parser.parse_args()
 
     for key in ([options.server, options.dataversion]):
@@ -31,6 +32,9 @@ def main():
 
     server = options.server
     ver = options.dataversion
+    coll_list = []
+    if options.coll != None:
+        coll_list.append(coll)
 
     jsondb_dir = "/data/shared/glygen/releases/data/v-%s/jsondb/" % (ver)
     config_obj = json.loads(open("./conf/config.json", "r").read())
@@ -42,6 +46,12 @@ def main():
     db_obj = config_obj["dbinfo"][db_name]
     glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
 
+    if coll_list == []:
+        for db in config_obj["downloads"]["jsondb"]:
+            coll = "c_" + db[:-2]
+            if coll in ["c_event", "c_video", "c_outreach"]:
+                continue
+            coll_list.append(coll)
 
 
     try:

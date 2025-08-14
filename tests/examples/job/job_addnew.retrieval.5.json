@@ -42,14 +42,43 @@
          "output_type": "both",
          "order":5
       },
+		         {
+         "id": "disease_protein",
+         "label": "Disease",
+         "filter_type":"exact",
+         "output_type": "both",
+         "filter":"estrogen-receptor negative breast cancer",
+         "order":6
+      },
                 {
-        "id": "go_mf",
-        "label": "GO Molecular Function",
+        "id": "disease_protein",
+        "label": "Disease",
         "filter_type":"hierarchy",
         "output_type": "both",
-        "filter":"growth factor activity",
-        "order":6
-                }        
+        "filter":"estrogen-receptor negative breast cancer",
+        "order":7
+                },
+                {
+         "id": "go_mf",
+         "label": "GO Molecular Function",
+         "filter_type": "exact",
+         "output_type": "both",
+         "filter": "growth factor activity",
+         "order": 8
+      },
+                {
+                        "id": "go_mf",
+                        "label": "GO Molecular Function",
+                        "filter_type": "hierarchy",
+                        "output_type": "both",
+                        "filter": "growth factor activity",
+                        "order": 9
+                }
+
+
+
+
+
 		]
 	}
 }

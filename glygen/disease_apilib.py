@@ -155,25 +155,56 @@ def disease_search(query_obj, config_obj):
             return {"list_id":list_id}
 
 
-    mongo_query = get_mongo_query(query_obj)
-    #return mongo_query
 
-
+    new_query_obj = {}
     collection = "c_disease"
-    record_list = []
     prj_obj = {"record_id":1}
-    if "search_type" in query_obj:
-        if query_obj["search_type"] == "hierarchy":
-            prj_obj["id_list"] = 1
- 
-    for obj in dbh[collection].find(mongo_query,prj_obj):
-        record_list.append(obj["record_id"])
-        if "search_type" in query_obj:
-            if query_obj["search_type"] == "hierarchy":
-                for child_id in obj["id_list"]:
-                    record_list.append(child_id.lower().replace(":","."))
-    record_list = list(set(record_list))
-    #return {"recordlist":record_list, "n":len(record_list)}
+    f_list = list(query_obj.keys())
+    for f in f_list:
+        if f in ["disease_name"]:
+            new_query_obj[f] = query_obj[f]
+            query_obj.pop(f)
+   
+
+    record_list_one = []
+    f_list = list(query_obj.keys())
+    if "operation" in f_list:
+        f_list.remove("operation")
+    if f_list != []:
+        mongo_query = get_mongo_query(query_obj)
+        #return mongo_query
+        for obj in dbh[collection].find(mongo_query,prj_obj):
+            record_list_one.append(obj["record_id"])
+
+
+    record_list_two = []
+    if new_query_obj != {}:
+        mongo_query = get_mongo_query(new_query_obj)
+        prj_obj["id_list"] = 1
+        parent_list, child_list = [], []
+        for obj in dbh[collection].find(mongo_query,prj_obj):
+            parent_list.append(obj["record_id"])
+            if "search_type" in query_obj:
+                if query_obj["search_type"] == "hierarchy":
+                    for child_id in obj["id_list"]:
+                        child_list.append(child_id.lower().replace(":","."))
+        record_list_two = list(set(parent_list + child_list))
+
+
+    record_list = []
+    if record_list_one == []:
+        record_list = record_list_two
+    elif record_list_two == []:
+        record_list = record_list_one
+    else:
+        # by default, take intersection since default operation is AND
+        record_list = list(set(record_list_one).intersection(set(record_list_two)))
+        #if OR operation
+        if "operation" in query_obj:
+            if query_obj["operation"].upper() in ["OR"]:
+                record_list = list(set(record_list_one + record_list_two))
+    
+    #return {"rlist_one":record_list_one, "rlist_two":record_list_two,"rlist":record_list}
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
