@@ -66,6 +66,7 @@ def job_init(config_obj, data_path):
         if obj["id"] == "targetdb":
             obj["optlist"] = opt_list_one + opt_list_two
 
+    res_obj["batch_retrieval"] = config_obj["job_init"]["batch_retrieval"]
 
     return res_obj
 
@@ -289,11 +290,13 @@ def job_results(query_obj, config_obj):
         if "error" in status_obj:
             res_obj["error"] = status_obj["error"]
         res_obj["status"] = status_obj["status"] if "error_list" not in res_obj else "error"
-        
-        res_obj["query"] = {}
-        for k in ["jobtype", "parameters", "sequence"]:
-            if k in job_info:
-                res_obj["query"][k] = job_info[k]
+       
+        # query isalready populated for batch_retrieval
+        if job_type not in ["batch_retrieval"]:
+            res_obj["query"] = {}
+            for k in ["jobtype", "parameters", "sequence"]:
+                if k in job_info:
+                    res_obj["query"][k] = job_info[k]
         ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
         #return ts_list
 

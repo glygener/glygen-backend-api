@@ -1173,3 +1173,15 @@ Traceback (most recent call last):
   File "/usr/local/lib64/python3.6/site-packages/pymongo/helpers.py", line 157, in _check_command_response
     raise NotPrimaryError(errmsg, response)
 pymongo.errors.NotPrimaryError: interrupted at shutdown, full error: {'ok': 0.0, 'errmsg': 'interrupted at shutdown', 'code': 11600, 'codeName': 'InterruptedAtShutdown'}
+8442
+Traceback (most recent call last):
+  File "populate_collection_host.py", line 252, in <module>
+    main()
+  File "populate_collection_host.py", line 193, in main
+    doc = json.loads(open(in_file, "r").read())
+  File "/usr/lib64/python3.6/codecs.py", line 318, in decode
+    def decode(self, input, final=False):
+KeyboardInterrupt
+8442
+1226390
+243606

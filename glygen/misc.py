@@ -17,7 +17,7 @@ from glygen.db import get_mongodb, log_error
 from glygen.misc_apilib import validate, propertylist, pathlist, messagelist, verlist, gtclist, bcolist
 from glygen.util import get_req_obj, get_filter_conf
 from glygen.auth_apilib import create_github_issue
-
+from glygen.protein_apilib import protein_detail
 import traceback
 
 
@@ -95,17 +95,28 @@ class Misc(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
+        json_url = os.path.join(SITE_ROOT, "conf/filter_init.json")
+        config_obj["filter_init"] = json.load(open(json_url))
+        
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
             # objects are placed in local disk space (/local/glygen/testdb/)
             # to avoid I/O issue ... this path needs to be mounted to 
             # the API container
-            testdb_path = config_obj["perf_test"]["testdb_path"]
-            file_path = "%s%s.json" % (testdb_path, req_obj["id"])
-            res_obj = {"error_list":["file-not-found"]}
-            if os.path.isfile(file_path):
-                res_obj = json.load(open(file_path))
+            if req_obj["mode"] == "filesystem":
+                testdb_path = config_obj["perf_test"]["testdb_path"]
+                file_path = "%s%s.json" % (testdb_path, req_obj["id"])
+                res_obj = {"error_list":["file-not-found"]}
+                if os.path.isfile(file_path):
+                    res_obj = json.load(open(file_path))
+            elif req_obj["mode"] in ["mongodb", "mongodb-pagination"]:
+                id_field, record_id = req_obj["id_field"], req_obj["id"]
+                q = {id_field:record_id}
+                if "pagination" in req_obj:
+                    for k in req_obj["pagination"]:
+                        q[k] = req_obj["pagination"][k]
+                res_obj = protein_detail(q, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -116,7 +127,11 @@ class Misc(Resource):
         start_ts_f = start_ts.strftime(ts_format)
         end_ts_f = end_ts.strftime(ts_format)
         elapsed = str(end_ts - start_ts)
-        res_obj["api_overhead"] = {"start_ts":start_ts_f, "end_ts":end_ts_f, "elapsed":elapsed}
+        
+        res_obj = {
+            "api_overhead":{"start_ts":start_ts_f, "end_ts":end_ts_f, "elapsed":elapsed},
+            "record":res_obj
+        }
 
         return res_obj, http_code
 

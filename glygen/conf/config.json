@@ -1038,7 +1038,13 @@
     },
     "disease_search": {
         "field_info": {
-            "search_type": {
+            "query_type": {
+                "type": "string"
+            },
+            "operation": {
+                "type": "string"
+            },
+				"search_type": {
                 "type": "string",
                 "maxlen": 200
             },

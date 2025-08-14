@@ -83,6 +83,7 @@ glygen/conf/graph.json
 glygen/conf/hit_scoring.json
 glygen/conf/ignored_edges.json
 glygen/conf/integrity.conf
+glygen/conf/job_init.json
 glygen/conf/list_filters.json
 glygen/conf/list_filters.json-backup
 glygen/conf/list_init.json

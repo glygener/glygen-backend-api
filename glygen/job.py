@@ -87,6 +87,9 @@ class Job(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         config_obj["server"] = os.environ["SERVER"]
+        json_url = os.path.join(SITE_ROOT, "conf/job_init.json")
+        config_obj["job_init"] = json.load(open(json_url))
+
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
