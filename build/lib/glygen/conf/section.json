@@ -696,6 +696,10 @@
                     "label": "Disease Recommended Name"
                 },
 					 {
+                    "path": "recommended_name.description",
+                    "label": "Disease Description"
+                },
+					 {
                     "path": "synonyms.id",
                     "label": "Disease Synonym IDs"
                 },

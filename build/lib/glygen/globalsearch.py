@@ -10,7 +10,9 @@ import subprocess
 import json
 import bcrypt
 
-from glygen.globalsearch_apilib import globalsearch_search
+#from glygen.globalsearch_apilib import globalsearch_search, globalsearch_search_new
+from glygen.indexlib import search_all
+
 from glygen.util import get_req_obj
 import traceback
 
@@ -42,7 +44,8 @@ class Globalsearch(Resource):
             data_path = os.environ["DATA_PATH"]
             res_obj = log_request(req_obj, "/globalsearch/search/", request)
             if "error_list" not in res_obj:
-                res_obj = globalsearch_search(req_obj, config_obj)
+                #res_obj = globalsearch_search(req_obj, config_obj)
+                res_obj = search_all("globalsearch_search", req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         

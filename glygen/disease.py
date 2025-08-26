@@ -10,6 +10,7 @@ import subprocess
 import json
 import bcrypt
 
+from glygen.indexlib import search_one
 from glygen.disease_apilib import disease_detail, disease_search, disease_search_init, disease_search_simple
 from glygen.util import get_req_obj, get_cached_records_indirect, get_hash_id, cache_result_list, get_cached_result_list, apply_pagination
 import traceback
@@ -36,18 +37,17 @@ detail_query_model = api.model("Disease Detail Query",
 
 search_query_model = api.model("Disease Search Query",
     { 
-        "record_id": fields.String(required=True, default="doid.1612"),
-        "disease":fields.String(required=True, default="increased IL6 level"),
-        "disease_entity_name":fields.String(required=True, default="Interleukin-6"),
-        "disease_entity_id":fields.String(required=True, default="P05231-1"),
-        "disease_entity_type":fields.String(required=True, default="protein"),
-        "specimen_name":fields.String(required=True, default="blood"),
-        "specimen_id":fields.String(required=True, default="0000178"),
-        "specimen_loinc_code":fields.String(required=True, default="26881-3"),
-        "best_disease_role":fields.String(required=True, default="prognostic"),
-        "condition_id":fields.String(required=True, default="DOID:10283"),
-        "condition_name":fields.String(required=True, default="prostate cancer"),
-        "publication_id":fields.String(required=True, default="10914713")
+        "disease_id":fields.String(required=True, default="DOID:1612"),
+        "disease_name":fields.String(required=True, default="breast cancer"),
+        "tax_id":fields.Integer(required=True, default=9606),
+        "tax_name":fields.String(required=True, default="human"),
+        "protein_id":fields.String(required=True, default="P70388"),
+        "protein_name":fields.String(required=True, default="Signal transducer and activator"),
+        "gene_name":fields.String(required=True, default="Stat1"),
+        "glycan_id":fields.String(required=True, default="G36521AS"),
+        "glycan_name":fields.String(required=True, default="HexNAc0Hex0dHex0NeuAc0NeuGc1Pent0S0P0KDN0HexA0"),
+        "biomarker_id":fields.String(required=True, default="AN6709"),
+        "biomarker_type":fields.String(required=True, default="prognostic")
     }
 )
 
@@ -71,7 +71,8 @@ class Disease(Resource):
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/disease/search_simple/", request)
             if "error_list" not in res_obj:
-                res_obj = disease_search_simple(req_obj, config_obj)
+                #res_obj = disease_search_simple(req_obj, config_obj)
+                res_obj = search_one("disease_search_simple", req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

@@ -368,6 +368,18 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     else:
         conn_dict = load_conn_dict(doc_list)
 
+
+    if False:
+        debug_dict = {}
+        for src_type in final_hit_dict_split:
+            for dst_type in final_hit_dict_split[src_type]:
+                n = len(final_hit_dict_split[src_type][dst_type].keys())
+                if src_type not in debug_dict:
+                    debug_dict[src_type] = {}
+                debug_dict[src_type][dst_type] = n
+        return debug_dict
+
+    
     #return ignore_dict
 
     ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))

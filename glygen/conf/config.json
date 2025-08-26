@@ -29,7 +29,7 @@
             "outcmdflag": "-o",
             "urlcmdflag": "-u",
             "apiurl": {
-                "prd": "http://172.17.0.12:10980",
+                "prd": "http://172.17.0.13:10980",
                 "beta": "http://172.17.0.13:10990",
                 "tst": "http://172.17.0.4:10980",
                 "dev": "http://172.17.0.4:10980"
@@ -2308,7 +2308,10 @@
             "field": {
                 "type": "string"
             },
-            "value": {
+            "field_list": {
+                "type": "list"
+            },
+				"value": {
                 "type": "string"
             },
             "limit": {
@@ -2316,7 +2319,6 @@
             }
         },
         "requiredfields": [
-            "field",
             "value",
             "limit"
         ],
@@ -3064,6 +3066,13 @@
             "formatlist": [
                 "png",
                 "svg"
+            ]
+        },
+		  "batch_retrieval": {
+            "cache": "c_job",
+            "formatlist": [
+                "json",
+                "csv"
             ]
         }
     },

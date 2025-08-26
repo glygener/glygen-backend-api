@@ -314,7 +314,7 @@
     },
     "glycosylation_predicted":{
     	"by_amino_acid":{
-            "grp_idx":1,
+            "grp_idx":0,
 				"group_order":1,
             "group_label":"By Amino Acid",
             "order_dict":{
@@ -432,7 +432,7 @@
     },
     "glycosylation_automatic_literature_mining":{
 	     "by_amino_acid":{
-            "grp_idx":1,
+            "grp_idx":0,
             "group_order":1,
             "group_label":"By Amino Acid",
             "order_dict":{

@@ -115,8 +115,17 @@ def protein_search(query_obj, config_obj):
         if len(cached_obj["results"]) > 0:
             return {"list_id":list_id}
 
-    mongo_query = get_mongo_query(query_obj)
+    glygen_name_dict = {}
+    for doc in dbh["c_species"].find({}):
+        glygen_name_dict[doc["glygen_name"]] = True
+
+
+    mongo_query = get_mongo_query(query_obj, glygen_name_dict)
     #return mongo_query
+
+    #mongo_query = { "species.taxid":{"$eq":9606}}
+
+    
     ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     #path_obj = config_obj[config_obj["server"]]["htmlpath"]
@@ -127,9 +136,11 @@ def protein_search(query_obj, config_obj):
 
     collection = "c_protein"
     record_list = []
-    prj_obj = {"uniprot_canonical_ac":1, "uniprot_ac":1, "uniprot_id":1, 
-            "isoforms.isoform_ac":1}
+    prj_obj = {"uniprot_canonical_ac":1, "uniprot_ac":1, "uniprot_id":1, "isoforms.isoform_ac":1}
     seen_id = {}
+    #doc_list = list(dbh[collection].find(mongo_query,prj_obj))
+    #doc_list = []
+    #for obj in doc_list:
     for obj in dbh[collection].find(mongo_query,prj_obj):
         record_list.append(obj["uniprot_canonical_ac"])
         seen_id[obj["uniprot_canonical_ac"]] = True
@@ -137,6 +148,8 @@ def protein_search(query_obj, config_obj):
         seen_id[obj["uniprot_id"]] = True
         for o in obj["isoforms"]:
             seen_id[o["isoform_ac"]] = True
+
+    #return {"n":len(record_list)}
 
     ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
@@ -176,7 +189,7 @@ def protein_search(query_obj, config_obj):
 
     ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-    #return ts_list
+    #return {"tslist":ts_list, "mongoquery":mongo_query}
 
     return res_obj
 
@@ -498,23 +511,35 @@ def get_simple_mongo_query(query_obj):
 
 
 
-def get_mongo_query(query_obj):
-
+def get_mongo_query(query_obj, glygen_name_dict):
                         
+
 
     cond_objs = []
     #uniprot_canonical_ac
     if "uniprot_canonical_ac" in query_obj:
         qid_list = query_obj["uniprot_canonical_ac"].replace(" ", "").split(",")
-        cond_objs.append(
-            {
-                "$or":[
-                    {"uniprot_canonical_ac":{'$in': qid_list}},
-                    {"uniprot_ac":{'$in': qid_list}},
-                    {"uniprot_id":{'$in': qid_list}},
-                    {"isoforms.isoform_ac":{'$in': qid_list}} 
-                ]
-            }
+        if len(qid_list) == 1:
+            cond_objs.append(
+                {
+                    "$or":[
+                        {"uniprot_canonical_ac":{'$eq': qid_list[0]}},
+                        {"uniprot_ac":{'$eq': qid_list[0]}},
+                        {"uniprot_id":{'$eq': qid_list[0]}},
+                        {"isoforms.isoform_ac":{'$eq': qid_list[0]}}
+                    ]
+                }
+            )
+        else:
+            cond_objs.append(
+                {
+                    "$or":[
+                        {"uniprot_canonical_ac":{'$in': qid_list}},
+                        {"uniprot_ac":{'$in': qid_list}},
+                        {"uniprot_id":{'$in': qid_list}},
+                        {"isoforms.isoform_ac":{'$in': qid_list}} 
+                    ]
+                }
         )
 
     #protein_name
@@ -557,7 +582,10 @@ def get_mongo_query(query_obj):
             if type(query_obj["organism"]["id"]) is int:
                 tmp_cnd_list.append({"species.taxid": {'$eq': query_obj["organism"]["id"]}})
         if "name" in query_obj["organism"]:
-            tmp_cnd_list.append({"species.glygen_name": {'$regex': query_obj["organism"]["name"], '$options': 'i'}})
+            if query_obj["organism"]["name"] in glygen_name_dict:
+                 tmp_cnd_list.append({"species.glygen_name": {'$eq': query_obj["organism"]["name"]}})
+            else:
+                tmp_cnd_list.append({"species.glygen_name": {'$regex': query_obj["organism"]["name"], '$options': 'i'}})
         if tmp_cnd_list != []:
             cond_objs.append({"$or":tmp_cnd_list}) 
     #biomarker

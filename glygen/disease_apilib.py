@@ -98,7 +98,6 @@ def disease_detail(query_obj, config_obj):
     if error_obj != {}:
         return error_obj
 
-
     #Collect errors 
     error_list = get_errors_in_query("disease_detail", query_obj, config_obj)
     if error_list != []:
@@ -111,7 +110,25 @@ def disease_detail(query_obj, config_obj):
     post_error_list = []
     if obj == None:
         post_error_list.append({"error_code":"non-existent-record"})
-        return {"error_list":post_error_list}
+        res_obj = {"error_list":post_error_list}
+        # check if it is a synonym ID
+        disease_id = query_obj["record_id"].upper().replace(".",":")
+        q = {"synonyms.id": {"$eq": disease_id}}
+        rec_id_list = []
+        for doc in dbh[collection].find(q):
+            if doc["disease_id"] not in rec_id_list:
+                rec_id_list.append(doc["disease_id"])
+        if rec_id_list != []:
+            res_obj["recommended_id_list"] = rec_id_list
+        q = {"unlinked_id_list": {"$eq": disease_id}}
+        rec_id_list = []
+        for doc in dbh[collection].find(q):
+            if doc["disease_id"] not in rec_id_list:
+                rec_id_list.append(doc["disease_id"])
+        if rec_id_list != []:
+            res_obj["unlinked_id_in"] = rec_id_list
+
+        return res_obj
 
     if "_id" in obj:
         obj.pop("_id")
@@ -156,36 +173,41 @@ def disease_search(query_obj, config_obj):
 
 
 
-    new_query_obj = {}
+    query_obj_one, query_obj_two = {}, {}
+    for f in query_obj:
+        query_obj_one[f] = query_obj[f]
+
     collection = "c_disease"
     prj_obj = {"record_id":1}
     f_list = list(query_obj.keys())
     for f in f_list:
         if f in ["disease_name"]:
-            new_query_obj[f] = query_obj[f]
-            query_obj.pop(f)
+            query_obj_two[f] = query_obj[f]
+            query_obj_one.pop(f)
    
 
+    mongo_query_one, mongo_query_two = {}, {}
+
     record_list_one = []
-    f_list = list(query_obj.keys())
+    f_list = list(query_obj_one.keys())
     if "operation" in f_list:
         f_list.remove("operation")
     if f_list != []:
-        mongo_query = get_mongo_query(query_obj)
+        mongo_query_one = get_mongo_query(query_obj_one)
         #return mongo_query
-        for obj in dbh[collection].find(mongo_query,prj_obj):
+        for obj in dbh[collection].find(mongo_query_one,prj_obj):
             record_list_one.append(obj["record_id"])
 
 
     record_list_two = []
-    if new_query_obj != {}:
-        mongo_query = get_mongo_query(new_query_obj)
+    if query_obj_two != {}:
+        mongo_query_two = get_mongo_query(query_obj_two)
         prj_obj["id_list"] = 1
         parent_list, child_list = [], []
-        for obj in dbh[collection].find(mongo_query,prj_obj):
+        for obj in dbh[collection].find(mongo_query_two,prj_obj):
             parent_list.append(obj["record_id"])
-            if "search_type" in query_obj:
-                if query_obj["search_type"] == "hierarchy":
+            if "search_type" in query_obj_one:
+                if query_obj_one["search_type"] == "hierarchy":
                     for child_id in obj["id_list"]:
                         child_list.append(child_id.lower().replace(":","."))
         record_list_two = list(set(parent_list + child_list))
@@ -200,11 +222,12 @@ def disease_search(query_obj, config_obj):
         # by default, take intersection since default operation is AND
         record_list = list(set(record_list_one).intersection(set(record_list_two)))
         #if OR operation
-        if "operation" in query_obj:
-            if query_obj["operation"].upper() in ["OR"]:
+        if "operation" in query_obj_one:
+            if query_obj_one["operation"].upper() in ["OR"]:
                 record_list = list(set(record_list_one + record_list_two))
     
-    #return {"rlist_one":record_list_one, "rlist_two":record_list_two,"rlist":record_list}
+    #return {"rlist_one":record_list_one, "rlist_two":record_list_two,"rlist":record_list, 
+    #    "q_one":mongo_query_one, "q_two":mongo_query_two}
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)

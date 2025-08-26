@@ -66,25 +66,110 @@
       }
     },
     "columns":{
-			"pdb_id":{"label":"PDB ID", "oplist":["none"]}
-          ,"species":{"label":"Species", "oplist":["none","exact"]}
-                ,"gene_locus":{"label":"Genomic Locus Gene", "opslist":["none"]}
-                ,"protein_locus":{"label":"Genomic Locus Protein", "oplist":["none"]}
-                ,"pathways":{"label":"Pathways", "oplist":["none","exact"]}
-                ,"go_mf":{"label":"GO Molecular Function", "oplist":["none","exact","hierarchy"]}
-                ,"go_cc":{"label":"GO Cellular Component", "oplist":["none","exact","hierarchy"]}
-                ,"go_bp":{"label":"GO Biological Process", "oplist":["none","exact","hierarchy"]}
-                ,"disease_protein":{"label":"Disease Associated with Protein", "oplist":["none","exact","hierarchy"]}
-                ,"disease_snv":{"label":"Disease Associated with Mutation", "oplist":["none","exact","hierarchy"]}
-			,"disease_expression":{"label":"Disease Associated with Expression", "oplist":["none","exact","hierarchy"]}
-                ,"is_biomarker":{"label":"Is a biomarker", "oplist":["none"]}
-                ,"n_glycosites_confirmed":{"label":"Confirmed N-glycosylation sites", "oplist":["none"]}
-                ,"n_glycosites_predicted":{"label":"Predicted N-glycosylation sites", "oplist":["none"]}
-                ,"o_glycosites_confirmed":{"label":"Confirmed O-glycosylation sites", "oplist":["none"]}
-                ,"o_glycosites_predicted":{"label":"Predicted O-glycosylation sites", "oplist":["none"]}
-                ,"glycosite_count_confirmed":{"label":"Number of confirmed glycosylation sites", "oplist":["none"]}
-                ,"glycosite_count":{"label":"Number of glycosylation sites", "oplist":["none"]}
-                ,"phosphosite_count":{"label":"Number of phophorylation sites", "oplist":["none"]}
+			"pdb_id":{
+				"label":"PDB ID", "oplist":["none"], 
+				"typeahead": "pdb_id",
+				"categories": [{ "id": "General", "order": 1}, { "id": "Identifier", "order": 2}],
+				"output_type":["id"]
+			}
+         ,"species":{
+				"label":"Species", "oplist":["none","exact"], 
+				"typeahead": "tax_id_name",
+            "categories": [{ "id": "General", "order": 1}, { "id": "Identifier", "order": 2}],
+				"output_type":[ "id", "name", "both"]
+			}
+         ,"gene_locus":{
+				"label":"Genomic Locus Gene", "opslist":["none"], 
+            "categories": [{ "id": "General", "order": 1}],
+            "output_type":[ "id"]
+			}
+			,"protein_locus":{
+				"label":"Genomic Locus Protein", "oplist":["none"], 
+            "categories": [{ "id": "General", "order": 1}],
+            "output_type":[ "id"]
+			}
+			,"pathways":{
+				"label":"Pathways", "oplist":["none","exact"], 
+				"typeahead": "pathway_id_name",
+            "categories": [{ "id": "General", "order": 10}, { "id": "Identifier", "order": 10}],
+            "output_type":[ "id"]
+			}
+			,"go_mf":{
+				"label":"GO Molecular Function", "oplist":["none","exact","hierarchy"], 
+				"typeahead": "go_id_term",
+            "categories": [{ "id": "General", "order": 1}, { "id": "Identifier", "order": 2}],
+            "output_type":[ "id", "name", "both"]
+			}
+			,"go_cc":{
+				"label":"GO Cellular Component", "oplist":["none","exact","hierarchy"], 
+				"typeahead": "go_id_term",
+            "categories": [{ "id": "General", "order": 1}, { "id": "Identifier", "order": 2}],
+            "output_type":[ "id", "name", "both"]
+			}
+			,"go_bp":{
+				"label":"GO Biological Process", "oplist":["none","exact","hierarchy"], 
+				"typeahead": "go_id_term",
+            "categories": [{ "id": "General", "order": 1}, { "id": "Identifier", "order": 2}],
+            "output_type":[ "id", "name", "both"]
+			}
+			,"disease_protein":{
+				"label":"Disease Associated with Protein", "oplist":["none","exact","hierarchy"], 
+				"typeahead": "disease_id_name",
+            "categories": [{ "id": "General", "order": 1}, { "id": "Identifier", "order": 2}],
+            "output_type":[ "id", "name", "both"]
+			}
+			,"disease_snv":{
+				"label":"Disease Associated with Mutation", "oplist":["none","exact","hierarchy"], 
+				"typeahead": "disease_id_name",
+            "categories": [{ "id": "General", "order": 1}, { "id": "Identifier", "order": 2}],
+            "output_type":[ "id", "name", "both"]
+			}
+			,"disease_expression":{
+				"label":"Disease Associated with Expression", "oplist":["none","exact","hierarchy"], 
+				"typeahead": "disease_id_name",
+            "categories": [{ "id": "General", "order": 1}, { "id": "Identifier", "order": 2}],
+            "output_type":[ "id", "name", "both"]
+			}
+			,"is_biomarker":{
+				"label":"Is a biomarker", "oplist":["none"], 
+            "categories": [{ "id": "General", "order": 1}],
+            "output_type":[ "id"]
+			}
+			,"n_glycosites_confirmed":{
+				"label":"Confirmed N-glycosylation sites", "oplist":["none"], 
+            "categories": [{ "id": "General", "order": 1}],
+            "output_type":[ "id"]
+			}
+			,"n_glycosites_predicted":{
+				"label":"Predicted N-glycosylation sites", "oplist":["none"], 
+            "categories": [{ "id": "General", "order": 10}, { "id": "Identifier", "order": 10}],
+            "output_type":[ "id"]
+			}
+			,"o_glycosites_confirmed":{
+				"label":"Confirmed O-glycosylation sites", "oplist":["none"], 
+            "categories": [{ "id": "General", "order": 1}],
+            "output_type":[ "id"]
+			}
+			,"o_glycosites_predicted":{
+				"label":"Predicted O-glycosylation sites", "oplist":["none"], 
+            "categories": [{ "id": "General", "order": 1}],
+            "output_type":[ "id"]
+			}
+			,"glycosite_count_confirmed":{
+				"label":"Number of confirmed glycosylation sites", "oplist":["none"], 
+            "categories": [{ "id": "General", "order": 1}],
+            "output_type":[ "id"]
+			}
+			,"glycosite_count":{
+				"label":"Number of glycosylation sites", "oplist":["none"], 
+            "categories": [{ "id": "General", "order": 1}],
+            "output_type":[ "id"]
+			}
+			,"phosphosite_count":{
+				"label":"Number of phophorylation sites", "oplist":["none"], 
+            "categories": [{ "id": "General", "order": 1}],
+            "output_type":[ "id"]
+			}
 		}
 	}
 }

@@ -107,8 +107,13 @@
     },
     "disease":{
       "misc":{
-            "disease_exact_match": {"weight":50.0}
-      },
+        "disease_exact_match": {
+					"weight":50.0,
+                "fieldlist":[
+							"record_id", "disease_id", "recommended_name"
+                ]
+            }
+		},
       "direct_boolean":{
       },
       "direct_numeric":{

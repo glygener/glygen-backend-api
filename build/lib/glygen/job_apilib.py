@@ -282,7 +282,7 @@ def job_results(query_obj, config_obj):
             elif job_type in ["isoform_mapper"]:
                 res_obj = parse_isoform_mapper_ouput(out_file)
             elif job_type in ["batch_retrieval"]:
-                res_obj = parse_batch_retrieval_ouput(out_file, config_obj, job_info)
+                res_obj = parse_batch_retrieval_ouput(query_obj, out_file, config_obj, job_info)
 
 
         ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
@@ -339,9 +339,17 @@ def parse_isoform_mapper_ouput(out_file):
 
 
 
-def parse_batch_retrieval_ouput(out_file, config_obj, job_info):
+def parse_batch_retrieval_ouput(query_obj, out_file, config_obj, job_info):
 
     out_json = json.loads(open(out_file, "r").read())
+    if "rows" in out_json:
+        total = len(out_json["rows"])
+        offset = query_obj["offset"] if "offset" in query_obj else 1
+        limit_one = query_obj["limit"] if "limit" in query_obj else 20 
+        limit_two = total if limit_one > total else limit_one
+        out_json["rows"] = out_json["rows"][offset-1:offset + limit_two]
+        out_json["pagination"] = {"offset": offset, "limit": limit_one, "total_length": total}
+
 
     return out_json
 

@@ -57,7 +57,8 @@ def list_download(query_obj, config_obj, data_path):
         "disease_list","ortholog_list",
         "idmapping_list_mapped", "idmapping_list_unmapped", "idmapping_list_all", 
         "idmapping_list_all_collapsed",
-        "isoform_mapper_list"
+        "isoform_mapper_list",
+        "batch_retrieval"
     ]
     sequence_format_list = ["fasta", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic", "grits"]
 
@@ -67,12 +68,15 @@ def list_download(query_obj, config_obj, data_path):
         #return {"list_obj":list_obj}
         if "error_list" in list_obj:
             return list_obj
-        if format_lc in ["json"]:
-            data_buffer = json.dumps(list_obj["results"], indent=4)
-        elif format_lc in ["csv", "tsv"]:
-            data_buffer = get_tabular_buffer(list_obj, query_obj, config_obj)
-        elif format_lc in sequence_format_list:
-            data_buffer = get_sequence_buffer_one(dbh, list_obj, query_obj, config_obj)
+        if query_obj["download_type"] == "batch_retrieval":
+            data_buffer = get_batch_retrieval_buffer(list_obj, query_obj, config_obj)
+        else:
+            if format_lc in ["json"]:
+                data_buffer = json.dumps(list_obj["results"], indent=4)
+            elif format_lc in ["csv", "tsv"]:
+                data_buffer = get_tabular_buffer(list_obj, query_obj, config_obj)
+            elif format_lc in sequence_format_list:
+                data_buffer = get_sequence_buffer_one(dbh, list_obj, query_obj, config_obj)
 
 
     #Now that we have data_buffer, let's worry about compression
@@ -535,6 +539,36 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
     return data_buffer
 
 
+def get_batch_retrieval_buffer(list_obj, query_obj, config_obj):
+
+    format_lc = query_obj["format"].lower()
+    data_buffer = ""
+    header_list = ["Input ID"]
+    order_dict = dict(sorted(list_obj["order_dict"].items(), key=lambda item: item[1]))
+    for f in order_dict:
+        lbl = list_obj["columns"][f] if f in list_obj["columns"] else "N/A"
+        header_list.append(lbl)
+    if format_lc == "csv":
+        data_buffer = "\"" +  "\",\"".join(header_list) + "\"\n"
+    else:
+        data_buffer = "\"" +  "\"\t\"".join(header_list) + "\"\n"
+
+    line_list = []
+    for obj in list_obj["rows"]:
+        row = [obj["input_id"]]
+        for f in order_dict:
+            val = str(obj[f]) if f in obj else ""
+            row.append(str(obj[f])) 
+        line = "\"" +  "\"\t\"".join(row) + "\"\n"
+        if format_lc == "csv":
+            line = "\"" +  "\",\"".join(row) + "\"\n"
+        line_list.append(line)
+    data_buffer += "".join(line_list)
+
+    return data_buffer
+
+
+
 def get_sequence_buffer_one(dbh, list_obj, query_obj, config_obj):
 
     data_buffer = ""
@@ -591,7 +625,28 @@ def get_sequence_buffer_one(dbh, list_obj, query_obj, config_obj):
 
 def get_list_object(query_obj, config_obj):
 
-   
+  
+    if query_obj["download_type"] == "batch_retrieval":
+        job_type = "batch_retrieval"
+        job_dir = config_obj[config_obj["server"]]["pathinfo"]["userdata"]
+        job_dir +=  str(query_obj["id"]) + "/"
+        out_file = job_dir + config_obj["jobinfo"][job_type]["output_files"][0]["name"]
+        doc = json.loads(open(out_file, "r").read())
+        out_json = {}
+        for p in ["columns", "rows"]:
+            if p in doc:
+                out_json[p] = doc[p]
+        out_json["order_dict"] = {}        
+        if "query" in doc:
+            if "parameters" in doc["query"]:
+                if "columns" in doc["query"]["parameters"]:
+                    for obj in doc["query"]["parameters"]["columns"]:
+                        out_json["order_dict"][obj["column_id"]] = obj["order"]
+
+        return out_json
+ 
+
+ 
     list_query = "" 
     collection = config_obj["downloadtypes"][query_obj["download_type"]]["cache"]
     mongo_query = {"list_id":query_obj["id"]}

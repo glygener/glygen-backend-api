@@ -6,7 +6,7 @@ import json
 import datetime,time
 import pytz
 from collections import OrderedDict
-
+import re
 
 from glygen.db import get_mongodb
 from glygen.util import get_errors_in_query
@@ -106,7 +106,7 @@ def glycan_typeahead(query_obj, config_obj):
 
     res_obj = []
     mongo_query = {}
-    if query_obj["field"] == "glytoucan_ac":
+    if query_obj["field_list"] == ["glytoucan_ac"]:
         cond_list = [
             {"glytoucan_ac":{'$regex': query_obj["value"], '$options': 'i'}},
             {"crossref.id":{"$regex": query_obj["value"], "$options":"i"}}
@@ -125,7 +125,7 @@ def glycan_typeahead(query_obj, config_obj):
                     res_obj.append(val)
                     if len(res_obj) >= query_obj["limit"]:
                         return sorted(res_obj)
-    elif query_obj["field"] == "enzyme":
+    elif query_obj["field_list"] == ["enzyme"]:
         cond_list = [
             {"enzyme.uniprot_canonical_ac": {'$regex': query_obj["value"], '$options': 'i'}},
             {"enzyme.gene": {'$regex': query_obj["value"], '$options': 'i'}},
@@ -139,7 +139,7 @@ def glycan_typeahead(query_obj, config_obj):
                         res_obj.append(val)
                         if len(res_obj) >= query_obj["limit"]:
                             return sorted(res_obj)
-    elif query_obj["field"] == "enzyme_uniprot_canonical_ac":
+    elif query_obj["field_list"] == ["enzyme_uniprot_canonical_ac"]:
         mongo_query = {"enzyme.uniprot_canonical_ac": {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"enzyme":1}
         for obj in dbh[collection].find(mongo_query, prj_obj):
@@ -149,7 +149,7 @@ def glycan_typeahead(query_obj, config_obj):
                     res_obj.append(val)
                     if len(res_obj) >= query_obj["limit"]:
                         return sorted(res_obj)
-    elif query_obj["field"] == "motif_name":
+    elif query_obj["field_list"] == ["motif_name"]:
         mongo_query = {"motifs.name": {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"motifs":1}
         for obj in dbh[collection].find(mongo_query, prj_obj):
@@ -159,7 +159,7 @@ def glycan_typeahead(query_obj, config_obj):
                     res_obj.append(val)
                     if len(res_obj) >= query_obj["limit"]:
                         return sorted(res_obj)
-    elif query_obj["field"] ==  "glycan_pmid":
+    elif query_obj["field_list"] == ["glycan_pmid"]:
         mongo_query = {"publication.reference.id": {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"publication":1}
         for obj in dbh[collection].find(mongo_query, prj_obj):
@@ -170,9 +170,9 @@ def glycan_typeahead(query_obj, config_obj):
                         res_obj.append(val)
                         if len(res_obj) >= query_obj["limit"]:
                             return sorted(res_obj)
-    elif query_obj["field"] in  ["biomarker_id", "biomarker_name"]:
+    elif "biomarker_id" in query_obj["field_list"] or "biomarker_name" in query_obj["field_list"]:
         tmp_dict = {"biomarker_id":"biomarker_id", "biomarker_name":"assessed_biomarker_entity"}
-        f = tmp_dict[query_obj["field"]]
+        f = tmp_dict[query_obj["field_list"][0]]
         p = "biomarkers." + f
         mongo_query = {p: {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"biomarkers":1}
@@ -183,7 +183,7 @@ def glycan_typeahead(query_obj, config_obj):
                     res_obj.append(val)
                     if len(res_obj) >= query_obj["limit"]:
                         return sorted(res_obj)
-    elif query_obj["field"] in  ["biomarker_type"]:
+    elif query_obj["field_list"] ==  ["biomarker_type"]:
         p = "biomarkers.instances.best_biomarker_type"
         mongo_query = {p: {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"biomarkers":1}
@@ -195,7 +195,7 @@ def glycan_typeahead(query_obj, config_obj):
                         res_obj.append(val)
                         if len(res_obj) >= query_obj["limit"]:
                             return sorted(res_obj)
-    elif query_obj["field"] == "biomarker_disease_name":
+    elif query_obj["field_list"] ==  ["biomarker_disease_name"]:
         mongo_query = {
             "$or":[
              {"biomarkers.instances.disease.recommended_name.name": {'$regex': query_obj["value"], '$options': 'i'}}
@@ -219,7 +219,7 @@ def glycan_typeahead(query_obj, config_obj):
                             res_obj.append(val)
                             if len(res_obj) >= query_obj["limit"]:
                                 return sorted(res_obj)
-    elif query_obj["field"] == "biomarker_disease_id":
+    elif query_obj["field_list"] ==  ["biomarker_disease_id"]:
         mongo_query = {
             "$or":[
              {"biomarkers.instances.disease.recommended_name.id": {'$regex': query_obj["value"], '$options': 'i'}}
@@ -265,7 +265,7 @@ def protein_typeahead(query_obj, config_obj):
     res_obj = []
     mongo_query = {}
     
-    if query_obj["field"] == "uniprot_canonical_ac":
+    if query_obj["field_list"] ==  ["uniprot_canonical_ac"]:
         mongo_query = {
             "$or":[
                 {"uniprot_canonical_ac":{'$regex': query_obj["value"], '$options': 'i'}}
@@ -279,7 +279,7 @@ def protein_typeahead(query_obj, config_obj):
                 if len(res_obj) >= query_obj["limit"]:
                     return sorted(res_obj)
 
-    if query_obj["field"] == "protein_id":
+    if query_obj["field_list"] ==  ["protein_id"]:
         mongo_query = {
             "$or":[
                 {"uniprot_canonical_ac":{'$regex': query_obj["value"], '$options': 'i'}},
@@ -310,7 +310,7 @@ def protein_typeahead(query_obj, config_obj):
 
     
 
-    if query_obj["field"] == "go_id":
+    if query_obj["field_list"] ==  ["go_id"]:
         q_obj = {'$regex': query_obj["value"], '$options': 'i'}
         mongo_query = {"go_annotation.categories.go_terms.id":q_obj}
         prj_obj = {"go_annotation":1}
@@ -322,7 +322,7 @@ def protein_typeahead(query_obj, config_obj):
                         res_obj.append(val)
                         if len(res_obj) >= query_obj["limit"]:
                             return sorted(res_obj)
-    if query_obj["field"] == "go_term":
+    if query_obj["field_list"] ==  ["go_term"]:
         q_obj = {'$regex': query_obj["value"], '$options': 'i'}
         mongo_query = {"go_annotation.categories.go_terms.name":q_obj}
         prj_obj = {"go_annotation":1}
@@ -334,7 +334,7 @@ def protein_typeahead(query_obj, config_obj):
                         res_obj.append(val)
                         if len(res_obj) >= query_obj["limit"]:
                             return sorted(res_obj)
-    if query_obj["field"] == "uniprot_id":
+    if query_obj["field_list"] ==  ["uniprot_id"]:
         mongo_query = {"uniprot_id":{'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"uniprot_id":1}
         for obj in dbh[collection].find(mongo_query,prj_obj):
@@ -343,7 +343,7 @@ def protein_typeahead(query_obj, config_obj):
                 res_obj.append(val)
                 if len(res_obj) >= query_obj["limit"]:
                     return sorted(res_obj)
-    if query_obj["field"] == "refseq_ac":
+    if query_obj["field_list"] ==  ["refseq_ac"]:
         mongo_query = {"refseq.ac":{'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"refseq":1}
         for obj in dbh[collection].find(mongo_query,prj_obj):
@@ -352,7 +352,7 @@ def protein_typeahead(query_obj, config_obj):
                 res_obj.append(val)
                 if len(res_obj) >= query_obj["limit"]:
                     return sorted(res_obj)
-    elif query_obj["field"] == "gene_name":
+    elif query_obj["field_list"] ==  ["gene_name"]:
         mongo_query = {"gene_names.name": {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"gene":1}
         for obj in dbh[collection].find(mongo_query,prj_obj):
@@ -364,7 +364,7 @@ def protein_typeahead(query_obj, config_obj):
                             res_obj.append(val)
                             if len(res_obj) >= query_obj["limit"]:
                                 return sorted(res_obj)
-    elif query_obj["field"] == "protein_name":
+    elif query_obj["field_list"] ==  ["protein_name"]:
         mongo_query = {"protein_names.name": {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"protein_names":1}
         for obj in dbh[collection].find(mongo_query,prj_obj):
@@ -374,7 +374,7 @@ def protein_typeahead(query_obj, config_obj):
                     res_obj.append(val)
                     if len(res_obj) >= query_obj["limit"]:
                         return sorted(res_obj)
-    elif query_obj["field"] == "disease_name":
+    elif query_obj["field_list"] ==  ["disease_name"]:
         mongo_query = {
             "$or":[
             {"disease.recommended_name.name": {'$regex': query_obj["value"], '$options': 'i'}}
@@ -396,7 +396,7 @@ def protein_typeahead(query_obj, config_obj):
                         res_obj.append(val)
                         if len(res_obj) >= query_obj["limit"]:
                             return sorted(res_obj)
-    elif query_obj["field"] == "disease_id":
+    elif query_obj["field_list"] ==  ["disease_id"]:
         mongo_query = {
             "$or":[
             {"disease.recommended_name.id": {'$regex': query_obj["value"], '$options': 'i'}}
@@ -418,7 +418,7 @@ def protein_typeahead(query_obj, config_obj):
                         res_obj.append(val)
                         if len(res_obj) >= query_obj["limit"]:
                             return sorted(res_obj)
-    elif query_obj["field"] == "pathway_name":
+    elif query_obj["field_list"] ==  ["pathway_name"]:
         mongo_query = {"pathway.name": {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"pathway":1}
         for obj in dbh[collection].find(mongo_query,prj_obj):
@@ -428,7 +428,7 @@ def protein_typeahead(query_obj, config_obj):
                     res_obj.append(val)
                     if len(res_obj) >= query_obj["limit"]:
                         return sorted(res_obj)
-    elif query_obj["field"] == "pathway_id":
+    elif query_obj["field_list"] ==  ["pathway_id"]:
         mongo_query = {"pathway.id": {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"pathway":1}
         for obj in dbh[collection].find(mongo_query,prj_obj):
@@ -438,7 +438,23 @@ def protein_typeahead(query_obj, config_obj):
                     res_obj.append(val)
                     if len(res_obj) >= query_obj["limit"]:
                         return sorted(res_obj)
-    elif query_obj["field"] ==  "protein_pmid":
+    elif query_obj["field_list"] ==  ["pdb_id"]:
+        prj_obj = {"structures":1}
+        qry = query_obj["value"]
+        prefix_flag = True
+        regex_pattern = f"^{re.escape(qry)}" if prefix_flag else f"{re.escape(qry)}"
+        #mongo_query = {"structures.pdb_id": {'$regex': regex_pattern, '$options':'i'}}
+        mongo_query = {"structures.pdb_id": {'$regex': regex_pattern}}
+        #doc_list = list(dbh[collection].find(mongo_query,prj_obj).limit(100))
+        #return [str(len(doc_list))]
+        for obj in dbh[collection].find(mongo_query,prj_obj).limit(100):
+            for o in obj["structures"]:
+                val = o["pdb_id"]
+                if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
+                    res_obj.append(val)
+                    if len(res_obj) >= query_obj["limit"]:
+                        return sorted(res_obj)
+    elif query_obj["field_list"] ==  ["protein_pmid"]:
         mongo_query = {"publication.reference.id": {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"publication":1}
         for obj in dbh[collection].find(mongo_query, prj_obj):
@@ -449,9 +465,9 @@ def protein_typeahead(query_obj, config_obj):
                         res_obj.append(val)
                         if len(res_obj) >= query_obj["limit"]:
                             return sorted(res_obj) 
-    elif query_obj["field"] in  ["biomarker_id", "biomarker_name"]:
+    elif "biomarker_id" in query_obj["field_list"] or "biomarker_name" in query_obj["field_list"]:
         tmp_dict = {"biomarker_id":"biomarker_id", "biomarker_name":"assessed_biomarker_entity"}
-        f = tmp_dict[query_obj["field"]]
+        f = tmp_dict[query_obj["field_list"][0]]
         p = "biomarkers." + f
         mongo_query = {p: {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"biomarkers":1}
@@ -462,7 +478,7 @@ def protein_typeahead(query_obj, config_obj):
                     res_obj.append(val)
                     if len(res_obj) >= query_obj["limit"]:
                         return sorted(res_obj)
-    elif query_obj["field"] in  ["biomarker_type"]:
+    elif query_obj["field_list"] == ["biomarker_type"]:
         p = "biomarkers.instances.best_biomarker_type"
         mongo_query = {p: {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"biomarkers":1}
@@ -474,7 +490,7 @@ def protein_typeahead(query_obj, config_obj):
                         res_obj.append(val)
                         if len(res_obj) >= query_obj["limit"]:
                             return sorted(res_obj) 
-    elif query_obj["field"] == "biomarker_disease_name":
+    elif query_obj["field_list"] ==  ["biomarker_disease_name"]:
         mongo_query = {
             "$or":[
              {"biomarkers.instances.disease.recommended_name.name": {'$regex': query_obj["value"], '$options': 'i'}}
@@ -498,7 +514,7 @@ def protein_typeahead(query_obj, config_obj):
                             res_obj.append(val)
                             if len(res_obj) >= query_obj["limit"]:
                                 return sorted(res_obj)
-    elif query_obj["field"] == "biomarker_disease_id":
+    elif query_obj["field_list"] ==  ["biomarker_disease_id"]:
         mongo_query = {
             "$or":[
              {"biomarkers.instances.disease.recommended_name.id": {'$regex': query_obj["value"], '$options': 'i'}}
@@ -523,7 +539,83 @@ def protein_typeahead(query_obj, config_obj):
                             if len(res_obj) >= query_obj["limit"]:
                                 return sorted(res_obj)
 
- 
+    elif sorted(query_obj["field_list"]) == sorted(["pathway_id", "pathway_name", "pathway_description"]):
+        mongo_query = {"$or":[
+                 {"pathway.id": {'$regex': query_obj["value"], '$options': 'i'}}
+                ,{"pathway.description": {'$regex': query_obj["value"], '$options': 'i'}}
+            ]
+        }
+        prj_obj = {"pathway":1}
+
+        for obj in dbh[collection].find(mongo_query,prj_obj).limit(100):
+            for o in obj["pathway"]:
+                for f in ["id", "name","description"]:
+                    val = o[f] if f in o else ""
+                    if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
+                        res_obj.append(val)
+                        if len(res_obj) >= query_obj["limit"]:
+                            return sorted(res_obj)
+
+    elif sorted(query_obj["field_list"]) ==  sorted(["disease_id", "disease_name"]):
+        mongo_query = {"$or":[
+            {"disease.recommended_name.name": {'$regex': query_obj["value"], '$options': 'i'}}
+            ,{"disease.recommended_name.id": {'$regex': query_obj["value"], '$options': 'i'}}
+            ,{"disease.synonyms.name": {'$regex': query_obj["value"], '$options': 'i'}}
+            ,{"disease.synonyms.id": {'$regex': query_obj["value"], '$options': 'i'}}
+        ]}
+        prj_obj = {"disease":1}
+        for obj in dbh[collection].find(mongo_query,prj_obj):
+            for o in obj["disease"]:
+                val_list = []
+                if "recommended_name" in o:
+                    val_list.append(o["recommended_name"]["name"])
+                    val_list.append(o["recommended_name"]["id"])
+                if "synonyms" in o:
+                    for oo in o["synonyms"]:
+                        val_list.append(oo["name"])
+                        val_list.append(oo["id"])
+                for val in val_list:
+                    if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
+                        val = val.split("[")[0]
+                        res_obj.append(val)
+                        if len(res_obj) >= query_obj["limit"]:
+                            return sorted(res_obj)
+    elif sorted(query_obj["field_list"]) == sorted(["tax_id", "tax_name"]):
+        mongo_query = {"$or":[
+                 {"species.taxid": {'$regex': query_obj["value"], '$options': 'i'}}
+                ,{"species.name": {'$regex': query_obj["value"], '$options': 'i'}}
+                ,{"species.common_name": {'$regex': query_obj["value"], '$options': 'i'}}
+                ,{"species.glygen_name": {'$regex': query_obj["value"], '$options': 'i'}}
+                ,{"species.reference_species": {'$regex': query_obj["value"], '$options': 'i'}}
+            ]
+        }
+        prj_obj = {"species":1}
+        for obj in dbh[collection].find(mongo_query,prj_obj).limit(100):
+            for o in obj["species"]:
+                for f in ["taxid", "name", "common_name", "glygen_name", "reference_species"]:
+                    val = str(o[f]) if f in o else ""
+                    if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
+                        res_obj.append(val)
+                        if len(res_obj) >= query_obj["limit"]:
+                            return sorted(res_obj)
+    elif sorted(query_obj["field_list"]) == sorted(["go_id", "go_term"]):
+        mongo_query = {"$or":[
+                 {"go_annotation.categories.go_terms.id": {'$regex': query_obj["value"], '$options': 'i'}}
+                ,{"go_annotation.categories.go_terms.name": {'$regex': query_obj["value"], '$options': 'i'}}
+            ]
+        }
+        prj_obj = {"go_annotation":1}
+        for obj in dbh[collection].find(mongo_query,prj_obj):
+            for cat_obj in obj["go_annotation"]["categories"]:
+                for term_obj in cat_obj["go_terms"]:
+                    for f in ["id", "name"]:
+                        val = term_obj[f] if f in term_obj else ""
+                        if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
+                            res_obj.append(val)
+                            if len(res_obj) >= query_obj["limit"]:
+                                return sorted(res_obj)
+
+
     return sorted(set(res_obj))
 
 
@@ -559,7 +651,7 @@ def biomarker_typeahead(query_obj, config_obj):
     mongo_query = {}
     for target_field in f_map:
         path = f_map[target_field]
-        if query_obj["field"] == target_field:
+        if query_obj["field_list"] == [target_field]:
             mongo_query = {path:{'$regex': query_obj["value"], '$options': 'i'}}
             path_list = path.split(".")
             for obj in dbh[collection].find(mongo_query):

@@ -2308,7 +2308,10 @@
             "field": {
                 "type": "string"
             },
-            "value": {
+            "field_list": {
+                "type": "list"
+            },
+				"value": {
                 "type": "string"
             },
             "limit": {
@@ -2316,7 +2319,6 @@
             }
         },
         "requiredfields": [
-            "field",
             "value",
             "limit"
         ],
@@ -3064,6 +3066,13 @@
             "formatlist": [
                 "png",
                 "svg"
+            ]
+        },
+		  "batch_retrieval": {
+            "cache": "c_job",
+            "formatlist": [
+                "json",
+                "csv"
             ]
         }
     },

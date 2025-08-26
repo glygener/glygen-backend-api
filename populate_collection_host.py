@@ -128,10 +128,16 @@ def main():
     glydb_user = config_obj["dbinfo"][db_name]["user"]
     glydb_pass = config_obj["dbinfo"][db_name]["password"]
     glydb_name =  config_obj["dbinfo"][db_name]["db"]
-    indexed_colls = [
+    text_indexed_colls = [
         "c_protein", "c_glycan", "c_motif", "c_publication", "c_biomarker","c_idtrack", 
         "c_network", "c_disease"
     ]
+    field_indexed_colls = {
+        "c_index":{
+            "phraselist":"phraselist_index"
+        }
+    }
+
     archived_colls = ["c_video", "c_outreach", "c_event"]
 
     db_list = config_obj["downloads"]["jsondb"]
@@ -168,7 +174,7 @@ def main():
             write_progress_msg(" ... dropping tmpdb.%s" % (coll), "a")
             tmpdb_dbh[coll].drop()
 
-            if coll in indexed_colls:
+            if coll in text_indexed_colls:
                 tmpdb_dbh[coll].drop_indexes()
             if coll in archived_colls:
                 doc_list = get_archived_docs(coll)
@@ -201,8 +207,11 @@ def main():
                     if coll == "c_batch":
                         if "expression" in doc["sections"]:
                             doc["sections"]["expression"] = collapse_objects(doc["sections"]["expression"])
-
-                    result = tmpdb_dbh[coll].insert_one(doc)     
+                    if coll in ["c_index"]:
+                        for obj in doc:
+                            result = tmpdb_dbh[coll].insert_one(obj)
+                    else:
+                        result = tmpdb_dbh[coll].insert_one(doc)     
                     nrecords += 1
                     if nrecords != 0 and nrecords%1000 == 0:
                         msg = " ... loaded %s out of %s documents to tmpdb.%s" % (nrecords, nrecords_total, coll)
@@ -213,12 +222,33 @@ def main():
             write_progress_msg(msg, "a")
 
             #CREATING COLLECTION
-            if coll in indexed_colls:
-                msg = "\n ... creating index for tmpdb.%s" % (coll)
+            if coll in text_indexed_colls:
+                msg = "\n ... creating text index for tmpdb.%s" % (coll)
                 write_progress_msg(msg, "a")
                 res = tmpdb_dbh[coll].create_index([("$**", pymongo.TEXT)])
-                msg = " ... finished creating index for tmpdb.%s" % (coll)
+                msg = " ... finished creating text index for tmpdb.%s" % (coll)
                 write_progress_msg(msg, "a")
+
+            if coll in field_indexed_colls:
+                index_name_list = []
+                for cur in tmpdb_dbh[coll].list_indexes():
+                    index_name_list.append(cur["name"])
+                for path in field_indexed_colls[coll]:
+                    index_name = field_indexed_colls[coll][path]
+                    if index_name in index_name_list:
+                        msg = "\n ... dropping field index (path=%s) for tmpdb.%s" % (path, coll)
+                        write_progress_msg(msg, "a")
+                        res = tmpdb_dbh[coll].drop_index(index_name)
+                        msg = " ... finished dropping field index (path=%s) for tmpdb.%s"%(path,coll)
+                        write_progress_msg(msg, "a")
+
+                    msg = "\n ... creating field index (path=%s) for tmpdb.%s" % (path, coll)
+                    write_progress_msg(msg, "a")
+                    res = tmpdb_dbh[coll].create_index([(path, -1 )], name=index_name)
+                    msg = " ... finished creating field index (path=%s) for tmpdb.%s" % (path, coll)
+                    write_progress_msg(msg, "a")
+
+
 
             # NOW CREARING DUMP DIR
             write_progress_msg("\n ... removing old tmpdb dump", "a")

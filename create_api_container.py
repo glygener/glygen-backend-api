@@ -82,8 +82,10 @@ def main():
 
 
     for cmd in cmd_list:
+        print ("//\n\n>>>COMMAND:\n", cmd)
         x = subprocess.getoutput(cmd)
-        print (x)
+        print ("//\n\n>>>COMMAND OUTPUT:\n", x)
+        #print (cmd)
 
 
     #remove dangling images
