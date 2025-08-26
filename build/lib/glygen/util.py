@@ -354,6 +354,45 @@ def get_hit_score(doc, cache_info, score_dict, selected_p_list, score_info):
                 n = doc[p]
                 if n > 0:
                     cond_match_freq[cond] = n
+    elif record_type == "disease":
+        val_list, qval_list = [], []
+        cond_group, cond = "misc", "disease_exact_match"
+        p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
+        for p in p_list:
+            if p not in selected_p_list:
+                continue
+            val_list.append(doc[p].lower())
+        for f in search_query:
+            if type(search_query[f]) is str:
+                tmp_q_list = search_query[f].lower().split(",")
+                for tq in tmp_q_list:
+                    qval_list.append(tq.strip())
+
+        for qval in qval_list:
+            if qval in val_list:
+                if cond not in cond_match_freq:
+                    cond_match_freq[cond] = 0
+                cond_match_freq[cond] += 1
+
+
+        cond_group, cond = "direct_boolean", ""
+        for cond in score_dict[record_type][cond_group]:
+            p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
+            for p in p_list:
+                if p not in selected_p_list:
+                    continue
+                if doc[p] == "yes":
+                    cond_match_freq[cond] = 1
+
+        cond_group, cond = "direct_numeric", ""
+        for cond in score_dict[record_type][cond_group]:
+            p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
+            for p in p_list:
+                if p not in selected_p_list:
+                    continue
+                n = doc[p]
+                if n > 0:
+                    cond_match_freq[cond] = n
 
     score = 0.1
     for cond_group in score_dict[record_type]:
@@ -839,6 +878,7 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
     #Get cached object
     mongo_query = {"list_id":query_obj["id"]}
     cached_obj = dbh[cache_collection].find_one(mongo_query)
+    
     #check for post-access error, error_list should be empty upto this line
     post_error_list = []
     if cached_obj == None:
@@ -866,7 +906,10 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
     id_list = []
     for doc in dbh[cache_collection].find(mongo_query):
         id_list += doc["results"]
-    
+   
+    #return {"error_list":{"q":mongo_query, "n":len(id_list)}}
+
+ 
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "conf/list_init.json")
     list_init_conf = json.loads(open(json_url, "r").read())
@@ -893,7 +936,10 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
             final_fields +=  sorted(set(f_dict[record_type]["required"] + f_dict[record_type]["default"]))
         else:
             final_fields +=  sorted(set(f_dict[record_type]["required"] + query_fields))
-    
+   
+
+
+    extra_fields = [] 
     for cat in score_dict[record_type]:
         for f in score_dict[record_type][cat]:
             if "fieldlist" not in score_dict[record_type][cat][f]:
@@ -901,9 +947,18 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
             ll = score_dict[record_type][cat][f]["fieldlist"]
             for ff in score_dict[record_type][cat][f]["fieldlist"]:
                 if ff not in final_fields:
-                    final_fields.append(ff)
+                    extra_fields.append(ff)
+    final_fields += extra_fields
+ 
+    #return {
+    #    "error_list":{
+    #        "required":f_dict[record_type]["required"], 
+    #        "user":query_fields, 
+    #        "extrfa":extra_fields,
+    #        "final":final_fields }
+    #}
 
-    
+
     prj_obj = {}
     for f in final_fields:
         prj_obj[f] = 1
@@ -938,7 +993,7 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
             obj["score_info"] = score_info
             cached_obj["results"].append(obj)
     ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-    #return {"error_list":debug_obj_list}
+    #return {"error_list":debug_obj_list, "is_empty_query":is_empty_query}
 
 
     filter_conf = get_filter_conf() 
@@ -1052,17 +1107,23 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
         post_error_list.append({"error_code":"invalid-parameter-value", "field":"offset"})
         return {"error_list":post_error_list}
 
+
+    removed_field_dict = {}
     start_index = int(query_obj["offset"]) - 1
     stop_index = start_index + int(query_obj["limit"])
     res_obj["results"] = []
     sorted_id_list = sorted_id_list[start_index:stop_index] if limit_flag else sorted_id_list
     for obj_id in sorted_id_list:
         obj = cached_obj["results"][obj_id]
-        for k in ["_id", "record_id"]:
-            if k in obj:
+        k_list = list(obj.keys())
+        for k in k_list:
+            if k in ["_id", "record_id"] or k in extra_fields:
                 obj.pop(k)
+                removed_field_dict[k] = True 
         res_obj["results"].append(obj)
         #res_obj["results"].append(order_obj(obj, config_obj["objectorder"]["glycan"]))
+
+    #return {"error_list":[removed_field_dict]}
 
     res_obj["pagination"] = {"offset":query_obj["offset"], "limit":query_obj["limit"],
         "total_length":len(cached_obj["results"]), "sort":query_obj["sort"], "order":query_obj["order"]}
@@ -1694,4 +1755,34 @@ def filter_glyco_obj_list(table_id, obj_list, query_filters , config_obj):
 
 
 
+
+
+
+
+def parse_sent(s,  max_word_count, min_word_count):
+
+    phrase_dict = {}
+    if s.strip() == "":
+        return
+    s = s.lower().replace(",", " ").replace("-", " ").replace(";", " ")
+    s = s.replace("(", " ").replace(")", " ").replace("[", " ").replace("]", " ")
+    w_list = s.split(" ")
+    word_count = len(w_list) + 1
+    word_count = max_word_count if word_count > max_word_count else word_count
+    for wlen in range(0, word_count):
+        if wlen > len(w_list):
+            continue
+        for i in range(0, len(w_list)):
+            l = []
+            for ww in w_list[i:i+wlen]:
+                ww = ww.strip()
+                if ww != "":
+                    l.append(ww)
+            if len(l) >= min_word_count:
+                w = " ".join(l)
+                if len(w) == 1:
+                    continue
+                phrase_dict[w] = True
+
+    return phrase_dict
 

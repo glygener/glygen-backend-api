@@ -1,15 +1,13 @@
 {
   "record_type": "protein",
-  "table_id": "glycosylation_reported_with_glycan",
-  "record_id": "P14210-1",
-  "offset": 21,
-  "limit": 20,
+  "table_id": "glycosylation_automatic_literature_mining",
+  "record_id": "P31749",
+  "offset": 1,
+  "limit": 200,
   "order": "asc",
   "sort": "start_pos",
   "filters": []
 }
-
-
 
 
 

@@ -2,7 +2,7 @@
         "biomarker_id":"AN6709",
         "biomarker_type":"prognostic",
         "disease_id":"DOID:1612",
-        "disease_name": "breast cancer",
+        "disease_name": "prostate cancer",
         "gene_name":"Stat1",
         "glycan_id":"G36521AS",
         "glycan_name":"HexNAc0Hex0dHex0NeuAc0NeuGc1Pent0S0P0KDN0HexA0",

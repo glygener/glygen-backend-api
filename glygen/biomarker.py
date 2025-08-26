@@ -10,6 +10,7 @@ import subprocess
 import json
 import bcrypt
 
+from glygen.indexlib import search_one
 from glygen.biomarker_apilib import biomarker_detail, biomarker_search, biomarker_search_init, biomarker_search_simple
 from glygen.util import get_req_obj, get_cached_records_indirect, get_hash_id, cache_result_list, get_cached_result_list, apply_pagination
 import traceback
@@ -71,7 +72,8 @@ class Biomarker(Resource):
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/biomarker/search_simple/", request)
             if "error_list" not in res_obj:
-                res_obj = biomarker_search_simple(req_obj, config_obj)
+                #res_obj = biomarker_search_simple(req_obj, config_obj)
+                res_obj = search_one("biomarker_search_simple", req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

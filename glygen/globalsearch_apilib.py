@@ -50,6 +50,12 @@ def get_sublist(doc_list, record_type, sec, term):
     return tmp_list
 
 
+
+
+
+
+
+
 def globalsearch_search(query_obj, config_obj):
 
     dbh, error_obj = get_mongodb()
@@ -272,7 +278,6 @@ def globalsearch_search(query_obj, config_obj):
                 "list_id":list_id, 
                 "count":hit_count
             }
-            
             res_obj["other_matches"]["total_match_count"] += len(results_dict[key_one][key_two])
         else:
             res_obj["other_matches"][key_one][key_two] = {"list_id":"", "count":0}

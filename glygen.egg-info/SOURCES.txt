@@ -27,6 +27,7 @@ glygen/graph.py
 glygen/graph_apilib.py
 glygen/idmapping.py
 glygen/idmapping_apilib.py
+glygen/indexlib.py
 glygen/job.py
 glygen/job_apilib.py
 glygen/libgly.py

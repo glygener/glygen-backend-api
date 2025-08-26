@@ -1,2 +1,10 @@
-{"id":"9fefe7c18a736a7ac13e8a7f3d5f62ff","download_type":"genelocus_list","format":"csv","compressed":false}
+
+{
+        "id": "90a9bbd429224b3fab20b60c9b04dbdf",
+        "download_type": "protein_list",
+        "format": "csv",
+        "compressed": false,
+        "filters": []
+  }
+
 

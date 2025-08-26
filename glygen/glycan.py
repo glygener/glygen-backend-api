@@ -10,6 +10,7 @@ import subprocess
 import json
 import bcrypt
 
+from glygen.indexlib import search_one
 from glygen.glycan_apilib import glycan_search_init, glycan_search, glycan_search_simple, glycan_detail, glycan_image, glycan_image_svg, glycan_image_metadata
 
 
@@ -99,7 +100,8 @@ class Glycan(Resource):
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/glycan/search_simple/", request)
             if "error_list" not in res_obj:
-                res_obj = glycan_search_simple(req_obj, config_obj)
+                #res_obj = glycan_search_simple(req_obj, config_obj)
+                res_obj = search_one("glycan_search_simple", req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

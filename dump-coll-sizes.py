@@ -34,7 +34,7 @@ def main():
     ver = options.dataversion
     coll_list = []
     if options.coll != None:
-        coll_list.append(coll)
+        coll_list.append(options.coll)
 
     jsondb_dir = "/data/shared/glygen/releases/data/v-%s/jsondb/" % (ver)
     config_obj = json.loads(open("./conf/config.json", "r").read())
@@ -64,10 +64,8 @@ def main():
         )
         client.server_info()
         dbh = client[glydb_name]
-        for db in config_obj["downloads"]["jsondb"]:
-            coll = "c_" + db[:-2]
-            if coll in ["c_event", "c_video", "c_outreach"]:
-                continue
+        for coll in coll_list:
+            db = coll[2:] + "db"
             n_one = len(glob.glob(jsondb_dir + db + "/*.json"))
             n_two = len(list(dbh[coll].find({},{"_id":1})))
             #n_two = dbh[coll].count_documents({})

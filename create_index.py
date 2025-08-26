@@ -32,24 +32,34 @@ def main():
     coll = options.coll
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
-    mongo_port = config_obj["dbinfo"]["port"][server]
+    mongo_port = "27017"
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
 
-    glydb_user, glydb_pass = config_obj["dbinfo"]["glydb"]["user"], config_obj["dbinfo"]["glydb"]["password"]
-    glydb_db =  config_obj["dbinfo"]["glydb"]["db"]
+    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_obj = config_obj["dbinfo"][db_name]
+    glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
+
 
     try:
         client = pymongo.MongoClient(host,
-            username=glydb_user,
-            password=glydb_pass,
-            authSource=glydb_db,
+            username=db_user,
+            password=db_pass,
+            authSource=db_name,
             authMechanism='SCRAM-SHA-1',
             serverSelectionTimeoutMS=10000
         )
         client.server_info()
-        dbh = client[glydb_db]
+        dbh = client[db_name]
         
-        res = dbh[coll].create_index([("$**", pymongo.TEXT)])
+
+        #res = dbh[coll].create_index([("$**", pymongo.TEXT)])
+        path = "phraselist"
+        index_name = "phraselist_index"
+        #res = dbh[coll].create_index([(path, -1 )], name=index_name)
+        #res = dbh[coll].drop_index(index_name)
+
+        for cur in dbh[coll].list_indexes():
+            print(f"Index Name: {cur['name']}")
 
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)

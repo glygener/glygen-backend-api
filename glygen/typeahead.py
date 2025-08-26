@@ -68,11 +68,13 @@ class Typeahead(Resource):
                 "biomarker_disease_id", "biomarker_disease_name"
             ]
             field_list_two = ["uniprot_canonical_ac", "uniprot_id", "refseq_ac", "protein_id",
-                "protein_name", "gene_name", "pathway_id", "pathway_name", 
+                "protein_name", "gene_name", "pdb_id", "pathway_id", "pathway_name", 
                 "disease_name","disease_id", 
                 "go_id", "go_term", "protein_pmid",
                 "biomarker_id", "biomarker_name","biomarker_type",
-                "biomarker_disease_id", "biomarker_disease_name"
+                "biomarker_disease_id", "biomarker_disease_name",
+                "tax_id",
+                "tax_name"
             ] 
             field_list_three = [
                 "biomarker_id", "biomarker_canonical_id"
@@ -96,11 +98,21 @@ class Typeahead(Resource):
                     return {"error_list":error_list}
 
                 tmp_obj_one, tmp_obj_two, tmp_obj_three = [], [], []
-                if req_obj["field"] in field_list_one:
+                
+                req_field_list = [req_obj["field"]] if "field" in req_obj else []
+                req_field_list += req_obj["field_list"] if "field_list" in req_obj else []
+                req_field_list = list(set(req_field_list))
+                req_obj["field_list"] = req_field_list
+
+
+                flag_one = len(set(req_field_list).intersection(set(field_list_one))) > 0
+                flag_two = len(set(req_field_list).intersection(set(field_list_two))) > 0
+                flag_three = len(set(req_field_list).intersection(set(field_list_three))) > 0 
+                if flag_one:
                     tmp_obj_one = glycan_typeahead(req_obj, config_obj)
-                if req_obj["field"] in field_list_two:
+                if flag_two:
                     tmp_obj_two = protein_typeahead(req_obj, config_obj)
-                if req_obj["field"] in field_list_three:
+                if flag_three:
                     tmp_obj_three = biomarker_typeahead(req_obj, config_obj)
                 if "error_list" in tmp_obj_one:
                     res_obj = tmp_obj_one

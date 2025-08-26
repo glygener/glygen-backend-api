@@ -1,5 +1,3 @@
-{
-  "protein_id":"NP_000592"
-}
 
+{"id":"66c940ec40fb8a982fb08fb53b82025c","offset":1,"sort":"hit_score","limit":20,"order":"desc","filters":[],"columns":["glytoucan_ac","image_url","hit_score","mass","publication"]}
 

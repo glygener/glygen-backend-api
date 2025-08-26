@@ -10,7 +10,8 @@ import subprocess
 import json
 import bcrypt
 
-from glygen.protein_apilib import protein_search_init, protein_search, protein_search_simple, protein_detail, protein_alignment
+from glygen.indexlib import search_one
+from glygen.protein_apilib import protein_search_init, protein_search, protein_detail, protein_alignment, protein_search_simple
 from glygen.util import get_cached_records_indirect, get_req_obj, cache_result_list, get_hash_id, get_cached_result_list, apply_pagination
 import traceback
 
@@ -107,7 +108,8 @@ class Protein(Resource):
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/protein/search_simple/", request)
             if "error_list" not in res_obj:
-                res_obj = protein_search_simple(req_obj, config_obj)
+                #res_obj = protein_search_simple(req_obj, config_obj)
+                res_obj = search_one("protein_search_simple", req_obj, config_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

@@ -1,85 +1,76 @@
 import os,sys
 import string
+from optparse import OptionParser
 import glob
 import json
-import subprocess
+from bson import json_util
+import pymongo
+from pymongo import MongoClient
+import datetime
 
-def get_path_value(path, obj):
 
-    p_list = path.split(".")
-    val_obj = obj
-    for p in p_list:
-        if type(val_obj) is dict:
-            val_obj = val_obj[p]
-        elif type(val_obj) is list:
-            tmp_list = []
-            for val in val_obj:
-                if type(val) is dict:
-                    if type(val[p]) in [int, float, str]:
-                        tmp_list.append(str(val[p]))
-            val_obj = ";".join(tmp_list)
-    return val_obj
+__version__="1.0"
+__status__ = "Dev"
 
 
 
 ###############################
 def main():
 
-    doc = json.load(open("glygen/conf/config.json"))
-    print (json.dumps(doc, indent=4))
-    exit()
+
+    usage = "\n%prog  [options]"
+    parser = OptionParser(usage,version="%prog version___")
+    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
+    parser.add_option("-c","--coll",action="store",dest="coll",help="") 
+    (options,args) = parser.parse_args()
+
+    for key in ([options.server, options.coll]):
+        if not (key):
+            parser.print_help()
+            sys.exit(0)
+
+    server = options.server
+    coll = options.coll
 
 
-    obj = {
-        "proteins":{
-            "protein_names": [
-                {
-                    "name": "Tumor necrosis factor receptor superfamily member 11B",
-                    "resource": "UniProtKB",
-                    "type": "recommended"
-                },
-                {
-                    "name": "Osteoclastogenesis inhibitory factor",
-                    "resource": "UniProtKB",
-                    "type": "synonym"
-                }
-            ]
-        }
-    }
+    db_name = "glydb_beta" if server == "beta" else "glydb"
 
-    path = "proteins.protein_names.name"
-    val_obj = get_path_value(path, obj)
-    print (val_obj)
-    exit()    
+    config_obj = json.loads(open("./conf/config.json", "r").read())
+    #mongo_port = config_obj["dbinfo"]["port"][server]
+    mongo_port = "27017"
+    host = "mongodb://127.0.0.1:%s" % (mongo_port)
+  
+    db_obj = config_obj["dbinfo"][db_name]
+    glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
 
+    try:
+        client = pymongo.MongoClient(host,
+            username=db_user,
+            password=db_pass,
+            authSource=glydb_name,
+            authMechanism='SCRAM-SHA-1',
+            serverSelectionTimeoutMS=10000
+        )
+        client.server_info()
+        dbh = client[glydb_name]
+    
+        phrase = "prostate cancer"    
+        prj_obj = {"record_type":1, "record_id":1, "section":1, "glycoflag":1}
+        qry_obj = {"phraselist":{"$eq":phrase}}
+        for doc in dbh["c_index"].find(qry_obj, prj_obj):
+            record_id, sec = doc["record_id"], doc["section"]
+            glyco_flag = False
+            glyco_flag = doc["glycoflag"] if "glycoflag" in doc else glyco_flag
+            record_type_list = [doc["record_type"]]
+            if glyco_flag == True:
+                record_type_list.append("glycoprotein")
+            print (record_id, "glycoflag" in doc, record_type_list)
 
-    doc = json.load(open("junk1"))
-    for obj in doc["results"]:
-        print ("1",obj["disease_id"], obj["recommended_name"])
-     
-    doc = json.load(open("junk2"))
-    for obj in doc["results"]:
-        print ("2",obj["disease_id"], obj["recommended_name"])
+    except pymongo.errors.ServerSelectionTimeoutError as err:
+        print (err)
+    except pymongo.errors.OperationFailure as err:
+        print (err)
 
-    exit()
-
-    file_list = glob.glob("glygen/*.py")
-    for in_file in file_list:
-        file_name = in_file.split("/")[-1]
-        sbr = ""
-        with open(in_file, "r") as FR:
-            for line in FR:
-                if line[0:4] == "def ":
-                    sbr = line.split("(")[0].split(" ")[1]
-                if line.find("get_mongodb") != -1:
-                    print (file_name, sbr)    
-    exit()
-
-
-    cmd = "http POST :8082/protein/detail/P14210-1/"
-    for i in range(0, 10):
-        x = subprocess.getoutput(cmd)
-        print (i)
 
 
 if __name__ == '__main__':

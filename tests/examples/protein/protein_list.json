@@ -1,3 +1,3 @@
-{
-        "id": "104c07e6f0adbad0afd4ac5673afdbe1"
-}
+{"id":"e5da768cb78c2eab74fa62e52ce9b67d","offset":1,"limit":20,"order":"desc","sort":"hit_score","filters":[],"columns":["uniprot_canonical_ac","gene_name","protein_name","hit_score","organism","length","mass","refseq_name","refseq_ac","uniprot_id"]}
+
+
