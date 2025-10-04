@@ -1181,8 +1181,8 @@
                 "label": "Byonic",
                 "order": 25,
                 "tooltip": "",
-                "immutable": false,
-                "default": false,
+                "immutable": true,
+                "default": true,
                 "categories": [
                     {
                         "id": "Sequence",
@@ -2135,10 +2135,40 @@
                 ]
          },
 			{
+                "id": "glycan_count",
+                "property_name": "glycan_count",
+                "label": "Glycan Count",
+                "order": 3,
+                "tooltip": "",
+                "immutable": true,
+                "default": true,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": 2
+                    }
+                ]
+         },
+			{
+                "id": "protein_count",
+                "property_name": "protein_count",
+                "label": "Protein Count",
+                "order": 4,
+                "tooltip": "",
+                "immutable": true,
+                "default": true,
+                "categories": [
+                    {
+                        "id": "General",
+                        "order": 2
+                    }
+                ]
+         },
+		   {
                 "id": "synonyms",
                 "property_name": "synonyms",
                 "label": "Disease Synonyms",
-                "order": 3,
+                "order": 5,
                 "tooltip": "",
                 "immutable": true,
                 "default": true,

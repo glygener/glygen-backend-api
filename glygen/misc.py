@@ -15,10 +15,18 @@ import requests
 from glygen.db import get_mongodb, log_error
 
 from glygen.misc_apilib import validate, propertylist, pathlist, messagelist, verlist, gtclist, bcolist
-from glygen.util import get_req_obj, get_filter_conf
+from glygen.util import get_req_obj, get_filter_conf, get_cached_records_indirect, apply_pagination
 from glygen.auth_apilib import create_github_issue
-from glygen.protein_apilib import protein_detail
 import traceback
+
+
+from glygen.indexlib import search_one, search_all
+from glygen.protein_apilib import protein_detail, protein_search_simple
+from glygen.glycan_apilib import glycan_detail, glycan_search_simple
+from glygen.biomarker_apilib import biomarker_detail, biomarker_search_simple
+from glygen.disease_apilib import disease_detail, disease_search_simple
+
+from glygen.globalsearch_apilib import globalsearch_search
 
 
 api = Namespace("misc", description="Misc APIs")
@@ -306,5 +314,70 @@ class Misc(Resource):
         return res_obj, http_code
 
 
+
+
+
+@api.route('/apitest/')
+class Misc(Resource):
+    @api.doc(False)
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+
+            start_ts = datetime.datetime.now(pytz.timezone('US/Eastern'))
+            req_obj = get_req_obj(request)
+            mode = req_obj["mode"] if "mode" in req_obj else ""
+            if "name" not in req_obj or "payload" not in req_obj:
+                res_obj["error_list"] = [{"error":"incomplete set of parameters"}]
+            else:
+                if req_obj["name"].find("_search_simple") != -1:
+                    if mode == "old":
+                        if req_obj["name"] == "protein_search_simple":
+                            res_obj = protein_search_simple(req_obj["payload"], config_obj)
+                        elif req_obj["name"] == "glycan_search_simple":
+                            res_obj = glycan_search_simple(req_obj["payload"], config_obj)
+                        elif req_obj["name"] == "biomarker_search_simple":
+                            res_obj = biomarker_search_simple(req_obj["payload"], config_obj)
+                        elif req_obj["name"] == "disease_search_simple":
+                            res_obj = disease_search_simple(req_obj["payload"], config_obj)
+                    else:
+                        res_obj = search_one(req_obj["name"], req_obj["payload"], config_obj, False)
+                elif req_obj["name"] in ["globalsearch_search"]:
+                    if mode == "old":
+                        res_obj = globalsearch_search(req_obj["payload"], config_obj)
+                    else:
+                        res_obj = search_all(req_obj["name"], req_obj["payload"], config_obj)
+                elif req_obj["name"].find("_detail") != -1:
+                    if req_obj["name"] == "protein_detail":
+                        res_obj = protein_detail(req_obj["payload"], config_obj)
+                    elif req_obj["name"] == "glycan_detail":
+                        res_obj = glycan_detail(req_obj["payload"], config_obj)
+                    elif req_obj["name"] == "biomarker_detail":
+                        res_obj = biomarker_detail(req_obj["payload"], config_obj)
+                    elif req_obj["name"] == "disease_detail":
+                        res_obj = disease_detail(req_obj["payload"], config_obj)
+                elif req_obj["name"].find("_list") != -1:
+                    res_obj = get_cached_records_indirect(req_obj["payload"], config_obj, False)
+                    if "results" in res_obj:
+                        res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
+                else:
+                    res_obj["error_list"] = [{"error":"api=%s not supported" % (req_obj["name"])}]
+            end_ts = datetime.datetime.now(pytz.timezone('US/Eastern'))
+            elapsed = end_ts - start_ts
+            secs = round(elapsed.total_seconds(), 2)
+            ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+            start_f = start_ts.strftime(ts_format)
+            end_f = end_ts.strftime(ts_format)
+            res_obj["api_latency"] = {"api_start":start_f,"api_end":end_f,"api_elapsed_seconds":secs} 
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+    @api.doc(False)
+    def get(self):
+        return self.post()
 
 

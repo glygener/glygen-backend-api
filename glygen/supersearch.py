@@ -184,6 +184,7 @@ class Supersearch(Resource):
                 api_name = "supersearch_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
+                #return {"listcache_id":listcache_id}
                 res_obj = get_cached_result_list(cache_id, listcache_id)
                 #return res_obj, 200
                 if res_obj == None:

@@ -40,6 +40,25 @@ def main():
     glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
 
 
+    index_dict = {
+        "c_index":{
+            "phraselist":"phraselist_index"
+        },
+        "c_protein":{
+            "uniprot_canonical_ac":"uniprot_canonical_ac_index",
+            "uniprot_ac":"uniprot_ac_index"
+        },
+        "c_glycan":{
+            "glytoucan_ac":"glytoucan_ac_index"
+        },
+        "c_list":{
+            "record_id":"record_id_index"
+        }
+    }
+
+
+
+
     try:
         client = pymongo.MongoClient(host,
             username=db_user,
@@ -50,14 +69,27 @@ def main():
         )
         client.server_info()
         dbh = client[db_name]
+       
+        #res = dbh[coll].create_index([("$**", pymongo.TEXT)], name="global_index")
+ 
+        index_name_list = []
+        for cur in dbh[coll].list_indexes():
+            index_name_list.append(cur["name"])
         
-
-        #res = dbh[coll].create_index([("$**", pymongo.TEXT)])
-        path = "phraselist"
-        index_name = "phraselist_index"
-        #res = dbh[coll].create_index([(path, -1 )], name=index_name)
-        #res = dbh[coll].drop_index(index_name)
-
+        for path in index_dict[coll]:
+            index_name = index_dict[coll][path]
+            if index_name in index_name_list:
+                msg = "\n ... dropping field index (path=%s) for %s" % (path, coll)
+                print (msg)
+                res = dbh[coll].drop_index(index_name)
+                msg = " ... finished dropping field index (path=%s) for %s"%(path,coll)
+                print (msg)
+            msg = "\n ... creating field index (path=%s) for %s" % (path, coll)
+            print (msg)
+            res = dbh[coll].create_index([(path, -1 )], name=index_name)
+            msg = " ... finished creating field index (path=%s) for %s" % (path, coll)
+            print (msg)
+        
         for cur in dbh[coll].list_indexes():
             print(f"Index Name: {cur['name']}")
 

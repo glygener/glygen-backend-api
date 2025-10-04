@@ -186,6 +186,11 @@ class Auth(Resource):
         res_obj = {}
         try:
             req_obj = get_req_obj(request)
+            if req_obj == None:
+                return {"error_list":[{"error_code":"invalid request payload"}]}
+            for k in ["email", "password"]:
+                if k not in req_obj:
+                    return {"error_list":[{"error_code":"missing-parameter-%s" % (k)}]}
             username = req_obj["email"]
             password = req_obj["password"]
             mongo_dbh, error_obj = get_mongodb()

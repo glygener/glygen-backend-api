@@ -13,6 +13,20 @@ import pymongo
 
 
 
+def get_hash_id(api_name , record_type, obj):
+
+    new_obj = {}
+    for k in obj:
+        if k not in ["offset", "limit"]:
+            new_obj[k] = obj[k]
+
+    hash_str = api_name + record_type + json.dumps(new_obj)
+    hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+    return hash_obj.hexdigest()
+
+
+
+
 def cache_record_list(dbh,list_id, record_list, cache_info, cache_coll, config_obj):
     
     res = dbh[cache_coll].delete_many({"list_id":list_id})
@@ -191,7 +205,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
         #agg_query = [{"$project":{record_id_field:1, "result":{ "$not": [ q_obj["query"] ] }}}]
         #doc_list = list(dbh[coll].aggregate(agg_query))
-        #print  record_type, len(doc_list)
+        #print  (record_type, len(doc_list))
         #print q_obj["query"]
         initial_hit_count += len(doc_list)
         for doc in doc_list:

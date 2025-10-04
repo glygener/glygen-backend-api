@@ -30,7 +30,7 @@
             "urlcmdflag": "-u",
             "apiurl": {
                 "prd": "http://172.17.0.12:10980",
-                "beta": "http://172.17.0.13:10990",
+                "beta": "http://172.17.0.03:10990",
                 "tst": "http://172.17.0.4:10980",
                 "dev": "http://172.17.0.4:10980"
             },
@@ -485,6 +485,24 @@
         "requiredfields": [
             "term",
             "term_category"
+        ],
+        "collectionlist": [
+            "c_glycan",
+            "c_cache"
+        ]
+    },
+	"glycan_sequence2ac": {
+        "field_info": {
+            "type": {
+                "type": "string"
+            },
+            "seq": {
+                "type": "string"
+            }
+        },
+        "requiredfields": [
+            "type",
+            "seq"
         ],
         "collectionlist": [
             "c_glycan",

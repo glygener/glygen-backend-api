@@ -1,0 +1,10 @@
+
+ ... creating field index (path=uniprot_canonical_ac) for c_protein
+ ... finished creating field index (path=uniprot_canonical_ac) for c_protein
+
+ ... creating field index (path=uniprot_ac) for c_protein
+ ... finished creating field index (path=uniprot_ac) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index

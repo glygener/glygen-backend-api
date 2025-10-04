@@ -1,23 +1,5 @@
+{"concept_query_listt":[]}
 
-{
-  "concept_query_list": [
-    {
-      "concept": "disease",
-      "query": {
-        "aggregator": "$and",
-        "aggregated_list": [],
-        "unaggregated_list": [
-          {
-            "path": "disease_id",
-            "order": 0,
-            "operator": "$eq",
-            "string_value": "DOID:1612"
-          }
-        ]
-      }
-    }
-  ]
-}
 
 
 

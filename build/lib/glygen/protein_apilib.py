@@ -56,10 +56,10 @@ def protein_search_simple(query_obj, config_obj):
     list_id = get_hash_id(api_name, record_type, query_obj)
     
     cache_coll = "c_cache"
-    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
-    if cached_obj != None:
-        if len(cached_obj["results"]) > 0:
-            return {"list_id":list_id}
+    #cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    #if cached_obj != None:
+    #    if len(cached_obj["results"]) > 0:
+    #        return {"list_id":list_id}
 
     mongo_query = get_simple_mongo_query(new_query_obj)
     #return mongo_query
@@ -302,26 +302,30 @@ def protein_detail(query_obj, config_obj):
             {"uniprot_ac":{'$eq': query_obj["uniprot_canonical_ac"].upper()}}
         ]
     }
-    
-
-    obj = dbh[collection].find_one(mongo_query)
+    #mongo_query = {"uniprot_canonical_ac":{'$eq': query_obj["uniprot_canonical_ac"].upper()}}
     
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts_list = []
+    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+    obj = dbh[collection].find_one(mongo_query)
+    
+    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+ 
     c_a = {"recordtype":{"$eq": "protein"}}
     c_b = {"record_id":{'$eq':query_obj["uniprot_canonical_ac"].upper()}}
     c_c = {"accessions":{'$regex':","+query_obj["uniprot_canonical_ac"].upper() + ",","$options":"i"}}
     if len(query_obj["uniprot_canonical_ac"]) == 6:
         c_b = {"record_id":{'$regex':query_obj["uniprot_canonical_ac"].upper(),"$options":"i"}}
 
-    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     q_one = {"$and":[c_a, c_b]}
     q_two = {"$and":[c_a, c_c]}
     history_obj_one = dbh["c_idtrack"].find_one(q_one)
-    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     q_two = {"$and":[c_a, c_c]}
-    ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
 
     #check for post-access error, error_list should be empty upto this line
@@ -430,13 +434,24 @@ def protein_detail(query_obj, config_obj):
         for sec in sec_tables:
             obj[sec] = sec_tables[sec]
 
+    if "disease" in obj:
+        for o in obj["disease"]:
+            if "synonyms" in o:
+                o.pop("synonyms")
+    for k in ["snv", "expression_disease"]:
+        if k in obj:
+            for o in obj[k]:
+                if "disease" in o:
+                    for oo in o["disease"]:
+                        if "synonyms" in oo:
+                            oo.pop("synonyms")
 
-
-
+ 
     clean_obj(obj, config_obj["removelist"]["c_protein"], "c_protein")
 
-    ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-    #return ts_list
+    ts_list.append("END-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    #return {"tslist":ts_list}
+
 
     return obj
 

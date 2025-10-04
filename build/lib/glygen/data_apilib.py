@@ -34,7 +34,9 @@ def list_download(query_obj, config_obj, data_path):
     #Collect errors 
     error_list = get_errors_in_query("list_download",query_obj, config_obj)
     if error_list != []:
-        if error_list[0]["field"] != "id" and query_obj["download_type"] != "motif_list":
+        if error_list[0]["field"] == "id" and query_obj["download_type"] == "motif_list":
+            x = "xxx" # do nothing
+        else:
             return {"error_list":error_list}
 
     if query_obj["download_type"] not in config_obj["downloadtypes"].keys():
@@ -57,7 +59,6 @@ def list_download(query_obj, config_obj, data_path):
         "disease_list","ortholog_list",
         "idmapping_list_mapped", "idmapping_list_unmapped", "idmapping_list_all", 
         "idmapping_list_all_collapsed",
-        "isoform_mapper_list",
         "batch_retrieval"
     ]
     sequence_format_list = ["fasta", "iupac", "wurcs","glycam","smiles_isomeric","inchi","glycoct", "byonic", "grits"]
@@ -77,6 +78,15 @@ def list_download(query_obj, config_obj, data_path):
                 data_buffer = get_tabular_buffer(list_obj, query_obj, config_obj)
             elif format_lc in sequence_format_list:
                 data_buffer = get_sequence_buffer_one(dbh, list_obj, query_obj, config_obj)
+    elif query_obj["download_type"] == "isoform_mapper_list":
+        data_path, server = os.environ["DATA_PATH"],os.environ["SERVER"]
+        out_file = data_path + "/userdata/" + server + "/jobs/%s/output.tsv" % (query_obj["id"])
+        data_buffer = ""
+        if os.path.isfile(out_file):
+            with open(out_file, "r") as FR:
+                for line in FR:
+                    row = line[:-1].split("\t")
+                    data_buffer += "\"" + "\",\"".join(row) + "\"\n"
 
 
     #Now that we have data_buffer, let's worry about compression
@@ -105,7 +115,8 @@ def detail_download(query_obj, config_obj, data_path):
     #Collect errors 
     error_list = get_errors_in_query("detail_download",query_obj, config_obj)
     if error_list != []:
-        if error_list[0]["field"] != "id" and query_obj["download_type"] != "motif_list":
+        d_type = query_obj["download_type"] if "download_type" in query_obj else ""
+        if error_list[0]["field"] != "id" and d_type != "motif_list":
             return {"error_list":error_list}
 
     if query_obj["download_type"] not in config_obj["downloadtypes"].keys():
@@ -704,7 +715,19 @@ def get_record_object(dbh, query_obj, config_obj):
     if query_obj["download_type"] in ["disease_detail", "disease_section"]:
         main_id = "disease_id"
  
-    mongo_query = {main_id:{"$regex":query_obj["id"], "$options":"i"}}
+    val = query_obj["id"]
+    mongo_query = {main_id:{"$eq":val}}
+    if query_obj["download_type"] == "protein_detail":
+        mongo_query = {"$or":[{"uniprot_canonical_ac":{"$eq":val}}, {"uniprot_ac":{"$eq":val}}]}
+    if query_obj["download_type"] == "site_detail":
+        parts = val.split(".")
+        if parts[0].find("-") == -1 and len(parts) == 3:
+            tmp_list = []
+            for i in range(1, 5):
+                cmb = "%s-%s.%s.%s" % (parts[0], i, parts[1], parts[2])
+                tmp_list.append({"id":{"$eq":cmb}})
+            mongo_query = {"$or":tmp_list}
+
 
     record_obj = dbh[collection].find_one(mongo_query)
     if record_obj == None:
@@ -777,7 +800,8 @@ def get_results_from_record_id(dbh, query_obj, section_field):
         "publication":"record_id",
         "biomarker":"biomarker_id",
         "motif":"motif_ac",
-        "disease":"disease_id"
+        "disease":"disease_id",
+        "site":"id"
     }
     table_id, record_id = query_obj["section"], query_obj["id"]
     if table_id == "glycosylation_reported_with_glycans":
@@ -788,13 +812,32 @@ def get_results_from_record_id(dbh, query_obj, section_field):
         return {"error_list":{"error_code":"non-existent-results (bad record_type)"}}
     main_id_field = main_id_dict[record_type]
     mongo_query = {main_id_field:{"$eq":record_id}}
+    if main_id_field == "uniprot_canonical_ac":
+        mongo_query = {
+            "$or":[
+                {"uniprot_canonical_ac":{"$eq":record_id}}, 
+                {"uniprot_ac":{"$eq":record_id}}
+            ]
+        }
+
+    if query_obj["download_type"] == "site_section":
+        parts = record_id.split(".")
+        if parts[0].find("-") == -1 and len(parts) == 3:
+            tmp_list = []
+            for i in range(1, 5):
+                cmb = "%s-%s.%s.%s" % (parts[0], i, parts[1], parts[2])
+                tmp_list.append({"id":{"$eq":cmb}})
+            mongo_query = {"$or":tmp_list}
+
+
     #return mongo_query
     collection = "c_" + record_type
     doc = dbh[collection].find_one(mongo_query)
     if doc == None:
         return {"error_list":[{"error_code":"no record found for %s=%s" % (main_id_field, record_id)}]}
-   
-    #return doc["disease"]
+  
+    #return {"results":doc["glycosylation"]}
+
 
     obj_list = []
     sec = section_field
@@ -808,6 +851,15 @@ def get_results_from_record_id(dbh, query_obj, section_field):
     #        if table_id.find(k) != -1:
     #            sec = table_id_parts[0]
 
+    # Get section objects if this record was batched
+    q = {"batchid": 1, "recordid": record_id, "recordtype": record_type}
+    batch_doc = dbh["c_batch"].find_one(q)
+    if batch_doc != None:
+        if sec in doc:
+            if sec in batch_doc["sections"]:
+                doc[sec] += batch_doc["sections"][sec]
+
+    #return {"n":len(doc[sec])}
 
     for obj in doc[sec]:
         if sec == "glycosylation":
@@ -815,7 +867,7 @@ def get_results_from_record_id(dbh, query_obj, section_field):
             for site_cat in obj["site_category_dict"]:
                 if table_id == sec + "_" + site_cat:
                     flag = True           
-            if flag:
+            if flag or record_type == "site":
                 obj_list.append(obj)
         elif sec == "expression" and table_id == sec + "_" + obj["category"]:
                 obj_list.append(obj)

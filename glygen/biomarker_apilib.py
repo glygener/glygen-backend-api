@@ -54,10 +54,10 @@ def biomarker_search_simple(query_obj, config_obj):
     api_name = "biomarker_search_simple"
     list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
-    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
-    if cached_obj != None:
-        if len(cached_obj["results"]) > 0:
-            return {"list_id":list_id}
+    #cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    #if cached_obj != None:
+    #    if len(cached_obj["results"]) > 0:
+    #        return {"list_id":list_id}
 
     mongo_query = get_simple_mongo_query(new_query_obj)
     #return mongo_query

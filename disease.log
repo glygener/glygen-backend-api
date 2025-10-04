@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "create_index.py", line 101, in <module>
+    main()
+  File "create_index.py", line 76, in main
+    for path in index_dict[coll]:
+KeyError: 'c_disease'

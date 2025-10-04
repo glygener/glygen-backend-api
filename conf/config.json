@@ -64,19 +64,19 @@
         "jsondb":[
             "initdb"
             ,"searchinitdb"
-	    ,"statdb"
-	    ,"outreachdb"
+	    		,"statdb"
+	    		,"outreachdb"
             ,"videodb"
             ,"eventdb"
-	    ,"speciesdb"
+	    		,"speciesdb"
             ,"diseasedb"
             ,"biomarkerdb"
-	    ,"motifdb"
+	    		,"motifdb"
             ,"pathdb"
-	    ,"glytoucandb"
+	    		,"glytoucandb"
             ,"idtrackdb"
-	    ,"networkdb"
-	    ,"batchdb"
+	    		,"networkdb"
+	    		,"batchdb"
             ,"glycandb" 
             ,"alignmentdb"
             ,"clusterdb"
@@ -84,6 +84,7 @@
             ,"publicationdb"
             ,"sitedb"
             ,"proteindb"
-	]
+				,"indexdb"
+			]
     }
 }

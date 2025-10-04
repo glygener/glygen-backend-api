@@ -36,6 +36,45 @@ def glycan_search_init(config_obj):
 
 
 
+
+
+def glycan_sequence2ac(query_obj, config_obj):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    #Collect errors
+    error_list = get_errors_in_query("glycan_sequence2ac", query_obj, config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+
+    seq_format = query_obj["type"].lower()
+    if seq_format not in ["glycoct", "wurcs"]:
+        return {"error_list":[{"error_code":"invalid type", "field":"type"}]}
+    
+    glycan_seq = query_obj["seq"]
+    if seq_format in ["glycoct"]:
+        glycan_seq =  glycan_seq.replace("\n", " ").strip()
+
+    mongo_query = {seq_format: {"$eq": glycan_seq}}
+    #return mongo_query
+
+    collection = "c_glycan"
+    record_list = []
+    prj_obj = {"glytoucan_ac":1}
+    doc = dbh[collection].find_one(mongo_query,prj_obj)
+    glytoucan_ac = ""
+    if doc != None:
+        glytoucan_ac = doc["glytoucan_ac"]
+    if glytoucan_ac == "":
+        return {"error_list": [{"error_code": "no-record-found"}]}
+    
+    res_obj = {"glytoucan_ac":glytoucan_ac}
+    return res_obj
+
+
+
 def glycan_search_simple(query_obj, config_obj):
 
     dbh, error_obj = get_mongodb()
@@ -59,10 +98,10 @@ def glycan_search_simple(query_obj, config_obj):
     api_name = "glycan_search_simple"
     list_id = get_hash_id(api_name, record_type, query_obj)
     cache_coll = "c_cache"
-    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
-    if cached_obj != None:
-        if len(cached_obj["results"]) > 0:
-            return {"list_id":list_id}
+    #cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    #if cached_obj != None:
+    #    if len(cached_obj["results"]) > 0:
+    #        return {"list_id":list_id}
 
 
 

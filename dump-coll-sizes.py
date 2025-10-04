@@ -66,7 +66,13 @@ def main():
         dbh = client[glydb_name]
         for coll in coll_list:
             db = coll[2:] + "db"
-            n_one = len(glob.glob(jsondb_dir + db + "/*.json"))
+            file_list = glob.glob(jsondb_dir + db + "/*.json")
+            n_one = len(file_list)
+            if coll in ["c_index"]:
+                n_one = 0
+                for in_file in file_list:
+                    n_one += len(json.load(open(in_file)))
+        
             n_two = len(list(dbh[coll].find({},{"_id":1})))
             #n_two = dbh[coll].count_documents({})
             print (n_one == n_two, coll, "in_file_sys=%s" %(n_one), "in_mongodb=%s" %(n_two))

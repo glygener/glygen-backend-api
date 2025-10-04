@@ -1,6 +1,8 @@
-False c_batch in_file_sys=1049 in_mongodb=1943
-False c_alignment in_file_sys=211173 in_mongodb=142827
-False c_cluster in_file_sys=158426 in_mongodb=146590
-False c_publication in_file_sys=319615 in_mongodb=319505
-False c_site in_file_sys=916902 in_mongodb=907159
-
+performing global search with empty query ... 
+done
+rerieving list objects ...
+done retrieving total of 918506 results 
+caching list objects ...
+done
+updating c_searchinit ...
+done

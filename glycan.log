@@ -1,0 +1,6 @@
+
+ ... creating field index (path=glytoucan_ac) for c_glycan
+ ... finished creating field index (path=glytoucan_ac) for c_glycan
+Index Name: _id_
+Index Name: $**_text
+Index Name: glytoucan_ac_index

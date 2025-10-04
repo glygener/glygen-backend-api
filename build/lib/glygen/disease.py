@@ -72,7 +72,7 @@ class Disease(Resource):
             res_obj = log_request(req_obj, "/disease/search_simple/", request)
             if "error_list" not in res_obj:
                 #res_obj = disease_search_simple(req_obj, config_obj)
-                res_obj = search_one("disease_search_simple", req_obj, config_obj)
+                res_obj = search_one("disease_search_simple", req_obj, config_obj, True)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
