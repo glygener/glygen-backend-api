@@ -1,8 +1,2 @@
-{
-	"id":"431252e214612ebfc44947174c8a8e28",
-	"offset":1,
-	"sort":"hit_score",
-	"limit":200000,
-	"order":"desc",
-	"filters":[]
-}
+{"id":"96ba7bcf523e1f34a0882364606bfeb4","offset":1,"sort":"hit_score","limit":20,"order":"desc","filters":[]}
+

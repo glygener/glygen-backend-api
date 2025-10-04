@@ -217,7 +217,9 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
             return cached_obj["res"]
 
 
-
+    if "concept_query_list" not in query_obj:
+        return {"error_list":[{"error_code":"missing-field:concept_query_list"}]}
+    
     #Collect errors 
     if query_obj == {}:
         query_obj["concept_query_list"] = []

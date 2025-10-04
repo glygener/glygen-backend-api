@@ -1,0 +1,218 @@
+{
+	"globalsearch_search":{
+		"name":"globalsearch_search",
+		"payload":{"term":"homo sapiens"}
+ 	},
+	"biomarker_detail": {
+        "name": "biomarker_detail",
+        "payload": {
+            "biomarker_id": "AN6278-5",
+            "paginated_tables": [
+                {
+                    "table_id": "publication",
+                    "offset": 1,
+                    "limit": 200,
+                    "sort": "date",
+                    "order": "desc"
+                }
+            ]
+        }
+    },
+    "biomarker_list": {
+        "name": "biomarker_list",
+        "payload": {
+            "id": "6f528cefc376f3260a40b4e10dc60494",
+            "offset": 1,
+            "sort": "hit_score",
+            "limit": 20,
+            "order": "desc",
+            "filters": []
+        }
+    },
+    "biomarker_search_simple": {
+        "name": "biomarker_search_simple",
+        "payload": {
+            "term": "breast cancer",
+            "term_category": "any"
+        }
+    },
+    "disease_detail": {
+        "name": "disease_detail",
+        "payload": {
+            "record_id": "doid.1612"
+        }
+    },
+    "disease_list": {
+        "name": "disease_list",
+        "payload": {
+            "id": "d10a46b42d8fce81b961d6578117bb40",
+            "offset": 1,
+            "sort": "hit_score",
+            "limit": 20,
+            "order": "desc",
+            "filters": []
+        }
+    },
+    "disease_search_simple": {
+        "name": "disease_search_simple",
+        "payload": {
+            "term": "breast cancer",
+            "term_category": "any"
+        }
+    },
+    "glycan_detail": {
+        "name": "glycan_detail",
+        "payload": {
+            "glytoucan_ac": "G17689DH",
+            "paginated_tables": [
+                {
+                    "table_id": "glycoprotein",
+                    "offset": 1,
+                    "limit": 20,
+                    "sort": "uniprot_canonical_ac",
+                    "order": "asc"
+                },
+                {
+                    "table_id": "expression_tissue",
+                    "offset": 1,
+                    "limit": 20,
+                    "sort": "start_pos",
+                    "order": "asc"
+                },
+                {
+                    "table_id": "expression_cell_line",
+                    "offset": 1,
+                    "limit": 20,
+                    "sort": "start_pos",
+                    "order": "asc"
+                },
+                {
+                    "table_id": "publication",
+                    "offset": 1,
+                    "limit": 200,
+                    "sort": "date",
+                    "order": "desc"
+                }
+            ]
+        }
+    },
+    "glycan_list": {
+        "name": "glycan_list",
+        "payload": {
+            "id": "a7e4068d39c1f9c017cb6f3c069e6ea5",
+            "offset": 1,
+            "sort": "hit_score",
+            "limit": 20,
+            "order": "desc",
+            "filters": [],
+            "columns": [
+                "glytoucan_ac",
+                "image_url",
+                "hit_score",
+                "mass",
+                "publication"
+            ]
+        }
+    },
+    "glycan_search_simple": {
+        "name": "glycan_search_simple",
+        "payload": {
+            "term": "homo sapiens",
+            "term_category": "any"
+        }
+    },
+    "protein_detail": {
+        "name": "protein_detail",
+        "payload": {
+            "uniprot_canonical_ac": "P14210",
+            "paginated_tables": [
+                {
+                    "table_id": "glycosylation_reported_with_glycan",
+                    "offset": 1,
+                    "limit": 20,
+                    "sort": "start_pos",
+                    "order": "asc"
+                },
+                {
+                    "table_id": "glycosylation_reported",
+                    "offset": 1,
+                    "limit": 20,
+                    "sort": "start_pos",
+                    "order": "asc"
+                },
+                {
+                    "table_id": "glycosylation_predicted",
+                    "offset": 1,
+                    "limit": 20,
+                    "sort": "start_pos",
+                    "order": "asc"
+                },
+                {
+                    "table_id": "glycosylation_automatic_literature_mining",
+                    "offset": 1,
+                    "limit": 20,
+                    "sort": "start_pos",
+                    "order": "asc"
+                },
+                {
+                    "table_id": "phosphorylation",
+                    "offset": 1,
+                    "limit": 20,
+                    "sort": "start_pos",
+                    "order": "asc"
+                },
+                {
+                    "table_id": "snv_disease",
+                    "offset": 1,
+                    "limit": 20,
+                    "sort": "start_pos",
+                    "order": "asc"
+                },
+                {
+                    "table_id": "snv_non_disease",
+                    "offset": 1,
+                    "limit": 20,
+                    "sort": "start_pos",
+                    "order": "asc"
+                },
+                {
+                    "table_id": "publication",
+                    "offset": 1,
+                    "limit": 200,
+                    "sort": "date",
+                    "order": "desc"
+                }
+            ]
+        }
+    },
+    "protein_list": {
+        "name": "protein_list",
+        "payload": {
+            "id": "af8c4f3ea23eced3bf6fd1cdf6ba1066",
+            "offset": 1,
+            "limit": 20,
+            "order": "desc",
+            "sort": "hit_score",
+            "filters": [],
+            "columns": [
+                "uniprot_canonical_ac",
+                "gene_name",
+                "protein_name",
+                "hit_score",
+                "organism",
+                "length",
+                "mass",
+                "refseq_name",
+                "refseq_ac",
+                "uniprot_id"
+            ]
+        }
+    },
+    "protein_search_simple": {
+        "name": "protein_search_simple",
+        "payload": {
+            "term": "homo sapiens",
+            "term_category": "any"
+        }
+    }
+}

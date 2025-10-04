@@ -1,0 +1,40 @@
+$ python3 flush_mongo_cache.py -s tst
+$ python3 network-test.py -s tst -m old
+
+run_idx, api_overhead, network_overhead, response_size(Bytes), api_name, query, mode
+0, 13.59, 13.63, 663758, protein_detail, P14210-1, old
+1, 32.49, 32.55, 945537, protein_detail, O14686-1, old
+2, 10.79, 10.86, 1532350, protein_detail, Q8WZ42-1, old
+3, 25.56, 25.61, 702626, protein_detail, O14497-1, old
+4, 3.76, 3.81, 729487, protein_detail, P68431-1, old
+0, 13.02, 13.06, 257, protein_search_simple, Homo sapiens, old
+1, 13.02, 13.05, 257, protein_search_simple, Mus musculus, old
+2, 11.71, 11.73, 262, protein_search_simple, Rattus norvegicus, old
+3, 32.15, 32.19, 267, protein_search_simple, Drosophila melanogaster, old
+4, 2.15, 4.83, 267, protein_search_simple, Saccharomyces cerevisiae, old
+0, *.**, *, *, globalsearch_search, Homo sapiens, old
+1, *.**, *, *, globalsearch_search, Mus musculus, old
+2, *.**, *, *, globalsearch_search, Rattus norvegicus, old
+3, *.**, *, *, globalsearch_search, Drosophila melanogaster, old
+4, *.**, *, *, globalsearch_search, Saccharomyces cerevisiae, old
+
+
+$ python3 flush_mongo_cache.py -s tst
+$ python3 network-test.py -s tst -m new
+
+run_idx, api_overhead, network_overhead, response_size(Bytes), api_name, query, mode
+0, 0.3, 0.36, 663756, protein_detail, P14210-1, new
+1, 0.38, 0.44, 945536, protein_detail, O14686-1, new
+2, 6.79, 6.86, 1532349, protein_detail, Q8WZ42-1, new
+3, 0.34, 0.39, 702625, protein_detail, O14497-1, new
+4, 0.34, 0.39, 729487, protein_detail, P68431-1, new
+0, 1.24, 1.27, 255, protein_search_simple, Homo sapiens, new
+1, 1.85, 1.89, 255, protein_search_simple, Mus musculus, new
+2, 1.14, 1.17, 260, protein_search_simple, Rattus norvegicus, new
+3, 0.42, 0.45, 266, protein_search_simple, Drosophila melanogaster, new
+4, 0.22, 0.25, 266, protein_search_simple, Saccharomyces cerevisiae, new
+0, 4.58, 4.62, 680, globalsearch_search, Homo sapiens, new
+1, 4.25, 4.28, 679, globalsearch_search, Mus musculus, new
+2, 1.32, 1.35, 678, globalsearch_search, Rattus norvegicus, new
+3, 5.33, 5.36, 677, globalsearch_search, Drosophila melanogaster, new
+4, 2.22, 2.24, 676, globalsearch_search, Saccharomyces cerevisiae, new

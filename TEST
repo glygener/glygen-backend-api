@@ -16,6 +16,10 @@ http POST :8082/glycan/image/G17689DH/
 http POST :8082/glycan/image_svg/G17689DH/  
 http POST :8082/glycan/image_metadata/G17689DH/  
 http POST :8082/glycan/pdb/G17689DH/  
+
+http POST :8082/glycan/sequence2ac/ < tests/examples/glycan/glycan_sequence2ac.json
+
+
 http POST :8082/auth/userdelete/ < tests/examples/auth/auth_userdelete.json
 http POST :8082/auth/register/ < tests/examples/auth/auth_register.json
 http POST :8082/auth/userinfo/ < tests/examples/auth/auth_userinfo.json
@@ -76,6 +80,7 @@ http POST :8082/misc/messagelist/
 http POST :8082/misc/validate/ < tests/examples/misc/misc_validate.json
 http POST :8082/misc/propertylist/ < tests/examples/misc/misc_propertylist.json
 http POST :8082/misc/pathlist/ < tests/examples/misc/misc_pathlist.json
+http POST :8082/misc/apitest/ < tests/examples/misc/misc_apitest.json
 http POST :8082/usecases/search_init/  
 http POST :8082/usecases/glycan_to_biosynthesis_enzymes/0/G17689DH/  
 http POST :8082/usecases/glycan_to_glycoproteins/0/G17689DH/  

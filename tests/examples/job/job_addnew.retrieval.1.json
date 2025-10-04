@@ -1,69 +1,81 @@
 {
- 	"jobtype": "batch_retrieval",
-	"parameters":{
-		"inputnamespace":"UniProtKB",
-		"acclist":[
-        	"P14210-1", "P12960-1", "P12383-1", "F1SB93-1","Q08048-1"
-		],
-		"userfile":"",
-		"columns":[
-                {
-                        "id": "species",
-         "label": "Species",
-         "filter_type":"none",
-         "output_type": "both",
-         "order":1
-                },
-                {
-         "id": "gene_locus",
-         "label": "Genomic Locus Gene",
-         "filter_type":"none",
-         "output_type": "both",
-         "order":2
+  "jobtype": "glycoct",
+  "parameters": {
+    "inputnamespace": "UniProtKB",
+    "acclist": [
+      "Q8NE71",
+      "O60220",
+      "P31025",
+      "P31948",
+      "Q9P227",
+      "Q9NX14",
+      "Q14699",
+      "Q96HN2",
+      "P28062",
+      "O75832",
+      "P55058",
+      "Q99733",
+      "Q9UQ35",
+      "P45880",
+      "P21796",
+      "Q16623",
+      "O00267",
+      "Q16082",
+      "P62851",
+      "Q15102",
+      "Q9NT62",
+      "P84095",
+      "Q16864",
+      "Q9Y277",
+      "Q8WVC6",
+      "Q96EK5",
+      "P55087",
+      "Q96K76",
+      "O95861",
+      "Q9H0N5",
+      "P52306",
+      "Q9NRG1",
+      "Q96FQ6",
+      "Q02750",
+      "Q9BZV1",
+      "Q9H479",
+      "Q6PGN9",
+      "P84090",
+      "P14649",
+      "Q13557",
+      "Q9HCC0",
+      "Q9Y608",
+      "P0DOX5",
+      "Q7L1Q6",
+      "Q9H0U3",
+      "P27986",
+      "O43837",
+      "Q86YR5",
+      "O14776",
+      "P61960"
+    ],
+    "columns": [
+      {
+        "id": "species",
+        "label": "Species",
+        "filter_type": "none",
+        "output_type": "id",
+        "order": 1
       },
-                {
-         "id": "protein_locus",
-         "label": "Genomic Locus Protein",
-         "filter_type":"none",
-         "output_type": "both",
-         "order":3
+      {
+        "id": "go_mf",
+        "label": "GO Molecular Function",
+        "filter_type": "none",
+        "output_type": "id",
+        "order": 2
       },
-                {
-         "id": "pdb_id",
-         "label": "PDB ID",
-         "filter_type":"none",
-         "output_type": "both",
-         "order":4
-      },
-                {
-         "id": "pathways",
-         "label": "Pathways",
-         "filter_type":"none",
-         "output_type": "both",
-         "order":5
-      },
-                {
-         "id": "disease_protein",
-         "label": "Disease",
-         "filter_type":"none",
-         "output_type": "id",
-         "order":6
-      },
-                {
-         "id": "disease_protein",
-         "label": "Disease",
-         "filter_type":"none",
-         "output_type": "name",
-         "order":7
-      },
-                {
-         "id": "disease_protein",
-         "label": "Disease",
-         "filter_type":"none",
-         "output_type": "both",
-         "order":8
+      {
+        "id": "glycosite_count",
+        "label": "Number of glycosylation sites",
+        "filter_type": "none",
+        "output_type": "id",
+        "order": 3
       }
-        ]
-	}
+    ]
+  }
 }
-

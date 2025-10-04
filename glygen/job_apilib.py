@@ -127,7 +127,7 @@ def job_addnew(query_obj, config_obj, data_path, server):
                 if "error_list" in status_obj:
                     old_doc_flag = False
                 elif "status" in status_obj:
-                    if status_obj["status"] == "Error":
+                    if status_obj["status"].find("Error") != -1:
                         old_doc_flag = False
                 if old_doc_flag == True:
                     res_obj = {"submission":"old", "status":status_obj, "jobid":old_doc["jobid"]}
@@ -137,6 +137,9 @@ def job_addnew(query_obj, config_obj, data_path, server):
         if old_doc_flag == False:
             in_dir = data_path + "/userdata/" + server + "/jobs/"
             in_dir += str(query_obj["jobid"]) + "/"
+            if os.path.isdir(in_dir) == True:
+                cmd = "rm -rf " + in_dir
+                x = subprocess.getoutput(cmd)
             cmd = "mkdir -p " + in_dir
             x = subprocess.getoutput(cmd)
             in_filename, out_filename = "", ""
@@ -806,6 +809,12 @@ def get_result_count(dbh, job_type, out_file):
     elif job_type == "isoform_mapper":
         cmd = "wc %s" % (out_file)
         n = int(subprocess.getoutput(cmd).strip().split(" ")[0]) - 1
+    elif job_type == "batch_retrieval":
+        if os.path.isfile(out_file) == True:
+            doc = json.load(open(out_file))
+            if "rows" in doc:
+                n = len(doc["rows"])
+
 
     return n
 
@@ -1034,9 +1043,10 @@ def validate_input(dbh, query_obj, config_obj, release_dir, server):
                     val = query_obj["parameters"][obj["id"]]
                     cmd_parts.append({"flag":obj["cmdflag"], "value":val, "field":obj["id"]})
 
-        
-    query_obj["cmd"] = "%s" % (config_obj["jobinfo"][query_obj["jobtype"]]["path"][server])
-
+    query_obj["cmd"] = ""
+    if query_obj["jobtype"] in config_obj["jobinfo"]:
+        query_obj["cmd"] = config_obj["jobinfo"][query_obj["jobtype"]]["path"][server] 
+ 
 
     gap = "=" if query_obj["jobtype"] in ["clustalw"] else " "
     for o in cmd_parts:

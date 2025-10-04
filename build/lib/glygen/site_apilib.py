@@ -52,7 +52,7 @@ def site_detail(query_obj, config_obj):
     collection = "c_site"
     mongo_query = {"id":query_obj["site_id"]}
     obj = dbh[collection].find_one(mongo_query)
-    if obj == None:
+    if obj == None and canon_doc != None:
         canon = canon_doc["uniprot_canonical_ac"]
         mongo_query = {"id":"%s.%s.%s" % (canon, start_pos, end_pos)}
         obj = dbh[collection].find_one(mongo_query)

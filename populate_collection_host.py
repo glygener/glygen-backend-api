@@ -128,13 +128,27 @@ def main():
     glydb_user = config_obj["dbinfo"][db_name]["user"]
     glydb_pass = config_obj["dbinfo"][db_name]["password"]
     glydb_name =  config_obj["dbinfo"][db_name]["db"]
-    text_indexed_colls = [
-        "c_protein", "c_glycan", "c_motif", "c_publication", "c_biomarker","c_idtrack", 
-        "c_network", "c_disease"
-    ]
+    #text_indexed_colls = [
+    #    "c_protein", "c_glycan", "c_motif", "c_publication", "c_biomarker","c_idtrack", 
+    #    "c_network", "c_disease"
+    #]
+    text_indexed_colls = []
     field_indexed_colls = {
         "c_index":{
             "phraselist":"phraselist_index"
+        },
+        "c_protein":{
+            "uniprot_canonical_ac":"uniprot_canonical_ac_index",
+            "uniprot_ac":"uniprot_ac_index"
+        },
+        "c_glycan":{
+            "glytoucan_ac":"glytoucan_ac_index"
+        },
+        "c_biomarker":{
+            "biomarker_id":"biomarker_id_index"
+        },
+        "c_disease":{
+            "record_id":"record_id_index"
         }
     }
 

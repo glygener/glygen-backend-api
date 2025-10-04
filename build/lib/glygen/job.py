@@ -119,13 +119,32 @@ class Job(Resource):
             req_obj_form = request.form
             req_obj_json = request.json
             req_obj = {}
+            row_list = []
+            log_request_flag = True 
             if req_obj_json != None:
                 req_obj = req_obj_json
+                err_list = []
+                for f in ["jobtype", "parameters"]:
+                    if f not in req_obj:
+                        err_list.append({"error_code":"missing-field:%s" % (f) })
+                if err_list != []:
+                    return { "error_list":err_list, "result_count":0}
             else:
                 for k in req_obj_form:
                     req_obj[k] = req_obj_form[k]
-                req_obj["parameters"] = {}
-                req_obj["intable"] = [["isoform_ac","amino_acid_pos","amino_acid"]]
+                err_list = []
+                for f in ["jobtype", "parameters"]:
+                    if f not in req_obj:
+                        err_list.append({"error_code":"missing-field:%s" % (f) })
+                if err_list != []:
+                    return { "error_list":err_list, "result_count":0}
+                param_obj = {}
+                if req_obj["jobtype"] == "batch_retrieval":
+                    param_obj = json.loads(req_obj["parameters"])
+                req_obj["parameters"] = param_obj
+                header_row = ["isoform_ac","amino_acid_pos","amino_acid"]
+                header_row = ["accession"] if req_obj["jobtype"] == "batch_retrieval" else header_row
+                row_list = [header_row]
                 if "userfile" in request.files:
                     file_buffer = request.files.get("userfile").read()
                     file_size = len(file_buffer)
@@ -145,11 +164,16 @@ class Job(Resource):
                         row = []
                         for val in line.strip().split(","):
                             row.append(val.replace("\"", ""))
-                        req_obj["intable"].append(row)
-                    validation_res = validate_uploaded_table(req_obj["intable"], "isoform_mapper")
+                        row_list.append(row)
+                    validation_res = validate_uploaded_table(row_list, req_obj["jobtype"])
                     if "error_list" in validation_res:
                         return validation_res, 200
             if req_obj["jobtype"] == "isoform_mapper":
+                #it intable is coming from file upload
+                if len(row_list) > 1:
+                    req_obj["intable"] = row_list
+                    if len(row_list) > 1000:
+                        log_request_flag = False
                 if "intable" in req_obj:
                     max_row_count = 1000
                     if len(req_obj["intable"]) - 1 > max_row_count:
@@ -158,11 +182,21 @@ class Job(Resource):
                             "result_count":0
                         }
                         return res_obj, 200
-
+            elif req_obj["jobtype"] == "batch_retrieval":
+                # if accession list is coming from file upload
+                if len(row_list) > 1:
+                    req_obj["parameters"]["acclist"] = []
+                    for row in row_list[1:]:
+                        req_obj["parameters"]["acclist"].append(row[0])
+                    if len(row_list) > 1000:
+                        log_request_flag = False
             qry = req_obj["query"] if "query" in req_obj else req_obj
+            #return qry
             data_path, server = os.environ["DATA_PATH"],os.environ["SERVER"]
             tmp_req_obj = json.loads(json.dumps(req_obj))
-            res_obj = log_request(tmp_req_obj, "/job/addnew/", request)
+            res_obj = {}
+            if log_request_flag:
+                res_obj = log_request(tmp_req_obj, "/job/addnew/", request)
             if "error_list" not in res_obj:
                 res_obj = job_addnew(qry, config_obj, data_path, server)
         except Exception as e:

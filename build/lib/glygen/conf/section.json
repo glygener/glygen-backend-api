@@ -204,11 +204,11 @@
                 },
 					{
                   "path":"condition.recommended_name.id",
-                  "label":"Disease ID"
+                  "label":"Condition ID"
                },
                {
                   "path":"condition.recommended_name.name",
-                  "label":"Disease Name"
+                  "label":"Condition"
                }
             ],
             "sectionfield": "biomarkers"
@@ -698,14 +698,6 @@
 					 {
                     "path": "recommended_name.description",
                     "label": "Disease Description"
-                },
-					 {
-                    "path": "synonyms.id",
-                    "label": "Disease Synonym IDs"
-                },
-					 {
-                    "path": "synonyms.name",
-                    "label": "Disease Synonyms"
                 }
             ],
             "sectionfield": "disease"
@@ -734,11 +726,11 @@
 					},
 					{
 						"path":"condition.recommended_name.id",
-						"label":"Disease ID"
+						"label":"Condition ID"
 					},
 					{
                   "path":"condition.recommended_name.name",
-                  "label":"Disease Name"
+                  "label":"Condition"
                }
             ],
             "sectionfield": "biomarkers"
@@ -1465,11 +1457,11 @@
                 },
 					{
                   "path":"condition.recommended_name.id",
-                  "label":"Disease ID"
+                  "label":"Condition ID"
                },
                {
                   "path":"condition.recommended_name.name",
-                  "label":"Disease Name"
+                  "label":"Condition"
                }
             ],
             "sectionfield": "biomarkers"
@@ -1513,11 +1505,11 @@
                 },
 					{
                   "path":"condition.recommended_name.id",
-                  "label":"Disease ID"
+                  "label":"Condition ID"
                },
                {
                   "path":"condition.recommended_name.name",
-                  "label":"Disease Name"
+                  "label":"Condition"
                }
             ],
             "sectionfield": "biomarkers"

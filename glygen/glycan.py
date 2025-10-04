@@ -11,8 +11,7 @@ import json
 import bcrypt
 
 from glygen.indexlib import search_one
-from glygen.glycan_apilib import glycan_search_init, glycan_search, glycan_search_simple, glycan_detail, glycan_image, glycan_image_svg, glycan_image_metadata
-
+from glygen.glycan_apilib import glycan_search_init, glycan_search, glycan_search_simple, glycan_detail, glycan_image, glycan_image_svg, glycan_image_metadata, glycan_sequence2ac
 
 from glygen.util import get_cached_records_indirect, get_req_obj, get_hash_id, get_cached_result_list, cache_result_list, apply_pagination
 import traceback
@@ -27,6 +26,14 @@ search_simple_query_model = api.model(
         "term": fields.String(required=True, default="G17689DH")
     }
 )
+sequence2ac_query_model = api.model(
+    "Glycan Sequence2Ac Query",
+    {
+        "type": fields.String(required=True, default="GlycoCT"),
+        "seq": fields.String(required=True, default="")
+    }
+)
+
 GLYCAN_ID = api.model("GLYCAN_ID", {"glycan_id": fields.String(required=True, default="G17689DH")})
 search_query_model = api.model("Glycan Search Query", {"glycan_identifier":fields.Nested(GLYCAN_ID)})
 search_init_query_model = api.model("Glycan Search Init Query", {})
@@ -101,12 +108,35 @@ class Glycan(Resource):
             res_obj = log_request(req_obj, "/glycan/search_simple/", request)
             if "error_list" not in res_obj:
                 #res_obj = glycan_search_simple(req_obj, config_obj)
-                res_obj = search_one("glycan_search_simple", req_obj, config_obj)
+                res_obj = search_one("glycan_search_simple", req_obj, config_obj, True)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
     
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
+
+@api.route('/sequence2ac/')
+class Glycan(Resource):
+    @api.expect(sequence2ac_query_model)
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = get_req_obj(request)
+            res_obj = log_request(req_obj, "/glycan/sequence2ac/", request)
+            if "error_list" not in res_obj:
+                res_obj = glycan_sequence2ac(req_obj, config_obj)
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
     @api.doc(False)
     def get(self):
         return self.post()

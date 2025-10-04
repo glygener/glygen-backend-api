@@ -9,13 +9,14 @@ def main():
         for v in sys.argv[1:]:
             cmd += " %s" % (v)
         x,y = subprocess.getstatusoutput(cmd)
+        #print ("flag-A", x, y)
         if x != 0:
-            err = y.split("\n")[0]
+            err = "; ".join(y.split("\n"))
             print (err)
-            exit(1)
+            exit(-1)
     except Exception as err:
         print (err)
-
+        exit(-1)
 
 
 if __name__ == '__main__':

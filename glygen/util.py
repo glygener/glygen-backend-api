@@ -70,14 +70,13 @@ def get_query_filter_code(query_filters, record_type, filter_conf):
 
 def validate_uploaded_table(in_table, table_type):
 
-    res = {}
     err_list = []
-    if table_type == "isoform_mapper":
-        f_list = in_table[0]
-        for idx in range(1, len(in_table)):
-            row =  in_table[idx]
-            if len(row) != len(f_list):
-                err_list.append({"error_code":"bad-row", "row_index":idx})
+    f_list = in_table[0]
+    for idx in range(1, len(in_table)):
+        row =  in_table[idx]
+        if len(row) != len(f_list):
+            err_list.append({"error_code":"bad-row", "row_index":idx})
+        if table_type == "isoform_mapper":
             aa_pos = row[f_list.index("amino_acid_pos")]
             if aa_pos.isdigit() == False:
                 err_list.append({"error_code":"bad-amino-acid-pos-value", "row_index":idx}) 
@@ -186,6 +185,8 @@ def get_req_obj(request):
 
     if req_obj != None and type(req_obj) is dict:
         trim_object(req_obj)
+    req_obj = {} if req_obj == None else req_obj
+
     return  req_obj
 
 
@@ -362,12 +363,22 @@ def get_hit_score(doc, cache_info, score_dict, selected_p_list, score_info):
             if p not in selected_p_list:
                 continue
             val_list.append(doc[p].lower())
-        for f in search_query:
-            if type(search_query[f]) is str:
-                tmp_q_list = search_query[f].lower().split(",")
-                for tq in tmp_q_list:
-                    qval_list.append(tq.strip())
-
+        
+        if search_type == "supersearch":
+            for q_obj in search_query:
+                if "unaggregated_list" in q_obj["query"]:
+                    for o in q_obj["query"]["unaggregated_list"]:
+                        if "string_value" in o:
+                            p,v = o["path"].split(".")[-1], o["string_value"]
+                            if p in p_list:
+                                qval_list.append(v)
+        else:
+            for f in search_query:
+                if type(search_query[f]) is str:
+                    tmp_q_list = search_query[f].lower().split(",")
+                    for tq in tmp_q_list:
+                        qval_list.append(tq.strip())
+        
         for qval in qval_list:
             if qval in val_list:
                 if cond not in cond_match_freq:
@@ -610,6 +621,7 @@ def clean_obj(obj, prop_list, obj_type):
                 if "header" in o["sequence"]:
                     o["sequence"].pop("header")
 
+
     for key in prop_list:
         if key in obj:
              obj.pop(key)
@@ -624,12 +636,14 @@ def clean_obj(obj, prop_list, obj_type):
             elif type(obj[k1]) in [dict, list]:
                 clean_obj(obj[k1], [], obj_type)
     elif type(obj) is list:
+        idx_list = []
         for k1 in range(0, len(obj)):
-            if obj[k1] in["", [], {}]:
-                del obj[k1]
+            if obj[k1] in ["", [], {}]:
+                idx_list.append(k1)
             elif type(obj[k1]) in [dict, list]:
                 clean_obj(obj[k1], [], obj_type)
-    
+        for k1 in idx_list:
+            del obj[k1] 
    
     return
 
@@ -854,6 +868,9 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
     if error_obj != {}:
         return error_obj
 
+    if "id" not in query_obj:
+        return {"error_list":[{"error_code":"missing-parameter-id"}]}
+
     if query_obj["id"] == "":
         return {"error_list":[{"error_code":"empty-list-id"}]}
 
@@ -885,6 +902,7 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
         post_error_list.append({"error_code":"non-existent-search-results"})
         return {"error_list":post_error_list}
 
+
     record_type = cached_obj["cache_info"]["record_type"]
     is_empty_query = False
     if "query" in cached_obj["cache_info"]:
@@ -907,7 +925,7 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
     for doc in dbh[cache_collection].find(mongo_query):
         id_list += doc["results"]
    
-    #return {"error_list":{"q":mongo_query, "n":len(id_list)}}
+    #return {"error_list":{"idlist":id_list}}
 
  
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -958,6 +976,8 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
     #        "final":final_fields }
     #}
 
+    #return {"error_list":{"final_fields":final_fields}}
+
 
     prj_obj = {}
     for f in final_fields:
@@ -966,13 +986,12 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
     if final_fields == ["filter_code"]:
         prj_obj = {}
 
-    #return {"error_list":prj_obj}
-
+    #prj_obj = {"record_id":1, "filter_code":1}
 
     batch_size = config_obj["supersearch_batch_size"]
     record_count = len(id_list)
     nparts = int(float(record_count)/float(batch_size)) + 1
-    ts_list.append("2-record_count=%s,batch_size=%s,nparts=%s" % (record_count, batch_size, nparts))
+    #ts_list.append("2-record_count=%s,batch_size=%s,nparts=%s" % (record_count, batch_size, nparts))
     ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     debug_obj_list = []
     for i in range(0, nparts):
@@ -986,15 +1005,17 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
             var_dict = {"c":"condition name","w":"condition weight","f":"condition match frequency"}
             score_info = {"contributions":[], "formula":"sum(w + 0.01*f)", "variables":var_dict}
             hit_score = -1.0
+            #if False:
             if is_empty_query == False:
                 hit_score, cond_match_freq = get_hit_score(obj, cached_obj["cache_info"], score_dict, final_fields, score_info)
                 debug_obj_list.append(cond_match_freq)
             obj["hit_score"] = hit_score
             obj["score_info"] = score_info
             cached_obj["results"].append(obj)
+        #prt = "2.%s.-" % (i)
+        #ts_list.append(prt+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-    #return {"error_list":debug_obj_list, "is_empty_query":is_empty_query}
-
+    #return {"error_list":debug_obj_list, "is_empty_query":is_empty_query, "cache_info":cached_obj["cache_info"]}
 
     filter_conf = get_filter_conf() 
     query_filters = query_obj["filters"] if "filters" in query_obj else []
@@ -1021,7 +1042,7 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
         available_list_before.append(obj)
 
     ts_list.append("5-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-    ts_list.append("count_1_%s" % (len(cached_obj["results"])))
+    #ts_list.append("count_1_%s" % (len(cached_obj["results"])))
     n_one = len(cached_obj["results"])
 
     #Apply filters
@@ -1037,7 +1058,7 @@ def get_cached_records_indirect(query_obj, config_obj, limit_flag):
     #return code_dict
 
 
-    ts_list.append("count_2_%s" % (len(cached_obj["results"])))
+    #ts_list.append("count_2_%s" % (len(cached_obj["results"])))
     ts_list.append("6-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     #Update filters

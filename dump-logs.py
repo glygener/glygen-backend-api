@@ -18,19 +18,9 @@ __status__ = "Dev"
 def main():
 
 
-    usage = "\n%prog  [options]"
-    parser = OptionParser(usage,version="%prog version___")
-    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
-    parser.add_option("-c","--coll",action="store",dest="coll",help="") 
-    (options,args) = parser.parse_args()
 
-    for key in ([options.server, options.coll]):
-        if not (key):
-            parser.print_help()
-            sys.exit(0)
-
-    server = options.server
-    coll = options.coll
+    server = "prd"
+    coll = "c_userlog"
 
 
     db_name = "glydb_beta" if server == "beta" else "glydb"
@@ -53,18 +43,14 @@ def main():
         )
         client.server_info()
         dbh = client[glydb_name]
-    
-        phrase = "prostate cancer"    
-        prj_obj = {"record_type":1, "record_id":1, "section":1, "glycoflag":1}
-        qry_obj = {"phraselist":{"$eq":phrase}}
-        for doc in dbh["c_index"].find(qry_obj, prj_obj):
-            record_id, sec = doc["record_id"], doc["section"]
-            glyco_flag = False
-            glyco_flag = doc["glycoflag"] if "glycoflag" in doc else glyco_flag
-            record_type_list = [doc["record_type"]]
-            if glyco_flag == True:
-                record_type_list.append("glycoprotein")
-            print (record_id, "glycoflag" in doc, record_type_list)
+        q = {}
+        doc_list = list(dbh[coll].find(q))
+        for doc in doc_list[-100:]:
+            if "_id" in doc:
+                doc.pop("_id")
+            #print (doc)
+            #print ("//")
+            print (doc["ts"])
 
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)

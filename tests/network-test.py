@@ -9,6 +9,7 @@ import warnings
 from urllib3.exceptions import InsecureRequestWarning
 warnings.simplefilter("ignore", InsecureRequestWarning)
 
+from requests.exceptions import HTTPError
 
 
 
@@ -61,35 +62,48 @@ def main():
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
+    parser.add_option("-m","--mode",action="store",dest="mode",help="old/new")
 
     (options,args) = parser.parse_args()
-    for key in ([options.server]):
+    for key in ([options.server, options.mode]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     server = options.server
+    mode = options.mode
 
     url_map = {
-        "dev":"https://api.dev.glygen.org/misc/get_object/",
-        "tst":"https://api.tst.glygen.org/misc/get_object/",
-        "beta":"https://beta-api.glygen.org/misc/get_object/",
-        "prd":"https://api.glygen.org/misc/get_object/"
+        "dev":"https://api.dev.glygen.org/misc/apitest/",
+        "tst":"https://api.tst.glygen.org/misc/apitest/",
+        "beta":"https://beta-api.glygen.org/misc/apitest/",
+        "prd":"https://api.glygen.org/misc/apitest/"
     }
     api_url = url_map[server]
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
 
-    req_obj_list = get_req_obj_list()
+    req_dict =  json.load(open("apitest.json"))
 
+    protein_q_list = ["P14210-1", "O14686-1", "Q8WZ42-1", "O14497-1", "P68431-1"]
+    species_q_list = ["Homo sapiens", "Mus musculus", "Rattus norvegicus", "Drosophila melanogaster",
+        "Saccharomyces cerevisiae"]
 
-    row = ["api_overhead",  "network_overhead","response_size(Bytes)", "object_type", "object_id", "mode"]
+    row = ["run_idx","api_overhead", "network_overhead","response_size(Bytes)","api_name", "query","mode"]
     print (", ".join(row))
-
-    for mode in ["filesystem", "mongodb", "mongodb-pagination"]:
-        for req_obj in req_obj_list:
-            req_obj["mode"] = mode
-            if mode == "mongodb-pagination":
-                req_obj["pagination"] = get_pagination_obj()
+    api_list = list(req_dict.keys())
+    api_list = ["protein_detail", "protein_search_simple", "globalsearch_search"]
+    #api_list = ["globalsearch_search"]
+    for api_name in api_list:
+        req_obj =  req_dict[api_name]
+        req_obj["mode"] = mode
+        q_field, q_list = "", []
+        if api_name =="protein_detail":
+            q_field, q_list = "uniprot_canonical_ac", protein_q_list
+        elif api_name in ["globalsearch_search", "protein_search_simple"]:
+            q_field, q_list = "term", species_q_list
+        for run_idx in range(0, 5):
+            query = q_list[run_idx]
+            req_obj["payload"][q_field] = query
             start_ts = datetime.datetime.now(pytz.timezone('US/Eastern'))
             res = requests.post(api_url, json=req_obj, verify=False)
             end_ts = datetime.datetime.now(pytz.timezone('US/Eastern'))
@@ -97,15 +111,15 @@ def main():
                 print ("Error! status_code=%s" % (res.status_code))
                 continue
             size = len(res.content)
-            network_overhead = str(end_ts - start_ts)
+            diff = end_ts - start_ts
+            network_overhead = round(diff.total_seconds(), 2)
             start_ts_f = start_ts.strftime(ts_format)
             end_ts_f = end_ts.strftime(ts_format)
             res_obj =  json.loads(res.content)
-            api_overhead = res_obj["api_overhead"]["elapsed"]
-            row = [api_overhead,  network_overhead,str(size), req_obj["type"], req_obj["id"], mode] 
+            api_overhead = res_obj["api_latency"]["api_elapsed"]
+            row = [str(run_idx),str(api_overhead),str(network_overhead),str(size), api_name, query,mode] 
             print (", ".join(row))
             time.sleep(2) 
-
 
     return
 

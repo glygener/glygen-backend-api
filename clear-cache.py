@@ -52,20 +52,35 @@ def main():
         )
         client.server_info()
         dbh = client[db_name]
+        seen = {}
         for doc in dbh[coll].find({}):
+            list_id = doc["list_id"]
+            if list_id in seen:
+                continue
+            seen[list_id] = True
             empty_search_flag, search_type = False, ""
-            if "cache_info" in doc:
-                if "empty_search_flag" in doc["cache_info"]:
-                    empty_search_flag = doc["cache_info"]["empty_search_flag"]
-                if "search_type" in doc["cache_info"]:
-                    search_type = doc["cache_info"]["search_type"]
+            cache_info = {}
+            cache_info = doc["cache_info"] if "cache_info" in doc else cache_info
+            if "glbl" in doc:
+                cache_info = doc["glbl"]["cache_info"] if "cache_info" in doc["glbl"] else cache_info
+            if "empty_search_flag" in cache_info:
+                empty_search_flag = cache_info["empty_search_flag"]
+            if "search_type" in cache_info:
+                search_type = cache_info["search_type"]
+            cache_id = cache_info["cache_id"] if "cache_id" in cache_info else ""
+            listcache_id = cache_info["listcache_id"] if "listcache_id" in cache_info else ""
+            total = cache_info["total"] if "total" in cache_info else -1
+
             if search_type == "supersearch" and empty_search_flag == True:
+                print ("ignored|%s|%s|%s" % (search_type, list_id, total))
                 continue
             if search_type == "structure_search":
+                print ("ignored|%s|%s|%s" % (search_type, list_id, total))
                 continue
-            list_id = doc["list_id"]
             res = dbh[coll].delete_many({"list_id":list_id})
-            print ("deleted:", list_id)
+            print ("deleted|%s|%s|%s" % (search_type, list_id, total))
+
+
 
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
