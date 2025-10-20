@@ -81,6 +81,8 @@ class Glycan(Resource):
         config_obj = json.load(open(json_url))
         res_obj = {}
         try:
+            ip_addr = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+            return {"ip":ip_addr}
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/glycan/search/", request)
             if "error_list" not in res_obj:
