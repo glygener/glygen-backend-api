@@ -1,0 +1,573 @@
+{
+    "cache_info": {
+        "cache_name": "supersearch_all",
+        "query": {
+            "empty_search_flag": true,
+            "concept_query_list": []
+        },
+        "ts": "2025-11-11 13:27:11 EST-0500",
+        "record_type": "site",
+        "linked_to": "protein",
+        "empty_search_flag": true,
+        "search_type": "supersearch",
+        "start": 0,
+        "result_summary": {
+            "protein": {
+                "list_id": "43409035ec3cd12068cbaf738ce87aa9",
+                "result_count": 243606,
+                "bylinkage": {
+                    "glycan": {
+                        "list_id": "0e0ceead236f816f98271d49ef1d7b7a",
+                        "result_count": 17
+                    },
+                    "species": {
+                        "list_id": "7fa54f030882e727106181999eba9dd9",
+                        "result_count": 243606
+                    },
+                    "gene": {
+                        "list_id": "a2931ff1f6accbd467b3707fa885b7a3",
+                        "result_count": 243606
+                    },
+                    "disease": {
+                        "list_id": "577b9b4b80ba21383328bc9e3a543623",
+                        "result_count": 39642
+                    },
+                    "site": {
+                        "list_id": "65d104ded9fb14a3ec56811da5a78584",
+                        "result_count": 94936
+                    },
+                    "enzyme": {
+                        "list_id": "ba8eef2ebfceb0dbd22bc844ddb3b59f",
+                        "result_count": 39959
+                    }
+                }
+            },
+            "enzyme": {
+                "list_id": "",
+                "result_count": 39960,
+                "bylinkage": {
+                    "glycan": {
+                        "list_id": "",
+                        "result_count": 227
+                    },
+                    "protein": {
+                        "list_id": "",
+                        "result_count": 39959
+                    }
+                }
+            },
+            "gene": {
+                "list_id": "",
+                "result_count": 243606,
+                "bylinkage": {
+                    "protein": {
+                        "list_id": "",
+                        "result_count": 243606
+                    },
+                    "species": {
+                        "list_id": "",
+                        "result_count": 243606
+                    },
+                    "disease": {
+                        "list_id": "",
+                        "result_count": 39642
+                    }
+                }
+            },
+            "glycan": {
+                "list_id": "8addc2fae1bd90a9b923eb7c63db34a5",
+                "result_count": 56984,
+                "bylinkage": {
+                    "motif": {
+                        "list_id": "62f1bf6d11132edc3b54997df2550991",
+                        "result_count": 30576
+                    },
+                    "species": {
+                        "list_id": "522c29c7b811ea5f1a1f1705b6d866e7",
+                        "result_count": 33328
+                    },
+                    "enzyme": {
+                        "list_id": "cb7c5439fd6a1654fa4715634a0499ff",
+                        "result_count": 29176
+                    },
+                    "site": {
+                        "list_id": "4061a3a1422573137dd35b0068e07686",
+                        "result_count": 3318
+                    },
+                    "disease": {
+                        "list_id": "6eeb63a2f3979faa22b17284ad447a38",
+                        "result_count": 18
+                    },
+                    "protein": {
+                        "list_id": "1754301d63f1ab4728417d66fe55532d",
+                        "result_count": 4
+                    }
+                }
+            },
+            "motif": {
+                "list_id": "",
+                "result_count": 121,
+                "bylinkage": {
+                    "glycan": {
+                        "list_id": "",
+                        "result_count": 121
+                    }
+                }
+            },
+            "disease": {
+                "list_id": "38005ce89ab3018b95693c4e36248516",
+                "result_count": 8442,
+                "bylinkage": {
+                    "glycan": {
+                        "list_id": "445e82db992611b59c665725908b1769",
+                        "result_count": 4
+                    },
+                    "protein": {
+                        "list_id": "fd814060d8bebf97169836d350962d3c",
+                        "result_count": 8442
+                    },
+                    "gene": {
+                        "list_id": "90042ddafd01fa9126c728bc30b1637f",
+                        "result_count": 8442
+                    }
+                }
+            },
+            "species": {
+                "list_id": "",
+                "result_count": 16,
+                "bylinkage": {
+                    "glycan": {
+                        "list_id": "",
+                        "result_count": 15
+                    },
+                    "protein": {
+                        "list_id": "",
+                        "result_count": 16
+                    },
+                    "gene": {
+                        "list_id": "",
+                        "result_count": 16
+                    }
+                }
+            },
+            "site": {
+                "list_id": "e5e9e8999a3451a947eb2f05508b4a29",
+                "result_count": 918506,
+                "bylinkage": {
+                    "glycan": {
+                        "list_id": "9a55aaf9081659a0fc6f404ae4455e93",
+                        "result_count": 62232
+                    },
+                    "protein": {
+                        "list_id": "ae867e801af9c50747254064cce0dec4",
+                        "result_count": 918322
+                    }
+                }
+            }
+        }
+    },
+    "filters": {
+        "applied": [
+            {
+                "id": "by_organism",
+                "operator": "OR",
+                "selected": [
+                    "Fruit fly"
+                ]
+            }
+        ],
+        "available": [
+            {
+                "id": "by_glycosylation_type",
+                "label": "By Glycosylation Type",
+                "order": 1,
+                "tooltip": "",
+                "options": [
+                    {
+                        "id": "n-linked|complex",
+                        "label": "N-linked, complex",
+                        "count": 0,
+                        "order": 1
+                    },
+                    {
+                        "id": "n-linked|high mannose",
+                        "label": "N-linked, high mannose",
+                        "count": 0,
+                        "order": 2
+                    },
+                    {
+                        "id": "n-linked|hybrid",
+                        "label": "N-linked, hybrid",
+                        "count": 0,
+                        "order": 3
+                    },
+                    {
+                        "id": "o-linked|o-fucosylation",
+                        "label": "O-Fucosylation",
+                        "count": 0,
+                        "order": 5
+                    },
+                    {
+                        "id": "o-linked|o-galactosylation",
+                        "label": "O-Galactosylation",
+                        "count": 0,
+                        "order": 6
+                    },
+                    {
+                        "id": "o-linked|o-galnacylation",
+                        "label": "O-GalNAcylation",
+                        "count": 0,
+                        "order": 7
+                    },
+                    {
+                        "id": "o-linked|o-glcnacylation",
+                        "label": "O-GlcNAcylation",
+                        "count": 0,
+                        "order": 8
+                    },
+                    {
+                        "id": "o-linked|o-glucosylation",
+                        "label": "O-Glucosylation",
+                        "count": 0,
+                        "order": 9
+                    },
+                    {
+                        "id": "o-linked|o-mannosylation",
+                        "label": "O-Mannosylation",
+                        "count": 0,
+                        "order": 10
+                    },
+                    {
+                        "id": "o-linked|other",
+                        "label": "Other O-linked",
+                        "count": 0,
+                        "order": 11
+                    },
+                    {
+                        "id": "c-linked|c-mannosylation",
+                        "label": "C-Mannosylation",
+                        "count": 0,
+                        "order": 12
+                    },
+                    {
+                        "id": "c-linked|other",
+                        "label": "Other C-linked",
+                        "count": 0,
+                        "order": 13
+                    },
+                    {
+                        "id": "s-linked|other",
+                        "label": "Other S-linked",
+                        "count": 0,
+                        "order": 14
+                    }
+                ]
+            },
+            {
+                "id": "by_amino_acid",
+                "label": "By Amino Acid",
+                "order": 2,
+                "tooltip": "",
+                "options": [
+                    {
+                        "id": "A",
+                        "label": "Ala",
+                        "count": 0,
+                        "order": 1
+                    },
+                    {
+                        "id": "R",
+                        "label": "Arg",
+                        "count": 0,
+                        "order": 2
+                    },
+                    {
+                        "id": "N",
+                        "label": "Asn",
+                        "count": 0,
+                        "order": 3
+                    },
+                    {
+                        "id": "D",
+                        "label": "Asp",
+                        "count": 0,
+                        "order": 4
+                    },
+                    {
+                        "id": "C",
+                        "label": "Cys",
+                        "count": 0,
+                        "order": 5
+                    },
+                    {
+                        "id": "E",
+                        "label": "Gln",
+                        "count": 0,
+                        "order": 6
+                    },
+                    {
+                        "id": "Q",
+                        "label": "Glu",
+                        "count": 0,
+                        "order": 7
+                    },
+                    {
+                        "id": "G",
+                        "label": "Gly",
+                        "count": 0,
+                        "order": 8
+                    },
+                    {
+                        "id": "H",
+                        "label": "His",
+                        "count": 0,
+                        "order": 9
+                    },
+                    {
+                        "id": "I",
+                        "label": "Ile",
+                        "count": 0,
+                        "order": 10
+                    },
+                    {
+                        "id": "L",
+                        "label": "Leu",
+                        "count": 0,
+                        "order": 11
+                    },
+                    {
+                        "id": "K",
+                        "label": "Lys",
+                        "count": 0,
+                        "order": 12
+                    },
+                    {
+                        "id": "M",
+                        "label": "Met",
+                        "count": 0,
+                        "order": 13
+                    },
+                    {
+                        "id": "F",
+                        "label": "Phe",
+                        "count": 0,
+                        "order": 14
+                    },
+                    {
+                        "id": "P",
+                        "label": "Pro",
+                        "count": 0,
+                        "order": 15
+                    },
+                    {
+                        "id": "S",
+                        "label": "Ser",
+                        "count": 0,
+                        "order": 16
+                    },
+                    {
+                        "id": "T",
+                        "label": "Thr",
+                        "count": 0,
+                        "order": 17
+                    },
+                    {
+                        "id": "W",
+                        "label": "Trp",
+                        "count": 0,
+                        "order": 18
+                    },
+                    {
+                        "id": "Y",
+                        "label": "Tyr",
+                        "count": 0,
+                        "order": 19
+                    },
+                    {
+                        "id": "V",
+                        "label": "Val",
+                        "count": 0,
+                        "order": 20
+                    }
+                ]
+            },
+            {
+                "id": "by_site_type",
+                "label": "By Site Type",
+                "order": 3,
+                "tooltip": "",
+                "options": [
+                    {
+                        "id": "glycation",
+                        "label": "Glycation",
+                        "count": 0,
+                        "order": "1"
+                    },
+                    {
+                        "id": "glycosylation",
+                        "label": "Glycosylation",
+                        "count": 0,
+                        "order": "2"
+                    },
+                    {
+                        "id": "mutagenesis",
+                        "label": "Mutagenesis",
+                        "count": 0,
+                        "order": "3"
+                    },
+                    {
+                        "id": "phosphorylation",
+                        "label": "Phosphorylation",
+                        "count": 0,
+                        "order": "4"
+                    },
+                    {
+                        "id": "snv",
+                        "label": "SNV",
+                        "count": 0,
+                        "order": "5"
+                    }
+                ]
+            },
+            {
+                "id": "by_evidence_type",
+                "label": "By Glycosylation Evidence",
+                "order": 4,
+                "tooltip": "",
+                "options": [
+                    {
+                        "id": "Reported",
+                        "label": "Reported",
+                        "count": 0,
+                        "order": 1
+                    },
+                    {
+                        "id": "Literature mined",
+                        "label": "Literature mined",
+                        "count": 0,
+                        "order": 2
+                    },
+                    {
+                        "id": "Predicted",
+                        "label": "Predicted",
+                        "count": 0,
+                        "order": 3
+                    }
+                ]
+            },
+            {
+                "id": "by_snv_type",
+                "label": "By SNV Type",
+                "order": 5,
+                "tooltip": "",
+                "options": [
+                    {
+                        "id": "somatic",
+                        "label": "Somatic",
+                        "count": 0,
+                        "order": "1"
+                    },
+                    {
+                        "id": "germline",
+                        "label": "Germline",
+                        "count": 0,
+                        "order": "2"
+                    }
+                ]
+            },
+            {
+                "id": "by_organism",
+                "label": "By Organism",
+                "order": 6,
+                "tooltip": "",
+                "options": [
+                    {
+                        "id": "Human",
+                        "label": "Human",
+                        "count": 0,
+                        "order": 1
+                    },
+                    {
+                        "id": "Mouse",
+                        "label": "Mouse",
+                        "count": 0,
+                        "order": 2
+                    },
+                    {
+                        "id": "Rat",
+                        "label": "Rat",
+                        "count": 0,
+                        "order": 3
+                    },
+                    {
+                        "id": "Pig",
+                        "label": "Pig",
+                        "count": 0,
+                        "order": 4
+                    },
+                    {
+                        "id": "Chicken",
+                        "label": "Chicken",
+                        "count": 0,
+                        "order": 5
+                    },
+                    {
+                        "id": "Yeast",
+                        "label": "Yeast",
+                        "count": 0,
+                        "order": 7
+                    },
+                    {
+                        "id": "HCV-H77",
+                        "label": "HCV-H77",
+                        "count": 0,
+                        "order": 9
+                    },
+                    {
+                        "id": "HCV-Japanese",
+                        "label": "HCV-Japanese",
+                        "count": 0,
+                        "order": 10
+                    },
+                    {
+                        "id": "HCoV-SARS",
+                        "label": "HCoV-SARS",
+                        "count": 0,
+                        "order": 11
+                    },
+                    {
+                        "id": "SARS-CoV-2",
+                        "label": "SARS-CoV-2",
+                        "count": 0,
+                        "order": 12
+                    },
+                    {
+                        "id": "Arabidopsis",
+                        "label": "Arabidopsis",
+                        "count": 0,
+                        "order": 13
+                    },
+                    {
+                        "id": "Bovine",
+                        "label": "Bovine",
+                        "count": 0,
+                        "order": 14
+                    },
+                    {
+                        "id": "Hamster",
+                        "label": "Hamster",
+                        "count": 0,
+                        "order": 15
+                    },
+                    {
+                        "id": "Zebrafish",
+                        "label": "Zebrafish",
+                        "count": 0,
+                        "order": 16
+                    }
+                ]
+            }
+        ]
+    },
+    "results": []
+}
