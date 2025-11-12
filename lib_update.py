@@ -9,38 +9,27 @@ from collections import OrderedDict
 from bson import json_util, ObjectId
 import collections
 import pymongo
+from copied_util import get_hash_id
 
 
 
 
-def get_hash_id(api_name , record_type, obj):
 
-    new_obj = {}
-    for k in obj:
-        if k not in ["offset", "limit"]:
-            new_obj[k] = obj[k]
-
-    hash_str = api_name + record_type + json.dumps(new_obj)
-    hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-    return hash_obj.hexdigest()
-
-
-
-
-def cache_record_list(dbh,list_id, record_list, cache_info, cache_coll, config_obj):
+def cache_hitlist(dbh,list_id, record_list, cache_info, cache_coll, config_obj):
     
     res = dbh[cache_coll].delete_many({"list_id":list_id})
-    record_count = len(record_list)
-    partition_count = record_count/config_obj["cache_batch_size"]
+    total_count = len(record_list)
+    partition_count = total_count/config_obj["cache_batch_size"]
     for i in range(0,int(partition_count)+1):
         start = i*config_obj["cache_batch_size"]
         end = start + config_obj["cache_batch_size"]
-        end = record_count if end > record_count else end
+        end = total_count if end > total_count else end
         cache_info["start"] = start
-        if start < record_count:
+        if start < total_count:
             cache_obj = {
                 "list_id":list_id, 
                 "cache_info":cache_info,
+                "total_count":total_count,
                 "results":record_list[start:end]
             }
             res = dbh[cache_coll].insert_one(cache_obj)
@@ -49,18 +38,6 @@ def cache_record_list(dbh,list_id, record_list, cache_info, cache_coll, config_o
 
 
 
-
-def get_hash_id(api_name , record_type, obj):
-    
-    new_obj = {}
-    for k in obj:
-        if k not in ["offset", "limit"]:
-            new_obj[k] = obj[k]
-
-    hash_str = api_name + record_type + json.dumps(new_obj)
-    hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-    return hash_obj.hexdigest()
-    
 
 
 def get_mongodb (db_info):
@@ -84,7 +61,7 @@ def get_mongodb (db_info):
 
 
 
-def search(query_obj, config_obj, reason_flag, empty_search_flag):
+def supersearch_search(query_obj, config_obj, reason_flag, empty_search_flag, cache_name):
 
     dbh, error_obj = get_mongodb(config_obj["db_info"])
     if error_obj != {}:
@@ -99,29 +76,13 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     #Collect errors 
     if query_obj == {}:
         query_obj["concept_query_list"] = []
-    if empty_search_flag == False:
-        #error_list = get_errors_in_superquery(query_obj["concept_query_list"],config_obj)
-        if error_list != []:
-            return {"error_list":error_list}
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts_list = []
     ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-    results_summary_default = {}
-    collection = "c_searchinit"
-    doc =  dbh[collection].find_one({})
-    if doc != None:
-        if "supersearch_init" in doc:
-            results_summary_default = doc["supersearch_init"]
-
-
-    if empty_search_flag == False and query_obj["concept_query_list"] == []:
-        return {"query":[], "results_summary":results_summary_default}
-
     seen_path = {}
     for doc in dbh["c_path"].find({}):
-        
         record_type = doc["record_type"]
         if record_type not in seen_path:
             seen_path[record_type] = {}
@@ -159,7 +120,6 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
                     ignore_dict[o["target"]][o["source"]] = True
 
 
-
     for i in range(0, len(query_obj["concept_query_list"])):
         q_obj = query_obj["concept_query_list"][i]["query"]
         concept = query_obj["concept_query_list"][i]["concept"]
@@ -170,14 +130,13 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
         t_query,e_list = transform_query(q_obj, concept, seen_path, path_map)
         mongo_query.append({"query": t_query,"concept":concept})
         error_list += e_list
-    
+   
     if error_list != []:
         return {"error_list":error_list}
 
     DEBUG_FLAG = False
 
     dump_debug_timer("flag-1 running concept queries", DEBUG_FLAG)
-
     #return mongo_query
 
          
@@ -256,15 +215,10 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     #these untraceable hits should be removed from final_hit_dict
     impose_edge_constraints_type_I(initial_hit_dict, final_hit_dict, final_hit_dict_split, reason_dict, ignore_dict)
 
-    if reason_flag == True:
-        return reason_dict
-
-
 
     #Now, set concept_query_list to be empty list
     if empty_search_flag == True:
         query_obj["concept_query_list"] = []
-
 
 
     ts_list.append("6-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
@@ -272,7 +226,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     res_obj = {"query":query_obj, "results_summary":{}}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_initcache"
     cachable_list = ["protein","glycan","site","disease"]
     for dst_record_type in record_type_list:
         n = len(list(final_hit_dict[dst_record_type].keys())) if dst_record_type in final_hit_dict else 0
@@ -284,13 +238,15 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
                 hash_obj = hashlib.md5(hash_str.encode('utf-8'))
                 list_id = hash_obj.hexdigest()
                 cache_info = {
+                    "cache_name":cache_name,
                     "query":query_obj,
                     "ts":ts,
                     "record_type":dst_record_type,
                     "empty_search_flag":empty_search_flag,
                     "search_type":"supersearch"
                 }
-                cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+                cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+                #print ("A-%s %s %s records" % (list_id, len(record_list), dst_record_type))
         res_obj["results_summary"][dst_record_type] = {"list_id":list_id, "result_count":n}
         stat_obj = {}
         bylinkage_obj = {}
@@ -319,6 +275,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
                 hash_obj = hashlib.md5(hash_str.encode('utf-8'))
                 list_id = hash_obj.hexdigest()
                 cache_info = {
+                    "cache_name":cache_name,
                     "query":query_obj,
                     "ts":ts,
                     "record_type":dst_record_type,
@@ -326,7 +283,8 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
                     "empty_search_flag":empty_search_flag,
                     "search_type":"supersearch"
                 }
-                cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+                cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+                #print ("B-%s %s %s records" % (list_id, len(record_list), src_record_type))
             n_from_src = stat_obj[src_record_type]
             bylinkage_obj[src_record_type] = {"list_id":list_id, "result_count":n_from_src}
         res_obj["results_summary"][dst_record_type]["bylinkage"] = bylinkage_obj
@@ -352,11 +310,11 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     for list_id in id_list:
         q_obj = {"list_id":list_id}
         update_obj = {"cache_info.result_summary":res_obj["results_summary"]}
-        res = dbh["c_cache"].update_one(q_obj, {'$set':update_obj}, upsert=True)
+        res = dbh["c_initcache"].update_one(q_obj, {'$set':update_obj}, upsert=True)
 
     cache_info = {"search_type":"supersearch", "empty_search_flag":empty_search_flag, "record_type":"supersearch", "ts":ts}
     cache_obj = {"list_id":initial_list_id, "res":res_obj, "cache_info":cache_info}
-    res = dbh["c_cache"].insert_one(cache_obj)
+    res = dbh["c_initcache"].insert_one(cache_obj)
 
     ts_list.append("9-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     #return ts_list
@@ -742,8 +700,11 @@ def transform_query(in_obj, concept, seen_path, path_map):
                                 #"^[A-Z]{8}C"
                 val_obj = {obj["operator"]:val}
                 if obj["operator"] == "$eq" and "string_value" in obj:
-                    val = "^%s$" % (val)
-                    val_obj = {"$regex":val, "$options":"i"}
+                    if obj["path"] in ["start_aa", "site_seq"]:
+                        val_obj = {"$eq":val}
+                    else:
+                        val = "^%s$" % (val)
+                        val_obj = {"$regex":val, "$options":"i"}
                 elif obj["operator"] == "$ne" and "string_value" in obj:
                     val = "^%s$" % (val)
                     val_obj = {"$not": {"$regex":val, "$options":"i"}}

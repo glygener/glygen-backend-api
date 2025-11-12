@@ -15,7 +15,7 @@ from email.mime.text import MIMEText
 
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list,  extract_name, get_errors_in_query, order_obj, load_species_info, get_taxid2name
+from glygen.util import cache_hitlist,  extract_name, get_errors_in_query, order_obj, load_species_info, get_taxid2name
 
 
 def home_init(config_obj, data_path):

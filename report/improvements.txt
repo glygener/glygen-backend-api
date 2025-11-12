@@ -1,0 +1,77 @@
+Pain point: detail APIs
+=======================
+	- list of APIs
+		> /protein/detail/
+		> /glycan/detail/
+		> /publication/
+		> /motif/detail/
+		> /site/detail/
+		> /biomarker/detail/
+		> /disease/detail/
+	- speed improvement
+		> xxx
+      > yyy
+	- implemented solutions
+		> indexing collecctions (use dump-index-list.py to see)
+		> switching from regex to eq 
+
+Pain point: advance search APIs
+===============================
+	- list of APIs
+		> /protein/search/
+      > /glycan/search/
+      > /biomarker/search/
+      > /disease/search/
+	- speed improvement
+      > xxx
+      > yyy
+   - implemented solutions
+		> switching from regex to eq
+      > look into protein_advanced with amino acid type search (still slow)
+
+Pain point: supersearch
+=======================
+   - list of APIs
+      > /supersearch/search/
+   - speed improvement
+      > xxx
+      > yyy
+   - implemented solutions
+		> indexing c_site.start_aa for aa based site search using supersearch
+		> switching from regex to eq
+
+
+Pain point: global and simple searches
+======================================
+	- list of APIs
+      > /globalsearch/search/
+		> /protein/search_simple/
+		> /glycan/search_simple/
+		> /biomarker/search_simple/
+		> /disease/search_simple/
+	- speed improvement
+      > xxx
+		> yyy
+   - implemented solutions
+      > xxx
+      > yy
+
+
+Pain point: list APIs
+=====================
+   - list of APIs
+      > /protein/list/
+      > /glycan/list/
+		> /biomarker/list
+		> /disease/list
+
+   - speed improvement
+      > xxx
+      > yyy
+   - implemented solutions
+      > xxx
+      > yy
+
+
+
+

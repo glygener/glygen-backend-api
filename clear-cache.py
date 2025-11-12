@@ -54,6 +54,11 @@ def main():
         dbh = client[db_name]
         seen = {}
         for doc in dbh[coll].find({}):
+            if len(doc.keys()) == 1:
+                res = dbh[coll].delete_many({"_id":doc["_id"]})
+                print ("deleted|empty cache")
+                continue
+
             list_id = doc["list_id"]
             if list_id in seen:
                 continue
@@ -70,10 +75,6 @@ def main():
             cache_id = cache_info["cache_id"] if "cache_id" in cache_info else ""
             listcache_id = cache_info["listcache_id"] if "listcache_id" in cache_info else ""
             total = cache_info["total"] if "total" in cache_info else -1
-
-            if search_type == "supersearch" and empty_search_flag == True:
-                print ("ignored|%s|%s|%s" % (search_type, list_id, total))
-                continue
             if search_type == "structure_search":
                 print ("ignored|%s|%s|%s" % (search_type, list_id, total))
                 continue

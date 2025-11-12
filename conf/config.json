@@ -85,6 +85,7 @@
             ,"sitedb"
             ,"proteindb"
 				,"indexdb"
+				,"sortdb"
 			]
     }
 }

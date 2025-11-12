@@ -27,7 +27,7 @@ from glygen.usecases_apilib import (
         glycosequon_list
     )
 
-from glygen.util import get_req_obj, get_cached_result_list, cache_result_list, get_hash_id
+from glygen.util import get_req_obj, retrieve_cached_list_objects, cache_list_objects, get_hash_id
 import traceback
 
 
@@ -350,11 +350,11 @@ class Usecases(Resource):
                 api_name = "genelocus_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
-                res_obj = get_cached_result_list(cache_id, listcache_id)
+                res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
                 if res_obj == None:
                     res_obj = genelocus_list(req_obj, config_obj)
                     if "error_list" not in res_obj:
-                        res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
+                        res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
                         if "error_list" in res:
                             res_obj = res
         except Exception as e:
@@ -409,11 +409,11 @@ class Usecases(Resource):
                 api_name = "ortholog_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
-                res_obj = get_cached_result_list(cache_id, listcache_id)
+                res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
                 if res_obj == None:
                     res_obj = ortholog_list(req_obj, config_obj)
                     if "error_list" not in res_obj:
-                        res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
+                        res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
                         if "error_list" in res:
                             res_obj = res
         except Exception as e:

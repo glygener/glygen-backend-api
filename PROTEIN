@@ -1,0 +1,43 @@
+
+
+By PTM
+O-Glycosylation reported (17288)
+N-Glycosylation predicted (14145)
+O-Glycosylation predicted (41085)
+Phosphorylation reported (55867)
+
+By Glycosylation Evidence
+Predicted (52274)
+
+By Organism
+Human (20647)
+Mouse (21756)
+Rat (22403)
+Pig (22787)
+Chicken (18370)
+Fruit fly (13822)
+Cellular slime mold (12718)
+Arabidopsis (27448)
+Bovine (26941)
+Hamster (23887)
+Zebrafish (26728)
+
+By Data
+SNV (21183)
+Mutagenesis (12197)
+Publication (176291)
+Disease (39605)
+Pathway (172572)
+
+By Mass
+< 100K (212936)
+100K - 300K (28897)
+
+
+======================
+1|Organism
+1|Glycosylation Type
+1|Glycosylated Amino Acid
+1|Glycosylation Evidence Type
+
+

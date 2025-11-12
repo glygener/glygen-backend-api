@@ -1,0 +1,56 @@
+{
+    "query": {
+        "empty_search_flag": true,
+        "concept_query_list": []
+    },
+    "results_summary": {
+        "protein": {
+            "list_id": "43409035ec3cd12068cbaf738ce87aa9",
+            "result_count": 243606,
+            "bylinkage": {
+            }
+        },
+        "enzyme": {
+            "list_id": "",
+            "result_count": 39960,
+            "bylinkage": {
+            }
+        },
+        "gene": {
+            "list_id": "",
+            "result_count": 243606,
+            "bylinkage": {
+            }
+        },
+        "glycan": {
+            "list_id": "8addc2fae1bd90a9b923eb7c63db34a5",
+            "result_count": 56984,
+            "bylinkage": {
+            }
+        },
+        "motif": {
+            "list_id": "",
+            "result_count": 121,
+            "bylinkage": {
+            }
+        },
+        "disease": {
+            "list_id": "38005ce89ab3018b95693c4e36248516",
+            "result_count": 8442,
+            "bylinkage": {
+            }
+        },
+        "species": {
+            "list_id": "",
+            "result_count": 16,
+            "bylinkage": {
+            }
+        },
+        "site": {
+            "list_id": "e5e9e8999a3451a947eb2f05508b4a29",
+            "result_count": 918506,
+            "bylinkage": {
+            }
+        }
+    }
+}

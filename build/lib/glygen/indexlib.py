@@ -5,7 +5,7 @@ import json
 import datetime,time
 import pytz
 from glygen.db import get_mongodb
-from glygen.util import  get_errors_in_query, get_random_string, cache_record_list, get_hash_id
+from glygen.util import  get_errors_in_query, get_random_string, cache_hitlist, get_hash_id
 
 
 
@@ -236,16 +236,20 @@ def search_one(api_name, query_obj, config_obj, cache_flag):
    
 
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
-    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    
+    #Get cached object
+    cache_coll = "c_initcache"
+    mongo_query = {"list_id":list_id}
+    cached_obj = dbh[cache_coll].find_one(mongo_query)
+    if cached_obj == None:
+        cache_coll = "c_usercache"
+        cached_obj = dbh[cache_coll].find_one(mongo_query)    
+   
     if cache_flag and cached_obj != None:
         if len(cached_obj["results"]) > 0:
             return {"list_id":list_id, "resultcount":cached_obj["cache_info"]["total"], "query":query_obj }
 
-
-
     res_obj = {"query":query_obj}
-
     query_obj["term"] = query_obj["term"].strip()
     quote_flag = False
     for c in ["\"", "\'"]:
@@ -282,7 +286,7 @@ def search_one(api_name, query_obj, config_obj, cache_flag):
 
 
     debug_list = []
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
     ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S %Z%z")
     for sec in ["all"]:
         tmp_dict = result_dict[sec]
@@ -296,10 +300,10 @@ def search_one(api_name, query_obj, config_obj, cache_flag):
             "query":query_obj,
             "ts":ts,
             "record_type":record_type,
-            "search_type":"search",
+            "search_type":api_name,
             "total":result_count
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_collection,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_collection,config_obj)
         debug_list.append("%s|%s" % (list_id,result_count))
         res_obj["list_id"] = list_id if result_count > 0 else ""
         res_obj["resultcount"] = result_count
@@ -358,7 +362,7 @@ def search_all(api_name, query_obj, config_obj):
 
     #return {"resultdict":result_dict}
 
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
     ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S %Z%z")
     for record_type in result_dict:
         for sec in ["all"]:
@@ -376,9 +380,9 @@ def search_all(api_name, query_obj, config_obj):
                 "query":query_obj,
                 "ts":ts,
                 "record_type":r_type,
-                "search_type":"search"
+                "search_type":api_name
             }
-            cache_record_list(dbh,list_id,record_list,cache_info,cache_collection,config_obj)
+            cache_hitlist(dbh,list_id,record_list,cache_info,cache_collection,config_obj)
             res_obj["other_matches"][record_type][sec] = {"list_id":list_id,"count":result_count}
             #res_obj["other_matches"][record_type][sec]["recordlist"] = record_list
             res_obj["other_matches"]["total_match_count"] += result_count
@@ -386,4 +390,14 @@ def search_all(api_name, query_obj, config_obj):
 
     return res_obj
 
+
+
+def use_indexed_search(api_name, req_obj,config_obj):
+
+    res_obj = search_one(api_name, req_obj, config_obj, True)
+    for p in ["query", "resultcount"]:
+        if p in res_obj:
+            res_obj.pop(p)
+    
+    return res_obj
 

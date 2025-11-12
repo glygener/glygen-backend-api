@@ -133,24 +133,7 @@ def main():
     #    "c_network", "c_disease"
     #]
     text_indexed_colls = []
-    field_indexed_colls = {
-        "c_index":{
-            "phraselist":"phraselist_index"
-        },
-        "c_protein":{
-            "uniprot_canonical_ac":"uniprot_canonical_ac_index",
-            "uniprot_ac":"uniprot_ac_index"
-        },
-        "c_glycan":{
-            "glytoucan_ac":"glytoucan_ac_index"
-        },
-        "c_biomarker":{
-            "biomarker_id":"biomarker_id_index"
-        },
-        "c_disease":{
-            "record_id":"record_id_index"
-        }
-    }
+    index_dict = json.load(open("conf/indexes.json"))
 
     archived_colls = ["c_video", "c_outreach", "c_event"]
 
@@ -243,12 +226,12 @@ def main():
                 msg = " ... finished creating text index for tmpdb.%s" % (coll)
                 write_progress_msg(msg, "a")
 
-            if coll in field_indexed_colls:
+            if coll in index_dict:
                 index_name_list = []
                 for cur in tmpdb_dbh[coll].list_indexes():
                     index_name_list.append(cur["name"])
-                for path in field_indexed_colls[coll]:
-                    index_name = field_indexed_colls[coll][path]
+                for path in index_dict[coll]:
+                    index_name = index_dict[coll][path]
                     if index_name in index_name_list:
                         msg = "\n ... dropping field index (path=%s) for tmpdb.%s" % (path, coll)
                         write_progress_msg(msg, "a")

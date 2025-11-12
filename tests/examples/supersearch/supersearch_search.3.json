@@ -1,0 +1,1 @@
+{"concept_query_list":[{"concept":"site","query":{"aggregator":"$and","unaggregated_list":[{"path":"down_seq","order":0,"operator":"$regex","string_value":"12|NPT"}],"aggregated_list":[]}}]}

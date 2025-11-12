@@ -27,7 +27,7 @@ def cart_list(query_obj, config_obj):
     error_list = get_errors_in_query("cart_list", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
-    cache_collection = "c_listcache"
+    cache_collection = "c_userlistcache"
 
 
     #Get cached object

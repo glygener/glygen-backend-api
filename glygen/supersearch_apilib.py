@@ -11,7 +11,7 @@ import collections
 from flask import current_app
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_superquery, get_errors_in_query, sort_objects, cache_record_list, get_hash_id
+from glygen.util import get_errors_in_superquery, get_errors_in_query, sort_objects, cache_hitlist, get_hash_id
 
 
 def search_init(config_obj):
@@ -211,7 +211,12 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     api_name = "superearch_search"
     initial_list_id = get_hash_id(api_name, record_type, query_obj)
 
-    cached_obj = dbh["c_cache"].find_one({"list_id":initial_list_id})
+    cached_obj = dbh["c_initcache"].find_one({"list_id":initial_list_id})
+    if cached_obj != None:
+        if "res" in cached_obj:
+            return cached_obj["res"]
+
+    cached_obj = dbh["c_usercache"].find_one({"list_id":initial_list_id})
     if cached_obj != None:
         if "res" in cached_obj:
             return cached_obj["res"]
@@ -228,9 +233,6 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
         if error_list != []:
             return {"error_list":error_list}
 
-    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
-    ts_list = []
-    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     results_summary_default = {}
     collection = "c_searchinit"
@@ -245,7 +247,6 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
     seen_path = {}
     for doc in dbh["c_path"].find({}):
-        
         record_type = doc["record_type"]
         if record_type not in seen_path:
             seen_path[record_type] = {}
@@ -301,11 +302,12 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
     DEBUG_FLAG = False
 
-    dump_debug_timer("flag-1 running concept queries", DEBUG_FLAG)
 
     #return mongo_query
 
-         
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts_list = []
+    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     initial_hit_count = 0
     reason_dict = {}
@@ -323,23 +325,15 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
             initial_hit_dict[record_type] = {}
         if coll not in config_obj["projectedfields"]:
             continue
+        ts_list.append(coll + "|" + json.dumps(q_obj["query"]))
         record_id_field = config_obj["record_type_info"][record_type]["field"]
-        #prj_obj = {record_id_field:1}
         prj_obj = {record_id_field:1, "down_seq":1, "up_seq":1, "site_seq":1,}
         doc_list = list(dbh[coll].find(q_obj["query"],prj_obj))
-
-        #agg_query = [{"$project":{record_id_field:1, "result":{ "$not": [ q_obj["query"] ] }}}]
-        #doc_list = list(dbh[coll].aggregate(agg_query))
-        #print  record_type, len(doc_list)
-        #print q_obj["query"]
         initial_hit_count += len(doc_list)
         for doc in doc_list:
             if record_id_field not in doc:
                 continue
             record_id = doc[record_id_field]
-            #print "Robel", doc["up_seq"], doc["site_seq"], doc["down_seq"], record_id
-            #print "Robel", record_id
-            #print "Robel", record_id,doc["site_seq"]
             if record_type in ["enzyme", "gene"]:
                 record_id = "%s.%s" % (record_type, record_id)
             initial_hit_dict[record_type][record_id] = True
@@ -349,24 +343,22 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     #return initial_hit_dict
 
 
-
-    dump_debug_timer("flag-2 loading network", DEBUG_FLAG)
-
     record_type_list = list(config_obj["record_type_info"].keys())
-
     ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     #Load network
     #doc_list = list(dbh["c_network"].find({}))
     doc_list = current_app.config["NETWORK_DOCLIST"]
     
-    ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     ts_list.append(len(doc_list))
-
     final_hit_dict,final_hit_dict_split, conn_dict = {}, {}, {}
     if initial_hit_count > 0:
+        ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
         final_hit_dict,final_hit_dict_split, conn_dict = load_network(doc_list, 
                 initial_hit_dict, empty_search_flag, ignore_dict, reason_dict, config_obj)
+        #tt_list = load_network(doc_list, initial_hit_dict, empty_search_flag, ignore_dict, reason_dict, config_obj)
+        #ts_list += tt_list
+        ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     else:
         conn_dict = load_conn_dict(doc_list)
 
@@ -380,12 +372,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
                     debug_dict[src_type] = {}
                 debug_dict[src_type][dst_type] = n
         return debug_dict
-
-    
     #return ignore_dict
-
-    ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-
 
     #After imposing edge constraints, some hits cannot be traced
     #these untraceable hits should be removed from final_hit_dict
@@ -407,7 +394,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     res_obj = {"query":query_obj, "results_summary":{}}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     cachable_list = ["protein","glycan","site", "disease"]
     for dst_record_type in record_type_list:
         n = len(list(final_hit_dict[dst_record_type].keys())) if dst_record_type in final_hit_dict else 0
@@ -424,7 +411,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
                     "record_type":dst_record_type,
                     "search_type":"supersearch"
                 }
-                cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+                cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
         res_obj["results_summary"][dst_record_type] = {"list_id":list_id, "result_count":n}
         stat_obj = {}
         bylinkage_obj = {}
@@ -459,7 +446,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
                     "linked_to":src_record_type,
                     "search_type":"supersearch"
                 }
-                cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+                cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
             n_from_src = stat_obj[src_record_type]
             bylinkage_obj[src_record_type] = {"list_id":list_id, "result_count":n_from_src}
         res_obj["results_summary"][dst_record_type]["bylinkage"] = bylinkage_obj
@@ -485,15 +472,15 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     for list_id in id_list:
         q_obj = {"list_id":list_id}
         update_obj = {"cache_info.result_summary":res_obj["results_summary"]}
-        res = dbh["c_cache"].update_one(q_obj, {'$set':update_obj}, upsert=True)
+        res = dbh["c_usercache"].update_one(q_obj, {'$set':update_obj}, upsert=True)
 
     cache_info = {"search_type":"supersearch", "record_type":"supersearch", "ts":ts}
     cache_obj = {"list_id":initial_list_id, "res":res_obj, "cache_info":cache_info}
-    res = dbh["c_cache"].insert_one(cache_obj)
+    res = dbh["c_usercache"].insert_one(cache_obj)
 
     ts_list.append("9-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-    #return ts_list
 
+    #return ts_list
     return res_obj
 
 
@@ -579,6 +566,10 @@ def load_network(doc_list, initial_hit_dict, empty_search_flag, ignore_dict,reas
     #log_file = "/data/shared/glygen/tmp/supersearch.log"
     #FL = open(log_file, "w")
 
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts_list = []
+    ts_list.append("a-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    ts_list.append("a-%s" %(len(doc_list)))
     conn_dict = {}
     edge_dict = {}
     orphan_dict = {}
@@ -612,6 +603,7 @@ def load_network(doc_list, initial_hit_dict, empty_search_flag, ignore_dict,reas
                             edge_dict[src_record_type][src_record_id][dst_record_type] = {}
                         edge_dict[src_record_type][src_record_id][dst_record_type][dst_record_id] = True
    
+    ts_list.append("b-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     initial_record_list = list(initial_hit_dict.keys()) 
     record_type_list = initial_record_list
     for record_type in edge_dict:
@@ -631,6 +623,7 @@ def load_network(doc_list, initial_hit_dict, empty_search_flag, ignore_dict,reas
             node_hit_dict[src_record_type][src_record_id] = True
 
 
+    ts_list.append("c-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     #for src_record_type in record_type_list:
     for src_record_type in config_obj["node_order"][initial_record_list[0]]:
         if src_record_type not in record_type_list:
@@ -728,8 +721,8 @@ def load_network(doc_list, initial_hit_dict, empty_search_flag, ignore_dict,reas
                         add_reason(reason_dict, dst_record_type, dst_record_id, src_record_type, src_record_id)
 
     #FL.close()
-
-
+    ts_list.append("d-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    #return ts_list
     return node_hit_dict, edge_hit_dict, conn_dict
 
 
@@ -873,8 +866,11 @@ def transform_query(in_obj, concept, seen_path, path_map):
                                 #"^[A-Z]{8}C"
                 val_obj = {obj["operator"]:val}
                 if obj["operator"] == "$eq" and "string_value" in obj:
-                    val = "^%s$" % (val)
-                    val_obj = {"$regex":val, "$options":"i"}
+                    if obj["path"] in ["start_aa", "site_seq"]:
+                        val_obj = {"$eq":val}
+                    else:
+                        val = "^%s$" % (val)
+                        val_obj = {"$regex":val, "$options":"i"}
                 elif obj["operator"] == "$ne" and "string_value" in obj:
                     val = "^%s$" % (val)
                     val_obj = {"$not": {"$regex":val, "$options":"i"}}

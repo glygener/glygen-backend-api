@@ -1,4 +1,7 @@
-{"id":"adb364f61fbee6a03e56fc200040e3f3","offset":1,"sort":"hit_score","limit":20,"order":"desc","filters":[],"columns":["glytoucan_ac","image_url","hit_score","mass","publication"]}
-
+{
+	"id":"34e9b2754d2f89a5a45e947c2eb5c783","offset":1,"sort":"hit_score","limit":20,"order":"desc",
+	"filters":[],
+	"columns":["glytoucan_ac","image_url","hit_score","mass","publication"]
+}
 
 

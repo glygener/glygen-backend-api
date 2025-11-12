@@ -14,7 +14,7 @@ from bson.objectid import ObjectId
 from Bio import SeqIO
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, cache_record_list, load_species_info, get_hash_id, cache_result_list, get_cached_result_list, get_cached_records_indirect
+from glygen.util import get_errors_in_query, sort_objects, cache_hitlist, load_species_info, get_hash_id, cache_list_objects, retrieve_cached_list_objects, make_list_objects_indirect
 
 
 def job_init(config_obj, data_path):
@@ -259,7 +259,7 @@ def job_results(query_obj, config_obj):
         cache_id = query_obj["id"] if "id" in query_obj else ""
         #cache_id = "xxx"
         listcache_id = hash_obj.hexdigest()
-        res = get_cached_result_list(cache_id, listcache_id)
+        res = retrieve_cached_list_objects(cache_id, listcache_id, query_obj)
         if res != None:
             return res
   
@@ -303,12 +303,6 @@ def job_results(query_obj, config_obj):
         ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
         #return ts_list
 
-        #res_obj = get_cached_records_indirect({"list_id":res_obj["list_id"]}, config_obj, False)
-        #return res_obj
-        #if "error" not in res_obj:
-        #    res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
-        #    if "error_list" in res:
-        #        res_obj = res
 
     except Exception as e:
         res_obj = {"error_list":[{"error_code":str(e)}]}
@@ -395,7 +389,7 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     list_id = ""
     record_type = "glycan"
     if len(record_list) != 0:
@@ -408,7 +402,7 @@ def parse_structure_search_ouput(out_file, config_obj, job_info):
             "record_count":len(record_list),
             "search_type":job_info["jobtype"]
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj["list_id"] = list_id
     
     return res_obj

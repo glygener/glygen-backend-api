@@ -15,16 +15,22 @@ import requests
 from glygen.db import get_mongodb, log_error
 
 from glygen.misc_apilib import validate, propertylist, pathlist, messagelist, verlist, gtclist, bcolist
-from glygen.util import get_req_obj, get_filter_conf, get_cached_records_indirect, apply_pagination
+from glygen.util import get_req_obj, get_filter_conf, make_list_objects_indirect, apply_pagination
 from glygen.auth_apilib import create_github_issue
 import traceback
 
 
 from glygen.indexlib import search_one, search_all
-from glygen.protein_apilib import protein_detail, protein_search_simple
-from glygen.glycan_apilib import glycan_detail, glycan_search_simple
-from glygen.biomarker_apilib import biomarker_detail, biomarker_search_simple
-from glygen.disease_apilib import disease_detail, disease_search_simple
+from glygen.protein_apilib import protein_detail
+from glygen.glycan_apilib import glycan_detail
+from glygen.biomarker_apilib import biomarker_detail
+from glygen.disease_apilib import disease_detail
+
+from glygen.protein_apilib import search_simple as protein_search_simple
+from glygen.glycan_apilib import search_simple as glycan_search_simple
+from glygen.biomarker_apilib import search_simple as biomarker_search_simple
+from glygen.disease_apilib import search_simple as disease_search_simple
+
 
 from glygen.globalsearch_apilib import globalsearch_search
 
@@ -360,7 +366,7 @@ class Misc(Resource):
                     elif req_obj["name"] == "disease_detail":
                         res_obj = disease_detail(req_obj["payload"], config_obj)
                 elif req_obj["name"].find("_list") != -1:
-                    res_obj = get_cached_records_indirect(req_obj["payload"], config_obj, False)
+                    res_obj = make_list_objects_indirect(req_obj["payload"], config_obj, False)
                     if "results" in res_obj:
                         res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
                 else:

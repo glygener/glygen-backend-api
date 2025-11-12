@@ -9,7 +9,10 @@ from collections import OrderedDict
 
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, get_paginated_sections, transform_query_term, get_hash_id, filter_glyco_obj_list
+from glygen.util import cache_hitlist, clean_obj, extract_name, get_errors_in_query, get_paginated_sections, transform_query_term, get_hash_id, filter_glyco_obj_list
+
+from glygen.indexlib import use_indexed_search
+
 
 
 def protein_search_init(config_obj):
@@ -34,7 +37,7 @@ def protein_search_init(config_obj):
 
 
 
-def protein_search_simple(query_obj, config_obj):
+def search_simple(query_obj, config_obj):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -55,7 +58,7 @@ def protein_search_simple(query_obj, config_obj):
     api_name = "protein_search_simple"
     list_id = get_hash_id(api_name, record_type, query_obj)
     
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     #cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     #if cached_obj != None:
     #    if len(cached_obj["results"]) > 0:
@@ -78,9 +81,9 @@ def protein_search_simple(query_obj, config_obj):
             "query":query_obj,
             "ts":ts,
             "record_type":record_type,
-            "search_type":"search_simple"
+            "search_type":"protein_search_simple"
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
     res_obj["query"] = query_obj
     res_obj["resultcount"] = len(record_list)
@@ -101,6 +104,9 @@ def protein_search(query_obj, config_obj):
     if error_obj != {}:
         return error_obj
 
+    #field_info = config_obj["protein_search"]["field_info"]
+    #return {"error_list":field_info}
+
     #Collect errors 
     error_list = get_errors_in_query("protein_search", query_obj,config_obj)
     if error_list != []:
@@ -109,8 +115,15 @@ def protein_search(query_obj, config_obj):
     record_type = "protein"
     api_name = "protein_search"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
-    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    
+    #Get cached object
+    cache_coll = "c_initcache"
+    mongo_query = {"list_id":list_id}
+    cached_obj = dbh[cache_coll].find_one(mongo_query)
+    if cached_obj == None:
+        cache_coll = "c_usercache"
+        cached_obj = dbh[cache_coll].find_one(mongo_query)
+
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
             return {"list_id":list_id}
@@ -120,19 +133,45 @@ def protein_search(query_obj, config_obj):
         glygen_name_dict[doc["glygen_name"]] = True
 
 
+    field2sec = {
+        "gene_name":"gene",
+        "protein_name":"protein_names",
+        "go_term":"go_term",
+        "disease_name":"disease",
+        "biomarker.disease_name":"biomarkers"
+    }
+
+    p_list = []
+    for p in  query_obj:
+        if p not in ["operation","query_type"]:
+            #p_list.append(p)
+            ff_list, val_obj = [p], query_obj[p]
+            for child_key in ["type", "disease_name"]:
+                if child_key in val_obj:
+                    ff_list.append(child_key)
+                    val_obj = val_obj[child_key]
+            p_list.append(".".join(ff_list))
+
+    for f in field2sec:
+        sec = field2sec[f]
+        if p_list == [f]:
+            f_parts = f.split(".")
+            val = query_obj[f_parts[0]]
+            if type(val) is dict:
+                for ff in f_parts[1:]:
+                    val = val[ff]
+            ts_list.append("1a-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+            query_obj_new = {"term":val,"term_category":sec}
+            res_obj = use_indexed_search("protein_search_simple", query_obj_new,config_obj)
+            ts_list.append("1b-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+            #return {"tslist":ts_list}
+            return res_obj
+
+
     mongo_query = get_mongo_query(query_obj, glygen_name_dict)
     #return mongo_query
-
-    #mongo_query = { "species.taxid":{"$eq":9606}}
-
     
     ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-
-    #path_obj = config_obj[config_obj["server"]]["htmlpath"]
-    #blast_db = path_obj["datareleasespath"] + "data/v-%s/blastdb/canonicalsequences"
-    #blast_db = blast_db % (config_obj["datarelease"])
-    #cmd = "%s -db %s -query %s -evalue %s -outfmt %s"
-    #cmd = cmd % (path_obj["blastp"], blast_db,"tmp/q.fasta", 0.1, 7)
 
     collection = "c_protein"
     record_list = []
@@ -180,15 +219,14 @@ def protein_search(query_obj, config_obj):
             "query":query_obj,
             "ts":ts,
             "record_type":record_type,
-            "search_type":"search"
+            "search_type":"protein_search"
         }
         if unmapped_obj_list != []:
             cache_info["batch_info"] = {"unmapped":unmapped_obj_list}
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-
     #return {"tslist":ts_list, "mongoquery":mongo_query}
 
     return res_obj
@@ -535,16 +573,18 @@ def get_mongo_query(query_obj, glygen_name_dict):
     if "uniprot_canonical_ac" in query_obj:
         qid_list = query_obj["uniprot_canonical_ac"].replace(" ", "").split(",")
         if len(qid_list) == 1:
-            cond_objs.append(
-                {
-                    "$or":[
-                        {"uniprot_canonical_ac":{'$eq': qid_list[0]}},
-                        {"uniprot_ac":{'$eq': qid_list[0]}},
-                        {"uniprot_id":{'$eq': qid_list[0]}},
-                        {"isoforms.isoform_ac":{'$eq': qid_list[0]}}
-                    ]
-                }
-            )
+            uniprot_ac = qid_list[0].split("-")[0]
+            cond_objs.append({"uniprot_ac":{'$eq': uniprot_ac}})
+            #cond_objs.append(
+            #    {
+            #        "$or":[
+            #            {"uniprot_canonical_ac":{'$eq': qid_list[0]}},
+            #            {"uniprot_ac":{'$eq': qid_list[0]}},
+            #            {"uniprot_id":{'$eq': qid_list[0]}},
+            #            {"isoforms.isoform_ac":{'$eq': qid_list[0]}}
+            #        ]
+            #    }
+            #)
         else:
             cond_objs.append(
                 {
@@ -566,12 +606,12 @@ def get_mongo_query(query_obj, glygen_name_dict):
 
     #binding_glycan_id
     if "binding_glycan_id" in query_obj:
-        q = {"interactions.interactor_id":{'$regex': query_obj["binding_glycan_id"], '$options': 'i'}}
+        q = {"interactions.interactor_id":{'$eq': query_obj["binding_glycan_id"]}}
         cond_objs.append(q)
 
     #go_id
     if "go_id" in query_obj:
-        q = {"go_annotation.categories.go_terms.id":{'$regex': query_obj["go_id"], '$options': 'i'}}
+        q = {"go_annotation.categories.go_terms.id":{'$eq': query_obj["go_id"]}}
         cond_objs.append(q)
     
     #go_term
@@ -581,8 +621,7 @@ def get_mongo_query(query_obj, glygen_name_dict):
 
     #refseq_ac
     if "refseq_ac" in query_obj:
-        cond_objs.append({"refseq.ac":{'$regex': query_obj["refseq_ac"], '$options': 'i'}})
-
+        cond_objs.append({"refseq.ac":{'$eq': query_obj["refseq_ac"]}})
     #mass
     if "mass" in query_obj:
         if "min" in query_obj["mass"]:
@@ -592,17 +631,14 @@ def get_mongo_query(query_obj, glygen_name_dict):
     
     #organism
     if "organism" in query_obj:
-        tmp_cnd_list = []
         if "id" in query_obj["organism"]:
             if type(query_obj["organism"]["id"]) is int:
-                tmp_cnd_list.append({"species.taxid": {'$eq': query_obj["organism"]["id"]}})
-        if "name" in query_obj["organism"]:
+                cond_objs.append({"species.taxid": {'$eq': query_obj["organism"]["id"]}})
+        elif "name" in query_obj["organism"]:
             if query_obj["organism"]["name"] in glygen_name_dict:
-                 tmp_cnd_list.append({"species.glygen_name": {'$eq': query_obj["organism"]["name"]}})
+                 cond_objs.append({"species.glygen_name": {'$eq': query_obj["organism"]["name"]}})
             else:
-                tmp_cnd_list.append({"species.glygen_name": {'$regex': query_obj["organism"]["name"], '$options': 'i'}})
-        if tmp_cnd_list != []:
-            cond_objs.append({"$or":tmp_cnd_list}) 
+                cond_objs.append({"species.glygen_name": {'$regex': query_obj["organism"]["name"], '$options': 'i'}})
     #biomarker
     if "biomarker" in query_obj:
         if "id" in query_obj["biomarker"]:
@@ -615,7 +651,7 @@ def get_mongo_query(query_obj, glygen_name_dict):
                 cond_objs.append(o)
         if "type" in query_obj["biomarker"]:
             if len(query_obj["biomarker"]["type"]) > 0:
-                o = {"biomarkers.best_biomarker_role": {'$regex': query_obj["biomarker"]["type"], '$options': 'i'}}
+                o = {"biomarkers.best_biomarker_role": {'$eq': query_obj["biomarker"]["type"]}}
                 cond_objs.append(o)
         if "disease_id" in query_obj["biomarker"]:
             if len(query_obj["biomarker"]["disease_id"]) > 0:
@@ -644,13 +680,12 @@ def get_mongo_query(query_obj, glygen_name_dict):
 
     #pathway_id
     if "pathway_id" in query_obj:
-        #cond_objs.append({"pathway.id" : {'$regex': query_obj["pathway_id"], '$options': 'i'}})
         cond_objs.append({"pathway.id" : {'$eq':query_obj["pathway_id"]}})
 
 
     #pmid
     if "pmid" in query_obj:
-        cond_objs.append({"publication.reference.id" : {'$regex': query_obj["pmid"], '$options': 'i'}})
+        cond_objs.append({"publication.reference.id" : {'$eq': query_obj["pmid"]}})
 
     #glycosylation_type and glycosylation_subtype
     if "glycosylation_type" in query_obj:
@@ -658,8 +693,8 @@ def get_mongo_query(query_obj, glygen_name_dict):
             cond_objs.append({
                 "glycosylation": {            
                     "$elemMatch": {             
-                        "type": {'$regex': query_obj["glycosylation_type"], '$options': 'i'},
-                        "subtype": {'$regex': query_obj["glycosylation_subtype"], '$options': 'i'}
+                        "type": {'$eq': query_obj["glycosylation_type"]},
+                        "subtype": {'$eq': query_obj["glycosylation_subtype"]}
                     }
                 }
             })
@@ -675,7 +710,7 @@ def get_mongo_query(query_obj, glygen_name_dict):
         q_one = {
                 "$or":[
                     {"glycosylation.glytoucan_ac":{"$in": g_list}},
-                    {"glycosylation.glytoucan_ac":{'$regex': q_str, '$options': 'i'}}
+                    {"glycosylation.glytoucan_ac":{'$eq': q_str}}
                 ]
         }
         cond_objs.append(q_one)
@@ -692,36 +727,29 @@ def get_mongo_query(query_obj, glygen_name_dict):
     #disease ID
     if "disease_id" in query_obj:
         or_list = [
-            {"disease.recommended_name.id":{'$regex':query_obj["disease_id"],'$options':'i'}},
-            {"disease.synonyms.id":{'$regex':query_obj["disease_id"],'$options':'i'}},
-            {"biomarkers.condition.id_list":{'$regex':query_obj["disease_id"],'$options':'i'}}
+            {"disease.recommended_name.id":{'$eq':query_obj["disease_id"]}},
+            {"disease.synonyms.id":{'$eq':query_obj["disease_id"]}},
+            {"biomarkers.condition.id_list":{'$eq':query_obj["disease_id"]}}
         ]
         cond_objs.append({'$or':or_list})
 
     #glycosylation_evidence
     if "glycosylation_evidence" in query_obj:
-        #if query_obj["glycosylation_evidence"] == "predicted":
-        #    cond_objs.append({"glycosylation.site_category_dict.predicted":{"$eq":True}})
-        #elif query_obj["glycosylation_evidence"] == "reported":
-        #    or_list = [
-        #        {"glycosylation.site_category_dict.reported":{"$eq":True}},
-        #        {"glycosylation.site_category_dict.reported_with_glycan":{"$eq":True}},
-        #    ]
-        #    cond_objs.append({'$or':or_list})
-        #elif query_obj["glycosylation_evidence"] == "both":
-        #    cond_objs.append({"glycosylation": {'$gt': []}})
-        if query_obj["glycosylation_evidence"] == "all_sites":
-            cond_objs.append({"glycosylation": {'$gt': []}})
-        elif query_obj["glycosylation_evidence"] == "sites_reported_with_glycans":
+        ev_type_list = ["sites_reported_with_glycans", "sites_reported_without_glycans", 
+            "sites_detected_by_literature_mining", "predicted_sites"]
+        ev_type = "sites_reported_with_glycans"
+        if query_obj["glycosylation_evidence"] in ev_type_list:
+            ev_type = query_obj["glycosylation_evidence"]
+        if ev_type == "sites_reported_with_glycans":
             oo = {"glycosylation.site_category_dict.reported_with_glycan":{"$eq":True}}
             cond_objs.append(oo)
-        elif query_obj["glycosylation_evidence"] == "sites_reported_without_glycans":
+        elif ev_type == "sites_reported_without_glycans":
             oo = {"glycosylation.site_category_dict.reported":{"$eq":True}}
             cond_objs.append(oo)
-        elif query_obj["glycosylation_evidence"] == "sites_detected_by_literature_mining":
+        elif ev_type == "sites_detected_by_literature_mining":
             oo = {"glycosylation.site_category_dict.automatic_literature_mining":{"$eq":True}}
             cond_objs.append(oo)
-        elif query_obj["glycosylation_evidence"] == "predicted_sites":
+        elif ev_type  == "predicted_sites":
             or_list = [
                 {"glycosylation.site_category_dict.predicted":{"$eq":True}},
                 {"glycosylation.site_category_dict.predicted_with_glycan":{"$eq":True}}
@@ -772,9 +800,10 @@ def get_mongo_query(query_obj, glygen_name_dict):
             val = val.replace("X", "[A-Z]{1}")
             cond_objs.append({"sequence.sequence": {'$regex':val,'$options': 'i'}})
     
-
     operation = query_obj["operation"].lower() if "operation" in query_obj else "and"
-    mongo_query = {} if cond_objs == [] else { "$"+operation+"": cond_objs }
+    mongo_query = {}
+    mongo_query = cond_objs[0] if len(cond_objs) == 1 else mongo_query
+    mongo_query = { "$"+operation+"": cond_objs } if len(cond_objs) > 1 else mongo_query
        
     return mongo_query
 

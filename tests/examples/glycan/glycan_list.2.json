@@ -1,12 +1,8 @@
 {
-	"id": "56eeda5a3e00bf4e8398373111797972",
-	"offset": 1,
-	"sort": "hit_score",
-	"limit": 20,
-	"order": "desc",
-	"columns":[
-		"mass","glytoucan_ac","image_url","hit_score","glycoprotein_count","publication",
-		"pubchem_compound_id","pubchem_substance_id"	
-	]
+	"id":"34e9b2754d2f89a5a45e947c2eb5c783","offset":1,"sort":"hit_score","limit":20,"order":"desc",
+	"filters":[{"id":"by_mass" , "operator": "OR", "selected":["0k_1k", "1k_2k"]}],
+	"columns":["glytoucan_ac","image_url","hit_score","mass","publication"]
 }
+
+
 

@@ -16,7 +16,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list,  extract_name, get_errors_in_query, order_obj, order_list, get_cached_motif_records_direct, get_cached_records_direct, get_cached_records_indirect, get_cached_result_list
+from glygen.util import cache_hitlist,  extract_name, get_errors_in_query, order_obj, order_list, make_motif_list_objects_direct, make_list_objects_direct, make_list_objects_indirect, retrieve_cached_list_objects
 from glygen.motif_apilib import get_parent_glycans
 
 
@@ -265,7 +265,7 @@ def section_download(query_obj, config_obj, sec_info, data_path):
     
         #record_obj = get_record_object(dbh, query_obj, config_obj)
         cache_id, listcache_id = "", query_obj["id"]
-        res = get_cached_result_list(cache_id, listcache_id)
+        res = retrieve_cached_list_objects(cache_id, listcache_id, query_obj)
          
         if res == None:
             section_field = sec_info[record_type][sec]["sectionfield"]
@@ -666,7 +666,7 @@ def get_list_object(query_obj, config_obj):
     list_obj = {}
     if query_obj["download_type"] == "motif_list":
         list_query = {"sort":"glycan_count","order":"desc", "limit":10000000}
-        list_obj = get_cached_motif_records_direct(list_query, config_obj)
+        list_obj = make_motif_list_objects_direct(list_query, config_obj)
     else:
         list_query = {"id":query_obj["id"], "limit":config_obj["max_download_records"]}
         cache_id = "xxx"
@@ -675,16 +675,16 @@ def get_list_object(query_obj, config_obj):
             list_query["filters"] = query_obj["filters"]
         if query_obj["download_type"] in ["idmapping_list_all", "idmapping_list_all_collapsed",
             "idmapping_list_mapped","idmapping_list_unmapped", "genelocus_list", "ortholog_list"]:
-            if collection == "c_listcache":
+            if collection == "c_userlistcache":
                 #return {"error_list":[{"error_code":"aaaaa"}]}
-                list_obj = get_cached_result_list(cache_id, listcache_id)
+                list_obj = retrieve_cached_list_objects(cache_id, listcache_id, query_obj)
             else:
-                list_obj = get_cached_records_direct(list_query, config_obj, False)
+                list_obj = make_list_objects_direct(list_query, config_obj, False)
         else:
-            if collection == "c_cache":
-                list_obj = get_cached_records_indirect(list_query, config_obj, False)
-            elif collection == "c_listcache":
-                list_obj = get_cached_result_list(cache_id, listcache_id)
+            if collection == "c_usercache":
+                list_obj = make_list_objects_indirect(list_query, config_obj, False)
+            elif collection == "c_userlistcache":
+                list_obj = retrieve_cached_list_objects(cache_id, listcache_id, query_obj)
 
     if list_obj == None:
         return {"error_list":[{"error_code":"list object not found", "coll":collection, "list_query":list_query}]}

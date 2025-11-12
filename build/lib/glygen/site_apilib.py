@@ -9,7 +9,7 @@ from collections import OrderedDict
 
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list, clean_obj, extract_name, get_errors_in_query, get_paginated_sections
+from glygen.util import cache_hitlist, clean_obj, extract_name, get_errors_in_query, get_paginated_sections
 
 
 

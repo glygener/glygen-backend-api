@@ -9,7 +9,7 @@ from pytz import timezone
 from bson import json_util, ObjectId
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, order_obj, extract_name, cache_record_list, get_hash_id
+from glygen.util import get_errors_in_query, sort_objects, order_obj, extract_name, cache_hitlist, get_hash_id
 
 from glygen.protein_apilib import get_protein_list_object
 
@@ -53,7 +53,7 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
     record_type = "protein"
     api_name = "glycan_to_biosynthesis_enzymes"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
@@ -65,7 +65,7 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
 
 
     collection = "c_glycan"    
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
 
     search_type = "glycan_to_biosynthesis_enzymes"
     record_list = []
@@ -92,7 +92,7 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
     res_obj = {}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
         cache_info = {
@@ -101,7 +101,7 @@ def glycan_to_biosynthesis_enzymes(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
     
     
@@ -123,7 +123,7 @@ def glycan_to_glycoproteins(query_obj, config_obj):
     record_type = "protein"
     api_name = "glycan_to_glycoproteins"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
@@ -133,7 +133,7 @@ def glycan_to_glycoproteins(query_obj, config_obj):
     #return mongo_query
 
     collection = "c_glycan"    
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
 
 
     search_type = "glycan_to_glycoproteins"
@@ -159,7 +159,7 @@ def glycan_to_glycoproteins(query_obj, config_obj):
     res_obj = {}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
         cache_info = {
@@ -168,7 +168,7 @@ def glycan_to_glycoproteins(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
 
@@ -189,7 +189,7 @@ def glycan_to_enzyme_gene_loci(query_obj, config_obj):
     record_type = "gene_locus"
     api_name = "glycan_to_enzyme_gene_loci"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
@@ -199,7 +199,7 @@ def glycan_to_enzyme_gene_loci(query_obj, config_obj):
     #return mongo_query
         
     collection = "c_glycan"    
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
 
     results = []
     prj_obj = {"enzyme":1}
@@ -256,7 +256,7 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
     record_type = "glycan"
     api_name = "biosynthesis_enzyme_to_glycans"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
@@ -267,7 +267,7 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
 
 
     collection = "c_glycan"
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
 
     search_type = "biosynthesis_enzyme_to_glycans"
     record_list = []
@@ -285,7 +285,7 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
     res_obj = {}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
         cache_info = {
@@ -294,7 +294,7 @@ def biosynthesis_enzyme_to_glycans(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -314,7 +314,7 @@ def protein_to_glycosequons(query_obj, config_obj):
     record_type = "glycosequon"
     api_name = "protein_to_glycosequons"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
@@ -331,7 +331,7 @@ def protein_to_glycosequons(query_obj, config_obj):
 
 
     collection = "c_protein"    
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
 
     obj = dbh[collection].find_one(mongo_query)
     tmp_list = obj["site_annotation"] if obj != None else []
@@ -378,7 +378,7 @@ def protein_to_orthologs(query_obj, config_obj):
     record_type = "protein"
     api_name = "protein_to_orthologs"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
@@ -395,7 +395,7 @@ def protein_to_orthologs(query_obj, config_obj):
 
 
     collection = "c_protein"    
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
 
     results = []
     obj = dbh[collection].find_one(mongo_query)
@@ -440,7 +440,7 @@ def species_to_glycosyltransferases(query_obj, config_obj):
     record_type = "protein"
     api_name = "species_to_glycosyltransferases"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
@@ -451,7 +451,7 @@ def species_to_glycosyltransferases(query_obj, config_obj):
     #return mongo_query
 
     collection = "c_protein"    
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
 
     search_type = "species_to_glycosyltransferases"
     record_list = []
@@ -467,7 +467,7 @@ def species_to_glycosyltransferases(query_obj, config_obj):
     res_obj = {}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
         cache_info = {
@@ -476,7 +476,7 @@ def species_to_glycosyltransferases(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -496,7 +496,7 @@ def species_to_glycohydrolases(query_obj, config_obj):
     record_type = "protein"
     api_name = "species_to_glycohydrolases"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
@@ -506,7 +506,7 @@ def species_to_glycohydrolases(query_obj, config_obj):
     #return mongo_query
 
     collection = "c_protein"    
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
 
     search_type = "species_to_glycohydrolases"
     record_list = []
@@ -522,7 +522,7 @@ def species_to_glycohydrolases(query_obj, config_obj):
     res_obj = {}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
         cache_info = {
@@ -531,7 +531,7 @@ def species_to_glycohydrolases(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -552,7 +552,7 @@ def species_to_glycoproteins(query_obj, config_obj):
     record_type = "protein"
     api_name = "species_to_glycoproteins"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
@@ -562,7 +562,7 @@ def species_to_glycoproteins(query_obj, config_obj):
     #return mongo_query
 
     collection = "c_protein"    
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
 
 
     search_type = "species_to_glycoproteins"
@@ -579,7 +579,7 @@ def species_to_glycoproteins(query_obj, config_obj):
     res_obj = {}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
         cache_info = {
@@ -588,7 +588,7 @@ def species_to_glycoproteins(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -608,7 +608,7 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
     record_type = "protein"
     api_name = "disease_to_glycosyltransferases"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
@@ -618,7 +618,7 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
     #return mongo_query
 
     collection = "c_protein"    
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
 
 
     search_type = "disease_to_glycosyltransferases"
@@ -635,7 +635,7 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
     res_obj = {}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
         cache_info = {
@@ -644,7 +644,7 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
             "record_type":record_type,
             "search_type":search_type
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj
@@ -657,7 +657,7 @@ def genelocus_list(query_obj, config_obj):
     if error_obj != {}:
         return error_obj
 
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
     if cache_collection not in dbh.collection_names():
         return {"error_list":[{"error_code":"open-connection-failed"}]}
 
@@ -723,7 +723,7 @@ def glycosequon_list(query_obj, config_obj):
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
     if cache_collection not in dbh.collection_names():
         return {"error_list":[{"error_code":"open-connection-failed"}]}
     res_obj = {}
@@ -791,7 +791,7 @@ def ortholog_list(query_obj, config_obj):
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
-    cache_collection = "c_cache"
+    cache_collection = "c_usercache"
     if cache_collection not in dbh.collection_names():
         return {"error_list":[{"error_code":"open-connection-failed"}]}
 

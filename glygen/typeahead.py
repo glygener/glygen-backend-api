@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.typeahead_apilib import glycan_typeahead, protein_typeahead, biomarker_typeahead,global_typeahead, categorized_typeahead
-from glygen.util import get_req_obj, get_cached_records_direct, get_errors_in_query
+from glygen.util import get_req_obj, make_list_objects_direct, get_errors_in_query
 import traceback
 
 

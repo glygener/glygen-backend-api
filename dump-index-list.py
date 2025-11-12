@@ -39,7 +39,7 @@ def main():
     db_obj = config_obj["dbinfo"][db_name]
     glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
 
-    coll_list = []
+    coll_list = ["c_usercache", "c_userlistcache", "c_initcache", "c_initlistcache"]
     for db in config_obj["downloads"]["jsondb"]:
         coll = "c_" + db[:-2]
         if coll in ["c_event", "c_video", "c_outreach"]:

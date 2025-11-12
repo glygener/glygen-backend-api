@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.motif_apilib import motif_detail
-from glygen.util import get_req_obj, get_cached_motif_records_direct,get_cached_result_list, cache_result_list, get_hash_id
+from glygen.util import get_req_obj, make_motif_list_objects_direct,retrieve_cached_list_objects, cache_list_objects, get_hash_id
 import traceback
 
 
@@ -77,11 +77,11 @@ class Motif(Resource):
                 api_name = "motif_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
-                res_obj = get_cached_result_list(cache_id, listcache_id)
+                res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
                 if res_obj == None:
-                    res_obj = get_cached_motif_records_direct(req_obj, config_obj)
+                    res_obj = make_motif_list_objects_direct(req_obj, config_obj)
                     if "error_list" not in res_obj:
-                        res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
+                        res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
                         if "error_list" in res:
                             res_obj = res
         except Exception as e:

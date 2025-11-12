@@ -1,6 +1,6 @@
 {
     "server": "dev",
-    "moduleversion": "0.0.0",
+	 "moduleversion": "0.0.0",
     "datarelease": "2.0.2",
     "session_life": 24.0,
     "max_batch_size": 100,
@@ -9,7 +9,8 @@
     "max_query_value_len": 10000,
     "max_sequence_len": 3000,
     "max_download_records": 100000,
-    "cache_batch_size": 5000,
+    "min_list_size_to_cache":10000,
+	 "cache_batch_size": 5000,
     "globalsearchcutoff": 1.0,
     "max_results_count": {
         "glycan": 100000,
@@ -488,7 +489,7 @@
         ],
         "collectionlist": [
             "c_glycan",
-            "c_cache"
+            "c_usercache"
         ]
     },
 	"glycan_sequence2ac": {
@@ -506,7 +507,7 @@
         ],
         "collectionlist": [
             "c_glycan",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "glycan_search": {
@@ -633,7 +634,7 @@
         "requiredfields": [],
         "collectionlist": [
             "c_glycan",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "glycan_search_direct": {
@@ -760,7 +761,7 @@
             "id"
         ],
         "collectionlist": [
-            "c_cache"
+            "c_usercache"
         ]
     },
     "glycan_detail": {
@@ -859,7 +860,7 @@
             "type"
         ],
         "collectionlist": [
-            "c_cache"
+            "c_usercache"
         ]
     },
     "biomarker_detail": {
@@ -908,7 +909,7 @@
         ],
         "collectionlist": [
             "c_biomarker",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "biomarker_search": {
@@ -969,7 +970,7 @@
         "requiredfields": [],
         "collectionlist": [
             "c_biomarker",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "biomarker_list": {
@@ -1002,7 +1003,7 @@
             "id"
         ],
         "collectionlist": [
-            "c_cache"
+            "c_usercache"
         ]
     },
     "disease_detail": {
@@ -1051,7 +1052,7 @@
         ],
         "collectionlist": [
             "c_disease",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "disease_search": {
@@ -1117,7 +1118,7 @@
         "requiredfields": [],
         "collectionlist": [
             "c_disease",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "disease_list": {
@@ -1150,7 +1151,7 @@
             "id"
         ],
         "collectionlist": [
-            "c_cache"
+            "c_usercache"
         ]
     },
     "motif_detail": {
@@ -1244,7 +1245,7 @@
         ],
         "collectionlist": [
             "c_protein",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "protein_search": {
@@ -1356,7 +1357,7 @@
         "requiredfields": [],
         "collectionlist": [
             "c_protein",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "protein_search_direct": {
@@ -1678,7 +1679,7 @@
             "id"
         ],
         "collectionlist": [
-            "c_cache"
+            "c_usercache"
         ]
     },
     "protein_detail": {
@@ -1765,7 +1766,7 @@
         ],
         "collectionlist": [
             "c_glycan",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "usecases_group_two": {
@@ -1786,7 +1787,7 @@
         ],
         "collectionlist": [
             "c_glycan",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "usecases_group_three": {
@@ -1803,7 +1804,7 @@
         ],
         "collectionlist": [
             "c_protein",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "usecases_group_four": {
@@ -1821,7 +1822,7 @@
         ],
         "collectionlist": [
             "c_protein",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "usecases_group_five": {
@@ -1842,7 +1843,7 @@
         ],
         "collectionlist": [
             "c_protein",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "usecases_group_six": {
@@ -1863,7 +1864,7 @@
         ],
         "collectionlist": [
             "c_protein",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "usecases_group_seven": {
@@ -1880,7 +1881,7 @@
         ],
         "collectionlist": [
             "c_protein",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "auth_userid": {
@@ -2737,7 +2738,7 @@
         ],
         "collectionlist": [
             "c_glycan",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "commonquery_search_protein": {
@@ -2819,7 +2820,7 @@
         "requiredfields": [],
         "collectionlist": [
             "c_protein",
-            "c_cache"
+            "c_usercache"
         ]
     },
     "misc_pathlist": {
@@ -2861,7 +2862,7 @@
     },
     "downloadtypes": {
         "protein_list": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "json",
@@ -2869,7 +2870,7 @@
             ]
         },
         "glycan_list": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "json",
@@ -2884,35 +2885,35 @@
             ]
         },
         "site_list": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "json"
             ]
         },
         "biomarker_list": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "json"
             ]
         },
         "disease_list": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "json"
             ]
         },
         "isoform_mapper_list": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "tsv"
             ]
         },
         "genelocus_list": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "json",
@@ -2920,7 +2921,7 @@
             ]
         },
         "ortholog_list": {
-            "cache": "c_cache",
+            "cache": "c_usercache",
             "formatlist": [
                 "csv",
                 "json",
@@ -2928,31 +2929,31 @@
             ]
         },
         "idmapping_list_mapped": {
-            "cache": "c_cache",
+            "cache": "c_usercache",
             "formatlist": [
                 "csv"
             ]
         },
         "idmapping_list_unmapped": {
-            "cache": "c_cache",
+            "cache": "c_usercache",
             "formatlist": [
                 "csv"
             ]
         },
         "idmapping_list_all": {
-            "cache": "c_cache",
+            "cache": "c_usercache",
             "formatlist": [
                 "csv"
             ]
         },
         "idmapping_list_all_collapsed": {
-            "cache": "c_cache",
+            "cache": "c_usercache",
             "formatlist": [
                 "csv"
             ]
         },
         "motif_list": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "json",
@@ -2966,49 +2967,49 @@
             ]
         },
         "protein_section": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "tsv"
             ]
         },
         "site_section": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "tsv"
             ]
         },
         "glycan_section": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "tsv"
             ]
         },
         "motif_section": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "tsv"
             ]
         },
         "publication_section": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "tsv"
             ]
         },
         "biomarker_section": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "tsv"
             ]
         },
         "disease_section": {
-            "cache": "c_listcache",
+            "cache": "c_userlistcache",
             "formatlist": [
                 "csv",
                 "tsv"

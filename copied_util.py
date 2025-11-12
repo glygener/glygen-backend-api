@@ -70,7 +70,7 @@ def get_query_filter_code(dbh, query_filters, record_type, filter_conf):
                 code_dict[grp].append({"value":val, "ptrn":"*"})
 
     for obj in query_filters:
-        grp, op = obj["id"], obj["operator"]
+        grp = obj["id"]
         for val in obj["selected"]:
             if grp in code_dict:
                 for o in code_dict[grp]:
@@ -134,30 +134,6 @@ def get_taxid2name(dbh, default=False):
 
 
 
-def transform_query_term(term):
-
- 
-    tmp_term = term.strip()
-    tmp_term = tmp_term.replace("'", "\"")
-    if tmp_term[0] == "\"" and tmp_term[-1] == "\"":
-        return tmp_term
-
-
-    tmp_term = tmp_term.replace("(", "\\(").replace(")", "\\)")
-    tmp_term = tmp_term.replace("[", "\\[").replace("]", "\\]")
-    tmp_term = tmp_term.replace("-1", "")
-    tmp_term = tmp_term.replace("-2", "")
-    tmp_term = tmp_term.replace("-3", "")
-    tmp_term = tmp_term.replace("-", " ")
-    return tmp_term
-
-    w_list = []
-    for w in tmp_term.split(" "):
-        w = w.strip()
-        if w != "":
-            w_list.append('\"' + w + '\"')
-         
-    return " ".join(w_list)
 
 
 def get_req_obj(request):
@@ -646,7 +622,7 @@ def gzip_str(string_):
 
 
 
-def get_cached_records_direct(query_obj, config_obj, limit_flag):
+def make_list_objects_direct(query_obj, config_obj, limit_flag):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -657,7 +633,7 @@ def get_cached_records_direct(query_obj, config_obj, limit_flag):
     if error_list != []:
         return {"error_list":error_list}
 
-    cache_collection = "c_cache"
+    cache_collection = "c_initcache"
     res_obj = {}
     default_hash = {"offset":1, "limit":20, "sort":"hit_score", "order":"desc"}
     for key in default_hash:
@@ -746,7 +722,7 @@ def get_cached_records_direct(query_obj, config_obj, limit_flag):
 
 
 
-def get_cached_motif_records_direct(query_obj, config_obj):
+def make_motif_list_objects_direct(query_obj, config_obj):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -848,8 +824,8 @@ def get_filter_conf(dbh):
     tax_id_list = []
     for k in species_obj:
         obj = species_obj[k]
-        if True:
-        #if obj["is_reference"] == "yes":
+        #if True:
+        if obj["is_reference"] == "yes":
             species_name = obj["glygen_name"]
             label_dict[species_name] = species_name
             order_dict[species_name] = int(obj["sort_order"]) if obj["sort_order"].isdigit() else 10000
@@ -867,70 +843,15 @@ def get_filter_conf(dbh):
     return filter_conf
 
 
+def get_final_fields(query_obj, record_type):
 
-def get_cached_records_indirect(dbh, query_obj, config_obj, limit_flag):
-
-
-    if query_obj["id"] == "":
-        return {"error_list":[{"error_code":"empty-list-id"}]}
-
-
-    cache_collection = "c_cache"
-    res_obj = {}
-    default_hash = {"offset":1, "limit":20, "sort":"hit_score", "order":"desc"}
-    for key in default_hash:
-        if key not in query_obj:
-            query_obj[key] = default_hash[key]
-
-
-
-    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
-    ts_list = []
-    msg = "0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    #print (msg)
-
-    #Get cached object
-    mongo_query = {"list_id":query_obj["id"]}
-    cached_obj = dbh[cache_collection].find_one(mongo_query)
-    
-    #check for post-access error, error_list should be empty upto this line
-    post_error_list = []
-    if cached_obj == None:
-        post_error_list.append({"error_code":"non-existent-search-results"})
-        return {"error_list":post_error_list}
-
-    record_type = cached_obj["cache_info"]["record_type"]
-    is_empty_query = False
-    if "query" in cached_obj["cache_info"]:
-        is_empty_query = True if cached_obj["cache_info"]["query"] == {} else is_empty_query
-        if "concept_query_list" in cached_obj["cache_info"]["query"]:
-            is_empty_query = True if cached_obj["cache_info"]["query"]["concept_query_list"] == [] else is_empty_query
- 
-    msg = "1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    #print (msg)
-   
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "glygen/conf/list_init.json")
+    list_init_conf = json.loads(open(json_url, "r").read())
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "glygen/conf/hit_scoring.json")
     score_dict = json.loads(open(json_url, "r").read())
 
-
-
-    cached_obj.pop("_id")
-    cached_obj["results"] = []
-    id_list = []
-    for doc in dbh[cache_collection].find(mongo_query):
-        id_list += doc["results"]
-  
-    id_list = list(set(id_list)) 
-    msg = "initial id_list_count=%s" % (len(id_list))
-    #print (msg)
-    #for site_id in id_list:
-    #    print ("AAAA", site_id)
-    #exit()
- 
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, "glygen/conf/list_init.json")
-    list_init_conf = json.loads(open(json_url, "r").read())
     f_dict = {}
     for rt in list_init_conf:
         f_dict[rt] = {"all":[], "required":[], "default":[]}
@@ -942,22 +863,19 @@ def get_cached_records_indirect(dbh, query_obj, config_obj, limit_flag):
                 f_dict[rt]["default"].append(field)
             if is_required and field not in f_dict[rt]["required"]:
                 f_dict[rt]["required"].append(field)
-    
     query_fields = []
     if "columns" in query_obj:
         for f in query_obj["columns"]:
             if f in f_dict[record_type]["all"] and f not in query_fields:
                 query_fields.append(f)
-    final_fields = ["filter_code"]
+    final_fields = ["filter_code","record_id"]
     if record_type in f_dict:
         if len(query_fields) == 0:
             final_fields +=  sorted(set(f_dict[record_type]["required"] + f_dict[record_type]["default"]))
         else:
             final_fields +=  sorted(set(f_dict[record_type]["required"] + query_fields))
-   
 
-
-    extra_fields = [] 
+    extra_fields = []
     for cat in score_dict[record_type]:
         for f in score_dict[record_type][cat]:
             if "fieldlist" not in score_dict[record_type][cat][f]:
@@ -967,69 +885,86 @@ def get_cached_records_indirect(dbh, query_obj, config_obj, limit_flag):
                 if ff not in final_fields:
                     extra_fields.append(ff)
     final_fields += extra_fields
+
+    return final_fields, extra_fields
+
+
+
+
+
+def make_list_objects_indirect(dbh, query_obj, config_obj, limit_flag):
+
+
+    if "id" not in query_obj:
+        return {"error_list":[{"error_code":"missing-parameter-id"}]}
+
+    if query_obj["id"] == "":
+        return {"error_list":[{"error_code":"empty-list-id"}]}
+
+    res_obj = {}
+    default_hash = {"offset":1, "limit":20, "sort":"hit_score", "order":"desc"}
+    for key in default_hash:
+        if key not in query_obj:
+            query_obj[key] = default_hash[key]
+
+
+
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts_list = []
+    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+    #Get cached object
+    cache_collection = "c_initcache"
+    cache_id = query_obj["id"]
+    mongo_query = {"list_id":cache_id}
+    cached_obj = dbh[cache_collection].find_one(mongo_query)
+   
+
+    #check for post-access error, error_list should be empty upto this line
+    post_error_list = []
+    if cached_obj == None:
+        post_error_list.append({"error_code":"non-existent-search-results"})
+        return {"error_list":post_error_list}
+
+    cache_info = cached_obj["cache_info"]
+    record_type = cache_info["record_type"]
+
  
-    #return {
-    #    "error_list":{
-    #        "required":f_dict[record_type]["required"], 
-    #        "user":query_fields, 
-    #        "extrfa":extra_fields,
-    #        "final":final_fields }
-    #}
+    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-    #return {"error_list":{"final_fields":final_fields}}
+   
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "glygen/conf/hit_scoring.json")
+    score_dict = json.loads(open(json_url, "r").read())
 
+    final_fields, extra_fields = get_final_fields(query_obj, record_type)
 
 
-    prj_obj = {"record_id":1}
+    prj_obj = {}
     for f in final_fields:
         prj_obj[f] = 1
 
     if final_fields == ["filter_code"]:
         prj_obj = {}
-
-    #return {"error_list":prj_obj}
-
-
-    batch_size = config_obj["supersearch_batch_size"]
-    record_count = len(id_list)
-    nparts = int(float(record_count)/float(batch_size)) + 1
-    msg = "2-record_count=%s,batch_size=%s,nparts=%s" % (record_count, batch_size, nparts)
-    #print (msg)
-    debug_obj_list = []
-    for i in range(0, nparts):
-        start = i*batch_size
-        end = (i+1)*batch_size
-        end = len(id_list) if end > len(id_list) else end
-        mongo_query = {"record_id":{"$in": id_list[start:end]}}
-        id_count = len(id_list[start:end])
-        res_count = 0
-        found_dict = {}
-        for obj in dbh["c_list"].find(mongo_query, prj_obj):
-            if "_id" in obj:
-                obj.pop("_id")
-            found_dict[obj["record_id"]] = True
-            var_dict = {"c":"condition name","w":"condition weight","f":"condition match frequency"}
-            score_info = {"contributions":[], "formula":"sum(w + 0.01*f)", "variables":var_dict}
-            hit_score = -1.0
-            if is_empty_query == False:
-                hit_score, cond_match_freq = get_hit_score(obj, cached_obj["cache_info"], score_dict, final_fields, score_info)
-                debug_obj_list.append(cond_match_freq)
-            obj["hit_score"] = hit_score
-            obj["score_info"] = score_info
-            cached_obj["results"].append(obj)
-            res_count += 1
-        #for record_id in id_list[start:end]:
-        #    if record_id not in found_dict:
-        #            print ("Robel", record_id)
-        #exit() 
-        msg = "finished part %s of %s, retrieved %s/%s" % (i + 1, nparts, res_count, id_count)
-        #print (msg)
+    #prj_obj = {"record_id":1, "filter_code":1}
 
 
-    filter_conf = get_filter_conf(dbh) 
+    filter_conf = get_filter_conf(dbh)
     query_filters = query_obj["filters"] if "filters" in query_obj else []
-    res = get_query_filter_code(dbh, query_filters, record_type, filter_conf)
+    res = get_query_filter_code(dbh,query_filters, record_type, filter_conf)
+
     query_filter_code, code_dict = res["code"], res["dict"]
+
+    ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+   
+    cached_obj["results"] = get_list_objects(dbh,cache_id, cache_info,cache_collection,
+            final_fields,score_dict, prj_obj, config_obj)
+ 
+
+    ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
+    ts_list.append("3-%s (record_count=%s)" % (ts, len(cached_obj["results"])))
+    #ts_list.append(cached_obj["results"][0])
+    #return {"error_list":ts_list}
 
     #Get available list before applying filtering
     available_list_before = []
@@ -1045,15 +980,14 @@ def get_cached_records_indirect(dbh, query_obj, config_obj, limit_flag):
         return update_res
     #return {"error_list":filter_conf}
     #return {"error_list":code_dict, "av":cached_obj["filters"]["available"], "conf":filter_conf[record_type]}
-    msg = "4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    #print (msg)
 
+    ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     for obj in cached_obj["filters"]["available"]:
         available_list_before.append(obj)
 
+    ts_list.append("5-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    #ts_list.append("count_1_%s" % (len(cached_obj["results"])))
     n_one = len(cached_obj["results"])
-    msg = "5-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    #print (msg)
 
     #Apply filters
     #comment for performance testing
@@ -1068,9 +1002,8 @@ def get_cached_records_indirect(dbh, query_obj, config_obj, limit_flag):
     #return code_dict
 
 
-    ts_list.append("count_2_%s" % (len(cached_obj["results"])))
-    msg = "6-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    #print (msg)
+    #ts_list.append("count_2_%s" % (len(cached_obj["results"])))
+    ts_list.append("6-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     #Update filters
     #comment for performance testing
@@ -1079,8 +1012,8 @@ def get_cached_records_indirect(dbh, query_obj, config_obj, limit_flag):
     #return update_res
 
  
-    msg = "7-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    #print (msg)
+    ts_list.append("7-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
 
     #update available counts
     count_dict = {}
@@ -1109,8 +1042,7 @@ def get_cached_records_indirect(dbh, query_obj, config_obj, limit_flag):
 
     cached_obj["filters"]["available"] = available_list_before
 
-    msg = "8-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    #print (msg)
+    ts_list.append("8-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     if len(cached_obj["results"]) == 0:
         res_obj = {
@@ -1131,7 +1063,6 @@ def get_cached_records_indirect(dbh, query_obj, config_obj, limit_flag):
             return_fields["float"].append(f)
 
 
-    
     sorted_id_list = sort_objects(cached_obj["results"], return_fields,
             query_obj["sort"], query_obj["order"])
     res_obj = {"cache_info":cached_obj["cache_info"], "filters":cached_obj["filters"]}
@@ -1147,59 +1078,30 @@ def get_cached_records_indirect(dbh, query_obj, config_obj, limit_flag):
     stop_index = start_index + int(query_obj["limit"])
     res_obj["results"] = []
     sorted_id_list = sorted_id_list[start_index:stop_index] if limit_flag else sorted_id_list
-    
-    n1, n2 = len(cached_obj["results"]), len(sorted_id_list) 
-    msg = "paginated result_count=%s, id_list_count=%s" % (n1, n2)
-    #print (msg)
-
     for obj_id in sorted_id_list:
         obj = cached_obj["results"][obj_id]
         k_list = list(obj.keys())
         for k in k_list:
-            if k in ["_id", "record_id"] or k in extra_fields:
+            if k in ["_id"] or k in extra_fields:
+            #if k in ["_id", "record_id"] or k in extra_fields:
                 obj.pop(k)
                 removed_field_dict[k] = True 
         res_obj["results"].append(obj)
         #res_obj["results"].append(order_obj(obj, config_obj["objectorder"]["glycan"]))
 
-    msg = "results count = %s" % (len(res_obj["results"]))
-    #print (msg)
-
-
     #return {"error_list":[removed_field_dict]}
 
     res_obj["pagination"] = {"offset":query_obj["offset"], "limit":query_obj["limit"],
         "total_length":len(cached_obj["results"]), "sort":query_obj["sort"], "order":query_obj["order"]}
-
-
     res_obj["query"] = query_obj
+
+
+    ts_list.append("9-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    #return {"error_list":ts_list}
+    #return {"error_list":cached_obj["results"]}
 
     return res_obj
 
-
-
-
-
-
-def cache_record_list(dbh,list_id, record_list, cache_info, cache_coll, config_obj):
-    
-    res = dbh[cache_coll].delete_many({"list_id":list_id})
-    record_count = len(record_list)
-    partition_count = record_count/config_obj["cache_batch_size"]
-    for i in range(0,int(partition_count)+1):
-        start = i*config_obj["cache_batch_size"]
-        end = start + config_obj["cache_batch_size"]
-        end = record_count if end > record_count else end
-        cache_info["start"] = start
-        if start < record_count:
-            cache_obj = {
-                "list_id":list_id, 
-                "cache_info":cache_info,
-                "results":record_list[start:end]
-            }
-            res = dbh[cache_coll].insert_one(cache_obj)
-        
-    return
 
 
 def compare_filter_codes(record_filter_code, query_filter_code, filter_obj_list, code_dict, grp_id_list):
@@ -1287,7 +1189,8 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
 
     #grp_id_list = sorted(code_dict.keys())
     grp_id_list = get_grp_id_list(record_type, filter_conf)
-    
+   
+ 
     n_11 = len(grp_id_list)
     seen_filter_code = {}
     count_dict = {}
@@ -1356,6 +1259,8 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
     seen = {}
     non_empty_grp_obj_list = []
     for grp_obj in filters["available"]:
+        if "tmp_options" not in grp_obj:
+            continue
         filter_group_id = grp_obj["id"]
         grp_obj["options"] = []
         for option_id in grp_obj["tmp_options"]:
@@ -1681,50 +1586,70 @@ def get_partition_ranges(n, batch_size):
     return range_list
 
 
-def cache_result_list(dbh, cache_id, listcache_id, res_obj, config_obj):
+
+def cache_list_objects(dbh, api_name, cache_id, listcache_id, res_obj, config_obj):
+
+
+    #making result objects simple   
+    result_obj_list = [] 
+    if "results" in res_obj:
+        idx = 0
+        for obj in res_obj["results"]:
+            score_info, hit_score = obj["score_info"], obj["hit_score"]
+            o = {"idx":idx, "record_id":obj["record_id"], "hit_score":hit_score, "score_info":score_info,
+                "filter_code":obj["filter_code"]
+            }
+            result_obj_list.append(o)
+            idx += 1
+    total_count = len(result_obj_list)
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
 
-    batch_size = 100
-    cache_coll = "c_listcache"
-    res = dbh[cache_coll].delete_many({"list_id":listcache_id})
+    batch_size = 1000
+    cache_coll = "c_initlistcache"
     cached_obj = dbh[cache_coll].find_one({"list_id":listcache_id})
+    cache_info = {"ts":ts,"search_type":api_name}
+    
+    # Insert only if listcache_id is not in c_initlistcache
     if cached_obj == None:
-        if "cache_info" not in res_obj:
-            res_obj["cache_info"] = {}
-        res_obj["cache_info"]["cache_id"] = cache_id
-        res_obj["cache_info"]["listcache_id"] = listcache_id
-        res_obj["cache_info"]["search_type"] = "supersearch"
-        res_obj["cache_info"]["empty_search_flag"] = True
+        cache_info = res_obj["cache_info"] if "cache_info" in res_obj else {}
+        cache_info["cache_id"] = cache_id
+        cache_info["listcache_id"] = listcache_id
+
         glbl_obj = {}
         for k in res_obj:
-            if k != "results":
+            if k not in ["results", "cache_id", "listcache_id"]:
                 glbl_obj[k] = res_obj[k]
-        if len(res_obj["results"]) > batch_size:
-            range_list = get_partition_ranges(len(res_obj["results"]), batch_size)           
-            oo_list = []
+
+        if total_count > batch_size:
+            range_list = get_partition_ranges(total_count, batch_size)           
             for o in range_list:
                 s, e = o["s"], o["e"]
                 tmp_glbl_obj = glbl_obj if s == 0 else {}
-                tmp_obj_list = res_obj["results"][s:e] 
-                oo = {"list_id":listcache_id, "ts":ts, "results":tmp_obj_list,"glbl":tmp_glbl_obj, "start":s}
-                oo_list.append(len(json.dumps(oo)))
+                tmp_obj_list = result_obj_list[s:e] 
+                oo = {"list_id":listcache_id,"cache_info":cache_info, "total_count":total_count,
+                    "results":tmp_obj_list,"glbl":tmp_glbl_obj,"start":s,"end":e}
                 res = dbh[cache_coll].insert_one(oo)
-            #return oo_list 
         else:
-            oo = {"list_id":listcache_id, "ts":ts, "results":res_obj["results"], "glbl":glbl_obj, "start":0}
+            s, e = 0, total_count
+            oo = {"list_id":listcache_id,"cache_info":cache_info, "results":result_obj_list,
+                    "glbl":glbl_obj,"start":s, "end":e, "total_count":total_count}
             res = dbh[cache_coll].insert_one(oo)
-    
+ 
     return {}
 
 
-def get_cached_result_list(cache_id, listcache_id):
+
+
+
+
+def retrieve_cached_list_objects(cache_id, listcache_id):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
-    cache_coll = "c_listcache"
+    cache_coll = "c_initlistcache"
     res_obj = {"results":[]}
     oo_list = []
     for doc in dbh[cache_coll].find({"list_id":listcache_id}):
@@ -1745,17 +1670,32 @@ def get_cached_result_list(cache_id, listcache_id):
     return res_obj
 
 
-def get_hash_id(api_name , record_type, obj):
-    
-    new_obj = {}
-    for k in obj:
-        if k not in ["offset", "limit"]:
-            new_obj[k] = obj[k]
 
+def get_hash_id(api_name , record_type, obj):
+
+    new_obj = {}
+    for k in sorted(obj):
+        if k not in ["offset", "limit", "sort", "order", "columns"]:
+            new_obj[k] = obj[k]
+            if k == "filters":
+                oo_list = []
+                for o in new_obj["filters"]:
+                    # default to OR for single selected options
+                    if len(o["selected"]) == 1:
+                        o["operator"] = "OR" 
+                    oo = {}
+                    for kk in sorted(o):
+                        oo[kk] = o[kk]
+                    oo["selected"] = sorted(oo["selected"])
+                    oo_list.append(oo)
+                new_obj["filters"] = oo_list
+    
+    
     hash_str = api_name + record_type + json.dumps(new_obj)
     hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-    return hash_obj.hexdigest()
     
+
+    return hash_obj.hexdigest()
 
 
 
@@ -1824,4 +1764,47 @@ def parse_sent(s,  max_word_count, min_word_count):
                 phrase_dict[w] = True
 
     return phrase_dict
+
+
+
+
+def get_list_objects(dbh,cache_id, cache_info, cache_collection, final_fields, score_dict, prj_obj, config_obj):
+    
+    is_empty_query = False
+    if "query" in cache_info:
+        is_empty_query = True if cache_info["query"] == {} else is_empty_query
+        if "concept_query_list" in cache_info["query"]:
+            is_empty_query = True if cache_info["query"]["concept_query_list"] == [] else is_empty_query
+
+    tmp_obj_list = []
+    id_list = []
+    qry_obj = {"list_id":cache_id}
+    for doc in dbh[cache_collection].find(qry_obj):
+        id_list += doc["results"]
+
+ 
+    batch_size = config_obj["supersearch_batch_size"]
+    record_count = len(id_list)
+    nparts = int(float(record_count)/float(batch_size)) + 1
+    for i in range(0, nparts):
+        start = i*batch_size
+        end = (i+1)*batch_size
+        end = len(id_list) if end > len(id_list) else end
+        mongo_query = {"record_id":{"$in": id_list[start:end]}}
+        for obj in dbh["c_list"].find(mongo_query, prj_obj):
+            if "_id" in obj:
+                obj.pop("_id")
+            var_dict = {"c":"condition name","w":"condition weight","f":"condition match frequency"}
+            score_info = {"contributions":[], "formula":"sum(w + 0.01*f)", "variables":var_dict}
+            hit_score = -1.0
+            if is_empty_query == False:
+                hit_score, cond_match_freq = get_hit_score(obj, cache_info, score_dict, final_fields, score_info)
+            obj["hit_score"] = hit_score
+            obj["score_info"] = score_info
+            tmp_obj_list.append(obj)
+
+    return tmp_obj_list
+
+
+
 

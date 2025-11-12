@@ -1,0 +1,1 @@
+{"concept_query_list":[{"concept":"site","query":{"aggregator":"$and","unaggregated_list":[{"path":"glycation_flag","order":0,"operator":"$eq","string_value":"true"}],"aggregated_list":[]}}]}

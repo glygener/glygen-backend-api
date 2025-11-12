@@ -66,7 +66,7 @@ def main():
         )
         client_two.server_info()
         dbh = client_two[glydb_db]
-        for c in ["c_cache", "c_users", "c_video", "c_event", "c_message", "c_userid", "c_version", "c_userlog"]:
+        for c in ["c_initcache", "c_initlistcache", "c_usercache", "c_userlistcache", "c_users", "c_video", "c_event", "c_message", "c_userid", "c_version", "c_userlog"]:
             res = dbh[c].insert_one({})
     
     except pymongo.errors.ServerSelectionTimeoutError as err:

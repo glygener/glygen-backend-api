@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.pagination_apilib import pagination_page
-from glygen.util import get_req_obj, get_cached_result_list, cache_result_list, get_hash_id, apply_pagination
+from glygen.util import get_req_obj, retrieve_cached_list_objects, cache_list_objects, get_hash_id, apply_pagination
 import traceback
 
 
@@ -48,11 +48,11 @@ class Pagination(Resource):
                 api_name = "pagination_page"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
-                res_obj = get_cached_result_list(cache_id, listcache_id)
+                res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
                 if res_obj == None:
                     res_obj = pagination_page(req_obj, config_obj)
                     if "error_list" not in res_obj:
-                        res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
+                        res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
                         if "error_list" in res:
                             res_obj = res
                 if "results" in res_obj:
@@ -60,7 +60,7 @@ class Pagination(Resource):
                     for k in ["offset", "limit", "sort", "order"]:
                         if k in req_obj:
                             res_obj["pagination"][k] = req_obj[k]
-                    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
+                    #res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

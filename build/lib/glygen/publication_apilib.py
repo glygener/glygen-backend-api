@@ -30,14 +30,14 @@ def publication_detail(query_obj, config_obj):
     collection = "c_publication"
 
 
-    #combo_id = "%s.%s" % (query_obj["type"].lower(), query_obj["id"])
-    #mongo_query = {"record_id":{"$regex":combo_id, "$options":"i"}}
-    mongo_query = {
-        "$and":[
-            {"reference.id":{"$eq":query_obj["id"]}},
-            {"reference.type":{"$regex":query_obj["type"], "$options":"i"}}
-        ]
-    }
+    combo_id = "%s.%s" % (query_obj["type"].lower(), query_obj["id"])
+    mongo_query = {"record_id":{"$regex":combo_id, "$options":"i"}}
+    #mongo_query = {
+    #    "$and":[
+    #        {"reference.id":{"$eq":query_obj["id"]}},
+    #        {"reference.type":{"$regex":query_obj["type"], "$options":"i"}}
+    #    ]
+    #}
     
     obj = dbh[collection].find_one(mongo_query)
     

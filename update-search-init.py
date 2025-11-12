@@ -10,7 +10,7 @@ import datetime
 
 from lib_update import search
 from optparse import OptionParser
-from copied_util import get_hash_id, get_cached_records_indirect, cache_result_list
+from copied_util import get_hash_id, make_list_objects_indirect, cache_list_objects
 
 
 
@@ -31,13 +31,13 @@ def update_list_cache(dbh, cache_id, config_obj):
     listcache_id = get_hash_id(api_name, "", req_obj)
     
     print ("rerieving list objects ...")
-    res_obj = get_cached_records_indirect(dbh, req_obj, config_obj, False)
+    res_obj = make_list_objects_indirect(dbh, req_obj, config_obj, False)
     print ("done retrieving total of %s results " % (len(res_obj["results"])))
     #res_obj = json.load(open("tmp/JUNK.2"))
 
     if "error_list" not in res_obj:
         print ("caching list objects ...")
-        res = cache_result_list(dbh, cache_id, listcache_id, res_obj, config_obj)
+        res = cache_list_objects(dbh, cache_id, listcache_id, res_obj, config_obj)
         print ("done")
 
     return
@@ -82,8 +82,6 @@ def main():
     config_obj["db_info"] = {
         "user":db_user, "password":db_pass, "host_ip":host_ip, "db_name":db_name
     }
-       
-
  
     req_obj = json.loads(open("conf/init_query.json", "r").read())
     empty_search_flag = True if "empty_search_flag" in req_obj else False

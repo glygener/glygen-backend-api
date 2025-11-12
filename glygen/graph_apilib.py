@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, Response, stream_with_context
 
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list,  extract_name, get_errors_in_query, order_obj
+from glygen.util import cache_hitlist,  extract_name, get_errors_in_query, order_obj
 
 
     

@@ -17,23 +17,23 @@ __status__ = "Dev"
 ###############################
 def main():
 
-
+    
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
-
+    parser.add_option("-c","--coll",action="store",dest="coll",help="") 
     (options,args) = parser.parse_args()
 
-    for key in ([options.server]):
+    for key in ([options.server, options.coll]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     server = options.server
-    coll = "c_listcache"
+    coll = options.coll
+
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
-    #mongo_port = config_obj["dbinfo"]["port"][server]
     mongo_port = "27017"
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
   
@@ -53,36 +53,28 @@ def main():
         )
         client.server_info()
         dbh = client[db_name]
-        q = {}
         seen = {}
-        for doc in dbh[coll].find({}, {"list_id":1, "glbl":1, "ts":1, "cache_info":1, "start":1}):
-            if "_id" in doc:
-                doc.pop("_id")
-            if "list_id" not in doc:
-                continue
-            list_id = doc["list_id"]
-            ts = doc["ts"] if coll == "c_listcache" else doc["cache_info"]["ts"]
+        for doc in dbh[coll].find({}, {"list_id":1,"cache_info":1, "total_count":1}):
+            for k in ["_id"]:
+                if k in doc:
+                    doc.pop(k)
+            cache_info = doc["cache_info"]
+            ts = cache_info["ts"]
             parts = ts.split(" ")[0].split("-")
             yy, mm, dd = parts[0], parts[1], parts[2]
             day = datetime.date(int(yy), int(mm), int(dd))
-            doc_age = (current_day - day).days
-            search_type, empty_search_flag = "", False
-            if list_id == "9b6da20b623672f83db6060ba3fba174":
-                print (json.dumps(doc, indent=4))
-                exit()
-            continue
-            if coll == "c_cache":
-                if "search_type" in doc["cache_info"]:
-                    search_type = doc["cache_info"]["search_type"]
-                if "empty_search_flag" in doc["cache_info"]:
-                    empty_search_flag = doc["cache_info"]["empty_search_flag"]
-            if search_type == "supersearch" and empty_search_flag == True:
-                print ("skipping supersearch cache %s %s" % (list_id, ts))
-                continue
-            if search_type == "structure_search":
-                print ("skipping structure_search cache %s %s" % (list_id, ts))
-                continue
-            print (list_id, ts, search_type)
+            list_id = doc["list_id"]
+            record_type = cache_info["record_type"]
+            search_type = cache_info["search_type"]
+            cache_name = cache_info["cache_name"] if "cache_name" in cache_info else "no_cache_name"
+            total_count = doc["total_count"] if "total_count" in doc else -1
+            cmb = "%s|%s|%s|%s|%s" % (coll, list_id,cache_name,record_type,total_count)
+            if cmb not in seen:
+                print (cmb)
+                seen[cmb] = True
+                if list_id in ["df1bb42f89aa8a4fe7ee36fc29c83e56","39460a28e1e954d1e7a0f22fc35903ac"]:
+                    print (json.dumps(cache_info, indent=4))
+
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

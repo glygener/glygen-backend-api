@@ -13,7 +13,7 @@ from bson.objectid import ObjectId
 
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, cache_record_list
+from glygen.util import get_errors_in_query, sort_objects, cache_hitlist
 
 
 

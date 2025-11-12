@@ -11,7 +11,7 @@ import collections
 
 
 from glygen.db import get_mongodb
-from glygen.util import cache_record_list, get_errors_in_query
+from glygen.util import cache_hitlist, get_errors_in_query
 
 
 def search_init(config_obj):
@@ -119,7 +119,7 @@ def search(query_obj, config_obj):
     record_type = "idmap"
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     
     cache_info = {
         "query":query_obj,
@@ -134,7 +134,7 @@ def search(query_obj, config_obj):
         hash_str += "_" + ",".join(query_obj["input_idlist"]).strip()
         hash_obj = hashlib.md5(hash_str.encode('utf-8'))
         list_id = hash_obj.hexdigest()
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
 
     return res_obj

@@ -8,9 +8,9 @@ import pytz
 from collections import OrderedDict
 from bson import json_util, ObjectId
 
-
+from glygen.indexlib import use_indexed_search
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections, cache_record_list, transform_query_term, get_hash_id
+from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections, cache_hitlist, transform_query_term, get_hash_id
 
 
 def disease_search_init(config_obj):
@@ -33,7 +33,7 @@ def disease_search_init(config_obj):
 
 
 
-def disease_search_simple(query_obj, config_obj):
+def search_simple(query_obj, config_obj):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -54,7 +54,7 @@ def disease_search_simple(query_obj, config_obj):
     record_type = "disease"
     api_name = "disease_search_simple"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     #cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     #if cached_obj != None:
     #    if len(cached_obj["results"]) > 0:
@@ -72,16 +72,16 @@ def disease_search_simple(query_obj, config_obj):
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
         cache_info = {
             "query":query_obj,
             "ts":ts,
             "record_type":record_type,
-            "search_type":"search_simple"
+            "search_type":"disease_search_simple"
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
     res_obj["query"] = query_obj
     res_obj["resultcount"] = len(record_list)
@@ -165,12 +165,54 @@ def disease_search(query_obj, config_obj):
     record_type = "disease"
     api_name = "disease_search"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
-    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    
+    #Get cached object
+    cache_coll = "c_initcache"
+    mongo_query = {"list_id":list_id}
+    cached_obj = dbh[cache_coll].find_one(mongo_query)
+    if cached_obj == None:
+        cache_coll = "c_usercache"
+        cached_obj = dbh[cache_coll].find_one(mongo_query)
+
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
             return {"list_id":list_id}
 
+
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts_list = []
+    field2sec = {
+        "disease_name":"disease_name",
+        "protein_name":"proteins",
+        "gene_name":"proteins",
+        "tax_name":"species"
+    }
+
+    p_list = []
+    for p in  query_obj:
+        if p not in ["operation","query_type"]:
+            ff_list, val_obj = [p], query_obj[p]
+            for child_key in []:
+                if child_key in val_obj:
+                    ff_list.append(child_key)
+                    val_obj = val_obj[child_key]
+            p_list.append(".".join(ff_list))
+    for f in field2sec:
+        sec = field2sec[f]
+        if p_list == [f]:
+            f_parts = f.split(".")
+            val = query_obj[f_parts[0]]
+            if type(val) is dict:
+                for ff in f_parts[1:]:
+                    val = val[ff]
+            ts_list.append("1a-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+            query_obj_new = {"term":val,"term_category":sec}
+            res_obj = use_indexed_search("disease_search_simple", query_obj_new,config_obj)
+            ts_list.append("1b-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+            #return {"tslist":ts_list}
+            return res_obj
+
+    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
 
     query_obj_one, query_obj_two = {}, {}
@@ -232,18 +274,18 @@ def disease_search(query_obj, config_obj):
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
         cache_info = {
             "query":query_obj,
             "ts":ts,
             "record_type":record_type,
-            "search_type":"search"
+            "search_type":"disease_search"
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
-
+    #return {"tslist":ts_list, "mongo_one":mongo_query_one, "mongo_two":mongo_query_two}
     return res_obj
 
 
@@ -363,7 +405,7 @@ def get_mongo_query(query_obj):
         val = query_obj[f]
         cond_obj_list.append({
             "$or":[
-                {"biomarkers.best_biomarker_role.role":{'$regex': val, '$options': 'i'}}
+                {"biomarkers.best_biomarker_role.role":{'$eq': val}}
             ]
         })
     f = "biomarker_component"
@@ -379,9 +421,15 @@ def get_mongo_query(query_obj):
             ]
         })
 
+    
+         
     operation = query_obj["operation"].lower() if "operation" in query_obj else "and"
-    mongo_query = {} if cond_obj_list == [] else { "$"+operation+"": cond_obj_list }
+    mongo_query = {}
+    mongo_query = cond_obj_list[0] if len(cond_obj_list) == 1 else mongo_query
+    mongo_query = { "$"+operation+"": cond_obj_list } if len(cond_obj_list) > 1 else mongo_query
+
        
+ 
     return mongo_query
 
 

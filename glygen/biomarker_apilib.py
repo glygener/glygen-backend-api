@@ -10,7 +10,8 @@ from bson import json_util, ObjectId
 
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections, cache_record_list, transform_query_term, get_hash_id
+from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections, cache_hitlist, transform_query_term, get_hash_id
+from glygen.indexlib import use_indexed_search
 
 
 def biomarker_search_init(config_obj):
@@ -32,7 +33,7 @@ def biomarker_search_init(config_obj):
 
 
 
-def biomarker_search_simple(query_obj, config_obj):
+def search_simple(query_obj, config_obj):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -53,7 +54,7 @@ def biomarker_search_simple(query_obj, config_obj):
     record_type = "biomarker"
     api_name = "biomarker_search_simple"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     #cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
     #if cached_obj != None:
     #    if len(cached_obj["results"]) > 0:
@@ -71,16 +72,16 @@ def biomarker_search_simple(query_obj, config_obj):
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
         cache_info = {
             "query":query_obj,
             "ts":ts,
             "record_type":record_type,
-            "search_type":"search_simple"
+            "search_type":"biomarker_search_simple"
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
     res_obj["query"] = query_obj
     res_obj["resultcount"] = len(record_list)
@@ -104,6 +105,9 @@ def biomarker_detail(query_obj, config_obj):
         return {"error_list":error_list}
     collection = "c_biomarker"
 
+
+
+
     mongo_query = {"biomarker_id":{"$eq":query_obj["biomarker_id"]}}
     obj = dbh[collection].find_one(mongo_query)
     #check for post-access error, error_list should be empty upto this line
@@ -112,7 +116,7 @@ def biomarker_detail(query_obj, config_obj):
         post_error_list.append({"error_code":"non-existent-record"})
         return {"error_list":post_error_list}
 
-
+    
     if "paginated_tables" in query_obj:
         table_id_list = []
         for o in query_obj["paginated_tables"]:
@@ -131,6 +135,7 @@ def biomarker_detail(query_obj, config_obj):
     if "condition" in obj:
         if "synonyms" in obj["condition"]:
             obj["condition"].pop("synonyms")
+
 
     return obj
 
@@ -151,15 +156,56 @@ def biomarker_search(query_obj, config_obj):
     record_type = "biomarker"
     api_name = "biomarker_search"
     list_id = get_hash_id(api_name, record_type, query_obj)
-    cache_coll = "c_cache"
-    cached_obj = dbh[cache_coll].find_one({"list_id":list_id})
+    
+
+    #Get cached object
+    cache_coll = "c_initcache"
+    mongo_query = {"list_id":list_id}
+    cached_obj = dbh[cache_coll].find_one(mongo_query)
+    if cached_obj == None:
+        cache_coll = "c_usercache"
+        cached_obj = dbh[cache_coll].find_one(mongo_query)
+    
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
             return {"list_id":list_id}
 
 
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts_list = []
+    field2sec = {
+        "condition_name":"disease",
+        "biomarker_entity_name":"biomarker_component"
+    }
+    p_list = []
+    for p in  query_obj:
+        if p not in ["operation","query_type"]:
+            ff_list, val_obj = [p], query_obj[p]
+            for child_key in []:
+                if child_key in val_obj:
+                    ff_list.append(child_key)
+                    val_obj = val_obj[child_key]
+            p_list.append(".".join(ff_list))
+    for f in field2sec:
+        sec = field2sec[f]
+        if p_list == [f]:
+            f_parts = f.split(".")
+            val = query_obj[f_parts[0]]
+            if type(val) is dict:
+                for ff in f_parts[1:]:
+                    val = val[ff]
+            ts_list.append("1a-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+            query_obj_new = {"term":val,"term_category":sec}
+            res_obj = use_indexed_search("biomarker_search_simple", query_obj_new,config_obj)
+            ts_list.append("1b-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+            #return {"tslist":ts_list}
+            return res_obj
+
+    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
     mongo_query = get_mongo_query(query_obj)
     #return mongo_query
+
 
 
     collection = "c_biomarker"
@@ -167,20 +213,25 @@ def biomarker_search(query_obj, config_obj):
     prj_obj = {"biomarker_id":1}
     for obj in dbh[collection].find(mongo_query,prj_obj):
         record_list.append(obj["biomarker_id"])
+    
+    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    cache_coll = "c_cache"
+    cache_coll = "c_usercache"
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
         cache_info = {
             "query":query_obj,
             "ts":ts,
             "record_type":record_type,
-            "search_type":"search"
+            "search_type":"biomarker_search"
         }
-        cache_record_list(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
+        cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
+    #return {"tslist":ts_list, "mong":mongo_query}
+
 
     return res_obj
 
@@ -215,20 +266,25 @@ def get_mongo_query(query_obj):
             path = f_map[f]
             if f == "condition_id":
                 cond_objs.append({"$or":[
-                    {"condition.recommended_name.id":{'$regex': val, '$options': 'i'}},
-                    {"condition.synonyms.id":{'$regex': val, '$options': 'i'}}
+                    {"condition.recommended_name.id":{'$eq': val}},
+                    {"condition.synonyms.id":{'$eq': val}}
                 ]})
             elif f == "condition_name":
                 cond_objs.append({"$or":[
                     {"condition.recommended_name.name":{'$regex': val, '$options': 'i'}},
                     {"condition.synonyms.name":{'$regex': val, '$options': 'i'}}
                 ]}) 
+            elif f in ["biomarker_id","biomarker_entity_id","biomarker_entity_type","specimen_id","best_biomarker_role","publication_id"]:
+                cond_objs.append({path:{'$eq': val}})
             else:
                 cond_objs.append({path:{'$regex': val, '$options': 'i'}})
 
+
     operation = query_obj["operation"].lower() if "operation" in query_obj else "and"
-    mongo_query = {} if cond_objs == [] else { "$"+operation+"": cond_objs }
-       
+    mongo_query = {}
+    mongo_query = cond_objs[0] if len(cond_objs) == 1 else mongo_query
+    mongo_query = { "$"+operation+"": cond_objs } if len(cond_objs) > 1 else mongo_query
+
     return mongo_query
 
 

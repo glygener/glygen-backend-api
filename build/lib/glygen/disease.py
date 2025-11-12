@@ -11,8 +11,8 @@ import json
 import bcrypt
 
 from glygen.indexlib import search_one
-from glygen.disease_apilib import disease_detail, disease_search, disease_search_init, disease_search_simple
-from glygen.util import get_req_obj, get_cached_records_indirect, get_hash_id, cache_result_list, get_cached_result_list, apply_pagination
+from glygen.disease_apilib import disease_detail, disease_search, disease_search_init, search_simple
+from glygen.util import get_req_obj, make_list_objects_indirect, get_hash_id, cache_list_objects, retrieve_cached_list_objects, apply_pagination
 import traceback
 
 
@@ -71,8 +71,7 @@ class Disease(Resource):
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/disease/search_simple/", request)
             if "error_list" not in res_obj:
-                #res_obj = disease_search_simple(req_obj, config_obj)
-                res_obj = search_one("disease_search_simple", req_obj, config_obj, True)
+                res_obj = search_one("disease_search_simple",req_obj,config_obj,True)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -180,16 +179,18 @@ class Disease(Resource):
                 api_name = "disease_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
-                res_obj = get_cached_result_list(cache_id, listcache_id)
+                res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
                 if res_obj == None:
-                    res_obj = get_cached_records_indirect(req_obj, config_obj, False)
+                    res_obj = make_list_objects_indirect(req_obj, config_obj, False)
                     if "error_list" not in res_obj:
-                        res = cache_result_list(cache_id, listcache_id, res_obj, config_obj)
-                        if "error_list" in res:
-                            res_obj = res
-                if "results" in res_obj:
-                    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
-
+                        # list objects are cached only if list size > min_list_size_to_cache
+                        list_size = res_obj["pagination"]["total_length"]
+                        if list_size > config_obj["min_list_size_to_cache"]:
+                            res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
+                            if "error_list" in res:
+                                res_obj = res
+                    if "results" in res_obj:
+                        res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

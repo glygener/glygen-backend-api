@@ -12,7 +12,7 @@ from bson import json_util, ObjectId
 from glygen.protein_apilib import get_protein_list_object
 
 from glygen.db import get_mongodb
-from glygen.util import order_obj, order_list, get_errors_in_query,get_cached_motif_records_direct, get_cached_records_direct,                        get_cached_records_indirect, get_random_string, cache_record_list, transform_query_term
+from glygen.util import order_obj, order_list, get_errors_in_query,make_motif_list_objects_direct, make_list_objects_direct,                        make_list_objects_indirect, get_random_string, cache_hitlist, transform_query_term
 
 
 def get_sublist(doc_list, record_type, sec, term):
@@ -140,7 +140,7 @@ def globalsearch_search(query_obj, config_obj):
             results_dict[key_one][key_two] = []
 
         target_collection = obj["targetcollection"]
-        cache_collection = "c_cache"
+        cache_collection = "c_usercache"
         qry_obj = obj["mongoquery"]
         prj_obj = config_obj["projectedfieldsglobalsearch"][target_collection]
         #prj_obj = config_obj["projectedfields"][target_collection]
@@ -268,9 +268,9 @@ def globalsearch_search(query_obj, config_obj):
                         "query":query_obj,
                         "ts":ts,
                         "record_type":record_type,
-                        "search_type":"search"
+                        "search_type":"global_search"
                         }
-                    cache_record_list(dbh,list_id,results_part,cache_info,
+                    cache_hitlist(dbh,list_id,results_part,cache_info,
                             cache_collection,config_obj)
             #hit_count = len(results_dict[key_one][key_two])
             hit_count = len(set(results_dict[key_one][key_two]))
