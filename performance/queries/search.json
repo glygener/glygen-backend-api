@@ -1,0 +1,290 @@
+{
+	"protein":[
+		{
+			"status":1,
+			"lbl":"UniProtKB Accession",
+			"query":{"operation":"AND","query_type":"search_protein","uniprot_canonical_ac":"P14210"}
+		},
+		{
+			"status":1,
+			"lbl":"RefSeq Accession",
+			"query":{"operation":"AND","query_type":"search_protein","refseq_ac":"NP_000592"}
+		},
+		{
+         "status":1,
+         "lbl":"GO ID",
+         "query":{"operation":"AND","query_type":"search_protein","go_id":"GO:0005739"}
+      },
+		{
+         "status":1,
+         "lbl":"Pathway ID",
+         "query":{"operation":"AND","query_type":"search_protein","pathway_id":"hsa:3082"}
+      },
+		{
+         "status":1,
+         "lbl":"Disease ID",
+         "query":{"operation":"AND","query_type":"search_protein","disease_id":"DOID:1324"}
+      },
+		{
+         "status":1,
+         "lbl":"Biomarker Type",
+         "query":{"operation":"AND","query_type":"search_protein","biomarker":{"type":"diagnostic"}}
+		},
+		{
+         "status":1,
+         "lbl":"Pubmed ID",
+         "query":{"operation":"AND","query_type":"search_protein","pmid":"10731668"}
+      },
+		{
+         "status":1,
+         "lbl":"Glycosylation Evidence Type",
+         "query":{"operation":"AND","query_type":"search_protein","glycosylation_evidence":"all_reported_sites_with_without_glycans"}
+      },
+		{
+         "status":1,
+         "lbl":"Glycosylation Type",
+         "query":{"operation":"AND","query_type":"search_protein","glycosylation_type":"N-linked"}
+      },
+		{
+         "status":1,
+         "lbl":"Glycosylated Amino Acid",
+         "query":{"operation":"AND","query_type":"search_protein",
+			"glycosylated_aa":{"aa_list":["N","T"],"operation":"or"}}
+      },
+		{
+			"status":1,
+			"lbl":"Organism",
+			"query":{"operation":"AND","query_type":"search_protein","organism":{"id":559292,"name":"Yeast"}}
+		},
+		{
+         "status":1,
+         "lbl":"Gene Name",
+         "query":{"operation":"AND","query_type":"search_protein","gene_name":"HGF"}
+      },
+		{
+         "status":1,
+         "lbl":"Protein Name",
+         "query":{"operation":"AND","query_type":"search_protein","protein_name":"Hepatocyte growth factor"}
+      },
+		{
+         "status":1,
+         "lbl":"Disease Name",
+         "query":{"operation":"AND","query_type":"search_protein","disease_name":"Deafness"}
+      },
+		{
+         "status":1,
+         "lbl":"GO Name",
+         "query":{"operation":"AND","query_type":"search_protein","go_term":"mitochondrion"}
+      },
+		{
+         "status":1,
+         "lbl":"Chemical Mass",
+         "query":{"operation":"AND","query_type":"search_protein","mass":{"min":951770,"max":2016760}}
+      },
+		{
+         "status":1,
+         "lbl":"Bound Glycan",
+         "query":{"operation":"AND","query_type":"search_protein","binding_glycan_id":"G19059PI"}
+      },
+		{
+         "status":1,
+         "lbl":"Covalently Attached Glycan",
+         "query":{"operation":"AND","query_type":"search_protein","attached_glycan_id":"G17689DH"}
+      },
+		{
+         "status":1,
+         "lbl":"Biomarker Disease",
+         "query":{"operation":"AND","query_type":"search_protein","biomarker":{"disease_name":"liver cancer"}}
+      }
+	],
+	"glycan": [
+        {
+            "lbl": "Glycan ID",
+            "status": 1,
+            "query": {"operation":"AND","query_type":"search_glycan","glycan_identifier":{"glycan_id":"G17689DH","subsumption":"none"}}
+        },
+        {
+            "lbl": "Glycan ID Namespace",
+            "status": 1,
+            "query":{"operation":"AND","query_type":"search_glycan","id_namespace":"GlyConnect"} 
+        },
+        {
+            "lbl": "Monoisotopic Mass",
+            "status": 1,
+            "query": {"operation":"AND","query_type":"search_glycan","mass_type":"Native","mass":{"min":2190,"max":3040}}
+        },
+        {
+				"lbl": "No of Sugars",
+            "status": 1,
+				"query":{"operation":"AND","query_type":"search_glycan","number_monosaccharides":{"min":18,"max":21}}
+		  },
+		  {
+            "lbl": "Organism",
+            "status": 1,
+            "query": {"operation":"AND","query_type":"search_glycan","organism":{"organism_list":[{"glygen_name":"Fruit fly"}],"annotation_category":"","operation":"or"}}
+        },
+        {
+            "lbl": "Glycan Type",
+            "status": 1,
+            "query": {"operation":"AND","query_type":"search_glycan","glycan_type":"GPI anchor"}
+        },
+        {
+            "lbl": "Glycan Name",
+            "status": 1,
+            "query": {"operation":"AND","query_type":"search_glycan","glycan_name":"HexNAc(1)Hex(3)Fuc(3)"}
+        },
+        {
+            "lbl": "Glycosylated Protein",
+            "status": 1,
+            "query": {"operation":"AND","query_type":"search_glycan","protein_identifier":"P14210"}
+        },
+        {
+            "lbl": "Binding Protein",
+            "status": 1,
+            "query": {"operation":"AND","query_type":"search_glycan","binding_protein_id":"Q15113-1"}
+        },
+        {
+            "lbl": "Glycan Motif",
+            "status": 1,
+            "query": {"operation":"AND","query_type":"search_glycan","glycan_motif":"Lewis x"}
+        },
+        {
+            "lbl": "Biosynthetic Enzyme",
+            "status": 1,
+            "query": {"operation":"AND","query_type":"search_glycan","enzyme":{"id":"B4GALT1","type":"gene"}}
+        },
+        {
+            "lbl": "Pubmed ID",
+            "status": 1,
+            "query": {"operation":"AND","query_type":"search_glycan","pmid":"9449027"}
+        },
+        {
+            "lbl": "Biomarker Disease",
+            "status": 1,
+            "query": {"operation":"AND","query_type":"search_glycan","biomarker":{"disease_name":"liver cancer"}}
+        },
+        {
+            "lbl": "Biomarker Type",
+            "status": 1,
+            "query": {"operation":"AND","query_type":"search_glycan","biomarker":{"type":"diagnostic"}}
+        }
+   ],
+	"site": [
+        {
+            "lbl": "Amino Acid",
+            "status": 0,
+            "query": {}
+        },
+        {
+            "lbl": "Annotation Type",
+            "status": 0,
+            "query": {}
+        },
+        {
+            "lbl": "Neighbors",
+            "status": 0,
+            "query": {}
+        },
+        {
+            "lbl": "Pattern",
+            "status": 0,
+            "query": {}
+        }
+   ],
+	"biomarker": [
+        {
+            "lbl": "Specimen",
+            "status": 1,
+            "query": {"specimen_name":"blood"}
+        },
+        {
+            "lbl": "LOINC code",
+            "status": 1,
+            "query": {"specimen_loinc_code":"26881-3"}
+        },
+        {
+            "lbl": "Assessed Entity Type",
+            "status": 1,
+            "query": {"biomarker_entity_type":"glycan"}
+        },
+        {
+            "lbl": "Biomarker Entity",
+            "status": 1,
+            "query": {"biomarker_entity_name":"Interleukin-6"}
+        },
+        {
+            "lbl": "Biomarker ID",
+            "status": 1,
+            "query": {"biomarker_id":"AN6278-5"}
+        },
+        {
+            "lbl": "Condition",
+            "status": 1,
+            "query": {"condition_name":"colorectal cancer"}
+        },
+        {
+            "lbl": "Disease ID",
+            "status": 1,
+            "query": {"condition_id":"DOID:9256"}
+        },
+        {
+            "lbl": "Pubmed ID",
+            "status": 1,
+            "query": {"publication_id":"32234467"}
+        },
+        {
+            "lbl": "BEST Biomarker Role",
+            "status": 1,
+            "query": {"best_biomarker_role":"diagnostic"}
+        }
+   ],
+   "disease": [
+        {
+            "lbl": "Disease ID",
+            "status": 1,
+            "query": {"disease_id":"DOID:9256"}
+        },
+        {
+            "lbl": "Disease Name",
+            "status": 0,
+            "query": {"disease_name":"colorectal cancer","search_type":"hierarchy"}
+        },
+        {
+            "lbl": "Organism",
+            "status": 1,
+            "query": {"tax_name":"Human"}
+        },
+        {
+            "lbl": "Biomarker ID",
+            "status": 1,
+            "query": {"biomarker_id":"AN6278-5"}
+        },
+        {
+            "lbl": "Biomarker Type",
+            "status": 1,
+            "query": {"biomarker_type":"diagnostic"}
+        },
+        {
+            "lbl": "Gene Name",
+            "status": 1,
+            "query": {"gene_name":"HGF"}
+        },
+        {
+            "lbl": "Protein ID",
+            "status": 1,
+            "query": {"protein_id":"P14210"}
+        },
+        {
+            "lbl": "Protein Name",
+            "status": 1,
+            "query": {"protein_name":"Hepatocyte growth factor"}
+        },
+        {
+            "lbl": "Glycan ID",
+            "status": 1,
+            "query": {"glycan_id":"G36521AS"}
+        }
+    ]
+}
+
+
