@@ -373,12 +373,16 @@ def get_hit_score(doc, cache_info, score_dict, selected_p_list, score_info):
     for cond_group in score_dict[record_type]:
         for cond in score_dict[record_type][cond_group]:
             freq = cond_match_freq[cond] if cond in cond_match_freq else 0
-            weight = 0.0
-            if cond in cond_match_freq:
-                weight = score_dict[record_type][cond_group][cond]["weight"]
-            score += weight + round(float(freq)/100.00,3)
-            o = {"c":cond, "w":weight, "f":float(freq)}
-            score_info["contributions"].append(o)
+            #weight = 0.0
+            #if cond in cond_match_freq:
+            #    weight = score_dict[record_type][cond_group][cond]["weight"]
+            #score += weight + round(float(freq)/100.00,3)
+            #o = {"c":cond, "w":weight, "f":float(freq)}
+            #score_info["contributions"].append(o)
+            if freq > 0:
+                score_info["freqdict"][cond] = freq
+
+
 
     return round(float(score), 2), cond_match_freq
 
@@ -1794,8 +1798,12 @@ def get_list_objects(dbh,cache_id, cache_info, cache_collection, final_fields, s
         for obj in dbh["c_list"].find(mongo_query, prj_obj):
             if "_id" in obj:
                 obj.pop("_id")
-            var_dict = {"c":"condition name","w":"condition weight","f":"condition match frequency"}
-            score_info = {"contributions":[], "formula":"sum(w + 0.01*f)", "variables":var_dict}
+            score_info = {"freqdict":{}}
+            #score_info = {
+            #    "contributions":[], 
+            #    "formula":"sum(w + 0.01*f)", 
+            #    "variables":{"c":"condition name","w":"condition weight","f":"condition match frequency"}
+            #}
             hit_score = -1.0
             if is_empty_query == False:
                 hit_score, cond_match_freq = get_hit_score(obj, cache_info, score_dict, final_fields, score_info)

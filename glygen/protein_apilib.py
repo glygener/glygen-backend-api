@@ -168,28 +168,51 @@ def protein_search(query_obj, config_obj):
             return res_obj
 
 
+    collection = "c_protein"
+    ts_list.append("1a-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+    
+    canon_dict = {}    
     mongo_query = get_mongo_query(query_obj, glygen_name_dict)
     #return mongo_query
-    
-    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    if mongo_query != {}:
+        prj_obj = {"uniprot_canonical_ac":1, "uniprot_ac":1, "uniprot_id":1, "isoforms.isoform_ac":1}
+        for obj in dbh[collection].find(mongo_query,prj_obj):
+            canon = obj["uniprot_canonical_ac"]
+            uniprot_ac, uniprot_id = obj["uniprot_ac"], obj["uniprot_id"]
+            canon_dict[canon] = {"uniprot_ac":uniprot_ac,"uniprot_id":uniprot_id,"isoformdict":{}}
+            for o in obj["isoforms"]:
+                canon_dict[canon]["isoformdict"][o["isoform_ac"]] = True
 
-    collection = "c_protein"
-    record_list = []
-    prj_obj = {"uniprot_canonical_ac":1, "uniprot_ac":1, "uniprot_id":1, "isoforms.isoform_ac":1}
-    seen_id = {}
-    #doc_list = list(dbh[collection].find(mongo_query,prj_obj))
-    #doc_list = []
-    #for obj in doc_list:
-    for obj in dbh[collection].find(mongo_query,prj_obj):
-        record_list.append(obj["uniprot_canonical_ac"])
-        seen_id[obj["uniprot_canonical_ac"]] = True
-        seen_id[obj["uniprot_ac"]] = True
-        seen_id[obj["uniprot_id"]] = True
-        for o in obj["isoforms"]:
-            seen_id[o["isoform_ac"]] = True
+    ts_list.append("1b-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-    #return {"n":len(record_list)}
+    #OPTIMIZATION -- these are meant for optimization 
+    canon_dict_special = {}
+    if "glycosylated_aa" in query_obj:
+        canon_dict_special  = run_special_query(dbh, collection, query_obj)
+        #local_ts_list = run_special_query(dbh, collection, query_obj)
+        #ts_list += local_ts_list
 
+    ts_list.append("1c-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+ 
+    record_list, seen_id = [], {}
+    for canon in list(canon_dict.keys()) + list(canon_dict_special.keys()):
+        # if there are hits from special queries, and junction is done
+        if canon_dict != {} and canon_dict_special != {}:
+            if canon not in canon_dict or canon not in canon_dict_special:
+                continue
+        record_list.append(canon)
+        tmp_dict = {}
+        tmp_dict = canon_dict[canon] if canon in canon_dict else tmp_dict
+        tmp_dict = canon_dict_special[canon] if canon in canon_dict_special else tmp_dict
+        uniprot_ac, uniprot_id, isoform_dict = tmp_dict["uniprot_ac"], tmp_dict["uniprot_id"], tmp_dict["isoformdict"]
+        seen_id[canon] = True
+        seen_id[uniprot_ac] = True
+        seen_id[uniprot_id] = True
+        for isoform_ac in isoform_dict:
+            seen_id[isoform_ac] = True
+
+    ts_list.append("2-" + str(len(record_list)))
     ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
 
@@ -227,8 +250,8 @@ def protein_search(query_obj, config_obj):
     res_obj = {"list_id":list_id}
 
     ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    
     #return {"tslist":ts_list, "mongoquery":mongo_query}
-
     return res_obj
 
 
@@ -758,41 +781,6 @@ def get_mongo_query(query_obj, glygen_name_dict):
             
 
 
-    aa_map = {
-        "A":"Ala",
-        "R":"Arg",
-        "N":"Asn",
-        "D":"Asp",
-        "C":"Cys",
-        "E":"Glu",
-        "Q":"Gln",
-        "G":"Gly",
-        "H":"His",
-        "I":"Ile",
-        "L":"Leu",
-        "K":"Lys",
-        "M":"Met",
-        "F":"Phe",
-        "P":"Pro",
-        "S":"Ser",
-        "T":"Thr",
-        "W":"Trp",
-        "Y":"Tyr",
-        "V":"Val"
-    }
-    
-    #glycosylated_aa
-    if "glycosylated_aa" in query_obj:
-        if "aa_list" in query_obj["glycosylated_aa"]:
-            obj_list = []
-            for aa in query_obj["glycosylated_aa"]["aa_list"]:
-                aa_three = aa_map[aa] if aa in aa_map else aa
-                obj_list.append({"glycosylation.residue": {'$eq': aa_three}})
-            if obj_list != []:
-                operation = query_obj["glycosylated_aa"]["operation"]
-                cond_objs.append({"$"+operation+"":obj_list})
-
-
     #sequence
     if "sequence" in query_obj:
         if "aa_sequence" in query_obj["sequence"]:
@@ -939,3 +927,65 @@ def get_protein_list_object(obj):
 
 
 
+
+def run_special_query(dbh, collection, query_obj):
+
+
+    aa_map = {
+        "A":"Ala","R":"Arg","N":"Asn","D":"Asp","C":"Cys","E":"Glu","Q":"Gln",
+        "G":"Gly","H":"His","I":"Ile","L":"Leu","K":"Lys","M":"Met","F":"Phe",
+        "P":"Pro","S":"Ser","T":"Thr","W":"Trp","Y":"Tyr","V":"Val"
+    }
+
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts_list = []
+    ts_list.append("aa-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+    record_list = []
+    tmp_dict, canon2ac, canon2id, canon2isoform = {}, {}, {}, {}
+    if "glycosylated_aa" in query_obj:
+        if "aa_list" in query_obj["glycosylated_aa"]:
+            for aa in query_obj["glycosylated_aa"]["aa_list"]:
+                aa_three = aa_map[aa] if aa in aa_map else aa
+                qry_obj = {"glycosylation.residue":{"$eq":aa_three}}
+                prj_obj = {"uniprot_canonical_ac":1, "uniprot_ac":1, "uniprot_id":1, "isoforms.isoform_ac":1}
+                for obj in dbh[collection].find(qry_obj,prj_obj):
+                    canon = obj["uniprot_canonical_ac"]
+                    uniprot_ac, uniprot_id  = obj["uniprot_ac"], obj["uniprot_id"]
+                    canon2ac[canon] = uniprot_ac
+                    canon2id[canon] = uniprot_id
+                    canon2isoform[canon] = {}
+                    for oo in obj["isoforms"]:
+                        canon2isoform[canon][oo["isoform_ac"]] = True
+                    if aa_three not in tmp_dict:
+                        tmp_dict[aa_three] = {}
+                    tmp_dict[aa_three][canon] = True
+                ts_list.append("aa-"+aa+"-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+            aa_three_list = list(tmp_dict.keys())
+            if len(aa_three_list) > 0:
+                #aggregate by or/and
+                op = query_obj["glycosylated_aa"]["operation"] if "operation" in query_obj["glycosylated_aa"] else "or"
+                if op == "and":
+                    record_list = list(tmp_dict[aa_three_list[0]].keys()) 
+                    if len(aa_three_list) > 1:
+                        for aa_three in aa_three_list[1:]:
+                            record_list = list(set(record_list).intersection(set(list(tmp_dict[aa_three].keys()))))
+                else:
+                    for aa_three in tmp_dict:
+                        record_list += list(tmp_dict[aa_three].keys())
+            ts_list.append("bb-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+            
+    ts_list.append("cc-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    canon_dict = {}            
+    for canon in record_list:
+        uniprot_ac, uniprot_id = canon2ac[canon], canon2id[canon]
+        canon_dict[canon] = {"uniprot_ac":uniprot_ac,"uniprot_id":uniprot_id,"isoformdict":{}}
+        for isoform_ac in canon2isoform[canon]:
+            canon_dict[canon]["isoformdict"][isoform_ac] = True
+ 
+    ts_list.append("dd-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+            
+    #return ts_list
+
+    return canon_dict

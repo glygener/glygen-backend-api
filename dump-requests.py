@@ -21,16 +21,15 @@ def main():
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
-    parser.add_option("-c","--coll",action="store",dest="coll",help="") 
     (options,args) = parser.parse_args()
 
-    for key in ([options.server, options.coll]):
+    for key in ([options.server]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     server = options.server
-    coll = options.coll
+    coll = "c_request"
 
 
     db_name = "glydb_beta" if server == "beta" else "glydb"
@@ -58,8 +57,14 @@ def main():
         for doc in doc_list[-100:]:
             if "_id" in doc:
                 doc.pop("_id")
-            print (json.dumps(doc, indent=4))
+            if doc["api"].find("detail") == -1:
+                continue
+            #print (json.dumps(doc, indent=4))
+            #print ("//")
+            print (doc["api"])
+            print (json.dumps(doc["req"], indent=4))
             print ("//")
+
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

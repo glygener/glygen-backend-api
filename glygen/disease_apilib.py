@@ -157,6 +157,7 @@ def disease_search(query_obj, config_obj):
     if error_obj != {}:
         return error_obj
 
+
     #Collect errors 
     error_list = get_errors_in_query("disease_search", query_obj,config_obj)
     if error_list != []:
@@ -285,6 +286,7 @@ def disease_search(query_obj, config_obj):
         }
         cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
     res_obj = {"list_id":list_id}
+    
     #return {"tslist":ts_list, "mongo_one":mongo_query_one, "mongo_two":mongo_query_two}
     return res_obj
 

@@ -47,7 +47,7 @@ def main():
         for cache_name in query_doc[record_type]:
             cmd = "python3 update-initlistcache.py -s %s -n %s" % (server, cache_name)
             x = subprocess.getoutput(cmd)
-            #print (cmd)
+            print ("finished ...", cmd)
 
  
 

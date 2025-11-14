@@ -139,6 +139,7 @@ class Protein(Resource):
                 listcache_id = get_hash_id(api_name, "", req_obj)
                 #return listcache_id
                 res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
+                #return res_obj
                 if res_obj == None:
                     res_obj = make_list_objects_indirect(req_obj, config_obj, False)
                     #return res_obj

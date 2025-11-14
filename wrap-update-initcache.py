@@ -43,15 +43,12 @@ def main():
 
     pulldown_dict = get_pulldown_dict(dbh, config_obj)
     query_doc = get_supersearch_init_query(dbh, config_obj, pulldown_dict) 
-    print (json.dumps(query_doc, indent=4))
-    exit()
-
+    #print (json.dumps(query_doc, indent=4))
     for record_type in query_doc:
         for cache_name in query_doc[record_type]:
             cmd = "python3 update-initcache.py -s %s -n %s" % (server, cache_name)
             #x = subprocess.getoutput(cmd)
             print (cache_name)
- 
     query_doc = get_c_initcache_queries(dbh, config_obj, pulldown_dict)
     for record_type in query_doc:
         for cache_name in query_doc[record_type]:

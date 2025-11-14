@@ -70,10 +70,8 @@ def main():
             total_count = doc["total_count"] if "total_count" in doc else -1
             cmb = "%s|%s|%s|%s|%s" % (coll, list_id,cache_name,record_type,total_count)
             if cmb not in seen:
-                print (cmb)
+                print (cmb, ts)
                 seen[cmb] = True
-                if list_id in ["df1bb42f89aa8a4fe7ee36fc29c83e56","39460a28e1e954d1e7a0f22fc35903ac"]:
-                    print (json.dumps(cache_info, indent=4))
 
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)

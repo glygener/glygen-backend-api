@@ -105,14 +105,15 @@ def main():
         config_obj["node_order"] = json.load(open("glygen/conf/node_order.json"))
         query_doc = get_supersearch_init_query(dbh, config_obj, pulldown_dict)
         qry_dict = query_doc[record_type]
-        qry_obj = qry_dict[cache_name]
-        empty_search_flag = True if cache_name == "supersearch_all" else False
-        res_obj = supersearch_search(qry_obj["query"], config_obj,False,empty_search_flag, cache_name)
-        log_lines = get_supersearch_log_lines(res_obj, cache_name)
-        log_file = "logs/c_initcache.%s.log" % (cache_name)
-        with open(log_file, "w") as FL:
-            for line in log_lines:
-                FL.write("%s\n" % (line))
+        if cache_name in qry_dict:
+            qry_obj = qry_dict[cache_name]
+            empty_search_flag = True if cache_name == "supersearch_all" else False
+            res_obj = supersearch_search(qry_obj["query"], config_obj,False,empty_search_flag, cache_name)
+            log_lines = get_supersearch_log_lines(res_obj, cache_name)
+            log_file = "logs/c_initcache.%s.log" % (cache_name)
+            with open(log_file, "w") as FL:
+                for line in log_lines:
+                    FL.write("%s\n" % (line))
     elif record_type in ["protein", "glycan", "biomarker", "disease"]:
         query_doc = get_c_initcache_queries(dbh, config_obj, pulldown_dict)
         qry_dict = query_doc[record_type]

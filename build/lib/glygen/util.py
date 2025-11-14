@@ -409,12 +409,14 @@ def get_hit_score(doc, cache_info, score_dict, selected_p_list, score_info):
     for cond_group in score_dict[record_type]:
         for cond in score_dict[record_type][cond_group]:
             freq = cond_match_freq[cond] if cond in cond_match_freq else 0
-            weight = 0.0
-            if cond in cond_match_freq:
-                weight = score_dict[record_type][cond_group][cond]["weight"]
-            score += weight + round(float(freq)/100.00,3)
-            o = {"c":cond, "w":weight, "f":float(freq)}
-            score_info["contributions"].append(o)
+            #weight = 0.0
+            #if cond in cond_match_freq:
+            #    weight = score_dict[record_type][cond_group][cond]["weight"]
+            #score += weight + round(float(freq)/100.00,3)
+            #o = {"c":cond, "w":weight, "f":float(freq)}
+            #score_info["contributions"].append(o)
+            if freq > 0:
+                score_info["freqdict"][cond] = freq
 
     return round(float(score), 2), cond_match_freq
 
@@ -904,8 +906,13 @@ def get_list_objects(dbh, cache_id, record_type, filter_conf, cached_query, prj_
     #return cached_obj_list
 
     tmp_obj_list = []
-    var_dict = {"c":"condition name","w":"condition weight","f":"condition match frequency"}
-    score_info = {"contributions":[], "formula":"sum(w + 0.01*f)", "variables":var_dict}
+    score_info = {"freqdict":{}}
+    #score_info = {
+    #    "contributions":[], 
+    #     "formula":"sum(w + 0.01*f)", 
+    #    "variables":{"c":"condition name","w":"condition weight","f":"condition match frequency"}
+    #}
+    
     batch_size = config_obj["supersearch_batch_size"]
     record_count = len(cached_obj_list)
     nparts = int(float(record_count)/float(batch_size)) + 1
@@ -949,8 +956,12 @@ def create_list_objects(dbh,cache_id, cache_info, cache_collection, final_fields
         for obj in dbh["c_list"].find(mongo_query, prj_obj):
             if "_id" in obj:
                 obj.pop("_id")
-            var_dict = {"c":"condition name","w":"condition weight","f":"condition match frequency"}
-            score_info = {"contributions":[], "formula":"sum(w + 0.01*f)", "variables":var_dict}
+            score_info = {"freqdict":{}}
+            #score_info = {
+            #    "contributions":[], 
+            #    "formula":"sum(w + 0.01*f)", 
+            #    "variables":{"c":"condition name","w":"condition weight","f":"condition match frequency"}
+            #}
             hit_score = -1.0
             if is_empty_query == False:
                 hit_score, cond_match_freq = get_hit_score(obj, cache_info, score_dict, final_fields, score_info)
@@ -1183,7 +1194,6 @@ def make_list_objects_indirect(query_obj, config_obj, limit_flag):
 
     ts_list.append("9-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     
-
     #return {"error_list":ts_list}
     #return {"error_list":cached_obj["results"]}
     return res_obj
@@ -1361,7 +1371,6 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
             label = label_dict[option_id] if option_id in label_dict else label
             obj["tmp_options"][option_id] = {"id":option_id, "label":label, "count":count,"order":option_ordr}
         filters["available"].append(obj)
-        #xxxxx
 
     #return {"error_list":debug_list}
 
@@ -1845,7 +1854,6 @@ def retrieve_cached_list_objects(cache_id, listcache_id, req_obj):
      
     record_type = first_doc["glbl"]["cache_info"]["record_type"]
     total_length = first_doc["glbl"]["pagination"]["total_length"]
-
     sort_field = req_obj["sort"]
     ordr_type = req_obj["order"].lower() if "order" in req_obj else "desc"
     offset = req_obj["offset"] if "offset" in req_obj else 1
@@ -1904,12 +1912,27 @@ def retrieve_cached_list_objects(cache_id, listcache_id, req_obj):
 
     ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "conf/hit_scoring.json")
+    score_dict = json.loads(open(json_url, "r").read())
+
     tmp_obj_dict = {}
     mongo_query = {"record_id":{"$in": page_id_list}}
     for obj in dbh["c_list"].find(mongo_query, prj_obj):
         if "_id" in obj:
             obj.pop("_id")
         score_info, hit_score = scr_dict[obj["record_id"]]["score_info"], scr_dict[obj["record_id"]]["hit_score"]
+        # these two variables are added score_info after paging
+        score_info["formula"] = "sum(w + 0.01*f)"
+        score_info["variables"] = {"c":"condition name","w":"condition weight","f":"condition match frequency"}
+        score_info["contributions"] = []
+        for cond_group in score_dict[record_type]:
+            for cond in score_dict[record_type][cond_group]:
+                freq = score_info["freqdict"][cond] if cond in score_info["freqdict"] else 0
+                weight = score_dict[record_type][cond_group][cond]["weight"]
+                o = {"c":cond, "w":weight, "f":float(freq)}
+                score_info["contributions"].append(o)
+        score_info.pop("freqdict")
         obj["hit_info"], obj["hit_score"] = score_info, hit_score
         tmp_obj_dict[obj["record_id"]] = obj
 
