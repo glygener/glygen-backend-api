@@ -1,124 +1,124 @@
-http POST :4442/protein/search_init/  
-http POST :4442/protein/search_simple/ < tests/examples/protein/protein_search_simple.json
-http POST :4442/protein/search/ < tests/examples/protein/protein_search.json
-http POST :4442/protein/list/ < tests/examples/protein/protein_list.1.json
-http POST :4442/protein/list/ < tests/examples/protein/protein_list.2.json
-http POST :4442/protein/detail/P14210-1/  
-http POST :4442/protein/detail/Q8IWL2-1/ < tests/examples/protein/protein_detail_paginated.json
-http POST :4442/protein/alignment/ < tests/examples/protein/protein_alignment.json
-http POST :4442/glycan/search_init/  
-http POST :4442/glycan/search_simple/ < tests/examples/glycan/glycan_search_simple.json
-http POST :4442/glycan/search/ < tests/examples/glycan/glycan_search.json
-http POST :4442/glycan/list/ < tests/examples/glycan/glycan_list.1.json
-http POST :4442/glycan/list/ < tests/examples/glycan/glycan_list.2.json
-http POST :4442/glycan/detail/G17689DH/  
-http POST :4442/glycan/image/G17689DH/  
-http POST :4442/glycan/image_svg/G17689DH/  
-http POST :4442/glycan/image_metadata/G17689DH/  
-http POST :4442/glycan/pdb/G17689DH/  
-http POST :4442/auth/userdelete/ < tests/examples/auth/auth_userdelete.json
-http POST :4442/auth/register/ < tests/examples/auth/auth_register.json
-http POST :4442/auth/userinfo/ < tests/examples/auth/auth_userinfo.json
-http POST :4442/auth/userupdate/ < tests/examples/auth/auth_userupdate.json
-http POST :4442/auth/login/ < tests/examples/auth/auth_login.json
-http POST :4442/auth/userid/ < tests/examples/auth/auth_userid.json
-http POST :4442/auth/contact/ < tests/examples/auth/auth_contact.json
-http POST :4442/auth/notify/ < tests/examples/auth/auth_notify.json
-http POST :4442/auth/contactlist/ < tests/examples/auth/auth_contactlist.json
-http POST :4442/auth/contactupdate/ < tests/examples/auth/auth_contactupdate.json
-http POST :4442/auth/contactdelete/ < tests/examples/auth/auth_contactdelete.json
-http POST :4442/data/list_download < tests/examples/data/list_download.json
-http POST :4442/data/detail_download < tests/examples/data/detail_download.json
-http POST :4442/data/section_download < tests/examples/data/section_download.protein.glycosylation.1.json
-http POST :4442/globalsearch/search/ < tests/examples/globalsearch/globalsearch_search.json
-http POST :4442/pages/home_init/  
-http POST :4442/pages/list_init/ < tests/examples/pages/list_init.json
-http POST :4442/pages/filter_init/ < tests/examples/pages/filter_init.1.json
-http POST :4442/pages/filter_init/ < tests/examples/pages/filter_init.2.json
-http POST :4442/pages/filter_init/ < tests/examples/pages/filter_init.3.json
-http POST :4442/pages/filter_init/ < tests/examples/pages/filter_init.4.json
-http POST :4442/seqmapping/search/ < tests/examples/seqmapping/seqmapping_search.json
-http POST :4442/publication/detail/ < tests/examples/publication/publication_detail.json
-http POST :4442/motif/detail/ < tests/examples/motif/motif_detail.json
-http POST :4442/motif/list/ < tests/examples/motif/motif_list.json
-http POST :4442/site/search_init/  
-http POST :4442/site/detail/P02724-1.52.52/  
-http POST :4442/idmapping/search_init/  
-http POST :4442/idmapping/search/ < tests/examples/idmapping/idmapping_search.json
-http POST :4442/idmapping/list/ < tests/examples/idmapping/idmapping_list.json
-http POST :4442/typeahead/typeahead/ < tests/examples/typeahead/typeahead_typeahead.json
-http POST :4442/typeahead/categorized_typeahead/ < tests/examples/typeahead/typeahead_categorized_typeahead.json
-http POST :4442/typeahead/global_typeahead/ < tests/examples/typeahead/typeahead_global_typeahead.json
-http POST :4442/log/logging/ < tests/examples/log/log_logging.json
-http POST :4442/log/init/ < tests/examples/log/log_init.json
-http POST :4442/log/access/ < tests/examples/log/log_access.json
-http POST :4442/log/grouped/ < tests/examples/log/log_grouped.json
-http POST :4442/video/addnew/ < tests/examples/video/video_addnew.json
-http POST :4442/video/list/ < tests/examples/video/video_list.json
-http POST :4442/video/detail/ < tests/examples/video/video_detail.json
-http POST :4442/video/delete/ < tests/examples/video/video_delete.json
-http POST :4442/supersearch/search_init/  
-http POST :4442/supersearch/search/ < tests/examples/supersearch/supersearch_search.json
-http POST :4442/supersearch/reason/ < tests/examples/supersearch/supersearch_reason.json
-http POST :4442/supersearch/list/ < tests/examples/supersearch/supersearch_list.1.json
-http POST :4442/supersearch/list/ < tests/examples/supersearch/supersearch_list.2.json
-http POST :4442/event/addnew/ < tests/examples/event/event_addnew.json
-http POST :4442/event/list/ < tests/examples/event/event_list.json
-http POST :4442/event/detail/ < tests/examples/event/event_detail.json
-http POST :4442/event/update/ < tests/examples/event/event_update.json
-http POST :4442/event/delete/ < tests/examples/event/event_delete.json
-http POST :4442/misc/info/  
-http POST :4442/misc/lastid/  
-http POST :4442/misc/bcolist/  
-http POST :4442/misc/gtclist/  
-http POST :4442/misc/verlist/  
-http POST :4442/misc/messagelist/  
-http POST :4442/misc/validate/ < tests/examples/misc/misc_validate.json
-http POST :4442/misc/propertylist/ < tests/examples/misc/misc_propertylist.json
-http POST :4442/misc/pathlist/ < tests/examples/misc/misc_pathlist.json
-http POST :4442/usecases/search_init/  
-http POST :4442/usecases/glycan_to_biosynthesis_enzymes/0/G17689DH/  
-http POST :4442/usecases/glycan_to_glycoproteins/0/G17689DH/  
-http POST :4442/usecases/glycan_to_enzyme_gene_loci/0/G17689DH/  
-http POST :4442/usecases/protein_to_glycosequons/P14210-1/  
-http POST :4442/usecases/protein_to_orthologs/P14210-1/  
-http POST :4442/usecases/biosynthesis_enzyme_to_glycans/0/P26572-1/  
-http POST :4442/usecases/species_to_glycohydrolases/0/  
-http POST :4442/usecases/species_to_glycosyltransferases/0/  
-http POST :4442/usecases/species_to_glycoproteins/0/reported/  
-http POST :4442/usecases/disease_to_glycosyltransferases/ < tests/examples/usecases/usecases_disease_to_glycosyltransferases.json
-http POST :4442/usecases/genelocus_list/ < tests/examples/usecases/usecases_genelocus_list.json
-http POST :4442/usecases/ortholog_list/ < tests/examples/usecases/usecases_ortholog_list.json
-http POST :4442/usecases/glycosequon_list/ < tests/examples/usecases/usecases_glycosequon_list.json
-http POST :4442/job/init/  
-http POST :4442/job/clean/  
-http POST :4442/job/addnew/ < tests/examples/job/job_addnew.json
-http POST :4442/job/list/ < tests/examples/job/job_list.json
-http POST :4442/job/detail/ < tests/examples/job/job_detail.json
-http POST :4442/job/update/ < tests/examples/job/job_update.json
-http POST :4442/job/delete/ < tests/examples/job/job_delete.json
-http POST :4442/job/results/ < tests/examples/job/job_results.json
-http POST :4442/job/status/ < tests/examples/job/job_status.json
-http POST :4442/job/status_many/ < tests/examples/job/job_status_many.json
-http POST :4442/job/queue/ < tests/examples/job/job_queue.json
-http POST :4442/outreach/addnew/ < tests/examples/outreach/outreach_addnew.json
-http POST :4442/outreach/list/ < tests/examples/outreach/outreach_list.json
-http POST :4442/outreach/update/ < tests/examples/outreach/outreach_update.json
-http POST :4442/biomarker/detail/AA4686-1  
-http POST :4442/biomarker/search_init/  
-http POST :4442/biomarker/search_simple/ < tests/examples/biomarker/search_simple.json
-http POST :4442/biomarker/search < tests/examples/biomarker/search.json
-http POST :4442/biomarker/list < tests/examples/biomarker/list.json
-http POST :4442/pagination/page < tests/examples/pagination/protein.json
-http POST :4442/pagination/page < tests/examples/pagination/site.json
-http POST :4442/pagination/page < tests/examples/pagination/glycan.json
-http POST :4442/pagination/page < tests/examples/pagination/motif.json
-http POST :4442/pagination/page < tests/examples/pagination/publication.json
-http POST :4442/pagination/page < tests/examples/pagination/biomarker.json
-http POST :4442/data/section_download < tests/examples/data/section_download.protein.glycosylation.json
-http POST :4442/data/section_download < tests/examples/data/section_download.site.glycosylation.json
-http POST :4442/data/section_download < tests/examples/data/section_download.glycan.glycoprotein.json
-http POST :4442/data/section_download < tests/examples/data/section_download.motif.glycans.json
-http POST :4442/data/section_download < tests/examples/data/section_download.publication.glycosylation.json
-http POST :4442/data/section_download < tests/examples/data/section_download.biomarker.biomarker_component.json
-http POST :4442/cart/list/ < tests/examples/cart/list.json
+http POST :8082/protein/search_init/  
+http POST :8082/protein/search_simple/ < tests/examples/protein/protein_search_simple.json
+http POST :8082/protein/search/ < tests/examples/protein/protein_search.json
+http POST :8082/protein/list/ < tests/examples/protein/protein_list.1.json
+http POST :8082/protein/list/ < tests/examples/protein/protein_list.2.json
+http POST :8082/protein/detail/P14210-1/  
+http POST :8082/protein/detail/Q8IWL2-1/ < tests/examples/protein/protein_detail_paginated.json
+http POST :8082/protein/alignment/ < tests/examples/protein/protein_alignment.json
+http POST :8082/glycan/search_init/  
+http POST :8082/glycan/search_simple/ < tests/examples/glycan/glycan_search_simple.json
+http POST :8082/glycan/search/ < tests/examples/glycan/glycan_search.json
+http POST :8082/glycan/list/ < tests/examples/glycan/glycan_list.1.json
+http POST :8082/glycan/list/ < tests/examples/glycan/glycan_list.2.json
+http POST :8082/glycan/detail/G17689DH/  
+http POST :8082/glycan/image/G17689DH/  
+http POST :8082/glycan/image_svg/G17689DH/  
+http POST :8082/glycan/image_metadata/G17689DH/  
+http POST :8082/glycan/pdb/G17689DH/  
+http POST :8082/auth/userdelete/ < tests/examples/auth/auth_userdelete.json
+http POST :8082/auth/register/ < tests/examples/auth/auth_register.json
+http POST :8082/auth/userinfo/ < tests/examples/auth/auth_userinfo.json
+http POST :8082/auth/userupdate/ < tests/examples/auth/auth_userupdate.json
+http POST :8082/auth/login/ < tests/examples/auth/auth_login.json
+http POST :8082/auth/userid/ < tests/examples/auth/auth_userid.json
+http POST :8082/auth/contact/ < tests/examples/auth/auth_contact.json
+http POST :8082/auth/notify/ < tests/examples/auth/auth_notify.json
+http POST :8082/auth/contactlist/ < tests/examples/auth/auth_contactlist.json
+http POST :8082/auth/contactupdate/ < tests/examples/auth/auth_contactupdate.json
+http POST :8082/auth/contactdelete/ < tests/examples/auth/auth_contactdelete.json
+http POST :8082/data/list_download < tests/examples/data/list_download.json
+http POST :8082/data/detail_download < tests/examples/data/detail_download.json
+http POST :8082/data/section_download < tests/examples/data/section_download.protein.glycosylation.1.json
+http POST :8082/globalsearch/search/ < tests/examples/globalsearch/globalsearch_search.json
+http POST :8082/pages/home_init/  
+http POST :8082/pages/list_init/ < tests/examples/pages/list_init.json
+http POST :8082/pages/filter_init/ < tests/examples/pages/filter_init.1.json
+http POST :8082/pages/filter_init/ < tests/examples/pages/filter_init.2.json
+http POST :8082/pages/filter_init/ < tests/examples/pages/filter_init.3.json
+http POST :8082/pages/filter_init/ < tests/examples/pages/filter_init.4.json
+http POST :8082/seqmapping/search/ < tests/examples/seqmapping/seqmapping_search.json
+http POST :8082/publication/detail/ < tests/examples/publication/publication_detail.json
+http POST :8082/motif/detail/ < tests/examples/motif/motif_detail.json
+http POST :8082/motif/list/ < tests/examples/motif/motif_list.json
+http POST :8082/site/search_init/  
+http POST :8082/site/detail/P02724-1.52.52/  
+http POST :8082/idmapping/search_init/  
+http POST :8082/idmapping/search/ < tests/examples/idmapping/idmapping_search.json
+http POST :8082/idmapping/list/ < tests/examples/idmapping/idmapping_list.json
+http POST :8082/typeahead/typeahead/ < tests/examples/typeahead/typeahead_typeahead.json
+http POST :8082/typeahead/categorized_typeahead/ < tests/examples/typeahead/typeahead_categorized_typeahead.json
+http POST :8082/typeahead/global_typeahead/ < tests/examples/typeahead/typeahead_global_typeahead.json
+http POST :8082/log/logging/ < tests/examples/log/log_logging.json
+http POST :8082/log/init/ < tests/examples/log/log_init.json
+http POST :8082/log/access/ < tests/examples/log/log_access.json
+http POST :8082/log/grouped/ < tests/examples/log/log_grouped.json
+http POST :8082/video/addnew/ < tests/examples/video/video_addnew.json
+http POST :8082/video/list/ < tests/examples/video/video_list.json
+http POST :8082/video/detail/ < tests/examples/video/video_detail.json
+http POST :8082/video/delete/ < tests/examples/video/video_delete.json
+http POST :8082/supersearch/search_init/  
+http POST :8082/supersearch/search/ < tests/examples/supersearch/supersearch_search.json
+http POST :8082/supersearch/reason/ < tests/examples/supersearch/supersearch_reason.json
+http POST :8082/supersearch/list/ < tests/examples/supersearch/supersearch_list.1.json
+http POST :8082/supersearch/list/ < tests/examples/supersearch/supersearch_list.2.json
+http POST :8082/event/addnew/ < tests/examples/event/event_addnew.json
+http POST :8082/event/list/ < tests/examples/event/event_list.json
+http POST :8082/event/detail/ < tests/examples/event/event_detail.json
+http POST :8082/event/update/ < tests/examples/event/event_update.json
+http POST :8082/event/delete/ < tests/examples/event/event_delete.json
+http POST :8082/misc/info/  
+http POST :8082/misc/lastid/  
+http POST :8082/misc/bcolist/  
+http POST :8082/misc/gtclist/  
+http POST :8082/misc/verlist/  
+http POST :8082/misc/messagelist/  
+http POST :8082/misc/validate/ < tests/examples/misc/misc_validate.json
+http POST :8082/misc/propertylist/ < tests/examples/misc/misc_propertylist.json
+http POST :8082/misc/pathlist/ < tests/examples/misc/misc_pathlist.json
+http POST :8082/usecases/search_init/  
+http POST :8082/usecases/glycan_to_biosynthesis_enzymes/0/G17689DH/  
+http POST :8082/usecases/glycan_to_glycoproteins/0/G17689DH/  
+http POST :8082/usecases/glycan_to_enzyme_gene_loci/0/G17689DH/  
+http POST :8082/usecases/protein_to_glycosequons/P14210-1/  
+http POST :8082/usecases/protein_to_orthologs/P14210-1/  
+http POST :8082/usecases/biosynthesis_enzyme_to_glycans/0/P26572-1/  
+http POST :8082/usecases/species_to_glycohydrolases/0/  
+http POST :8082/usecases/species_to_glycosyltransferases/0/  
+http POST :8082/usecases/species_to_glycoproteins/0/reported/  
+http POST :8082/usecases/disease_to_glycosyltransferases/ < tests/examples/usecases/usecases_disease_to_glycosyltransferases.json
+http POST :8082/usecases/genelocus_list/ < tests/examples/usecases/usecases_genelocus_list.json
+http POST :8082/usecases/ortholog_list/ < tests/examples/usecases/usecases_ortholog_list.json
+http POST :8082/usecases/glycosequon_list/ < tests/examples/usecases/usecases_glycosequon_list.json
+http POST :8082/job/init/  
+http POST :8082/job/clean/  
+http POST :8082/job/addnew/ < tests/examples/job/job_addnew.json
+http POST :8082/job/list/ < tests/examples/job/job_list.json
+http POST :8082/job/detail/ < tests/examples/job/job_detail.json
+http POST :8082/job/update/ < tests/examples/job/job_update.json
+http POST :8082/job/delete/ < tests/examples/job/job_delete.json
+http POST :8082/job/results/ < tests/examples/job/job_results.json
+http POST :8082/job/status/ < tests/examples/job/job_status.json
+http POST :8082/job/status_many/ < tests/examples/job/job_status_many.json
+http POST :8082/job/queue/ < tests/examples/job/job_queue.json
+http POST :8082/outreach/addnew/ < tests/examples/outreach/outreach_addnew.json
+http POST :8082/outreach/list/ < tests/examples/outreach/outreach_list.json
+http POST :8082/outreach/update/ < tests/examples/outreach/outreach_update.json
+http POST :8082/biomarker/detail/AA4686-1  
+http POST :8082/biomarker/search_init/  
+http POST :8082/biomarker/search_simple/ < tests/examples/biomarker/search_simple.json
+http POST :8082/biomarker/search < tests/examples/biomarker/search.json
+http POST :8082/biomarker/list < tests/examples/biomarker/list.json
+http POST :8082/pagination/page < tests/examples/pagination/protein.json
+http POST :8082/pagination/page < tests/examples/pagination/site.json
+http POST :8082/pagination/page < tests/examples/pagination/glycan.json
+http POST :8082/pagination/page < tests/examples/pagination/motif.json
+http POST :8082/pagination/page < tests/examples/pagination/publication.json
+http POST :8082/pagination/page < tests/examples/pagination/biomarker.json
+http POST :8082/data/section_download < tests/examples/data/section_download.protein.glycosylation.json
+http POST :8082/data/section_download < tests/examples/data/section_download.site.glycosylation.json
+http POST :8082/data/section_download < tests/examples/data/section_download.glycan.glycoprotein.json
+http POST :8082/data/section_download < tests/examples/data/section_download.motif.glycans.json
+http POST :8082/data/section_download < tests/examples/data/section_download.publication.glycosylation.json
+http POST :8082/data/section_download < tests/examples/data/section_download.biomarker.biomarker_component.json
+http POST :8082/cart/list/ < tests/examples/cart/list.json
