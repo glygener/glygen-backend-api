@@ -19,11 +19,3 @@
 243702
 WiredTigerIndex::insert: key too large to index, failing  1104 { : "1466/06; 2414; aar; B/PR55; CG6235; Dmel\CG6235; dPP2A; dPP2A-B55; dPP2A-Balpha; dPR55; DPR55; l(3)01436; l(3)02414; l(3)j11C8; l(3)S022205b; l(3)S022..." }, full error: {'ok': 0.0, 'errmsg': 'WiredTigerIndex::insert: key too large to index, failing  1104 { : "1466/06; 2414; aar; B/PR55; CG6235; Dmel\\CG6235; dPP2A; dPP2A-B55; dPP2A-Balpha; dPR55; DPR55; l(3)01436; l(3)02414; l(3)j11C8; l(3)S022205b; l(3)S022..." }', 'code': 17280, 'codeName': 'KeyTooLong'}
 {'status': 0, 'error': 'Connection to MongoDB failed', 'details': []}
-Traceback (most recent call last):
-  File "wrap-update-initcache.py", line 65, in <module>
-    main()
-  File "wrap-update-initcache.py", line 44, in main
-    pulldown_dict = get_pulldown_dict(dbh, config_obj)
-  File "/data/shared/repos/glygen-backend-api/cacheutil.py", line 335, in get_pulldown_dict
-    val = doc["start_aa"]
-KeyError: 'start_aa'
