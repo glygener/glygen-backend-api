@@ -21,15 +21,19 @@ def main():
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
     parser.add_option("-c","--coll",action="store",dest="coll",help="") 
+    parser.add_option("-n","--indexname",action="store",dest="indexname",help="")
+     
     (options,args) = parser.parse_args()
-
-    for key in ([options.server, options.coll]):
+    for key in ([options.server, options.coll, options.indexname]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     server = options.server
     coll = options.coll
+    index_name = options.indexname
+    
+    print (index_name)
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     mongo_port = "27017"
@@ -38,26 +42,6 @@ def main():
     db_name = "glydb_beta" if server == "beta" else "glydb"
     db_obj = config_obj["dbinfo"][db_name]
     glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
-
-
-    index_dict = {
-        "c_index":{
-            "phraselist":"phraselist_index"
-        },
-        "c_protein":{
-            "uniprot_canonical_ac":"uniprot_canonical_ac_index",
-            "uniprot_ac":"uniprot_ac_index"
-        },
-        "c_glycan":{
-            "glytoucan_ac":"glytoucan_ac_index"
-        },
-        "c_list":{
-            "record_id":"record_id_index"
-        }
-    }
-
-
-
 
     try:
         client = pymongo.MongoClient(host,
@@ -69,29 +53,17 @@ def main():
         )
         client.server_info()
         dbh = client[db_name]
-       
-        #res = dbh[coll].create_index([("$**", pymongo.TEXT)], name="global_index")
  
         index_name_list = []
         for cur in dbh[coll].list_indexes():
             index_name_list.append(cur["name"])
         
-        for path in index_dict[coll]:
-            index_name = index_dict[coll][path]
-            if index_name in index_name_list:
-                msg = "\n ... dropping field index (path=%s) for %s" % (path, coll)
-                print (msg)
-                res = dbh[coll].drop_index(index_name)
-                msg = " ... finished dropping field index (path=%s) for %s"%(path,coll)
-                print (msg)
-            msg = "\n ... creating field index (path=%s) for %s" % (path, coll)
+        if index_name in index_name_list:
+            msg = "\n ... dropping field index=%s, coll=%s" % (index_name, coll)
             print (msg)
-            res = dbh[coll].create_index([(path, -1 )], name=index_name)
-            msg = " ... finished creating field index (path=%s) for %s" % (path, coll)
+            res = dbh[coll].drop_index(index_name)
+            msg = " ... finished dropping field index=%s, coll=%s" % (index_name,coll)
             print (msg)
-        
-        for cur in dbh[coll].list_indexes():
-            print(f"Index Name: {cur['name']}")
 
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
