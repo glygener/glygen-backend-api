@@ -1,8 +1,401 @@
-performing global search with empty query ... 
-done
-rerieving list objects ...
-done retrieving total of 918506 results 
-caching list objects ...
-done
-updating c_searchinit ...
-done
+
+ ... dropping field index (path=uniprot_canonical_ac) for c_protein
+ ... finished dropping field index (path=uniprot_canonical_ac) for c_protein
+
+ ... creating field index (path=uniprot_canonical_ac) for c_protein
+ ... finished creating field index (path=uniprot_canonical_ac) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_ac_index
+Index Name: uniprot_canonical_ac_index
+
+ ... dropping field index (path=uniprot_ac) for c_protein
+ ... finished dropping field index (path=uniprot_ac) for c_protein
+
+ ... creating field index (path=uniprot_ac) for c_protein
+ ... finished creating field index (path=uniprot_ac) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+
+ ... creating field index (path=isoforms.isoform_ac) for c_protein
+ ... finished creating field index (path=isoforms.isoform_ac) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+
+ ... creating field index (path=species.taxid) for c_protein
+ ... finished creating field index (path=species.taxid) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+
+ ... creating field index (path=gene_names.name) for c_protein
+WiredTigerIndex::insert: key too large to index, failing  1104 { : "1466/06; 2414; aar; B/PR55; CG6235; Dmel\CG6235; dPP2A; dPP2A-B55; dPP2A-Balpha; dPR55; DPR55; l(3)01436; l(3)02414; l(3)j11C8; l(3)S022205b; l(3)S022..." }, full error: {'ok': 0.0, 'errmsg': 'WiredTigerIndex::insert: key too large to index, failing  1104 { : "1466/06; 2414; aar; B/PR55; CG6235; Dmel\\CG6235; dPP2A; dPP2A-B55; dPP2A-Balpha; dPR55; DPR55; l(3)01436; l(3)02414; l(3)j11C8; l(3)S022205b; l(3)S022..." }', 'code': 17280, 'codeName': 'KeyTooLong'}
+
+ ... creating field index (path=species.glygen_name) for c_protein
+ ... finished creating field index (path=species.glygen_name) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+
+ ... creating field index (path=refseq.ac) for c_protein
+ ... finished creating field index (path=refseq.ac) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+
+ ... creating field index (path=go_annotation.categories.go_terms.id) for c_protein
+ ... finished creating field index (path=go_annotation.categories.go_terms.id) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+
+ ... creating field index (path=pathway.id) for c_protein
+ ... finished creating field index (path=pathway.id) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+
+ ... creating field index (path=disease.recommended_name.id) for c_protein
+ ... finished creating field index (path=disease.recommended_name.id) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+
+ ... creating field index (path=disease.synonyms.id) for c_protein
+ ... finished creating field index (path=disease.synonyms.id) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+
+ ... creating field index (path=biomarkers.condition.id_list) for c_protein
+ ... finished creating field index (path=biomarkers.condition.id_list) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+
+ ... creating field index (path=biomarkers.best_biomarker_role) for c_protein
+ ... finished creating field index (path=biomarkers.best_biomarker_role) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+Index Name: biomarker_role_index
+
+ ... creating field index (path=publication.reference.id) for c_protein
+ ... finished creating field index (path=publication.reference.id) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+Index Name: biomarker_role_index
+Index Name: publication_id_index
+
+ ... creating field index (path=mass.chemical_mass) for c_protein
+ ... finished creating field index (path=mass.chemical_mass) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+Index Name: biomarker_role_index
+Index Name: publication_id_index
+Index Name: mass_index
+
+ ... creating field index (path=interactions.interactor_id) for c_protein
+ ... finished creating field index (path=interactions.interactor_id) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+Index Name: biomarker_role_index
+Index Name: publication_id_index
+Index Name: mass_index
+Index Name: interactor_id_index
+
+ ... creating field index (path=glycosylation.glytoucan_ac) for c_protein
+ ... finished creating field index (path=glycosylation.glytoucan_ac) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+Index Name: biomarker_role_index
+Index Name: publication_id_index
+Index Name: mass_index
+Index Name: interactor_id_index
+Index Name: glytoucan_ac_index
+
+ ... creating field index (path=glycosylation.type) for c_protein
+ ... finished creating field index (path=glycosylation.type) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+Index Name: biomarker_role_index
+Index Name: publication_id_index
+Index Name: mass_index
+Index Name: interactor_id_index
+Index Name: glytoucan_ac_index
+Index Name: gtype_index
+
+ ... creating field index (path=glycosylation.residue) for c_protein
+ ... finished creating field index (path=glycosylation.residue) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+Index Name: biomarker_role_index
+Index Name: publication_id_index
+Index Name: mass_index
+Index Name: interactor_id_index
+Index Name: glytoucan_ac_index
+Index Name: gtype_index
+Index Name: glycosylation_residue_index
+
+ ... creating field index (path=glycosylation.site_category_dict.reported_with_glycan) for c_protein
+ ... finished creating field index (path=glycosylation.site_category_dict.reported_with_glycan) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+Index Name: biomarker_role_index
+Index Name: publication_id_index
+Index Name: mass_index
+Index Name: interactor_id_index
+Index Name: glytoucan_ac_index
+Index Name: gtype_index
+Index Name: glycosylation_residue_index
+Index Name: site_cat_reported_with_glycan_index
+
+ ... creating field index (path=glycosylation.site_category_dict.reported) for c_protein
+ ... finished creating field index (path=glycosylation.site_category_dict.reported) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+Index Name: biomarker_role_index
+Index Name: publication_id_index
+Index Name: mass_index
+Index Name: interactor_id_index
+Index Name: glytoucan_ac_index
+Index Name: gtype_index
+Index Name: glycosylation_residue_index
+Index Name: site_cat_reported_with_glycan_index
+Index Name: site_cat_reported_index
+
+ ... creating field index (path=glycosylation.site_category_dict.automatic_literature_mining) for c_protein
+ ... finished creating field index (path=glycosylation.site_category_dict.automatic_literature_mining) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+Index Name: biomarker_role_index
+Index Name: publication_id_index
+Index Name: mass_index
+Index Name: interactor_id_index
+Index Name: glytoucan_ac_index
+Index Name: gtype_index
+Index Name: glycosylation_residue_index
+Index Name: site_cat_reported_with_glycan_index
+Index Name: site_cat_reported_index
+Index Name: site_cat_litmined_index
+
+ ... creating field index (path=glycosylation.site_category_dict.predicted) for c_protein
+ ... finished creating field index (path=glycosylation.site_category_dict.predicted) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+Index Name: biomarker_role_index
+Index Name: publication_id_index
+Index Name: mass_index
+Index Name: interactor_id_index
+Index Name: glytoucan_ac_index
+Index Name: gtype_index
+Index Name: glycosylation_residue_index
+Index Name: site_cat_reported_with_glycan_index
+Index Name: site_cat_reported_index
+Index Name: site_cat_litmined_index
+Index Name: site_cat_predicted_index
+
+ ... creating field index (path=glycosylation.site_category_dict.predicted_with_glycan) for c_protein
+ ... finished creating field index (path=glycosylation.site_category_dict.predicted_with_glycan) for c_protein
+Index Name: _id_
+Index Name: $**_text
+Index Name: uniprot_canonical_ac_index
+Index Name: uniprot_ac_index
+Index Name: isoform_ac_index
+Index Name: tax_id_index
+Index Name: glygen_name_index
+Index Name: refseq_ac_index
+Index Name: go_id_index
+Index Name: pathway_id_index
+Index Name: disease_recommended_name_id_index
+Index Name: disease_synonyms_id_index
+Index Name: biomarker_condition_id_index
+Index Name: biomarker_role_index
+Index Name: publication_id_index
+Index Name: mass_index
+Index Name: interactor_id_index
+Index Name: glytoucan_ac_index
+Index Name: gtype_index
+Index Name: glycosylation_residue_index
+Index Name: site_cat_reported_with_glycan_index
+Index Name: site_cat_reported_index
+Index Name: site_cat_litmined_index
+Index Name: site_cat_predicted_index
+Index Name: site_cat_predicted_with_glycan_index

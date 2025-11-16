@@ -120,6 +120,7 @@ def main():
         qry_obj = query_doc[record_type][cache_name]
         api_name = "%s_search" % (record_type)
         list_id = get_hash_id(api_name, record_type, qry_obj["query"])
+        print (list_id, api_name, record_type, qry_obj["query"])
         if cache_exists(dbh, list_id,  "c_initcache"):
             delete_cache(dbh, list_id, "c_initcache")
         res_obj = update_c_initcache(dbh, cache_name, list_id, record_type, qry_obj, config_obj)

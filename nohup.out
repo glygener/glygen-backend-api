@@ -27,3 +27,32 @@ Traceback (most recent call last):
   File "/data/shared/repos/glygen-backend-api/cacheutil.py", line 335, in get_pulldown_dict
     val = doc["start_aa"]
 KeyError: 'start_aa'
+99
+Traceback (most recent call last):
+  File "populate_collection_host.py", line 279, in <module>
+    main()
+  File "populate_collection_host.py", line 211, in main
+    result = tmpdb_dbh[coll].insert_one(doc)     
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/collection.py", line 527, in insert_one
+    bypass_doc_val=bypass_document_validation, session=session),
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/collection.py", line 475, in _insert_one
+    acknowledged, _insert_command, session)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/mongo_client.py", line 1340, in _retryable_write
+    return self._retry_with_session(retryable, func, s, None)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/mongo_client.py", line 1229, in _retry_with_session
+    return self._retry_internal(retryable, func, session, bulk)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/mongo_client.py", line 1261, in _retry_internal
+    return func(session, sock_info, retryable)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/collection.py", line 470, in _insert_command
+    retryable_write=retryable_write)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/pool.py", line 735, in command
+    self._raise_connection_failure(error)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/pool.py", line 730, in command
+    exhaust_allowed=exhaust_allowed)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/network.py", line 134, in command
+    name, size, max_bson_size + message._COMMAND_OVERHEAD)
+  File "/usr/local/lib64/python3.6/site-packages/pymongo/message.py", line 912, in _raise_document_too_large
+    " bytes." % (doc_size, max_size))
+pymongo.errors.DocumentTooLarge: BSON document too large (19249850 bytes) - the connected server supports BSON document sizes up to 16793598 bytes.
+311342
+669146

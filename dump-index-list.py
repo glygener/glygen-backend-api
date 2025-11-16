@@ -21,14 +21,17 @@ def main():
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
-    (options,args) = parser.parse_args()
+    parser.add_option("-c","--coll",action="store",dest="coll",help="")
+     
 
-    for key in ([options.server]):
+    (options,args) = parser.parse_args()
+    for key in ([options.server, options.coll]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     server = options.server
+    coll = options.coll
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     mongo_port = "27017"
@@ -39,12 +42,6 @@ def main():
     db_obj = config_obj["dbinfo"][db_name]
     glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
 
-    coll_list = ["c_usercache", "c_userlistcache", "c_initcache", "c_initlistcache"]
-    for db in config_obj["downloads"]["jsondb"]:
-        coll = "c_" + db[:-2]
-        if coll in ["c_event", "c_video", "c_outreach"]:
-            continue
-        coll_list.append(coll)
 
 
     try:
@@ -57,11 +54,11 @@ def main():
         )
         client.server_info()
         dbh = client[glydb_name]
-        for coll in coll_list:
-            for cur in dbh[coll].list_indexes():
-                index_name = cur["name"]
-                if index_name != "_id_":
-                    print(coll, index_name)
+        for cur in dbh[coll].list_indexes():
+            index_name = cur["name"]
+            if index_name != "_id_":
+                n = len(list(dbh[coll].find({}, {"_id":1}).hint(index_name)))
+                print(coll, index_name, n)
 
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
