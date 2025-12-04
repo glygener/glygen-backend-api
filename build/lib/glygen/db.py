@@ -20,7 +20,7 @@ def get_mongodb():
     try: 
         conn_str, db_name = os.environ['MONGODB_CONNSTRING'], os.environ['DB_NAME']
         client = pymongo.MongoClient(conn_str)
-        client.server_info()
+        #client.server_info()
         ret_obj = client[db_name]
     except pymongo.errors.ServerSelectionTimeoutError as err:
         error_obj = {"status":0, "error":"Connection to MongoDB failed", "details":err.details}
