@@ -25,7 +25,7 @@ search_init_query_model = api.model("Disease Search Init Query", {})
 search_simple_query_model = api.model("Disease Simple Search Query",
     {
         "term_category": fields.String(required=True, default="disease"),
-        "term": fields.String(required=True, default="doid.1612")
+        "term": fields.String(required=True, default="DOID:1612")
     }
 )
 
@@ -112,7 +112,7 @@ class Disease(Resource):
 @api.doc(params={"record_id": {"in": "query", "default": "doid.1612"}})
 class Disease(Resource):
     @api.doc('detail')
-    @api.expect(detail_query_model)
+    #@api.expect(detail_query_model)
     def post(self, record_id):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
@@ -183,12 +183,10 @@ class Disease(Resource):
                 if res_obj == None:
                     res_obj = make_list_objects_indirect(req_obj, config_obj, False)
                     if "error_list" not in res_obj:
-                        # list objects are cached only if list size > min_list_size_to_cache
                         list_size = res_obj["pagination"]["total_length"]
-                        if list_size > config_obj["min_list_size_to_cache"]:
-                            res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
-                            if "error_list" in res:
-                                res_obj = res
+                        res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
+                        if "error_list" in res:
+                            res_obj = res
                     if "results" in res_obj:
                         res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
         except Exception as e:

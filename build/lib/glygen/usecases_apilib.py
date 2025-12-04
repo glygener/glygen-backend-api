@@ -651,7 +651,7 @@ def disease_to_glycosyltransferases(query_obj, config_obj):
 
 
 
-def genelocus_list(query_obj, config_obj):
+def genelocus_list(listcache_id, query_obj, config_obj):
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -683,6 +683,10 @@ def genelocus_list(query_obj, config_obj):
     if cached_obj == None:
         return {"error_list":[{"error_code":"non-existent-search-results"}]}
 
+
+    
+
+
     default_hash = {"offset":1, "limit":20, "sort":"gene_name", "order":"asc"}
     for key in default_hash:
         if key not in query_obj:
@@ -698,6 +702,13 @@ def genelocus_list(query_obj, config_obj):
                     return {"error_list":[{"error_code":"invalid-parameter-value"}]}
 
     sorted_id_list = sort_objects(cached_obj["results"], query_obj["sort"], query_obj["order"])
+    
+
+    
+    cached_obj["cache_info"]["cache_id"] = query_obj["id"]
+    cached_obj["cache_info"]["listcache_id"] = listcache_id
+
+
     res_obj = {"cache_info":cached_obj["cache_info"]}
 
     if len(cached_obj["results"]) == 0:
@@ -710,6 +721,7 @@ def genelocus_list(query_obj, config_obj):
 
     for obj_id in sorted_id_list[start_index:stop_index]:
         obj = cached_obj["results"][obj_id]
+        obj["filter_code"] = "0"
         res_obj["results"].append(order_obj(obj, config_obj["objectorder"]["protein"]))
 
     res_obj["pagination"] = {"offset":query_obj["offset"], "limit":query_obj["limit"],

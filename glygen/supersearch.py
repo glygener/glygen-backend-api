@@ -192,10 +192,9 @@ class Supersearch(Resource):
                     #return res_obj, 200
                     if "error_list" not in res_obj:
                         list_size = res_obj["pagination"]["total_length"]
-                        if list_size > config_obj["min_list_size_to_cache"]:
-                            res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
-                            if "error_list" in res:
-                                res_obj = res
+                        res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
+                        if "error_list" in res:
+                            res_obj = res
                 #if "results" in res_obj:
                 #    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
         except Exception as e:

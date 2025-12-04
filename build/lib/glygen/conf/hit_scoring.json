@@ -82,7 +82,6 @@
             }
         }
     },
-  
 	"biomarker":{
     	"misc":{
             "biomarker_exact_match": {"weight":50.0}
@@ -161,5 +160,7 @@
                 "fieldlist":["glycation_count"]
             }
         }
-    }
+    },
+	"motif":{},
+	"gene_locus":{}
 }

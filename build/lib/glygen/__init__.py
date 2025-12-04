@@ -8,6 +8,7 @@ from flask_restx import Api, Resource, fields
 
 from glygen.db import load_network_docs
 
+from .html import api as html_api
 from .protein import api as protein_api
 from .glycan import api as glycan_api
 from .auth import api as auth_api
@@ -43,11 +44,21 @@ def create_app():
     CORS(app, supports_credentials=True)
     #CORS(app)
 
-    api = Api(app, version='1.0', title='GlyGen APIs', description='Documentation for the GlyGen APIs',)
+    #api = Api(app, version='1.0', title='GlyGen APIs', description='Documentation for the GlyGen APIs',)
+    api = Api(app, template_folder='templates', ui_params={'layout': 'BaseLayout'})
+   
+    # Specify the custom template folder relative to your app.py
+    # If the 'templates' folder is in the same directory as app.py
+    # The 'layout': 'BaseLayout' is often required to ensure default Swagger UI functionality 
+    # is loaded correctly.
+
+
+
+
+
         
 
-
-
+    api.add_namespace(html_api)
     api.add_namespace(glycan_api)
     api.add_namespace(motif_api)
     api.add_namespace(protein_api)
@@ -96,8 +107,8 @@ def create_app():
     app.config['JSON_SORT_KEYS'] = False
 
     
-    app.config['NETWORK_DOCLIST'] = load_network_docs()
-    #app.config['NETWORK_DOCLIST'] = {}
+    #app.config['NETWORK_DOCLIST'] = load_network_docs()
+    app.config['NETWORK_DOCLIST'] = {}
  
     jwt = JWTManager(app)
 

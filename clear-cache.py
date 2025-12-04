@@ -32,21 +32,27 @@ def main():
     server = options.server
     coll = options.coll
 
+
     config_obj = json.loads(open("./conf/config.json", "r").read())
-    #mongo_port = config_obj["dbinfo"]["port"][server]
     mongo_port = "27017"
     
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
-  
     db_name = "glydb_beta" if server == "beta" else "glydb"
     db_obj = config_obj["dbinfo"][db_name]
-    glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
+    db_user, db_pass =  db_obj["user"], db_obj["password"]
+
+    if coll in ["c_initcache", "c_initlistcache"]:
+        print ("\n\tAre you sure you want to delete this collection?!!!\n\n")
+        exit()
+
+
+
 
     try:
         client = pymongo.MongoClient(host,
             username=db_user,
             password=db_pass,
-            authSource=glydb_name,
+            authSource=db_name,
             authMechanism='SCRAM-SHA-1',
             serverSelectionTimeoutMS=10000
         )
@@ -75,9 +81,6 @@ def main():
             cache_id = cache_info["cache_id"] if "cache_id" in cache_info else ""
             listcache_id = cache_info["listcache_id"] if "listcache_id" in cache_info else ""
             total = cache_info["total"] if "total" in cache_info else -1
-            if search_type == "structure_search":
-                print ("ignored|%s|%s|%s" % (search_type, list_id, total))
-                continue
             res = dbh[coll].delete_many({"list_id":list_id})
             print ("deleted|%s|%s|%s" % (search_type, list_id, total))
 

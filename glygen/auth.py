@@ -17,7 +17,7 @@ from flask_jwt_extended import (
     set_refresh_cookies, unset_jwt_cookies
     )
 
-from glygen.auth_apilib import auth_userid, auth_notify, auth_contact, auth_register, auth_login,  auth_userinfo, auth_userupdate, auth_userdelete, auth_contactlist, auth_contactupdate, auth_contactdelete
+from glygen.auth_apilib import auth_userid, auth_notify, auth_contact, auth_register, auth_aisearch, auth_login,  auth_userinfo, auth_userupdate, auth_userdelete, auth_contactlist, auth_contactupdate, auth_contactdelete
 
 from glygen.util import get_req_obj
 import traceback
@@ -33,6 +33,13 @@ register_query_model = api.model("Auth Register Query",
         "password":fields.String(required=True, default="")
     }
 )
+aisearch_query_model = api.model("Auth AI Search Query",
+    {
+        "glycan_ai_search":fields.String(required=True, default=""),
+        "protein_ai_search":fields.String(required=True, default="")
+    }
+)
+
 login_query_model = api.model("Auth Login Query",
     { 
         "email":fields.String(required=True, default=""),
@@ -139,6 +146,30 @@ class Auth(Resource):
             res_obj = log_request(req_obj, "/auth/notify/", request)
             if "error_list" not in res_obj:
                 res_obj = auth_notify(req_obj, config_obj)
+        except Exception as e:
+            res_obj =  log_error(traceback.format_exc())
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
+
+@api.route('/aisearch/')
+class Auth(Resource):
+    @api.expect(aisearch_query_model)
+    @jwt_required
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj = {}
+        try:
+            req_obj = get_req_obj(request)
+            res_obj = log_request(req_obj, "/auth/aisearch/", request)
+            if "error_list" not in res_obj:
+                res_obj = auth_aisearch(req_obj, config_obj)
         except Exception as e:
             res_obj =  log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

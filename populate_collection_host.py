@@ -187,7 +187,6 @@ def main():
                 json_db = coll[2:] + "db"
                 file_list = glob.glob(jsondb_dir + "/" + json_db + "/*.json")
                 #file_list = glob.glob(jsondb_dir + "/" + json_db + "/G17689DH*.json")
-                print (len(file_list))
                 #exit()
 
                 nrecords_total = len(file_list)

@@ -26,7 +26,7 @@
     },
     "data_path":"/data/shared/glygen/",
     "downloads_path":"/data/shared/glyds/downloads/",
-    "mail":{
+	 "mail":{
         "server":"172.17.0.1", 
         "port":"25",
         "sender":"no-reply@glygen.gwu.edu"
@@ -49,7 +49,7 @@
             "user":"glydbadmin",
             "password":"glydbpass"
         },
-	"glydb_beta":{
+		  "glydb_beta":{
             "db":"glydb_beta",
             "user":"glydb_betaadmin",
             "password":"glydb_betapass"

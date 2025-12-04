@@ -5,7 +5,7 @@ import json
 import time
 import requests
 from optparse import OptionParser
-
+import subprocess
 
 
 
@@ -94,23 +94,29 @@ if __name__ == '__main__':
 
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
+    parser.add_option("-s","--server",action="store",dest="server",help="tst/beta/prd")
     parser.add_option("-i","--infile",action="store",dest="infile",help="Input file")
     parser.add_option("-o","--outfile",action="store",dest="outfile",help="Output file")
-    parser.add_option("-u","--apiurl",action="store",dest="apiurl",help="API URL")
      
     (options,args) = parser.parse_args()
-    for key in ([options.infile, options.outfile, options.apiurl]):
+    for key in ([options.server, options.infile, options.outfile]):
         if not (key):
             parser.print_help()
             sys.exit(0)
     
+    server = options.server
     in_file = options.infile
     out_file = options.outfile
-    api_url = options.apiurl
+    
+    container_name = "running_substructure_beta" if server == "beta" else "running_substructure"
 
-    #api_url = 'http://running_substructure:10980'
-
-
+    cmd = "docker inspect %s" % (container_name)
+    x = subprocess.getoutput(cmd)
+    doc_list = json.loads(x)
+    ip_addr = doc_list[-1]["NetworkSettings"]["IPAddress"] 
+    host_port = doc_list[-1]["NetworkSettings"]["Ports"]["80/tcp"][0]["HostPort"]
+    api_url = "http://%s:%s" % (ip_addr, host_port)
+ 
     task = json.loads(open(in_file).read())
     task["api_url"] = api_url
 

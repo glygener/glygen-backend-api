@@ -52,6 +52,7 @@ class Pagination(Resource):
                 if res_obj == None:
                     res_obj = pagination_page(req_obj, config_obj)
                     if "error_list" not in res_obj:
+                        return res_obj
                         res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
                         if "error_list" in res:
                             res_obj = res

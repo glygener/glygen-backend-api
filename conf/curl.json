@@ -6,7 +6,11 @@
         "prd":"4042"
     },  
     "api":{
-        "outreach_addnew":{
+        "auth_aisearch":{
+                "url":"http://localhost:%s/auth/aisearch/",
+                "file":"tests/examples/auth/auth_aisearch.json"
+        },
+		  "outreach_addnew":{
                 "url":"http://localhost:%s/outreach/addnew/",
                 "file":"tests/examples/outreach/outreach_addnew.json"
         },

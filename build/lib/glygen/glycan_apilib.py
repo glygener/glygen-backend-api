@@ -8,6 +8,7 @@ import pytz
 import re
 from collections import OrderedDict
 from bson import json_util, ObjectId
+from flask import (request, current_app)
 
 from glygen.indexlib import use_indexed_search
 from glygen.db import get_mongodb
@@ -31,6 +32,14 @@ def glycan_search_init(config_obj):
     if "" in res_obj["glycan"]["id_namespace"]:
         res_obj["glycan"]["id_namespace"].remove("")
 
+    
+    collection = "c_aisearch"
+    doc =  dbh[collection].find_one({})
+    if doc != None:
+        if "glycan_ai_search" in doc:
+            o = {"status":doc["glycan_ai_search"], "token":os.environ["AISEARCH_TOKEN"]}
+            res_obj["glycan"]["ai_search"] = o
+            
 
 
     return res_obj["glycan"]
@@ -246,45 +255,52 @@ def glycan_search(query_obj, config_obj):
     ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
 
-
-    mongo_query = get_mongo_query(query_obj)
-    #return mongo_query
-
     ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-    collection = "c_glycan"
-    cache_collection = "c_usercache"
+    sf_dict = {}
+    for f in query_obj:
+        if f not in ["operation", "query_type"]:
+            sf_dict[f] = query_obj[f]
+    hit_dict, hit_stat = {}, {}
+    hit_dict, hit_stat, tmp_ts_list = get_hit_dict(dbh, sf_dict,field2sec,api_name, config_obj)
+    ts_list += tmp_ts_list
+    #return ts_list
+    #return hit_stat
 
-    prj_obj = {"glytoucan_ac":1, "glycan_identifier":1, "crossref.id":1}
-    for k in ["composition", "composition_expanded"]:
-        if k in query_obj:
-            prj_obj[k] = 1
+    sf_list = list(sf_dict.keys())
+    hit_record_list = hit_dict[sf_list[0]]
+    if len(sf_list) > 1:
+        for i in range(1, len(sf_list)):
+            hit_record_list = list(set(hit_record_list).intersection(set(hit_dict[sf_list[i]])))
+
+    prj_obj = {"glytoucan_ac":1, "glycan_identifier":1, "crossref.id":1,
+        "composition":1, "composition_expanded":1}
     if "glycan_identifier" in query_obj:
         if "subsumption" in query_obj["glycan_identifier"]:
             prj_obj["subsumption"] = 1
-
-
-    cur_list = []
-    cur_list += list(dbh[collection].find(mongo_query,prj_obj))
-    ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    ts_list.append("1a-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    
+    expanded_doc_list = list(dbh["c_glycan"].find({"glytoucan_ac":{"$in":hit_record_list}},prj_obj))
+    ts_list.append(len(expanded_doc_list))
+    ts_list.append("1b-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     #return ts_list
 
     seen_record = {}
     if "protein_identifier" in query_obj:
         p_id = query_obj["protein_identifier"]
-        mongo_query = {"sections.glycoprotein.uniprot_canonical_ac":{"$regex": p_id, "$options": "i"}}
-        for doc in dbh["c_batch"].find(mongo_query, {"recordid":1}):
+        m_query = {"sections.glycoprotein.uniprot_canonical_ac":{"$regex": p_id, "$options": "i"}}
+        for doc in dbh["c_batch"].find(m_query, {"recordid":1}):
             if doc["recordid"] not in seen_record:
-                cur_list += list(dbh[collection].find({"glytoucan_ac":doc["recordid"]},prj_obj))
+                expanded_doc_list += list(dbh["c_glycan"].find({"glytoucan_ac":doc["recordid"]},prj_obj))
             seen_record[doc["recordid"]] = True
                 
     ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     
     i = 0
     results = []
-    doc_list = []
-    for doc in cur_list:
+    filtered_expanded_doc_list = []
+    for doc in expanded_doc_list:
         comp_flag_list = []
         for k in ["composition", "composition_expanded"]:
             if k in query_obj:
@@ -293,11 +309,10 @@ def glycan_search(query_obj, config_obj):
                     comp_flag_list.append(flag)
         if False in comp_flag_list:
             continue
-        doc_list.append(doc)
+        filtered_expanded_doc_list.append(doc)
 
     ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-    #"sections.glycoprotein.uniprot_canonical_ac"
 
     #Add additional glycan objects related to hits by subsumption
     if "glycan_identifier" in query_obj:
@@ -305,11 +320,11 @@ def glycan_search(query_obj, config_obj):
             rel_type = query_obj["glycan_identifier"]["subsumption"].lower()
             if rel_type != "none": 
                 hit_list = []
-                for doc in doc_list:
+                for doc in filtered_expanded_doc_list:
                     hit_list.append(doc["glytoucan_ac"])
                 seen_id = {}
                 extra_doc_list = []
-                for doc in doc_list:
+                for doc in filtered_expanded_doc_list:
                     for o in doc["subsumption"]:
                         rel = o["relationship"].lower()
                         tv = rel == rel_type
@@ -317,16 +332,16 @@ def glycan_search(query_obj, config_obj):
                         if tv and o["related_accession"] not in hit_list:
                             seen_id[o["related_accession"]] = True
                 for glytoucan_ac in seen_id.keys():
-                    doc = dbh[collection].find_one({"glytoucan_ac":glytoucan_ac},prj_obj)
+                    doc = dbh["c_glycan"].find_one({"glytoucan_ac":glytoucan_ac},prj_obj)
                     extra_doc_list.append(doc)
-                doc_list += extra_doc_list
+                filtered_expanded_doc_list += extra_doc_list
 
     ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     record_list = []
     record_type = "glycan"
     seen_id = {}
-    for doc in doc_list:
+    for doc in filtered_expanded_doc_list:
         if doc == None:
             continue
         record_list.append(doc["glytoucan_ac"])
@@ -337,26 +352,11 @@ def glycan_search(query_obj, config_obj):
     ts_list.append("5-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     unmapped_obj_list = []
-    redundancy_dict = {}
     if "glycan_identifier" in query_obj:
         if "glycan_id" in query_obj["glycan_identifier"]:
-            qid_list = get_qid_list(query_obj["glycan_identifier"]["glycan_id"])
-            for qid in qid_list:
-                if qid not in seen_id:
-                    unmapped_obj_list.append({"input_id":qid, "reason":"ID not found"})
-                if qid_list.count(qid) > 1:
-                    redundancy_dict[qid] = qid_list.count(qid)
-
+            unmapped_obj_list = get_unmapped_obj_list(query_obj["glycan_identifier"]["glycan_id"], seen_id)
     ts_list.append("6-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-    for qid in redundancy_dict:
-        for i in range(redundancy_dict[qid] - 1):
-            unmapped_obj_list.append({"input_id":qid, "reason":"Duplicate ID"})
-
-
-
-
-    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     list_id = "" if len(record_list) == 0 else list_id
     if len(record_list) != 0:
@@ -373,7 +373,7 @@ def glycan_search(query_obj, config_obj):
 
     ts_list.append("7-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-    #return {"tslist":ts_list, "mongo":mongo_query}
+    #return {"tslist":ts_list}
     return res_obj
     
 
@@ -595,7 +595,10 @@ def get_mongo_query(query_obj):
     
     #mass
     if "mass" in query_obj:
-        mass_field = "mass_pme" if query_obj["mass_type"].lower() != "native" else "mass"
+        mass_field = "mass"
+        if "mass_type" in query_obj:
+            if query_obj["mass_type"].lower() == "native":
+                mass_field = "mass_pme"
         if "min" in query_obj["mass"]:
             cond_objs.append({mass_field:{'$gte': query_obj["mass"]["min"]}})
         if "max" in query_obj["mass"]:
@@ -830,5 +833,81 @@ def is_glycan_composition(term):
             tmp_list_two.append(o)
 
     return list(set(tmp_list_one)) == [True], {"$and":tmp_list_two}
+
+
+
+
+
+def get_hit_dict(dbh, sf_dict, field2sec, api_name, config_obj):
+
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts_list = []
+   
+    record_type = api_name.split("_")[0]
+    hit_dict, hit_stat = {}, {}
+    coll = "c_" + record_type
+
+    for f in sf_dict:
+        ts_list.append(f)
+        ts_list.append("x-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+        query_obj_single = {f:sf_dict[f], "operation":"AND", "query_type":"search_protein"}
+        list_id_single = get_hash_id(api_name, record_type, query_obj_single)
+        cached_obj_single = dbh["c_initcache"].find_one({"list_id":list_id_single})
+        if cached_obj_single != None:
+            hit_dict[f] = []
+            for doc in dbh["c_initcache"].find({"list_id":list_id_single}):
+                hit_dict[f] += doc["results"]
+            hit_stat[f] = {"n":len(hit_dict[f]), "flag":"1"}
+        elif f in field2sec:
+            hit_dict[f] = []
+            sec = field2sec[f]
+            f_parts = f.split(".")
+            val = sf_dict[f]
+            if type(val) is dict:
+                for ff in f_parts[1:]:
+                    val = val[ff]
+            query_obj_new = {"term":val,"term_category":sec}
+            api_name_simple = "%s_search_simple" % (record_type)
+            res = use_indexed_search(api_name_simple, query_obj_new,config_obj)
+            if "error_list" not in res:
+                for doc in dbh["c_usercache"].find({"list_id":res["list_id"]}):
+                    hit_dict[f] += doc["results"]
+            hit_stat[f] = {"n":len(hit_dict[f]), "flag":"2"}
+        else:
+            hit_dict[f] = []
+            mongo_query_single = get_mongo_query(query_obj_single)
+            prj_obj = {"glytoucan_ac":1}
+            for obj in dbh[coll].find(mongo_query_single,prj_obj):
+                canon = obj["glytoucan_ac"]
+                hit_dict[f].append(canon)
+            hit_stat[f] = {"n":len(hit_dict[f]), "flag":"5", "mquery":mongo_query_single}
+        ts_list.append("1y-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+    return hit_dict, hit_stat, ts_list
+
+
+
+
+
+
+def get_unmapped_obj_list(query_value, seen_id):
+
+    get_unmapped_obj_list = []
+    redundancy_dict = {}
+    qid_list = get_qid_list(query_value)
+    for qid in qid_list:
+        if qid not in seen_id:
+            unmapped_obj_list.append({"input_id":qid, "reason":"ID not found"})
+        if qid_list.count(qid) > 1:
+            redundancy_dict[qid] = qid_list.count(qid)
+    for qid in redundancy_dict:
+        for i in range(redundancy_dict[qid] - 1):
+            unmapped_obj_list.append({"input_id":qid, "reason":"Duplicate ID"})
+
+    return get_unmapped_obj_list
+
+
+
+
 
 

@@ -1,0 +1,11 @@
+{
+                "operation": "AND",
+                "query_type": "search_protein",
+                "glycosylated_aa": {
+                    "aa_list": [
+                        "N",
+                        "T"
+                    ],
+                    "operation": "or"
+                }
+}

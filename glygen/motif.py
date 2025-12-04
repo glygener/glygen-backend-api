@@ -78,8 +78,10 @@ class Motif(Resource):
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
                 res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
+                #return res_obj
                 if res_obj == None:
                     res_obj = make_motif_list_objects_direct(req_obj, config_obj)
+                    #return res_obj
                     if "error_list" not in res_obj:
                         res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
                         if "error_list" in res:

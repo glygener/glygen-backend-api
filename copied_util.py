@@ -944,7 +944,7 @@ def make_list_objects_indirect(dbh, query_obj, config_obj, limit_flag):
     final_fields, extra_fields = get_final_fields(query_obj, record_type)
 
 
-    prj_obj = {}
+    prj_obj = {"hit_score":1}
     for f in final_fields:
         prj_obj[f] = 1
 
@@ -1804,10 +1804,8 @@ def get_list_objects(dbh,cache_id, cache_info, cache_collection, final_fields, s
             #    "formula":"sum(w + 0.01*f)", 
             #    "variables":{"c":"condition name","w":"condition weight","f":"condition match frequency"}
             #}
-            hit_score = -1.0
             if is_empty_query == False:
-                hit_score, cond_match_freq = get_hit_score(obj, cache_info, score_dict, final_fields, score_info)
-            obj["hit_score"] = hit_score
+                obj["hit_score"], cond_match_freq = get_hit_score(obj, cache_info, score_dict, final_fields, score_info)
             obj["score_info"] = score_info
             tmp_obj_list.append(obj)
 

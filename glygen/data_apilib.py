@@ -676,7 +676,7 @@ def get_list_object(query_obj, config_obj):
         if query_obj["download_type"] in ["idmapping_list_all", "idmapping_list_all_collapsed",
             "idmapping_list_mapped","idmapping_list_unmapped", "genelocus_list", "ortholog_list"]:
             if collection == "c_userlistcache":
-                #return {"error_list":[{"error_code":"aaaaa"}]}
+                #return {"error_list":[{"error_code":"aaaaa", "listcache_id":listcache_id}]}
                 list_obj = retrieve_cached_list_objects(cache_id, listcache_id, query_obj)
             else:
                 list_obj = make_list_objects_direct(list_query, config_obj, False)
@@ -835,8 +835,7 @@ def get_results_from_record_id(dbh, query_obj, section_field):
     doc = dbh[collection].find_one(mongo_query)
     if doc == None:
         return {"error_list":[{"error_code":"no record found for %s=%s" % (main_id_field, record_id)}]}
-  
-    #return {"results":doc["glycosylation"]}
+ 
 
 
     obj_list = []

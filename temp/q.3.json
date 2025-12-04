@@ -1,0 +1,8 @@
+{
+	"operation": "AND",
+	"query_type": "search_glycan",
+	"glycan_type": "N-linked",
+	"organism": {
+		"organism_list": [{"glygen_name": "Fruit fly"}],"annotation_category": "","operation": "or"
+	}
+}

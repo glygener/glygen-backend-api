@@ -95,35 +95,45 @@ def motif_detail(query_obj, config_obj):
 
 
 
-    prj_obj = {"glytoucan_ac":1, "motifs":1, "glycoprotein":1, "enzyme":1, 
-        "mass":1, "number_monosaccharides":1, "iupac":1, "glycoct":1}
+    #prj_obj = {"glytoucan_ac":1, "motifs":1, "glycoprotein":1, "enzyme":1, 
+    #    "mass":1, "number_monosaccharides":1, "iupac":1, "glycoct":1}
+    prj_obj = {"glytoucan_ac":1}
 
     mongo_query = {"motifs.id": {'$eq': motif_doc["motif_ac"]}}
-    doc_list = list(dbh["c_glycan"].find(mongo_query, prj_obj))
+    skinny_doc_list = list(dbh["c_glycan"].find(mongo_query, prj_obj))
 
+    ts_list.append(len(skinny_doc_list))
     ts_list.append("4b-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-    results = get_parent_glycans(motif_doc["motif_ac"], doc_list, res_obj)
+    skinny_obj_list = get_parent_glycans(motif_doc["motif_ac"], skinny_doc_list, res_obj)
 
     ts_list.append("5-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-    sorted_id_list = sort_objects(results, config_obj["glycan_list"]["returnfields"], 
+    sorted_id_list = sort_objects(skinny_obj_list, config_obj["glycan_list"]["returnfields"], 
                                         query_obj["sort"], query_obj["order"])
     
     #check for post-access error, error_list should be empty upto this line
-    if int(query_obj["offset"]) < 1 or int(query_obj["offset"]) > len(results):
+    if int(query_obj["offset"]) < 1 or int(query_obj["offset"]) > len(skinny_obj_list):
         post_error_list.append({"error_code":"invalid-parameter-value", "field":"offset"})
-        return {"error_list":post_error_list, "n":len(results)}
+        return {"error_list":post_error_list, "n":len(skinny_obj_list)}
 
     start_index = int(query_obj["offset"]) - 1
     stop_index = start_index + int(query_obj["limit"])
-    res_obj["results"] = []
-
+    page_id_list = []
     for i in sorted_id_list[start_index:stop_index]:
-        res_obj["results"].append(results[i])
+        page_id_list.append(skinny_obj_list[i]["glytoucan_ac"])
+
+
+    prj_obj = {"glytoucan_ac":1, "motifs":1, "glycoprotein":1, "enzyme":1, 
+        "mass":1, "number_monosaccharides":1, "iupac":1, "glycoct":1}
+    mongo_query = {"glytoucan_ac": {'$in': page_id_list}}
+    fat_doc_list = list(dbh["c_glycan"].find(mongo_query, prj_obj))
+    fat_obj_list = get_parent_glycans(motif_doc["motif_ac"], fat_doc_list, res_obj)
+    res_obj["results"] = fat_obj_list
+ 
 
     res_obj["pagination"] = {"offset":query_obj["offset"], "limit":query_obj["limit"],
-        "total_length":len(results), "sort":query_obj["sort"], "order":query_obj["order"]}
+        "total_length":len(skinny_obj_list), "sort":query_obj["sort"], "order":query_obj["order"]}
     res_obj["query"] = query_obj
 
  
@@ -147,6 +157,7 @@ def motif_detail(query_obj, config_obj):
 
 def get_parent_glycans(motif_ac, doc_list, res_obj):
 
+   
     results = []
     for doc in doc_list:
         if "motifs" in doc:

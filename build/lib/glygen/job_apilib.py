@@ -157,16 +157,15 @@ def job_addnew(query_obj, config_obj, data_path, server):
                     FW.write("%s\n" % (validation_obj["buffer"]))
             gap = "=" if query_obj["jobtype"] in ["clustalw"] else " "
 
+            if "sercmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
+                ser_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["sercmdflag"]
+                query_obj["cmd"] += " %s %s" % (ser_cmdflag, server)
             if "incmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
                 in_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["incmdflag"]
                 query_obj["cmd"] += " %s%s%s" % (in_cmdflag,gap, in_file)
             if "outcmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
                 out_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["outcmdflag"]
                 query_obj["cmd"] += " %s%s%s" % (out_cmdflag,gap, out_file)
-            if "urlcmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
-                api_url = config_obj["jobinfo"][query_obj["jobtype"]]["apiurl"][server]
-                url_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["urlcmdflag"]
-                query_obj["cmd"] += " %s %s" % (url_cmdflag, api_url)
  
             job_lbl = "%s_%s" % (query_obj["jobtype"], query_obj["jobid"])
             cmd = "%s -E -L %s %s" % (config_obj["jobinfo"]["tspath"],job_lbl, query_obj["cmd"])

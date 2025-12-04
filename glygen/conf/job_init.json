@@ -70,9 +70,15 @@
                 "tooltip": ""
             },
             {
+                "id": "Glycosylation",
+                "label": "Glycosylation",
+                "order": 3,
+                "tooltip": ""
+            },
+				{
                 "id": "PTM",
                 "label": "PTM",
-                "order": 3,
+                "order": 3.5,
                 "tooltip": ""
             },
             {
@@ -331,13 +337,13 @@
                 ]
             },
             "n_glycosites_confirmed": {
-                "label": "Confirmed N-glycosylation sites",
+                "label": "Reported N-glycosylation sites",
                 "oplist": [
                     "none"
                 ],
                 "categories": [
                     {
-                        "id": "PTM",
+                        "id": "Glycosylation",
                         "order": 1
                     }
                 ],
@@ -352,7 +358,7 @@
                 ],
                 "categories": [
                     {
-                        "id": "PTM",
+                        "id": "Glycosylation",
                         "order": 2
                     }
                 ],
@@ -361,13 +367,13 @@
                 ]
             },
             "o_glycosites_confirmed": {
-                "label": "Confirmed O-glycosylation sites",
+                "label": "Reported O-glycosylation sites",
                 "oplist": [
                     "none"
                 ],
                 "categories": [
                     {
-                        "id": "PTM",
+                        "id": "Glycosylation",
                         "order": 3
                     }
                 ],
@@ -382,7 +388,7 @@
                 ],
                 "categories": [
                     {
-                        "id": "PTM",
+                        "id": "Glycosylation",
                         "order": 4
                     }
                 ],
@@ -391,13 +397,13 @@
                 ]
             },
             "glycosite_count_confirmed": {
-                "label": "Number of confirmed glycosylation sites",
+                "label": "Number of reported glycosylation sites",
                 "oplist": [
                     "none"
                 ],
                 "categories": [
                     {
-                        "id": "PTM",
+                        "id": "Glycosylation",
                         "order": 5
                     }
                 ],
@@ -412,8 +418,23 @@
                 ],
                 "categories": [
                     {
-                        "id": "PTM",
+                        "id": "Glycosylation",
                         "order": 6
+                    }
+                ],
+                "output_type": [
+                    "id"
+                ]
+            },
+				"is_glycosylated": {
+                "label": "Is Glycosylated",
+                "oplist": [
+                    "none"
+                ],
+                "categories": [
+                    {
+                        "id": "Glycosylation",
+                        "order": 7
                     }
                 ],
                 "output_type": [
@@ -428,7 +449,7 @@
                 "categories": [
                     {
                         "id": "PTM",
-                        "order": 7
+                        "order": 1
                     }
                 ],
                 "output_type": [

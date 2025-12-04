@@ -25,6 +25,7 @@ glygen/glycan.py
 glygen/glycan_apilib.py
 glygen/graph.py
 glygen/graph_apilib.py
+glygen/html.py
 glygen/idmapping.py
 glygen/idmapping_apilib.py
 glygen/indexlib.py

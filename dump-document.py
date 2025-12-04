@@ -56,9 +56,9 @@ def main():
         #q = {"glytoucan_ac": "G17689DH"}
         q = {}
         for doc in dbh[coll].find(q):
-            for p in ["password"]:
-                if p in doc:
-                    doc.pop(p)
+            #for p in ["password"]:
+            #    if p in doc:
+            #        doc.pop(p)
             for p in ["_id", "start_date", "end_date", "createdts", "updatedts", "creation_time", "update_time"]:
                 if p in doc:
                     doc[p] = str(doc[p])

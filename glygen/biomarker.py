@@ -46,11 +46,13 @@ search_query_model = api.model("Biomarker Search Query",
         "specimen_id":fields.String(required=True, default="0000178"),
         "specimen_loinc_code":fields.String(required=True, default="26881-3"),
         "best_biomarker_role":fields.String(required=True, default="prognostic"),
-        "condition_id":fields.String(required=True, default="DOID:10283"),
-        "condition_name":fields.String(required=True, default="prostate cancer"),
-        "publication_id":fields.String(required=True, default="10914713")
+        "condition_id":fields.String(required=True, default="DOID:0080600"),
+        "condition_name":fields.String(required=True, default="COVID-19"),
+        "publication_id":fields.String(required=True, default="32479790")
     }
 )
+
+
 
 
 
@@ -184,12 +186,10 @@ class Biomarker(Resource):
                 if res_obj == None:
                     res_obj = make_list_objects_indirect(req_obj, config_obj, False)
                     if "error_list" not in res_obj:
-                        # list objects are cached only if list size > min_list_size_to_cache
                         list_size = res_obj["pagination"]["total_length"]
-                        if list_size > config_obj["min_list_size_to_cache"]:
-                            res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
-                            if "error_list" in res:
-                                res_obj = res
+                        res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
+                        if "error_list" in res:
+                            res_obj = res
                     if "results" in res_obj:
                         res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
         except Exception as e:

@@ -142,10 +142,10 @@ class Idmapping(Resource):
                 res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
                 if res_obj == None:
                     res_obj = make_list_objects_direct(req_obj, config_obj, False)
-                    if "error_list" not in res_obj:
-                        res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
-                        if "error_list" in res:
-                            res_obj = res
+                    #if "error_list" not in res_obj:
+                    #    res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
+                    #    if "error_list" in res:
+                    #        res_obj = res
                 #if "results" in res_obj:
                 #    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
         except Exception as e:

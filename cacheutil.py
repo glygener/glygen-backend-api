@@ -190,7 +190,8 @@ def get_pulldown_dict(dbh, config_obj):
         "sites_reported_with_glycans":{"glycosylation.site_category_dict.reported_with_glycan":{"$eq":True}},
         "sites_reported_without_glycans":{"glycosylation.site_category_dict.reported":{"$eq":True}},
         "sites_detected_by_literature_mining":{"glycosylation.site_category_dict.automatic_literature_mining":{"$eq":True}},
-        "predicted_sites":{"glycosylation.site_category_dict.predicted":{"$eq":True}}
+        "predicted_sites":{"$or":[{"glycosylation.site_category_dict.predicted":{"$eq":True}},
+                {"glycosylation.site_category_dict.predicted_with_glycan":{"$eq":True}}]}
     }
 
 
@@ -332,6 +333,8 @@ def get_pulldown_dict(dbh, config_obj):
     count_dict = {}
     for doc in dbh["c_site"].find({},{"start_aa":1}):
         doc_id = str(doc["_id"])
+        if "start_aa" not in doc:
+            continue
         val = doc["start_aa"]
         if val == "":
             continue

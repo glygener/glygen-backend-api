@@ -1,58 +1,184 @@
-1
-1
-1
-16
-8464
-335
-121
-754
-1
-706745
-33639
-1068
-58841
-211485
-158494
-980609
-317520
-669146
-243702
-WiredTigerIndex::insert: key too large to index, failing  1104 { : "1466/06; 2414; aar; B/PR55; CG6235; Dmel\CG6235; dPP2A; dPP2A-B55; dPP2A-Balpha; dPR55; DPR55; l(3)01436; l(3)02414; l(3)j11C8; l(3)S022205b; l(3)S022..." }, full error: {'ok': 0.0, 'errmsg': 'WiredTigerIndex::insert: key too large to index, failing  1104 { : "1466/06; 2414; aar; B/PR55; CG6235; Dmel\\CG6235; dPP2A; dPP2A-B55; dPP2A-Balpha; dPR55; DPR55; l(3)01436; l(3)02414; l(3)j11C8; l(3)S022205b; l(3)S022..." }', 'code': 17280, 'codeName': 'KeyTooLong'}
-{'status': 0, 'error': 'Connection to MongoDB failed', 'details': []}
-Traceback (most recent call last):
-  File "wrap-update-initcache.py", line 65, in <module>
-    main()
-  File "wrap-update-initcache.py", line 44, in main
-    pulldown_dict = get_pulldown_dict(dbh, config_obj)
-  File "/data/shared/repos/glygen-backend-api/cacheutil.py", line 335, in get_pulldown_dict
-    val = doc["start_aa"]
-KeyError: 'start_aa'
-99
-Traceback (most recent call last):
-  File "populate_collection_host.py", line 279, in <module>
-    main()
-  File "populate_collection_host.py", line 211, in main
-    result = tmpdb_dbh[coll].insert_one(doc)     
-  File "/usr/local/lib64/python3.6/site-packages/pymongo/collection.py", line 527, in insert_one
-    bypass_doc_val=bypass_document_validation, session=session),
-  File "/usr/local/lib64/python3.6/site-packages/pymongo/collection.py", line 475, in _insert_one
-    acknowledged, _insert_command, session)
-  File "/usr/local/lib64/python3.6/site-packages/pymongo/mongo_client.py", line 1340, in _retryable_write
-    return self._retry_with_session(retryable, func, s, None)
-  File "/usr/local/lib64/python3.6/site-packages/pymongo/mongo_client.py", line 1229, in _retry_with_session
-    return self._retry_internal(retryable, func, session, bulk)
-  File "/usr/local/lib64/python3.6/site-packages/pymongo/mongo_client.py", line 1261, in _retry_internal
-    return func(session, sock_info, retryable)
-  File "/usr/local/lib64/python3.6/site-packages/pymongo/collection.py", line 470, in _insert_command
-    retryable_write=retryable_write)
-  File "/usr/local/lib64/python3.6/site-packages/pymongo/pool.py", line 735, in command
-    self._raise_connection_failure(error)
-  File "/usr/local/lib64/python3.6/site-packages/pymongo/pool.py", line 730, in command
-    exhaust_allowed=exhaust_allowed)
-  File "/usr/local/lib64/python3.6/site-packages/pymongo/network.py", line 134, in command
-    name, size, max_bson_size + message._COMMAND_OVERHEAD)
-  File "/usr/local/lib64/python3.6/site-packages/pymongo/message.py", line 912, in _raise_document_too_large
-    " bytes." % (doc_size, max_size))
-pymongo.errors.DocumentTooLarge: BSON document too large (19249850 bytes) - the connected server supports BSON document sizes up to 16793598 bytes.
-311342
-669146
+finished ... python3 update-initlistcache.py -s beta -n protein_all
+finished ... python3 update-initlistcache.py -s beta -n protein_cellular_slime_mold
+finished ... python3 update-initlistcache.py -s beta -n protein_bovine
+finished ... python3 update-initlistcache.py -s beta -n protein_mouse
+finished ... python3 update-initlistcache.py -s beta -n protein_rat
+finished ... python3 update-initlistcache.py -s beta -n protein_human
+finished ... python3 update-initlistcache.py -s beta -n protein_arabidopsis
+finished ... python3 update-initlistcache.py -s beta -n protein_zebrafish
+finished ... python3 update-initlistcache.py -s beta -n protein_hamster
+finished ... python3 update-initlistcache.py -s beta -n protein_fruit_fly
+finished ... python3 update-initlistcache.py -s beta -n protein_pig
+finished ... python3 update-initlistcache.py -s beta -n protein_chicken
+finished ... python3 update-initlistcache.py -s beta -n protein_glycotype_o_linked
+finished ... python3 update-initlistcache.py -s beta -n protein_glycotype_n_linked
+finished ... python3 update-initlistcache.py -s beta -n protein_glycoaa_t
+finished ... python3 update-initlistcache.py -s beta -n protein_glycoaa_n
+finished ... python3 update-initlistcache.py -s beta -n protein_glycoevdn_sites_reported_with_glycans
+finished ... python3 update-initlistcache.py -s beta -n protein_glycoevdn_predicted_sites
+finished ... python3 update-initlistcache.py -s beta -n supersearch_all
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_n
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_s
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_k
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_t
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_r
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_d
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_l
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_a
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_p
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_e
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_v
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_i
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_y
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_g
+finished ... python3 update-initlistcache.py -s beta -n supersearch_glycosylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_glycation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_phosphorylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_mutagenesis_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_snv_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_a
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_p
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_k
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_d
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_r
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_i
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_e
+finished ... python3 update-initlistcache.py -s beta -n glycan_all
+finished ... python3 update-initlistcache.py -s beta -n glycan_human
+finished ... python3 update-initlistcache.py -s beta -n glycan_glycantype_other
+finished ... python3 update-initlistcache.py -s beta -n glycan_glycantype_o_linked
+finished ... python3 update-initlistcache.py -s beta -n glycan_glycantype_n_linked
+finished ... python3 update-initlistcache.py -s beta -n glycan_namespace_pubchem_substance
+finished ... python3 update-initlistcache.py -s beta -n glycan_namespace_glytoucan
+finished ... python3 update-initlistcache.py -s beta -n glycan_namespace_sandbox
+finished ... python3 update-initlistcache.py -s beta -n glycan_namespace_gnome
+finished ... python3 update-initlistcache.py -s beta -n glycan_namespace_glycosmos
+finished ... python3 update-initlistcache.py -s beta -n glycan_namespace_pubchem_compound
+finished ... python3 update-initlistcache.py -s beta -n supersearch_all
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_n
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_s
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_t
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_y
+finished ... python3 update-initlistcache.py -s beta -n supersearch_glycosylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_phosphorylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_mutagenesis_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_snv_flag
+finished ... python3 update-initlistcache.py -s beta -n biomarker_all
+finished ... python3 update-initlistcache.py -s beta -n disease_all
+finished ... python3 update-initlistcache.py -s beta -n supersearch_all
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_n
+finished ... python3 update-initlistcache.py -s beta -n supersearch_glycosylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_mutagenesis_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_snv_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_all
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_n
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_s
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_k
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_t
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_r
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_d
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_l
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_a
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_p
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_e
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_v
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_i
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_y
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_g
+finished ... python3 update-initlistcache.py -s beta -n supersearch_glycosylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_glycation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_phosphorylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_mutagenesis_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_snv_flag
+finished ... python3 update-initlistcache.py -s beta -n protein_all
+finished ... python3 update-initlistcache.py -s beta -n protein_cellular_slime_mold
+finished ... python3 update-initlistcache.py -s beta -n protein_bovine
+finished ... python3 update-initlistcache.py -s beta -n protein_mouse
+finished ... python3 update-initlistcache.py -s beta -n protein_rat
+finished ... python3 update-initlistcache.py -s beta -n protein_human
+finished ... python3 update-initlistcache.py -s beta -n protein_arabidopsis
+finished ... python3 update-initlistcache.py -s beta -n protein_zebrafish
+finished ... python3 update-initlistcache.py -s beta -n protein_hamster
+finished ... python3 update-initlistcache.py -s beta -n protein_fruit_fly
+finished ... python3 update-initlistcache.py -s beta -n protein_pig
+finished ... python3 update-initlistcache.py -s beta -n protein_chicken
+finished ... python3 update-initlistcache.py -s beta -n protein_glycotype_o_linked
+finished ... python3 update-initlistcache.py -s beta -n protein_glycotype_n_linked
+finished ... python3 update-initlistcache.py -s beta -n protein_glycoaa_t
+finished ... python3 update-initlistcache.py -s beta -n protein_glycoaa_n
+finished ... python3 update-initlistcache.py -s beta -n protein_glycoevdn_sites_reported_with_glycans
+finished ... python3 update-initlistcache.py -s beta -n protein_glycoevdn_predicted_sites
+finished ... python3 update-initlistcache.py -s beta -n supersearch_all
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_n
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_s
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_k
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_t
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_r
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_d
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_l
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_a
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_p
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_e
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_v
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_i
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_y
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_g
+finished ... python3 update-initlistcache.py -s beta -n supersearch_glycosylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_glycation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_phosphorylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_mutagenesis_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_snv_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_a
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_p
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_k
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_d
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_r
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_i
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_e
+finished ... python3 update-initlistcache.py -s beta -n glycan_all
+finished ... python3 update-initlistcache.py -s beta -n glycan_human
+finished ... python3 update-initlistcache.py -s beta -n glycan_glycantype_other
+finished ... python3 update-initlistcache.py -s beta -n glycan_glycantype_o_linked
+finished ... python3 update-initlistcache.py -s beta -n glycan_glycantype_n_linked
+finished ... python3 update-initlistcache.py -s beta -n glycan_namespace_pubchem_substance
+finished ... python3 update-initlistcache.py -s beta -n glycan_namespace_glytoucan
+finished ... python3 update-initlistcache.py -s beta -n glycan_namespace_sandbox
+finished ... python3 update-initlistcache.py -s beta -n glycan_namespace_gnome
+finished ... python3 update-initlistcache.py -s beta -n glycan_namespace_glycosmos
+finished ... python3 update-initlistcache.py -s beta -n glycan_namespace_pubchem_compound
+finished ... python3 update-initlistcache.py -s beta -n supersearch_all
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_n
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_s
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_t
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_y
+finished ... python3 update-initlistcache.py -s beta -n supersearch_glycosylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_phosphorylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_mutagenesis_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_snv_flag
+finished ... python3 update-initlistcache.py -s beta -n biomarker_all
+finished ... python3 update-initlistcache.py -s beta -n disease_all
+finished ... python3 update-initlistcache.py -s beta -n supersearch_all
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_n
+finished ... python3 update-initlistcache.py -s beta -n supersearch_glycosylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_mutagenesis_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_snv_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_all
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_n
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_s
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_k
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_t
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_r
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_d
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_l
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_a
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_p
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_e
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_v
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_i
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_y
+finished ... python3 update-initlistcache.py -s beta -n supersearch_startaa_g
+finished ... python3 update-initlistcache.py -s beta -n supersearch_glycosylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_glycation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_phosphorylation_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_mutagenesis_flag
+finished ... python3 update-initlistcache.py -s beta -n supersearch_snv_flag

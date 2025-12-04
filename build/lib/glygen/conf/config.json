@@ -26,15 +26,9 @@
         "tspath": "/usr/local/bin/ts",
         "maxjobs": 5,
         "structure_search": {
-            "incmdflag": "-i",
+            "sercmdflag": "-s",
+				"incmdflag": "-i",
             "outcmdflag": "-o",
-            "urlcmdflag": "-u",
-            "apiurl": {
-                "prd": "http://172.17.0.12:10980",
-                "beta": "http://172.17.0.03:10990",
-                "tst": "http://172.17.0.4:10980",
-                "dev": "http://172.17.0.4:10980"
-            },
             "path": {
                 "prd": "python /app/job_submitters/structure_search.py",
                 "beta": "python /app/job_submitters/structure_search.py",
@@ -629,6 +623,9 @@
                 "type": {
                     "type": "string"
                 }
+            },
+				"ai_query": {
+                "type": "string"
             }
         },
         "requiredfields": [],
@@ -1352,6 +1349,9 @@
                 "disease_name": {
                     "type": "string"
                 }
+            },
+				"ai_query": {
+                "type": "string"
             }
         },
         "requiredfields": [],
@@ -2024,7 +2024,24 @@
             "c_users"
         ]
     },
-    "auth_userinfo": {
+    "auth_aisearch": {
+        "field_info": {
+            "glycan_ai_search": {
+                "type": "boolean"
+            },
+            "protein_ai_search": {
+                "type": "boolean"
+            }
+        },
+        "requiredfields": [
+            "glycan_ai_search",
+            "protein_ai_search"
+        ],
+        "collectionlist": [
+            "c_aisearch"
+        ]
+    },
+	 "auth_userinfo": {
         "field_info": {
             "email": {
                 "type": "string"

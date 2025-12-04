@@ -36,6 +36,7 @@ JWT_CSRF_IN_COOKIES = False
 #using rykahsay's token now, please chenge to glygener github token
 GITHUB_TOKEN = "xxx"
 GITHUB_ASSIGNEE = "xxxxxx"
+AISEARCH_TOKEN = "xxx"
     
 
 

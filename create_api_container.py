@@ -69,25 +69,25 @@ def main():
         if container_id.strip() != "":
             cmd_list.append("docker rm -f %s " % (container_id))
 
-   
+
+    aiseach_token_file = data_path + "/auth/glygen_ai_container_api_key.json"
+    token_doc = json.load(open(aiseach_token_file))
+    aisearch_token = token_doc[server]["AI_SEARCH_STATIC_BEARER_TOKEN"]
+    
  
     #cmd = "docker create --name %s --network %s -p 127.0.0.1:%s:80" % (api_container, network, port)
     cmd = "docker create --name %s -p 127.0.0.1:%s:80" % (api_container, port)
     cmd += " -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker"
     cmd += " -v %s:%s -v %s:%s -v %s:%s -e MONGODB_CONNSTRING=%s -e DB_NAME=%s" % (downloads_path, downloads_path, data_path, data_path, testdb_path, testdb_path, conn_str, mongo_db)
-    cmd += " -e MAIL_SERVER=%s -e MAIL_PORT=%s -e MAIL_SENDER=%s -e DATA_PATH=%s -e DOWNLOADS_PATH=%s -e SERVER=%s %s" % (mail_server, mail_port, mail_sender, data_path, downloads_path, server, image) 
-    
+    cmd += " -e MAIL_SERVER=%s -e MAIL_PORT=%s -e MAIL_SENDER=%s -e DATA_PATH=%s -e DOWNLOADS_PATH=%s -e SERVER=%s -e AISEARCH_TOKEN=%s %s" % (mail_server, mail_port, mail_sender, data_path, downloads_path, server, aisearch_token,image)  
     cmd_list.append(cmd)
 
 
 
     for cmd in cmd_list:
-        print ("//\n\n>>>COMMAND:\n", cmd)
         x = subprocess.getoutput(cmd)
-        print ("//\n\n>>>COMMAND OUTPUT:\n", x)
+        print (x)
         #print (cmd)
-
-
     #remove dangling images
     cmd = "docker images -f dangling=true"
     line_list = subprocess.getoutput(cmd).split("\n")

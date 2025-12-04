@@ -1,25 +1,13 @@
-"uniprot_canonical_ac_index",
-"uniprot_ac_index",
-"isoform_ac_index",
-"tax_id_index",
-"gene_name_index",
-"glygen_name_index",
-"refseq_ac_index",
-"go_id_index",
-"pathway_id_index",
-"disease_recommended_name_id_index",
-"disease_synonyms_id_index",
-"biomarker_condition_id_index",
-"biomarker_role_index",
-"publication_id_index",
-"mass_index",
-"interactor_id_index",
-"glytoucan_ac_index",
-"gtype_index",
-"glycosylation_residue_index",
-"site_cat_reported_with_glycan_index",
-"site_cat_reported_index",
-"site_cat_litmined_index",
-"site_cat_predicted_index",
-"site_cat_predicted_with_glycan_index"
+"record_type": "protein"
+"api_name": "protein_search",
+"query": {"glycosylation_type": "N-linked","operation": "AND","query_type": "protein_search"}
+"list_id": "b5329bb80523be2f230f1b1c90f4c98b",
+
+
+"record_type": "protein"
+"api_name": "protein_search",
+query {'operation': 'AND', 'query_type': 'search_protein', 'glycosylation_type': 'N-linked'}
+      
+
+0b528d80881eea0c4b8e234746d678fe 
 

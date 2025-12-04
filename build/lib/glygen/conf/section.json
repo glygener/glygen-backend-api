@@ -180,7 +180,28 @@
             ],
             "sectionfield": "expression"
         },
-        "biomarkers": {
+        "tissue": {
+            "filterinfo": {
+                "field": "category",
+                "valuelist": ["tissue"]
+            },
+            "fieldmap": [
+                {
+                    "path": "species.name",
+                    "label": "Organism"
+                },
+					 {
+                    "path": "tissue.name",
+                    "label": "Tissue / Bodily Fluid"
+                },
+                {
+                    "path": "tissue.url",
+                    "label": "Tissue URL"
+                }
+            ],
+            "sectionfield": "tissue"
+		  },
+		  "biomarkers": {
             "filterinfo": {
                 "field": "",
                 "valuelist": []
@@ -221,13 +242,13 @@
                 "valuelist": ["reported_with_glycan"]
             },
             "fieldmap": [
-                {
-                    "path": "glytoucan_ac",
-                    "label": "GlyTouCan Accession"
-                },
-                {
+					 {
                     "path": "type",
                     "label": "Type"
+                },
+					 {
+                    "path": "glytoucan_ac",
+                    "label": "GlyTouCan Accession"
                 },
                 {
                     "path": "start_pos",

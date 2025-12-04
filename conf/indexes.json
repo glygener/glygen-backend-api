@@ -37,7 +37,12 @@
 				"sections.glycoprotein.uniprot_canonical_ac":"uniprot_canonical_ac_index",
 				"interactions.interactor_id":"interactor_id_index",
 				"publication.reference.id":"publication_id_index",
-				"biomarkers.best_biomarker_role":"biomarker_role_index"
+				"biomarkers.best_biomarker_role":"biomarker_role_index",
+		  		"motifs.id":"motifs_id_index"
+		  },
+		  "c_motif":{
+				"motif_ac":"motif_ac_index",
+				"glytoucan_ac":"glytoucan_ac_index"
 		  },
         "c_biomarker":{
             "biomarker_id":"biomarker_id_index",

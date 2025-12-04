@@ -1,0 +1,9 @@
+{
+                "operation": "AND",
+                "query_type": "search_protein",
+                "glycosylation_type": "N-linked",
+                "organism":{"id":9606,"name":"Human"},
+                "disease_name": "Deafness"
+            }
+
+

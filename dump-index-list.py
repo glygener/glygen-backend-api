@@ -56,6 +56,8 @@ def main():
         dbh = client[glydb_name]
         for cur in dbh[coll].list_indexes():
             index_name = cur["name"]
+            print (index_name)
+            continue
             if index_name != "_id_":
                 n = len(list(dbh[coll].find({}, {"_id":1}).hint(index_name)))
                 print(coll, index_name, n)

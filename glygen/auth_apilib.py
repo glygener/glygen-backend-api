@@ -311,6 +311,32 @@ def auth_register(query_obj, config_obj):
 
 
 
+def auth_aisearch(query_obj, config_obj):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+
+    collection = "c_aisearch"
+
+    #If collection does not exit, create one
+    if collection not in dbh.list_collection_names():
+        qry_obj = {"glycan_ai_search":True,"protein_ai_search": True}
+        res = dbh[collection].insert_one(qry_obj)
+
+    #Collect errors 
+    error_list = get_errors_in_query("auth_aisearch",query_obj, config_obj)
+    if error_list != []:
+        return {"error_list":error_list, "aaaa":"bbbb"}
+
+    res = dbh[collection].update({}, {'$set':query_obj}, upsert=True)
+    res_obj = {"type":"success"}
+
+    return res_obj
+
+
+
     
 def auth_userinfo(logged_user, query_obj, config_obj):
 

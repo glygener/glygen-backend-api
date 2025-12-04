@@ -352,7 +352,7 @@ class Usecases(Resource):
                 listcache_id = get_hash_id(api_name, "", req_obj)
                 res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
                 if res_obj == None:
-                    res_obj = genelocus_list(req_obj, config_obj)
+                    res_obj = genelocus_list(listcache_id, req_obj, config_obj)
                     if "error_list" not in res_obj:
                         res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
                         if "error_list" in res:
@@ -366,30 +366,6 @@ class Usecases(Resource):
     def get(self):
         return self.post()
 
-
-
-@api.route('/genelocus_list/')
-class Usecases(Resource):
-    @api.expect(genelocus_list_query_model)
-    def post(self):
-        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-        json_url = os.path.join(SITE_ROOT, "conf/config.json")
-        config_obj = json.load(open(json_url))
-        res_obj = {}
-        try:
-            req_obj = get_req_obj(request)
-            data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/genelocus_list/", request)
-            if "error_list" not in res_obj:
-                res_obj = genelocus_list(req_obj, config_obj)
-        except Exception as e:
-            res_obj = log_error(traceback.format_exc())
-        http_code = 500 if "error_list" in res_obj else 200
-        return res_obj, http_code
-
-    @api.doc(False)
-    def get(self):
-        return self.post()
 
 
 

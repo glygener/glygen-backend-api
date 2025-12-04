@@ -110,7 +110,7 @@ def main():
             empty_search_flag = True if cache_name == "supersearch_all" else False
             res_obj = supersearch_search(qry_obj["query"], config_obj,False,empty_search_flag, cache_name)
             log_lines = get_supersearch_log_lines(res_obj, cache_name)
-            log_file = "logs/c_initcache.%s.log" % (cache_name)
+            log_file = "logs/c_initcache.%s.%s.log" % (cache_name, server)
             with open(log_file, "w") as FL:
                 for line in log_lines:
                     FL.write("%s\n" % (line))
@@ -125,7 +125,7 @@ def main():
             delete_cache(dbh, list_id, "c_initcache")
         res_obj = update_c_initcache(dbh, cache_name, list_id, record_type, qry_obj, config_obj)
         if "flag" not in res_obj:
-            log_file = "logs/c_initcache.%s.log" % (cache_name)
+            log_file = "logs/c_initcache.%s.%s.log" % (cache_name, server)
             with open(log_file, "w") as FL:
                 FL.write("%s,%s,%s\n" % (list_id, res_obj["recordcount"],cache_name))
 
