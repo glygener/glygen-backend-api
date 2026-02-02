@@ -266,6 +266,11 @@ def main():
             write_progress_msg("\n ... finished restoring", "a") 
 
 
+            #update supersearch_init
+            if coll == "c_searchinit":
+                cmd = "python3 update-search-init.py -s %s" % (server)
+                x = subprocess.getoutput(cmd)
+
 
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)

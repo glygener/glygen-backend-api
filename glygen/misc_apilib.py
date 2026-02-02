@@ -800,7 +800,9 @@ def validate(query_obj, config_obj):
 
 def pathlist(query_obj, config_obj):
 
-    
+    if "recordtype" not in query_obj:
+        return {"error":"parameter recordtype missing in query_obj"}
+
     json_file = "specs/%s/detail/response.example.json" % (query_obj["recordtype"])
     if query_obj["recordtype"] in ["glycoprotein", "enzyme"]:
         json_file = "specs/protein/detail/response.example.json"

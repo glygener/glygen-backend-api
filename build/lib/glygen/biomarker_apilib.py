@@ -196,7 +196,8 @@ def biomarker_search(query_obj, config_obj):
                     val = val[ff]
             ts_list.append("1a-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
             query_obj_new = {"term":val,"term_category":sec}
-            res_obj = use_indexed_search("biomarker_search_simple", query_obj_new,config_obj)
+            exact_match_flag = True
+            res_obj = use_indexed_search("biomarker_search_simple", query_obj_new,config_obj, exact_match_flag)
             ts_list.append("1b-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
             #return {"tslist":ts_list}
             return res_obj

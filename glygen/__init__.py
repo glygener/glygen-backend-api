@@ -107,8 +107,8 @@ def create_app():
     app.config['JSON_SORT_KEYS'] = False
 
     
-    #app.config['NETWORK_DOCLIST'] = load_network_docs()
-    app.config['NETWORK_DOCLIST'] = {}
+    app.config['NETWORK_DOCLIST'] = load_network_docs()
+    #app.config['NETWORK_DOCLIST'] = {}
  
     jwt = JWTManager(app)
 

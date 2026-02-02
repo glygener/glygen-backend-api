@@ -77,15 +77,19 @@ class Motif(Resource):
                 api_name = "motif_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
-                res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
+                in_dict = {"cache_id":cache_id,"listcache_id":listcache_id,"api_name":api_name}
+                res_obj = retrieve_cached_list_objects(in_dict,req_obj,config_obj,"paginated")
                 #return res_obj
                 if res_obj == None:
                     res_obj = make_motif_list_objects_direct(req_obj, config_obj)
                     #return res_obj
-                    if "error_list" not in res_obj:
-                        res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
-                        if "error_list" in res:
-                            res_obj = res
+                    #if "error_list" not in res_obj:
+                    #    res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
+                    #    if "error_list" in res:
+                    #        res_obj = res
+                    #    else:
+                    #        res_obj = retrieve_cached_list_objects(in_dict,req_obj,config_obj,"paginated")
+                
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

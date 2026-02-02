@@ -12,8 +12,7 @@ from flask import (request, current_app)
 from glygen.db import get_mongodb
 from glygen.util import cache_hitlist, clean_obj, extract_name, get_errors_in_query, get_paginated_sections, transform_query_term, get_hash_id, filter_glyco_obj_list
 
-from glygen.indexlib import use_indexed_search
-
+from glygen.indexlib import use_indexed_search, search_one
 
 
 def protein_search_init(config_obj):
@@ -147,7 +146,8 @@ def protein_search(query_obj, config_obj):
         "protein_name":"protein_names",
         "go_term":"go_term",
         "disease_name":"disease",
-        "biomarker.disease_name":"biomarkers"
+        "biomarker.disease_name":"biomarkers",
+        "biomarker.type":"biomarkers"
     }
 
     collection = "c_protein"
@@ -155,16 +155,38 @@ def protein_search(query_obj, config_obj):
     sf_dict = {}
     for f in query_obj:
         if f not in ["operation", "query_type"]:
-            sf_dict[f] = query_obj[f]
+            if type(query_obj[f]) is dict:
+                for ff in query_obj[f]:
+                    new_f = f + "." + ff
+                    sf_dict[new_f] = query_obj[f][ff]
+            else:
+                sf_dict[f] = query_obj[f]
+
+
+    #return sf_dict
+
+    #to address join search for biomarkers
+    if "biomarker.disease_name" in sf_dict and "biomarker.type" in sf_dict:
+        sf_dict["biomarker.disease_name"] += " " + sf_dict["biomarker.type"]
+        sf_dict.pop("biomarker.type") 
+               
+
     hit_dict, hit_stat, seen_id = {}, {}, {}
-    hit_dict, hit_stat, seen_id, tmp_ts_list = get_hit_dict(dbh, sf_dict,field2sec,api_name, glygen_name_dict,config_obj)
+    hit_dict, hit_stat, seen_id, tmp_ts_list,mquery = get_hit_dict(dbh, sf_dict,field2sec,api_name, glygen_name_dict,config_obj)
+    #xxxx = get_hit_dict(dbh, sf_dict,field2sec,api_name, glygen_name_dict,config_obj)
+    #return xxxx
     #return hit_stat
+    #return mquery
 
     sf_list = list(sf_dict.keys())
-    record_list = hit_dict[sf_list[0]]
-    if len(sf_list) > 1:
-        for i in range(1, len(sf_list)):
-            record_list = list(set(record_list).intersection(set(hit_dict[sf_list[i]])))
+    record_list = []
+    if sf_list != [] and hit_dict != {}:
+        record_list = hit_dict[sf_list[0]]
+        if len(sf_list) > 1:
+            for i in range(1, len(sf_list)):
+                record_list = list(set(record_list).intersection(set(hit_dict[sf_list[i]])))
+
+    #return record_list
 
     unmapped_obj_list = []
     if "uniprot_canonical_ac" in query_obj:
@@ -877,6 +899,7 @@ def get_hit_dict(dbh, sf_dict, field2sec, api_name, glygen_name_dict, config_obj
     hit_dict, hit_stat, seen_id = {}, {}, {}
     coll = "c_" + record_type
 
+    mongo_query_single = {}
     for f in sf_dict:
         ts_list.append(f)
         ts_list.append("x-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
@@ -898,11 +921,14 @@ def get_hit_dict(dbh, sf_dict, field2sec, api_name, glygen_name_dict, config_obj
                     val = val[ff]
             query_obj_new = {"term":val,"term_category":sec}
             api_name_simple = "%s_search_simple" % (record_type)
-            res = use_indexed_search(api_name_simple, query_obj_new,config_obj)
+            exact_match_flag = True
+            #xxxx = search_one(api_name_simple, query_obj_new, config_obj, True, exact_match_flag)
+            #return xxxx
+            res = use_indexed_search(api_name_simple, query_obj_new,config_obj,exact_match_flag)
             if "error_list" not in res:
                 for doc in dbh["c_usercache"].find({"list_id":res["list_id"]}):
                     hit_dict[f] += doc["results"]
-            hit_stat[f] = {"n":len(hit_dict[f]), "flag":"2"}
+            hit_stat[f] = {"n":len(hit_dict[f]), "flag":"2", "query":query_obj_new}
         elif f == "glycosylated_aa":
             aa_list = sf_dict[f]["aa_list"]
             op = sf_dict[f]["operation"]
@@ -932,7 +958,7 @@ def get_hit_dict(dbh, sf_dict, field2sec, api_name, glygen_name_dict, config_obj
             hit_stat[f] = {"n":len(hit_dict[f]), "flag":"5", "mquery":mongo_query_single}
         ts_list.append("1y-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
-    return hit_dict, hit_stat, seen_id, ts_list
+    return hit_dict, hit_stat, seen_id, ts_list, mongo_query_single
 
 
 

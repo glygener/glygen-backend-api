@@ -2328,7 +2328,10 @@
             },
             "limit": {
                 "type": "number"
-            }
+            },
+				"field_list":{
+					"type":"list"
+				}
         },
         "requiredfields": [
             "field",
@@ -2370,7 +2373,10 @@
             "value": {
                 "type": "string"
             },
-            "limit": {
+            "field_list": {
+                "type": "list"
+            },
+				"limit": {
                 "type": "number"
             }
         },

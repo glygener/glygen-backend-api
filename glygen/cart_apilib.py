@@ -27,21 +27,26 @@ def cart_list(query_obj, config_obj):
     error_list = get_errors_in_query("cart_list", query_obj, config_obj)
     if error_list != []:
         return {"error_list":error_list}
-    cache_collection = "c_userlistcache"
 
 
     #Get cached object
     mongo_query = {}
     if "id" in query_obj:
         mongo_query["list_id"] = query_obj["id"]
+    
+    cache_collection = "c_initlistcache"
     cached_obj = dbh[cache_collection].find_one(mongo_query)
     #check for post-access error, error_list should be empty upto this line
     if cached_obj == None:
-        return {"error_list":[{"error_code":"non-existent-search-results"}]}
+        cache_collection = "c_userlistcache"
+        cached_obj = dbh[cache_collection].find_one(mongo_query)
+        if cached_obj == None:
+            return {"error_list":[{"error_code":"non-existent-search-results"}]}
+
 
     recordtype2idfield = {
-        "glycan":"glytoucan_ac",
-        "protein":"uniprot_canonical_ac"
+        "glycan":"record_id",
+        "protein":"record_id",
     }
     if query_obj["type"] not in recordtype2idfield:
         return {"error_list":[{"error_code":"record-type-not-supported"}]}
@@ -52,7 +57,8 @@ def cart_list(query_obj, config_obj):
     for doc in dbh[cache_collection].find(mongo_query):
         #for record_id in doc["results"]:
         for obj in doc["results"]:
-            res_obj.append({"id":obj[id_field]})
+            if id_field in obj:
+                res_obj.append({"id":obj[id_field]})
 
     return res_obj
 

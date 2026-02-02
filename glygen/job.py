@@ -134,12 +134,17 @@ class Job(Resource):
                     req_obj[k] = req_obj_form[k]
                 err_list = []
                 for f in ["jobtype", "parameters"]:
-                    if f not in req_obj:
-                        err_list.append({"error_code":"missing-field:%s" % (f) })
+                    job_type = req_obj["jobtype"] if "jobtype" in req_obj else ""
+                    if f not in req_obj and job_type == "batch_retrieval":
+                        err_list.append({"error_code":"mmmissing-field:%s" % (f) })
                 if err_list != []:
                     return { "error_list":err_list, "result_count":0}
                 param_obj = {}
+                if "jobtype" not in req_obj:
+                    return { "error_list":[{"error_code":"missing-field:jobtype"}], "result_count":0}
                 if req_obj["jobtype"] == "batch_retrieval":
+                    if "parameters" not in req_obj:
+                        return { "error_list":[{"error_code":"missing-field:parameters"}], "result_count":0}
                     param_obj = json.loads(req_obj["parameters"])
                 req_obj["parameters"] = param_obj
                 header_row = ["isoform_ac","amino_acid_pos","amino_acid"]

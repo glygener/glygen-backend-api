@@ -48,20 +48,25 @@ class Pagination(Resource):
                 api_name = "pagination_page"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
-                res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
+                in_dict = {"cache_id":cache_id,"listcache_id":listcache_id,"api_name":api_name}
+                res_obj = retrieve_cached_list_objects(in_dict,req_obj,config_obj,"paginated")
                 if res_obj == None:
                     res_obj = pagination_page(req_obj, config_obj)
                     if "error_list" not in res_obj:
-                        return res_obj
                         res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
                         if "error_list" in res:
                             res_obj = res
                 if "results" in res_obj:
+                    debug_list = []
+                    debug_list.append({"before":len(res_obj["results"])})
                     res_obj["pagination"] = {"total_length":len(res_obj["results"])}
                     for k in ["offset", "limit", "sort", "order"]:
                         if k in req_obj:
                             res_obj["pagination"][k] = req_obj[k]
-                    #res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
+                    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
+                    debug_list.append({"after":len(res_obj["results"])})
+                    #return debug_list
+
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200

@@ -107,7 +107,7 @@ def get_termcat2sec_dict(record_type):
             "pathway":["pathway"],
             "biomarker":["biomarkers"],
             "disease":["disease"],
-            "organism":["species"]
+            "organism":["species"],
         },
         "glycan":{
             "protein":["glycoprotein"],
@@ -121,33 +121,48 @@ def get_termcat2sec_dict(record_type):
             "condition":["disease"]
         },
         "disease":{
-            "protein":["protein"],
-            "glycan":["glycan"],
+            "protein":["proteins"],
+            "glycan":["glycans"],
             "disease":["disease_id", "disease_name"],
             "biomarker":["biomarkers"],
             "organism":["species"]
         }
     }
-   
+
+ 
     ret_obj = {}
     if record_type in tmp_dict:
+        term_cat_list = list(tmp_dict[record_type].keys())
+        for term_cat in term_cat_list:
+            for sec in tmp_dict[record_type][term_cat]:
+                if sec not in tmp_dict[record_type]:
+                    tmp_dict[record_type][sec] = [sec]
+
         ret_obj = tmp_dict[record_type]
 
     return ret_obj
 
-def get_result_dict_all(dbh, phrase_dict,  quote_flag, query_obj):
+def get_result_dict_all(dbh, phrase_dict,  quote_flag, query_obj, max_p):
 
     exact_match_obj_list = []
     seen_exact_match = {}
     prj_obj = {"record_type":1, "record_id":1, "section":1, "glycoflag":1}
     result_dict = {}
+    hit_count = 0
+    i = 0
     for word_count in sorted(phrase_dict, reverse=True):
+        i += 1
+        #if i > max_p:
+        #    break
+        if hit_count > 0:
+            break
         phrase = phrase_dict[word_count]
         if quote_flag:
             for c in ["\"", "\'"]:
                 phrase = phrase.replace(c, "")
         qry_obj = {"phraselist":{"$eq":phrase}}
         for doc in dbh["c_index"].find(qry_obj, prj_obj):
+            hit_count += 1
             record_id, sec = doc["record_id"], doc["section"]
             glyco_flag = False
             glyco_flag = doc["glycoflag"] if "glycoflag" in doc else glyco_flag
@@ -173,7 +188,6 @@ def get_result_dict_all(dbh, phrase_dict,  quote_flag, query_obj):
                 break    
 
 
-
     return result_dict, exact_match_obj_list
 
 
@@ -183,18 +197,24 @@ def get_result_dict_one(dbh, phrase_dict, selected_sections, quote_flag, record_
     result_dict = {"all":{}}
     prj_obj = {"record_type":1, "record_id":1, "section":1}
     i = 0
+    used_phrase_list = []
+    hit_count = 0
     for word_count in sorted(phrase_dict, reverse=True):
         i += 1
-        if i > max_p:
+        #if i > max_p:
+        #    break
+        if hit_count > 0:
             break
         phrase = phrase_dict[word_count]
         if quote_flag:
             for c in ["\"", "\'"]:
                 phrase = phrase.replace(c, "")
+        used_phrase_list.append(phrase)
         qry_obj = {"phraselist":{"$eq":phrase}, "record_type":{"$eq":record_type}}
         n1, n2 = 0, 0
         ignored_sec_list = []
         for doc in dbh["c_index"].find(qry_obj, prj_obj):
+            hit_count += 1
             n1 += 1
             record_type, record_id, sec = doc["record_type"], doc["record_id"], doc["section"]
             #if we are doing term_category != "any"
@@ -206,13 +226,14 @@ def get_result_dict_one(dbh, phrase_dict, selected_sections, quote_flag, record_
             if sec not in result_dict:
                 result_dict[sec] = {}
             result_dict[sec][record_id] = word_count
-        if quote_flag:
+        if result_dict["all"] != {} or quote_flag:
+        #if quote_flag:
             break
         ignored_sec_list = list(set(ignored_sec_list))
         debug_list.append({"mongo_query":qry_obj, "n1":n1, "n2":n2, "ignored":ignored_sec_list})
     if debug_flag:
         return debug_list
-    return result_dict
+    return result_dict, used_phrase_list
 
 
 
@@ -221,7 +242,8 @@ def get_result_dict_one(dbh, phrase_dict, selected_sections, quote_flag, record_
 
 
 
-def search_one(api_name, query_obj, config_obj, cache_flag):
+def search_one(api_name, query_obj, config_obj, cache_flag, exact_match_flag):
+
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -263,6 +285,7 @@ def search_one(api_name, query_obj, config_obj, cache_flag):
         if term_category in tmp_dict:
             selected_sections = tmp_dict[term_category]
 
+
     #First look for glycan sequences
     seq_type_list = ["byonic","glycoct", "iupac", "inchi"]
     tmp_phrase_dict = {}
@@ -273,23 +296,23 @@ def search_one(api_name, query_obj, config_obj, cache_flag):
         n = len(phrase.split(" "))
         phrase_dict[n] = phrase
     max_p = 1
-    result_dict = get_result_dict_one(dbh, phrase_dict, selected_sections,quote_flag,record_type, max_p,False)
-    #return {"phrasedict":phrase_dict, "resultdict":result_dict}
+    result_dict,used_phrase_list = get_result_dict_one(dbh, phrase_dict, selected_sections,quote_flag,record_type, max_p,False)
+    #return {"usedphrases":used_phrase_list, "phrase_dict":phrase_dict, "resultdict":result_dict}
 
     if result_dict["all"] == {}:
         phrase_dict = parse_sent(query_obj["term"], 6, 1)
-        max_p = len(phrase_dict.keys())
-        result_dict = get_result_dict_one(dbh,phrase_dict,selected_sections,quote_flag,record_type,max_p,False)
-        #return {"phrasedict":phrase_dict, "resultdict":result_dict}
+        max_p = 1 if exact_match_flag else len(phrase_dict.keys())
+        result_dict, used_phrase_list = get_result_dict_one(dbh,phrase_dict,selected_sections,quote_flag,record_type,max_p,False)
+        #return {"usedphrases":used_phrase_list, "phrase_dict":phrase_dict, "resultdict":result_dict}
+        #xxxx = get_result_dict_one(dbh,phrase_dict,selected_sections,quote_flag,record_type,max_p,True)
+        #return xxxx
 
-
-
-
+    section_list = selected_sections if selected_sections != [] else ["all"]
     debug_list = []
     cache_collection = "c_usercache"
     ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S %Z%z")
-    for sec in ["all"]:
-        tmp_dict = result_dict[sec]
+    for sec in section_list:
+        tmp_dict = result_dict[sec] if sec in result_dict else {}
         s_tmp_dict = sorted(tmp_dict.items(), key=lambda item: item[1], reverse=True)
         record_list = [s[0] for s in s_tmp_dict]
         res = dbh[cache_collection].delete_many({"list_id":list_id})
@@ -331,10 +354,8 @@ def search_all(api_name, query_obj, config_obj):
 
 
 
-
     res_obj = { "exact_match": [], "other_matches": {"total_match_count":0}}
-
-    record_type_list = ["protein", "glycoprotein", "gene", "glycan", "motif", "biomarker", "disease"]
+    record_type_list = ["protein", "site", "glycoprotein", "gene", "glycan", "motif", "biomarker", "disease"]
     for record_type in record_type_list:
         res_obj["other_matches"][record_type] = {}
         for sec in ["all"]:
@@ -347,7 +368,13 @@ def search_all(api_name, query_obj, config_obj):
             quote_flag = True
 
     phrase_dict = parse_sent(query_obj["term"], 6, 1)
-    result_dict, res_obj["exact_match"] = get_result_dict_all(dbh, phrase_dict, quote_flag, query_obj)
+
+    #return phrase_dict
+   
+    max_p = 1 
+    result_dict, res_obj["exact_match"] = get_result_dict_all(dbh, phrase_dict,quote_flag,query_obj,max_p)
+    #return result_dict
+
  
     if result_dict == {}:
         seq_type_list = ["byonic","glycoct", "iupac", "inchi"]
@@ -358,10 +385,11 @@ def search_all(api_name, query_obj, config_obj):
         for phrase in tmp_phrase_dict:
             n = len(phrase.split(" "))
             phrase_dict[n] = phrase
-        result_dict, res_obj["exact_match"] = get_result_dict_all(dbh, phrase_dict, quote_flag, query_obj)   
+        result_dict, res_obj["exact_match"] = get_result_dict_all(dbh,phrase_dict,quote_flag,query_obj,max_p)   
 
     #return {"resultdict":result_dict}
 
+    debug_list = []
     cache_collection = "c_usercache"
     ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S %Z%z")
     for record_type in result_dict:
@@ -386,15 +414,18 @@ def search_all(api_name, query_obj, config_obj):
             res_obj["other_matches"][record_type][sec] = {"list_id":list_id,"count":result_count}
             #res_obj["other_matches"][record_type][sec]["recordlist"] = record_list
             res_obj["other_matches"]["total_match_count"] += result_count
+            debug_list.append({"record_type":record_type, "sec":sec})
 
+    #return debug_list
 
     return res_obj
 
 
 
-def use_indexed_search(api_name, req_obj,config_obj):
+def use_indexed_search(api_name, req_obj,config_obj, exact_match_flag):
 
-    res_obj = search_one(api_name, req_obj, config_obj, True)
+    cache_flag = True
+    res_obj = search_one(api_name, req_obj, config_obj, cache_flag, exact_match_flag)
     for p in ["query", "resultcount"]:
         if p in res_obj:
             res_obj.pop(p)

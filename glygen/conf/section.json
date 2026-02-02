@@ -341,7 +341,7 @@
         },
         "glycosylation_automatic_literature_mining": {
             "filterinfo": {
-                "field": "site_category",
+                "field": "site_category_dict",
                 "valuelist": ["automatic_literature_mining", "automatic_literature_mining_with_glycan"]
             },
             "fieldmap": [
@@ -412,7 +412,7 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
+                    "path": "uniprot_canonical_ac",
                     "label": "UniProtKB Accession"
                 },
                 {
@@ -453,17 +453,21 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
+                    "path": "uniprot_canonical_ac",
                     "label": "UniProtKB Accession"
                 },
                 {
-                    "path": "filter_annotations",
+                    "path": "comment",
                     "label": "Filter Annotations"
                 },
                 {
-                    "path": "genomic_locus",
-                    "label": "Genomic Locus"
+                    "path": "chr_id",
+                    "label": "Chromosome ID"
                 },
+                {
+                    "path": "chr_pos",
+                    "label": "Chromosome Position"
+                }, 
                 {
                     "path": "start_pos",
                     "label": "Start Position"
@@ -494,12 +498,16 @@
             },
             "fieldmap": [
                 {
-                    "path": "filter_annotations",
+                    "path": "comment",
                     "label": "Filter Annotations"
                 },
                 {
-                    "path": "genomic_locus",
-                    "label": "Genomic Locus"
+                    "path": "chr_id",
+                    "label": "Chromosome ID"
+                },
+					 {
+                    "path": "chr_pos",
+                    "label": "Chromosome Position"
                 },
                 {
                     "path": "start_pos",
@@ -533,12 +541,16 @@
             },
             "fieldmap": [
                 {
-                    "path": "filter_annotations",
+                    "path": "comment",
                     "label": "Filter Annotations"
                 },
                 {
-                    "path": "genomic_locus",
-                    "label": "Genomic Locus"
+                    "path": "chr_id",
+                    "label": "Chromosome ID"
+                },
+                {
+                    "path": "chr_pos",
+                    "label": "Chromosome Position"
                 },
                 {
                     "path": "start_pos",
@@ -565,10 +577,6 @@
                 "valuelist": []
             },
             "fieldmap": [
-                {
-                    "path": "uniprotkb_accession",
-                    "label": "UniProtKB Accession"
-                },
                 {
                     "path": "start_pos",
                     "label": "Start Position"
@@ -769,17 +777,9 @@
                     "label": "Type"
                 },
                 {
-                    "path": "glytoucan_accession",
+                    "path": "glytoucan_ac",
                     "label": "GlyTouCan Accession"
                 },
-                {
-                    "path": "start_pos",
-                    "label": "Start Position"
-                },
-                {
-                    "path": "end_pos",
-                    "label": "End Position"
-                },                                                      
                 {
                     "path": "start_aa",
                     "label": "Start Amino Acid"
@@ -810,14 +810,6 @@
                     "label": "Kinase Gene"
                 },
                 {
-                    "path": "start_pos",
-                    "label": "Start Position"
-                },
-                {
-                    "path": "end_pos",
-                    "label": "End Position"
-                },                                                      
-                {
                     "path": "residue",
                     "label": "Residue"
                 },  
@@ -835,28 +827,12 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
-                    "label": "UniProtKB Accession"
-                },
-                {
-                    "path": "glytoucan_ac",
-                    "label": "GlyTouCan Accession"
-                },
-                {
                     "path": "type",
                     "label": "Type"
                 },
                 {
                     "path": "relation",
                     "label": "Relation"
-                },
-                {
-                    "path": "start_pos",
-                    "label": "Start Position"
-                },
-                {
-                    "path": "end_pos",
-                    "label": "End Position"
                 },
                 {
                     "path": "residue",
@@ -876,24 +852,16 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
-                    "label": "UniProtKB Accession"
-                },
-                {
-                    "path": "filter_annotations",
+                    "path": "comment",
                     "label": "Filter Annotations"
                 },
                 {
-                    "path": "genomic_locus",
-                    "label": "Genomic Locus"
+                    "path": "chr_id",
+                    "label": "Chromosome ID"
                 },
                 {
-                    "path": "start_pos",
-                    "label": "Start Position"
-                },
-                {
-                    "path": "end_pos",
-                    "label": "End Position"
+                    "path": "chr_pos",
+                    "label": "Chromosome Position"
                 },
                 {
                     "path": "sequence",
@@ -917,12 +885,16 @@
             },
             "fieldmap": [
                 {
-                    "path": "filter_annotations",
+                    "path": "comment",
                     "label": "Filter Annotations"
                 },
                 {
-                    "path": "genomic_locus",
-                    "label": "Genomic Locus"
+                    "path": "chr_id",
+                    "label": "Chromosome ID"
+                },
+                {
+                    "path": "chr_pos",
+                    "label": "Chromosome Position"
                 },
                 {
                     "path": "position",
@@ -951,24 +923,20 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
+                    "path": "uniprot_canonical_ac",
                     "label": "UniProtKB Accession"
                 },
                 {
-                    "path": "filter_annotations",
+                    "path": "comment",
                     "label": "Filter Annotations"
                 },
                 {
-                    "path": "genomic_locus",
-                    "label": "Genomic Locus"
+                    "path": "chr_id",
+                    "label": "Chromosome ID"
                 },
                 {
-                    "path": "start_pos",
-                    "label": "Start Position"
-                },
-                {
-                    "path": "end_pos",
-                    "label": "End Position"
+                    "path": "chr_pos",
+                    "label": "Chromosome Position"
                 },
                 {
                     "path": "sequence",
@@ -987,14 +955,6 @@
                 "valuelist": []
             },
             "fieldmap": [
-                {
-                    "path": "start_pos",
-                    "label": "Start Position"
-                },
-                {
-                    "path": "end_pos",
-                    "label": "End Position"
-                },
                 {
                     "path": "sequence_org",
                     "label": "Ref Amino Acid"
@@ -1057,7 +1017,7 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
+                    "path": "uniprot_canonical_ac",
                     "label": "UniProtKB Accession"
                 },
                 {
@@ -1065,7 +1025,7 @@
                     "label": "Type"
                 },
                 {
-                    "path": "glytoucan_accession",
+                    "path": "glytoucan_ac",
                     "label": "GlyTouCan Accession"
                 },
                 {
@@ -1098,7 +1058,7 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
+                    "path": "uniprot_canonical_ac",
                     "label": "UniProtKB Accession"
                 },
                 {
@@ -1135,7 +1095,7 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
+                    "path": "uniprot_canonical_ac",
                     "label": "UniProtKB Accession"
                 },
                 {
@@ -1172,10 +1132,10 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
+                    "path": "uniprot_canonical_ac",
                     "label": "UniProtKB Accession"
                 },
-                {
+					 {
                     "path": "kinase_uniprot_canonical_ac",
                     "label": "Kinase Protein"
                 },
@@ -1209,7 +1169,7 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
+                    "path": "uniprot_canonical_ac",
                     "label": "UniProtKB Accession"
                 },
                 {
@@ -1250,17 +1210,21 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
+                    "path": "uniprot_canonical_ac",
                     "label": "UniProtKB Accession"
                 },
                 {
-                    "path": "filter_annotations",
+                    "path": "comment",
                     "label": "Filter Annotations"
                 },
-                {
-                    "path": "genomic_locus",
-                    "label": "Genomic Locus"
+            	 {
+                    "path": "chr_id",
+                    "label": "Chromosome ID"
                 },
+                {
+                    "path": "chr_pos",
+                    "label": "Chromosome Position"
+                },    
                 {
                     "path": "start_pos",
                     "label": "Start Position"
@@ -1291,16 +1255,20 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
+                    "path": "uniprot_canonical_ac",
                     "label": "UniProtKB Accession"
                 },
                 {
-                    "path": "filter_annotations",
+                    "path": "comment",
                     "label": "Filter Annotations"
                 },
                 {
-                    "path": "genomic_locus",
-                    "label": "Genomic Locus"
+                    "path": "chr_id",
+                    "label": "Chromosome ID"
+                },
+                {
+                    "path": "chr_pos",
+                    "label": "Chromosome Position"
                 },
                 {
                     "path": "start_pos",
@@ -1333,16 +1301,20 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
+                    "path": "uniprot_canonical_ac",
                     "label": "UniProtKB Accession"
                 },
                 {
-                    "path": "filter_annotations",
+                    "path": "comment",
                     "label": "Filter Annotations"
                 },
                 {
-                    "path": "genomic_locus",
-                    "label": "Genomic Locus"
+                    "path": "chr_id",
+                    "label": "Chromosome ID"
+                },
+                {
+                    "path": "chr_pos",
+                    "label": "Chromosome Position"
                 },
                 {
                     "path": "start_pos",
@@ -1370,7 +1342,7 @@
             },
             "fieldmap": [
                 {
-                    "path": "uniprotkb_accession",
+                    "path": "uniprot_canonical_ac",
                     "label": "UniProtKB Accession"
                 },
                 {
@@ -1425,7 +1397,28 @@
             ],    
             "sectionfield": "glycan_expression"
         },
-        "expression_cell_line": {
+       "tissue": {
+            "filterinfo": {
+                "field": "category",
+                "valuelist": ["cell_line"]
+            },
+            "fieldmap": [
+                {
+                    "path": "glytoucan_ac",
+                    "label": "ID"
+                },
+                {
+                    "path": "tissue.name",
+                    "label": "Tissue / Bodily Fluid Expression"
+                },
+                {
+                    "path": "tissue.url",
+                    "label": "Tissue URL"
+                }
+            ],
+            "sectionfield": "glycan_expression"
+        },
+		  "expression_cell_line": {
             "filterinfo": {
                 "field": "category",
                 "valuelist": ["cell_line"]

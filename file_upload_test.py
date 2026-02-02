@@ -3,11 +3,11 @@ import requests
 
 
 #port = "8082"
-port = "4042"
-#port = "4442"
+#port = "4042"
+port = "4442"
 
-api_name = "batch_retrieval"
-#api_name = "isoform_mapper"
+#api_name = "batch_retrieval"
+api_name = "isoform_mapper"
 
 
 test_info = {

@@ -258,7 +258,9 @@ def job_results(query_obj, config_obj):
         cache_id = query_obj["id"] if "id" in query_obj else ""
         #cache_id = "xxx"
         listcache_id = hash_obj.hexdigest()
-        res = retrieve_cached_list_objects(cache_id, listcache_id, query_obj)
+        api_name = "job_results"
+        in_dict = {"cache_id":cache_id,"listcache_id":listcache_id,"api_name":api_name}
+        res = retrieve_cached_list_objects(in_dict,query_obj,config_obj,"paginated")
         if res != None:
             return res
   

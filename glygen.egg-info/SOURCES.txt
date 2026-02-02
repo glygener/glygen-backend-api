@@ -91,6 +91,7 @@ glygen/conf/list_filters.json-backup
 glygen/conf/list_init.json
 glygen/conf/newedgerules.json
 glygen/conf/node_order.json
+glygen/conf/path2section.json
 glygen/conf/path_targets.json
 glygen/conf/protein_scratch.csv
 glygen/conf/section.1.json

@@ -350,7 +350,8 @@ class Misc(Resource):
                         elif req_obj["name"] == "disease_search_simple":
                             res_obj = disease_search_simple(req_obj["payload"], config_obj)
                     else:
-                        res_obj = search_one(req_obj["name"], req_obj["payload"], config_obj, False)
+                        cache_flag, exact_match_flag = False, False
+                        res_obj = search_one(req_obj["name"], req_obj["payload"], config_obj,cache_flag,exact_match_flag)
                 elif req_obj["name"] in ["globalsearch_search"]:
                     if mode == "old":
                         res_obj = globalsearch_search(req_obj["payload"], config_obj)

@@ -1,0 +1,25 @@
+{
+  "concept_query_list": [
+    {
+      "concept": "protein",
+      "query": {
+        "aggregator": "$and",
+        "aggregated_list": [],
+        "unaggregated_list": [
+          {
+            "path": "gene.name",
+            "order": 1,
+            "operator": "$regex",
+            "string_value": "HGF"
+          },
+          {
+            "path": "protein.name",
+            "order": 0,
+            "operator": "$regex",
+            "string_value": "Hepatocyte growth factor"
+          }
+        ]
+      }
+    }
+  ]
+}

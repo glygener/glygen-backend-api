@@ -368,21 +368,25 @@ def get_hit_score(doc, cache_info, score_dict, selected_p_list, score_info):
                 n = doc[p]
                 if n > 0:
                     cond_match_freq[cond] = n
-
+    
     score = 0.1
     for cond_group in score_dict[record_type]:
         for cond in score_dict[record_type][cond_group]:
             freq = cond_match_freq[cond] if cond in cond_match_freq else 0
             #weight = 0.0
             #if cond in cond_match_freq:
-            #    weight = score_dict[record_type][cond_group][cond]["weight"]
-            #score += weight + round(float(freq)/100.00,3)
+            weight = score_dict[record_type][cond_group][cond]["weight"]
+            score += weight + round(float(freq)/100.00,3)
             #o = {"c":cond, "w":weight, "f":float(freq)}
             #score_info["contributions"].append(o)
             if freq > 0:
                 score_info["freqdict"][cond] = freq
 
-
+    #if doc["record_id"] == "doid.9970":
+    #    print (json.dumps(cond_match_freq, indent=4))
+    #    print (json.dumps(score_info, indent=4))
+    #    print (score)
+    #    exit()
 
     return round(float(score), 2), cond_match_freq
 
@@ -1232,7 +1236,8 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
                     count_dict[grp][label] += 1
     #return {"error_list":debug_list}
     #return {"a":code_dict, "b":count_dict, "c":seen_filter_code, "d":debug_list}
-
+    #print (count_dict)
+    
 
     tmp_seen = {}
     for grp in filter_conf[record_type]:
@@ -1282,6 +1287,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
     
     filters["available"] = non_empty_grp_obj_list
 
+    #print (json.dumps(filters["available"], indent=4))
 
     return {}
 
@@ -1799,14 +1805,11 @@ def get_list_objects(dbh,cache_id, cache_info, cache_collection, final_fields, s
             if "_id" in obj:
                 obj.pop("_id")
             score_info = {"freqdict":{}}
-            #score_info = {
-            #    "contributions":[], 
-            #    "formula":"sum(w + 0.01*f)", 
-            #    "variables":{"c":"condition name","w":"condition weight","f":"condition match frequency"}
-            #}
-            if is_empty_query == False:
+            if True:
+            #if is_empty_query == False:
                 obj["hit_score"], cond_match_freq = get_hit_score(obj, cache_info, score_dict, final_fields, score_info)
             obj["score_info"] = score_info
+            
             tmp_obj_list.append(obj)
 
     return tmp_obj_list

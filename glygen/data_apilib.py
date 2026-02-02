@@ -265,13 +265,16 @@ def section_download(query_obj, config_obj, sec_info, data_path):
     
         #record_obj = get_record_object(dbh, query_obj, config_obj)
         cache_id, listcache_id = "", query_obj["id"]
-        res = retrieve_cached_list_objects(cache_id, listcache_id, query_obj)
+        api_name = "section_download"
+        in_dict = {"cache_id":cache_id,"listcache_id":listcache_id,"api_name":api_name}
+        res = retrieve_cached_list_objects(in_dict,query_obj,config_obj,"allrecords")        
          
         if res == None:
             section_field = sec_info[record_type][sec]["sectionfield"]
             res = get_results_from_record_id(dbh, query_obj, section_field)
             if "error_list" in res:
                 return res
+
         #return res
         obj_list = res["results"]
         #return obj_list
@@ -288,8 +291,11 @@ def section_download(query_obj, config_obj, sec_info, data_path):
         #elif record_type == "biomarker" and query_obj["section"] == "component_protein":
         #    obj_list = record_obj[sec_field]["protein"] 
 
+        debug_list = []
         list_obj = {"results":[]}
+        idx = 0
         for obj in obj_list:
+            idx += 1
             if filter_info["field"] != "":
                 if filter_info["field"] in obj:
                     field_val = obj[filter_info["field"]]
@@ -297,6 +303,10 @@ def section_download(query_obj, config_obj, sec_info, data_path):
                         if filter_type == "exclude" and field_val in filter_info["valuelist"]:
                             continue
                         elif field_val not in filter_info["valuelist"]:
+                            continue
+                    elif type(field_val) is dict:
+                        tmp_flag_list = [k in filter_info["valuelist"] for k in field_val]
+                        if list(set(tmp_flag_list)) == [False]:
                             continue
                     elif type(field_val) is list:
                         overlap = False
@@ -307,10 +317,8 @@ def section_download(query_obj, config_obj, sec_info, data_path):
                             continue
                         elif filter_type != "exclude" and overlap == False:
                             continue
-
-            #return lbl_dict
-
-            o = {}
+            o = {"idx":idx}
+            debug_list.append(o)
             for path in lbl_dict:
                 val_obj = get_path_value(path, obj)
                 #p_list = path.split(".")
@@ -346,9 +354,7 @@ def section_download(query_obj, config_obj, sec_info, data_path):
                     lbl = lbl_dict[path] if path in lbl_dict else path
                     o[lbl] = str(val_obj)
                 
-                    
-
-
+            #debug_list.append(o)
             if "evidence" in obj:
                 if obj["evidence"] != []:
                     for oo in obj["evidence"]:
@@ -368,7 +374,7 @@ def section_download(query_obj, config_obj, sec_info, data_path):
             else:
                 list_obj["results"].append(o)
 
-
+        #return debug_list
 
         if format_lc in ["csv", "tsv"]:
             data_buffer = get_tabular_buffer(list_obj, query_obj, config_obj)
@@ -657,7 +663,12 @@ def get_list_object(query_obj, config_obj):
         return out_json
  
 
- 
+    if "id" not in query_obj:
+        return {"error_list":[{"error_code":"missing-field=id"}]}
+    if "download_type" not in query_obj:
+        return {"error_list":[{"error_code":"missing-field=download_type"}]}
+
+    api_name = "list_download" 
     list_query = "" 
     collection = config_obj["downloadtypes"][query_obj["download_type"]]["cache"]
     mongo_query = {"list_id":query_obj["id"]}
@@ -677,15 +688,16 @@ def get_list_object(query_obj, config_obj):
             "idmapping_list_mapped","idmapping_list_unmapped", "genelocus_list", "ortholog_list"]:
             if collection == "c_userlistcache":
                 #return {"error_list":[{"error_code":"aaaaa", "listcache_id":listcache_id}]}
-                list_obj = retrieve_cached_list_objects(cache_id, listcache_id, query_obj)
+                in_dict = {"cache_id":cache_id,"listcache_id":listcache_id,"api_name":api_name}
+                list_obj = retrieve_cached_list_objects(in_dict,query_obj,config_obj,"allrecords")    
             else:
                 list_obj = make_list_objects_direct(list_query, config_obj, False)
         else:
             if collection == "c_usercache":
                 list_obj = make_list_objects_indirect(list_query, config_obj, False)
             elif collection == "c_userlistcache":
-                list_obj = retrieve_cached_list_objects(cache_id, listcache_id, query_obj)
-
+                in_dict = {"cache_id":cache_id,"listcache_id":listcache_id,"api_name":api_name}
+                list_obj = retrieve_cached_list_objects(in_dict,query_obj,config_obj,"allrecords") 
     if list_obj == None:
         return {"error_list":[{"error_code":"list object not found", "coll":collection, "list_query":list_query}]}
     if "_id" in list_obj:
@@ -836,6 +848,8 @@ def get_results_from_record_id(dbh, query_obj, section_field):
     if doc == None:
         return {"error_list":[{"error_code":"no record found for %s=%s" % (main_id_field, record_id)}]}
  
+    if record_type == "protein":
+        record_id = doc["uniprot_canonical_ac"]
 
 
     obj_list = []
@@ -851,9 +865,8 @@ def get_results_from_record_id(dbh, query_obj, section_field):
     #            sec = table_id_parts[0]
 
     # Get section objects if this record was batched
-    q = {"batchid": 1, "recordid": record_id, "recordtype": record_type}
-    batch_doc = dbh["c_batch"].find_one(q)
-    if batch_doc != None:
+    q = {"recordid": record_id, "recordtype": record_type}
+    for batch_doc in dbh["c_batch"].find(q):
         if sec in doc:
             if sec in batch_doc["sections"]:
                 doc[sec] += batch_doc["sections"][sec]

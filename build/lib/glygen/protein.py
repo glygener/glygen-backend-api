@@ -110,7 +110,8 @@ class Protein(Resource):
             req_obj = get_req_obj(request)
             res_obj = log_request(req_obj, "/protein/search_simple/", request)
             if "error_list" not in res_obj:
-                res_obj = search_one("protein_search_simple",req_obj,config_obj,True)
+                cache_flag, exact_match_flag = True, True
+                res_obj = search_one("protein_search_simple",req_obj,config_obj,cache_flag,exact_match_flag)
         except Exception as e:
             res_obj = log_error(traceback.format_exc())
         http_code = 500 if "error_list" in res_obj else 200
@@ -137,8 +138,11 @@ class Protein(Resource):
                 api_name = "protein_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
-                res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
+                in_dict = {"cache_id":cache_id,"listcache_id":listcache_id,"api_name":api_name}
+                res_obj = retrieve_cached_list_objects(in_dict,req_obj,config_obj,"paginated")
+                #return {"n":len(res_obj["results"]), "obj":res_obj["results"][0]}
                 #return {"aa":res_obj, "apiname":api_name, "reqobj":req_obj, "listcacheid":listcache_id}
+                #return {"listcacheid":listcache_id, "cache_coll":res_obj["cache_coll"]}
                 if res_obj == None:
                     res_obj = make_list_objects_indirect(req_obj, config_obj, False)
                     #return res_obj
@@ -147,8 +151,10 @@ class Protein(Resource):
                         res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
                         if "error_list" in res:
                             res_obj = res
-                    if "results" in res_obj:
-                        res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
+                        else:
+                            res_obj = retrieve_cached_list_objects(in_dict,req_obj,config_obj,"paginated")
+                    #if "results" in res_obj:
+                    #    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
 
         except Exception as e:
             res_obj = log_error(traceback.format_exc())

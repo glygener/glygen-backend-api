@@ -196,8 +196,8 @@
             "group_order":1,
             "group_label":"By Entity Type",
             "order_dict":{
-                "protein":1,
-                "glycan":2
+               "glycan":1,
+					"protein":2
             },
             "label_dict":{
                 "protein":"Protein",

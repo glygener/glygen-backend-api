@@ -13,6 +13,8 @@ from flask import current_app
 from glygen.db import get_mongodb
 from glygen.util import get_errors_in_superquery, get_errors_in_query, sort_objects, cache_hitlist, get_hash_id
 
+from glygen.indexlib import get_result_dict_one
+
 
 def search_init(config_obj):
     
@@ -259,7 +261,6 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
                 seen_path[record_type][p] = True
 
 
-    mongo_query = [] 
     error_list = []
     edge_rules = []
     ignore_dict = {}
@@ -285,26 +286,30 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
 
     #return ignore_dict
 
-
+    iqry_obj_list = []
+    mqry_obj_list = []
     for i in range(0, len(query_obj["concept_query_list"])):
         q_obj = query_obj["concept_query_list"][i]["query"]
         concept = query_obj["concept_query_list"][i]["concept"]
-                
         path_map = {}
         if concept in config_obj["path_map"]:
             path_map = config_obj["path_map"][concept]
-        t_query,e_list = transform_query(q_obj, concept, seen_path, path_map)
-        mongo_query.append({"query": t_query,"concept":concept})
-        error_list += e_list
+        status, iqry_obj = get_indexed_qry(q_obj,concept)
+        if status:
+            iqry_obj_list.append(iqry_obj)
+        else:
+            t_query,e_list = transform_query(q_obj, concept, seen_path, path_map)
+            mqry_obj = {"query": t_query,"concept":concept}
+            mqry_obj_list.append(mqry_obj)
+            error_list += e_list
     
     if error_list != []:
         return {"error_list":error_list}
 
+    #return {"m":mqry_obj_list, "i":iqry_obj_list}
+
+
     DEBUG_FLAG = False
-
-
-    #return mongo_query
-
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts_list = []
     ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
@@ -312,7 +317,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     initial_hit_count = 0
     reason_dict = {}
     initial_hit_dict = {}
-    for q_obj in mongo_query:
+    for q_obj in mqry_obj_list:
         record_type = q_obj["concept"]
         coll = "c_" + record_type
         if record_type == "gene":
@@ -327,19 +332,18 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
             continue
         ts_list.append(coll + "|" + json.dumps(q_obj["query"]))
         record_id_field = config_obj["record_type_info"][record_type]["field"]
-        prj_obj = {record_id_field:1, "down_seq":1, "up_seq":1, "site_seq":1,}
-        doc_list = list(dbh[coll].find(q_obj["query"],prj_obj))
-        initial_hit_count += len(doc_list)
-        for doc in doc_list:
-            if record_id_field not in doc:
-                continue
-            record_id = doc[record_id_field]
-            if record_type in ["enzyme", "gene"]:
-                record_id = "%s.%s" % (record_type, record_id)
-            initial_hit_dict[record_type][record_id] = True
-            reason = "hit-in-initial-%s-query" % (record_type)
-            add_reason(reason_dict, record_type, record_id, "self", record_id)  
+        qry_obj = q_obj["query"]
+        nhits = get_hit_records_one(dbh,record_id_field,record_type,qry_obj,coll,initial_hit_dict,reason_dict)
+        initial_hit_count += nhits
 
+
+    coll = "c_index"
+    for q_obj in iqry_obj_list:
+        record_type = q_obj["concept"]
+        debug_obj, nhits = get_hit_records_two(dbh,record_type,q_obj,coll,initial_hit_dict)
+        initial_hit_count += nhits
+        #return debug_obj
+    
     #return initial_hit_dict
 
 
@@ -820,6 +824,29 @@ def load_properity_lineage(in_obj, in_key, seen):
 
 
 
+def get_indexed_qry(in_obj, concept):    
+    
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "conf/path2section.json")
+    path2section = json.load(open(json_url))
+
+    tmp_list = []
+    status = True
+    for obj in in_obj["unaggregated_list"]:
+        path = obj["path"]
+        if path in path2section[concept]:
+            sec = path2section[concept][path]
+            val = obj["string_value"] if "string_value" in obj else ""
+            val = obj["numeric_value"] if "numeric_value" in obj else val
+            if path in ["glycosylation_flag","phosphorylation_flag","mutagenesis_flag",
+                "glycation_flag","snv_flag"]:
+                val = path.split("_")[0]
+            tmp_list.append({"path":path, "value":val, "sec":sec})
+        else:
+            status = False
+    tmp_dict = {"concept":concept, "qlist":tmp_list, "aggregator":in_obj["aggregator"]}
+    return status, tmp_dict
+
 
 def transform_query(in_obj, concept, seen_path, path_map):
     q_list = []
@@ -933,5 +960,72 @@ def dump_debug_timer(flag,debug_flag):
 
 
 
+
+
+
+def get_hit_records_one(dbh,record_id_field,record_type, mongo_query, coll,initial_hit_dict, reason_dict):
+
+    prj_obj = {record_id_field:1, "down_seq":1, "up_seq":1, "site_seq":1,}
+    doc_list = list(dbh[coll].find(mongo_query,prj_obj))
+    doc_count = 0
+    for doc in doc_list:
+        if record_id_field not in doc:
+            continue
+        record_id = doc[record_id_field]
+        if record_type in ["enzyme", "gene"]:
+            record_id = "%s.%s" % (record_type, record_id)
+        initial_hit_dict[record_type][record_id] = True
+        reason = "hit-in-initial-%s-query" % (record_type)
+        add_reason(reason_dict, record_type, record_id, "self", record_id)
+        doc_count += 1
+
+    return doc_count
+
+
+
+def get_hit_records_two(dbh,record_type,q_obj,coll,initial_hit_dict):
+
+    debug_list = []
+    hit_matrix = []
+    for o in q_obj["qlist"]:
+        path, sec, value = o["path"], o["sec"],o["value"]
+        word_count = len(value.split(" "))
+        prj_obj = {"record_type":1, "record_id":1, "section":1}
+        result_dict = {"all":{}}
+        phrase = value.lower().replace("-", " ")
+        qry_obj = {"phraselist":{"$eq":phrase}, "record_type":{"$eq":record_type}}
+        tmp_dict = {}
+        for doc in dbh["c_index"].find(qry_obj, prj_obj):
+            if doc["section"] == sec:
+                record_id = doc["record_id"]
+                if record_type in ["enzyme", "gene"]:
+                    record_id = "%s.%s" % (record_type, record_id)
+                tmp_dict[record_id] = True
+        hit_matrix.append(list(tmp_dict.keys()))
+        debug_list.append(qry_obj)
+    #return {"n":len(hit_matrix), "debuglist":debug_list}, 0
+ 
+    final_hit_list = []
+    if q_obj["aggregator"] == "$and":
+        agg_set = set(hit_matrix[0])
+        if len(hit_matrix) > 1:
+            for i in range(1, len(hit_matrix)):
+                agg_set = agg_set.intersection(set(hit_matrix[i]))
+        final_hit_list = list(agg_set)
+    else:
+        final_hit_list = []
+        for i in range(0, len(hit_matrix)):
+            final_hit_list += hit_matrix[i]
+        final_hit_list = list(set(final_hit_list))
+    
+
+    record_count = 0
+    if record_type not in initial_hit_dict:
+        initial_hit_dict[record_type] = {}
+    for record_id in final_hit_list:
+        initial_hit_dict[record_type][record_id] = True
+        record_count += 1
+
+    return {}, record_count
 
 

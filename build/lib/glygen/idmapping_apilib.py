@@ -26,7 +26,6 @@ def search_init(config_obj):
     doc["idmapping"]["glycan"]["organism"] = doc["glycan"]["organism"]
     doc["idmapping"]["protein"]["organism"] = doc["protein"]["organism"]    
 
-
     res_obj = doc["idmapping"]
     for k in res_obj:
         if "namespace" in res_obj[k]:

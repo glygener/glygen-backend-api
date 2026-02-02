@@ -104,7 +104,6 @@ class Typeahead(Resource):
                 req_field_list = list(set(req_field_list))
                 req_obj["field_list"] = req_field_list
 
-
                 flag_one = len(set(req_field_list).intersection(set(field_list_one))) > 0
                 flag_two = len(set(req_field_list).intersection(set(field_list_two))) > 0
                 flag_three = len(set(req_field_list).intersection(set(field_list_three))) > 0 

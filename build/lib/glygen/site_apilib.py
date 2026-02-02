@@ -48,7 +48,13 @@ def site_detail(query_obj, config_obj):
     if canon.find("-") == -1:
         mongo_query = {"uniprot_ac":canon}
     canon_doc = dbh[collection].find_one(mongo_query)
-    
+
+    post_error_list = []
+    if canon_doc == None:
+        post_error_list.append({"error_code":"non-existent-record"})
+        return {"error_list":post_error_list}
+       
+ 
     collection = "c_site"
     mongo_query = {"id":query_obj["site_id"]}
     obj = dbh[collection].find_one(mongo_query)
@@ -58,7 +64,6 @@ def site_detail(query_obj, config_obj):
         obj = dbh[collection].find_one(mongo_query)
 
     #check for post-access error, error_list should be empty upto this line
-    post_error_list = []
     if obj == None:
         post_error_list.append({"error_code":"non-existent-record"})
         return {"error_list":post_error_list}

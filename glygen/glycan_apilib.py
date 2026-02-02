@@ -10,7 +10,7 @@ from collections import OrderedDict
 from bson import json_util, ObjectId
 from flask import (request, current_app)
 
-from glygen.indexlib import use_indexed_search
+from glygen.indexlib import use_indexed_search, search_one
 from glygen.db import get_mongodb
 from glygen.util import cache_hitlist, clean_obj, extract_name, get_errors_in_query, order_obj, get_paginated_sections, transform_query_term, get_hash_id
 
@@ -223,7 +223,8 @@ def glycan_search(query_obj, config_obj):
         "protein_identifier":"glycoprotein",
         "glycan_motif":"motifs",
         "enzyme.id": "enzyme",
-        "biomarker.disease_name":"biomarkers"
+        "biomarker.disease_name":"biomarkers",
+        "biomarker.type":"biomarkers"
     }
     p_list = []
     for p in  query_obj:
@@ -236,42 +237,44 @@ def glycan_search(query_obj, config_obj):
                         val_obj = val_obj[child_key]
             p_list.append(".".join(ff_list))
 
-
-    for f in field2sec:
-        sec = field2sec[f]
-        if p_list == [f]:
-            f_parts = f.split(".")
-            val = query_obj[f_parts[0]]
-            if type(val) is dict:
-                for ff in f_parts[1:]:
-                    val = val[ff]
-            ts_list.append("1a-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-            query_obj_new = {"term":val,"term_category":sec}
-            res_obj = use_indexed_search("glycan_search_simple", query_obj_new,config_obj)
-            ts_list.append("1b-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-            #return {"tslist":ts_list}
-            return res_obj
-
     ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-
-
-    ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-
     sf_dict = {}
     for f in query_obj:
         if f not in ["operation", "query_type"]:
-            sf_dict[f] = query_obj[f]
+            if type(query_obj[f]) is dict:
+                for ff in query_obj[f]:
+                    new_f = f + "." + ff
+                    if new_f in field2sec:
+                        sf_dict[new_f] = query_obj[f][ff]
+                    else:
+                        sf_dict[f] = query_obj[f]
+            else:
+                sf_dict[f] = query_obj[f]
+   
+    #return sf_dict
+ 
+    #to address join search for biomarkers
+    if "biomarker.disease_name" in sf_dict and "biomarker.type" in sf_dict:
+        sf_dict["biomarker.disease_name"] += " " + sf_dict["biomarker.type"]
+        sf_dict.pop("biomarker.type")
+
+
     hit_dict, hit_stat = {}, {}
     hit_dict, hit_stat, tmp_ts_list = get_hit_dict(dbh, sf_dict,field2sec,api_name, config_obj)
     ts_list += tmp_ts_list
+    #xxxx = get_hit_dict(dbh, sf_dict,field2sec,api_name, config_obj)
     #return ts_list
     #return hit_stat
+    #return xxxx
+
 
     sf_list = list(sf_dict.keys())
-    hit_record_list = hit_dict[sf_list[0]]
+    hit_record_list = hit_dict[sf_list[0]] if sf_list != [] else []
     if len(sf_list) > 1:
         for i in range(1, len(sf_list)):
             hit_record_list = list(set(hit_record_list).intersection(set(hit_dict[sf_list[i]])))
+
+    #return hit_record_list
 
     prj_obj = {"glytoucan_ac":1, "glycan_identifier":1, "crossref.id":1,
         "composition":1, "composition_expanded":1}
@@ -850,7 +853,7 @@ def get_hit_dict(dbh, sf_dict, field2sec, api_name, config_obj):
     for f in sf_dict:
         ts_list.append(f)
         ts_list.append("x-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-        query_obj_single = {f:sf_dict[f], "operation":"AND", "query_type":"search_protein"}
+        query_obj_single = {f:sf_dict[f], "operation":"AND", "query_type":"search_glycan"}
         list_id_single = get_hash_id(api_name, record_type, query_obj_single)
         cached_obj_single = dbh["c_initcache"].find_one({"list_id":list_id_single})
         if cached_obj_single != None:
@@ -868,11 +871,14 @@ def get_hit_dict(dbh, sf_dict, field2sec, api_name, config_obj):
                     val = val[ff]
             query_obj_new = {"term":val,"term_category":sec}
             api_name_simple = "%s_search_simple" % (record_type)
-            res = use_indexed_search(api_name_simple, query_obj_new,config_obj)
+            exact_match_flag = True
+            #xxxx = search_one(api_name_simple, query_obj_new, config_obj, True, exact_match_flag)
+            #return xxxx
+            res = use_indexed_search(api_name_simple, query_obj_new,config_obj,exact_match_flag)
             if "error_list" not in res:
                 for doc in dbh["c_usercache"].find({"list_id":res["list_id"]}):
                     hit_dict[f] += doc["results"]
-            hit_stat[f] = {"n":len(hit_dict[f]), "flag":"2"}
+            hit_stat[f] = {"n":len(hit_dict[f]), "query_obj_new":query_obj_new, "flag":"2"}
         else:
             hit_dict[f] = []
             mongo_query_single = get_mongo_query(query_obj_single)
@@ -880,7 +886,7 @@ def get_hit_dict(dbh, sf_dict, field2sec, api_name, config_obj):
             for obj in dbh[coll].find(mongo_query_single,prj_obj):
                 canon = obj["glytoucan_ac"]
                 hit_dict[f].append(canon)
-            hit_stat[f] = {"n":len(hit_dict[f]), "flag":"5", "mquery":mongo_query_single}
+            hit_stat[f] = {"n":len(hit_dict[f]), "flag":"3", "query":query_obj_single, "mquery":mongo_query_single}
         ts_list.append("1y-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     return hit_dict, hit_stat, ts_list
@@ -892,7 +898,7 @@ def get_hit_dict(dbh, sf_dict, field2sec, api_name, config_obj):
 
 def get_unmapped_obj_list(query_value, seen_id):
 
-    get_unmapped_obj_list = []
+    unmapped_obj_list = []
     redundancy_dict = {}
     qid_list = get_qid_list(query_value)
     for qid in qid_list:
@@ -904,7 +910,7 @@ def get_unmapped_obj_list(query_value, seen_id):
         for i in range(redundancy_dict[qid] - 1):
             unmapped_obj_list.append({"input_id":qid, "reason":"Duplicate ID"})
 
-    return get_unmapped_obj_list
+    return unmapped_obj_list
 
 
 

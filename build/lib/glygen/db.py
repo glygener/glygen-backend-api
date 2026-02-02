@@ -20,7 +20,7 @@ def get_mongodb():
     try: 
         conn_str, db_name = os.environ['MONGODB_CONNSTRING'], os.environ['DB_NAME']
         client = pymongo.MongoClient(conn_str)
-        client.server_info()
+        #client.server_info()
         ret_obj = client[db_name]
     except pymongo.errors.ServerSelectionTimeoutError as err:
         error_obj = {"status":0, "error":"Connection to MongoDB failed", "details":err.details}
@@ -57,8 +57,11 @@ def log_request(req_obj, api_name, request):
     header_dict["origin"] = request.headers.get('Origin')
     header_dict["ip"] = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
 
-    ug = parse(request.headers.get('User-Agent'))
-    header_dict["is_bot"] = ug.is_bot
+    header_dict["is_bot"] = False
+    user_agent = request.headers.get('User-Agent')
+    if type(user_agent) is str:
+        ug = parse(user_agent)
+        header_dict["is_bot"] = ug.is_bot
     
  
     try:

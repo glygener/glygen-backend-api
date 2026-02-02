@@ -185,7 +185,8 @@ class Supersearch(Resource):
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
                 #return {"listcache_id":listcache_id, "api_name":api_name, "req":req_obj}
-                res_obj = retrieve_cached_list_objects(cache_id, listcache_id, req_obj)
+                in_dict = {"cache_id":cache_id,"listcache_id":listcache_id,"api_name":api_name}
+                res_obj = retrieve_cached_list_objects(in_dict,req_obj,config_obj,"paginated")
                 #return res_obj, 200
                 if res_obj == None:
                     res_obj = make_list_objects_indirect(req_obj, config_obj, False)

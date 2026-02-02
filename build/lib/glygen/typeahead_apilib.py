@@ -493,52 +493,49 @@ def protein_typeahead(query_obj, config_obj):
     elif query_obj["field_list"] ==  ["biomarker_disease_name"]:
         mongo_query = {
             "$or":[
-             {"biomarkers.instances.disease.recommended_name.name": {'$regex': query_obj["value"], '$options': 'i'}}
-            ,{"biomarkers.instances.disease.synonyms.name": {'$regex': query_obj["value"], '$options': 'i'}}
+             {"biomarkers.condition.recommended_name.name": {'$regex': query_obj["value"], '$options': 'i'}}
+            ,{"biomarkers.condition.name_list": {'$regex': query_obj["value"], '$options': 'i'}}
             ]
         }
         prj_obj = {"biomarkers":1}
         for obj in dbh[collection].find(mongo_query,prj_obj):
             for o in obj["biomarkers"]:
-                for oo in o["instances"]:
-                    val_list = []
-                    ooo = oo["disease"]
-                    if "recommended_name" in ooo:
-                        val_list.append(ooo["recommended_name"]["name"])
-                    if "synonyms" in ooo:
-                        for oooo in ooo["synonyms"]:
-                            val_list.append(oooo["name"])
-                    for val in val_list:
-                        if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
-                            val = val.split("[")[0]
-                            res_obj.append(val)
-                            if len(res_obj) >= query_obj["limit"]:
-                                return sorted(res_obj)
+                val_list = []
+                d_obj = o["condition"]
+                if "recommended_name" in d_obj:
+                    val_list.append(d_obj["recommended_name"]["name"])
+                if "name_list" in d_obj:
+                    for val in d_obj["name_list"]:
+                        val_list.append(val)
+                for val in val_list:
+                    if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
+                        val = val.split("[")[0]
+                        res_obj.append(val)
+                        if len(res_obj) >= query_obj["limit"]:
+                            return sorted(res_obj)
     elif query_obj["field_list"] ==  ["biomarker_disease_id"]:
         mongo_query = {
             "$or":[
-             {"biomarkers.instances.disease.recommended_name.id": {'$regex': query_obj["value"], '$options': 'i'}}
-            ,{"biomarkers.instances.disease.synonyms.id": {'$regex': query_obj["value"], '$options': 'i'}}
+             {"biomarkers.condition.recommended_name.id": {'$regex': query_obj["value"], '$options': 'i'}}
+            ,{"biomarkers.condition.id_list": {'$regex': query_obj["value"], '$options': 'i'}}
             ]
         }
         prj_obj = {"biomarkers":1}
         for obj in dbh[collection].find(mongo_query,prj_obj):
             for o in obj["biomarkers"]:
-                for oo in o["instances"]:
-                    val_list = []
-                    ooo = oo["disease"]
-                    if "recommended_name" in ooo:
-                        val_list.append(ooo["recommended_name"]["id"])
-                    if "synonyms" in ooo:
-                        for oooo in ooo["synonyms"]:
-                            val_list.append(oooo["id"])
-                    for val in val_list:
-                        if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
-                            val = val.split("[")[0]
-                            res_obj.append(val)
-                            if len(res_obj) >= query_obj["limit"]:
-                                return sorted(res_obj)
-
+                val_list = []
+                d_obj = o["condition"]
+                if "recommended_name" in d_obj:
+                    val_list.append(d_obj["recommended_name"]["id"])
+                if "id_list" in d_obj:
+                    for val in d_obj["id_list"]:
+                        val_list.append(val)
+                for val in val_list:
+                    if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
+                        val = val.split("[")[0]
+                        res_obj.append(val)
+                        if len(res_obj) >= query_obj["limit"]:
+                            return sorted(res_obj)
     elif sorted(query_obj["field_list"]) == sorted(["pathway_id", "pathway_name", "pathway_description"]):
         mongo_query = {"$or":[
                  {"pathway.id": {'$regex': query_obj["value"], '$options': 'i'}}
