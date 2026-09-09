@@ -37,6 +37,11 @@ def update_c_initlistcache(dbh, in_dict):
 
 
     res_obj = make_list_objects_indirect(dbh, query_obj, config_obj, False)
+
+    if "error_list" in res_obj:
+        return {}, listcache_id, "ERROR-0"
+
+
     if cache_exists(dbh, listcache_id, "c_initlistcache"):
         delete_cache(dbh, listcache_id, "c_initlistcache")
 
@@ -93,8 +98,7 @@ def main():
     global seen_child
     global taxid2name
 
-
-    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_name = "glydb"
     config_obj = json.loads(open("./conf/config.json", "r").read())
     db_obj = config_obj["dbinfo"][db_name]
     glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
@@ -107,6 +111,13 @@ def main():
     if error_obj != {}:
         print (error_obj)
         exit()
+
+
+    # clear c_initlistcache for cache_name
+    dbh["c_initlistcache"].delete_many({"glbl.cache_info.cache_name":cache_name})
+
+
+
 
     taxid2name = get_taxid2name(dbh, default=False)
     column_dict = get_column_dict()

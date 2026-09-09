@@ -1,5 +1,12 @@
 {
-        "c_index":{
+        "c_graph":{
+            "record_id":"record_id_index"
+		  },
+		  "c_idtrack":{
+				"record_id":"record_id_index",
+				"recordtype":"recordtype_index"
+		  },
+		  "c_index":{
             "phraselist":"phraselist_index"
         },
         "c_protein":{
@@ -26,7 +33,8 @@
 				"glycosylation.site_category_dict.reported":"site_cat_reported_index",
 				"glycosylation.site_category_dict.automatic_literature_mining":"site_cat_litmined_index",
 				"glycosylation.site_category_dict.predicted":"site_cat_predicted_index",
-				"glycosylation.site_category_dict.predicted_with_glycan":"site_cat_predicted_with_glycan_index"
+				"glycosylation.site_category_dict.predicted_with_glycan":"site_cat_predicted_with_glycan_index",
+				"class_list":"class_list_index"
 		},
         "c_glycan":{
             "glytoucan_ac":"glytoucan_ac_index",
@@ -38,7 +46,9 @@
 				"interactions.interactor_id":"interactor_id_index",
 				"publication.reference.id":"publication_id_index",
 				"biomarkers.best_biomarker_role":"biomarker_role_index",
-		  		"motifs.id":"motifs_id_index"
+		  		"motifs.id":"motifs_id_index",
+				"enzyme.uniprot_canonical_ac":"enzyme_uniprot_canonical_ac_index",
+				"enzyme.gene":"enzyme_gene_index"	
 		  },
 		  "c_motif":{
 				"motif_ac":"motif_ac_index",
@@ -70,8 +80,9 @@
         },
         "c_site":{
             "id":"id_index",
-        		"start_aa":"start_aa_index"
-			},
+        		"start_aa":"start_aa_index",
+				"snv.glycoeffect":"glycoeffect_index"	
+        },
 		  "c_list":{
             "record_id":"record_id_index"
         },	

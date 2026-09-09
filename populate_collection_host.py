@@ -111,8 +111,7 @@ def main():
     server = options.server
     ver = options.dataversion
 
-
-    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_name = "glydb"
     
     config_obj = json.loads(open("./conf/config.json", "r").read())
     #mongo_port = config_obj["dbinfo"]["port"][server]
@@ -128,14 +127,12 @@ def main():
     glydb_user = config_obj["dbinfo"][db_name]["user"]
     glydb_pass = config_obj["dbinfo"][db_name]["password"]
     glydb_name =  config_obj["dbinfo"][db_name]["db"]
-    #text_indexed_colls = [
-    #    "c_protein", "c_glycan", "c_motif", "c_publication", "c_biomarker","c_idtrack", 
-    #    "c_network", "c_disease"
-    #]
     text_indexed_colls = []
     index_dict = json.load(open("conf/indexes.json"))
 
     archived_colls = ["c_video", "c_outreach", "c_event"]
+    batched_colls = config_obj["batched_colls"]
+
 
     db_list = config_obj["downloads"]["jsondb"]
     coll_list = get_coll_list(db_list)
@@ -188,30 +185,41 @@ def main():
                 file_list = glob.glob(jsondb_dir + "/" + json_db + "/*.json")
                 #file_list = glob.glob(jsondb_dir + "/" + json_db + "/G17689DH*.json")
                 #exit()
-
                 nrecords_total = len(file_list)
+                if coll in batched_colls:
+                    nrecords_total = 0
+                    for in_file in file_list:
+                        doc_list = json.loads(open(in_file, "r").read())
+                        nrecords_total += len(doc_list)
                 nrecords = 0
                 for in_file in file_list:
-                    doc = json.loads(open(in_file, "r").read())
-                    if "_id" in doc:
-                        doc.pop("_id")
-
-                    #collapse glycan expression objects in c_glycan and c_batch
-                    if coll == "c_glycan":
-                        if len(doc["expression"]) > 0:
-                            doc["expression"] = collapse_objects(doc["expression"])
-                    if coll == "c_batch":
-                        if "expression" in doc["sections"]:
-                            doc["sections"]["expression"] = collapse_objects(doc["sections"]["expression"])
-                    if coll in ["c_index"]:
-                        for obj in doc:
-                            result = tmpdb_dbh[coll].insert_one(obj)
+                    #print(in_file)
+                    doc_list = []
+                    if coll in batched_colls:
+                        doc_list = json.loads(open(in_file, "r").read())
                     else:
-                        result = tmpdb_dbh[coll].insert_one(doc)     
-                    nrecords += 1
-                    if nrecords != 0 and nrecords%1000 == 0:
-                        msg = " ... loaded %s out of %s documents to tmpdb.%s" % (nrecords, nrecords_total, coll)
-                        write_progress_msg(msg, "a")
+                        doc_list = [json.loads(open(in_file, "r").read())]
+                    doc_idx = 0
+                    for doc in doc_list:
+                        doc_idx += 1
+                        if "_id" in doc:
+                            doc.pop("_id")
+                        #collapse glycan expression objects in c_glycan and c_batch
+                        if coll == "c_glycan":
+                            if len(doc["expression"]) > 0:
+                                doc["expression"] = collapse_objects(doc["expression"])
+                        if coll == "c_batch":
+                            if "expression" in doc["sections"]:
+                                doc["sections"]["expression"] = collapse_objects(doc["sections"]["expression"])
+                        if coll in ["c_index"]:
+                            for obj in doc:
+                                result = tmpdb_dbh[coll].insert_one(obj)
+                        else:
+                            result = tmpdb_dbh[coll].insert_one(doc)     
+                        nrecords += 1
+                        if nrecords != 0 and nrecords%1000 == 0:
+                            msg = " ... loaded %s out of %s documents to tmpdb.%s" % (nrecords, nrecords_total, coll)
+                            write_progress_msg(msg, "a")
                 
             ts = datetime.datetime.now()
             msg = " ... finished loading %s out of %s documents to tmpdb.%s" % (nrecords,nrecords_total, coll)

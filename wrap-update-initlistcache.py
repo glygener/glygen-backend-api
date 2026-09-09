@@ -26,8 +26,7 @@ def main():
                                          
     server = options.server
 
-
-    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_name = "glydb"
     config_obj = json.loads(open("./conf/config.json", "r").read())
     db_obj = config_obj["dbinfo"][db_name]
     glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
@@ -47,7 +46,7 @@ def main():
         for cache_name in query_doc[record_type]:
             cmd = "python3 update-initlistcache.py -s %s -n %s" % (server, cache_name)
             x = subprocess.getoutput(cmd)
-            print ("finished ...", cmd)
+            #print ("finished ...", cmd)
 
  
 

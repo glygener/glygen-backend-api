@@ -370,6 +370,8 @@ def get_c_initlistcache_queries(dbh, config_obj):
     query_doc = {"protein":{},"glycan":{}, "biomarker":{}, "disease":{}, "supersearch":{}} 
     seen_cache_name = {}
     for doc in dbh["c_initcache"].find({}, {"list_id":1,"cache_info":1, "total_count":1}):
+        if "cache_info" not in doc:
+            continue
         cache_info = doc["cache_info"]
         if "cache_name" not in cache_info:
             continue

@@ -29,7 +29,8 @@ def main():
     server = options.server
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
-    mongo_port = config_obj["dbinfo"]["port"][server]
+    #mongo_port = config_obj["dbinfo"]["port"][server]
+    mongo_port = "27017"
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
     
     admin_user, admin_pass = config_obj["dbinfo"]["admin"]["user"], config_obj["dbinfo"]["admin"]["password"]

@@ -21,31 +21,39 @@ def main():
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
-    parser.add_option("-c","--coll",action="store",dest="coll",help="") 
     parser.add_option("-v","--dataversion",action="store",dest="dataversion",help="2.0.2/2.0.3 ...")
-   
+    parser.add_option("-c","--coll",action="store",dest="coll",help="")
     (options,args) = parser.parse_args()
 
-    for key in ([options.server, options.coll, options.dataversion]):
+    for key in ([options.server, options.dataversion]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     server = options.server
-    coll = options.coll
     ver = options.dataversion
+    coll_list = []
+    if options.coll != None:
+        coll_list.append(options.coll)
 
-    rel_dir = "/data/shared/glygen/releases/data/v-%s/" % (ver)
-
-    db_name = "glydb"
-
+    jsondb_dir = "/data/shared/glygen/releases/data/v-%s/jsondb/" % (ver)
     config_obj = json.loads(open("./conf/config.json", "r").read())
-    #mongo_port = config_obj["dbinfo"]["port"][server]
     mongo_port = "27017"
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
+
+    batched_colls = config_obj["batched_colls"]
   
+    db_name = "glydb"
     db_obj = config_obj["dbinfo"][db_name]
     glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
+
+    if coll_list == []:
+        for db in config_obj["downloads"]["jsondb"]:
+            coll = "c_" + db[:-2]
+            if coll in ["c_event", "c_video", "c_outreach"]:
+                continue
+            coll_list.append(coll)
+
 
     try:
         client = pymongo.MongoClient(host,
@@ -57,19 +65,25 @@ def main():
         )
         client.server_info()
         dbh = client[glydb_name]
-        insert_info = json.loads(open("tmp/list.json", "r").read())
-        main_id_field = insert_info["mainidfield"]
-        for file_name in insert_info["filelist"]:
-    
-            db = coll.replace("c_", "") + "db"
-            in_file = rel_dir + "jsondb/" + db + "/" + file_name        
-            doc = json.loads(open(in_file, "r").read())
-            if main_id_field not in doc:
-                continue
-            main_id = doc[main_id_field]
-            res = dbh[coll].delete_one({main_id_field:main_id})
-            res = dbh[coll].insert_one(doc)
- 
+        
+
+        for coll in coll_list:
+
+            db = coll[2:] + "db"
+            file_list = glob.glob(jsondb_dir + db + "/*.json")
+            n_one = len(file_list)
+            if coll in batched_colls:
+                n_one = 0
+                for in_file in file_list:
+                    n_one += len(json.load(open(in_file)))
+                
+            #if coll in ["c_index"]:
+            #    n_one = 0
+            #    for in_file in file_list:
+            #        n_one += len(json.load(open(in_file)))
+            n_two = len(list(dbh[coll].find({},{"_id":1})))
+            #n_two = dbh[coll].count_documents({})
+            print (n_one == n_two, coll, "in_file_sys=%s" %(n_one), "in_mongodb=%s" %(n_two))
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

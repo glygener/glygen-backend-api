@@ -26,8 +26,7 @@ def main():
 
     server = options.server
 
-
-    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_name = "glydb"
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
 
@@ -86,17 +85,12 @@ def main():
 
     for cmd in cmd_list:
         print (cmd)
-        x = subprocess.getoutput(cmd)
-        print (x)
+        #x = subprocess.getoutput(cmd)
+        subprocess.run(cmd, shell=True)
     
 
-    #remove dangling images
-    cmd = "docker images -f dangling=true"
-    line_list = subprocess.getoutput(cmd).split("\n")
-    for line in line_list[1:]:
-        image_id = line.split()[2]
-        cmd = "docker image rm -f " + image_id
-        x = subprocess.getoutput(cmd)
+    return
+
 
 
 

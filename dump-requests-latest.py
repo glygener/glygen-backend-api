@@ -51,19 +51,10 @@ def main():
         )
         client.server_info()
         dbh = client[glydb_name]
-        q = {}
-        limit = 10000
-        for doc in dbh[coll].find(q, sort=[('_id', pymongo.DESCENDING)]).limit(int(limit)):
-            if "_id" in doc:
-                doc.pop("_id")
-            if "mcp_tool" not in doc["req"]:
-                continue
-            mcp_tool, ip = doc["req"]["mcp_tool"], doc["headers"]["ip"]
-            print (mcp_tool, ip)
-            #print (json.dumps(doc, indent=4))
-            #print ("//")
-            #exit()
-
+        doc = dbh[coll].find_one(sort=[('_id', pymongo.DESCENDING)])
+        if "_id" in doc:
+            doc.pop("_id")
+        print (json.dumps(doc, indent=4))
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

@@ -17,26 +17,12 @@ __status__ = "Dev"
 ###############################
 def main():
 
-    score = 0.1
-    doc = json.load(open("junk"))
-    for obj in doc:
-        score += obj["w"] + round(float(obj["f"])/100.00,3)
-        print (obj)
-    print (score)
-    exit()
- 
-    doc = json.load(open("glygen/conf/section.json"))
-    for sec in doc["site"]:
-        for obj in doc["site"][sec]["fieldmap"]:
-            if obj["path"] in ["start_pos","end_pos"]:
-                print (sec, obj)
-    exit()
 
 
-    server = "beta"
-    coll = "c_index"
+    server = "tst"
+    coll = "c_cluster"
 
-    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_name = "glydb"
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     #mongo_port = config_obj["dbinfo"]["port"][server]
@@ -56,12 +42,11 @@ def main():
         )
         client.server_info()
         dbh = client[glydb_name]
-        prj_obj = {"record_type":1, "record_id":1, "section":1}
-        #qry_obj = {"phraselist":{"$eq":"hgf"}, "record_type":{"$eq":"protein"}}
-        qry_obj = {"phraselist": {"$eq": "glycosylation"},"record_type": {"$eq": "site"}}
-        qry_obj = {"record_type": {"$eq": "site"}} 
-        for doc in dbh["c_index"].find(qry_obj, prj_obj).limit(10):
-            print (doc)
+        
+        q = {"uniprot_canonical_ac":{"$regex":"P11279-1", "$options": "i"}}
+        doc = dbh[coll].find_one(q)
+        doc.pop("_id")
+        print (json.dumps(doc, indent=4))
 
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)

@@ -21,15 +21,16 @@ def main():
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
+    parser.add_option("-c","--coll",action="store",dest="coll",help="") 
     (options,args) = parser.parse_args()
 
-    for key in ([options.server]):
+    for key in ([options.server, options.coll]):
         if not (key):
             parser.print_help()
             sys.exit(0)
 
     server = options.server
-    coll = "c_request"
+    coll = options.coll
 
     db_name = "glydb"
 
@@ -51,19 +52,11 @@ def main():
         )
         client.server_info()
         dbh = client[glydb_name]
-        q = {}
-        limit = 10000
-        for doc in dbh[coll].find(q, sort=[('_id', pymongo.DESCENDING)]).limit(int(limit)):
-            if "_id" in doc:
-                doc.pop("_id")
-            if "mcp_tool" not in doc["req"]:
-                continue
-            mcp_tool, ip = doc["req"]["mcp_tool"], doc["headers"]["ip"]
-            print (mcp_tool, ip)
-            #print (json.dumps(doc, indent=4))
-            #print ("//")
-            #exit()
-
+        doc = dbh[coll].find_one(sort=[('_id', pymongo.DESCENDING)])
+        for p in ["_id", "start_date", "end_date", "createdts", "updatedts", "creation_time", "update_time"]:
+            if p in doc:
+                doc[p] = str(doc[p])
+        print (json.dumps(doc, indent=4))
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:
