@@ -1,7 +1,7 @@
 import os,sys
 from flask_restx import Namespace, Resource, fields
 from flask import (request, current_app, send_file)
-from glygen.db import log_error, log_request
+from glygen.db import log_error, log_request, get_mongodb
 from glygen.document import get_one, get_many, insert_one, update_one, delete_one, order_json_obj
 from werkzeug.utils import secure_filename
 import datetime
@@ -21,6 +21,12 @@ api = Namespace("disease", description="Disease APIs")
 
 
 search_init_query_model = api.model("Disease Search Init Query", {})
+get_all_query_model = api.model("Disease Get All Query", 
+    {
+        "offset": fields.Integer(required=True, default=1),
+        "limit": fields.Integer(required=True, default=100) 
+    }
+)
 
 search_simple_query_model = api.model("Disease Simple Search Query",
     {
@@ -66,15 +72,15 @@ class Disease(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/disease/search_simple/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/disease/search_simple/", request)
+            if "error_list" not in log_obj:
                 cache_flag, exact_match_flag = True, True
                 res_obj = search_one("disease_search_simple",req_obj,config_obj,cache_flag,exact_match_flag)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -93,19 +99,63 @@ class Disease(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
-            res_obj = log_request({}, "/disease/search_init/", request)
-            if "error_list" not in res_obj:
+            req_obj = get_req_obj(request)
+            log_obj = log_request(req_obj, "/disease/search_init/", request)
+            if "error_list" not in log_obj:
                 res_obj = disease_search_init(config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj, http_code
 
     @api.doc(False)
     def get(self):
         return self.post()
+
+
+@api.route('/get_all/')
+class Disease(Resource):
+    @api.doc('get_all')
+    @api.expect(get_all_query_model)
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj, log_obj = {}, {}
+        try:
+            req_obj = get_req_obj(request)
+            log_obj = log_request(req_obj, "/disease/get_all/", request)
+            if "error_list" not in log_obj:
+                dbh, error_obj = get_mongodb()
+                if error_obj != {}:
+                    return error_obj
+                offset = req_obj["offset"] - 1 if "offset" in req_obj else 0
+                offset = 0 if offset < 0 else offset
+                limit = req_obj["limit"] if "limit" in req_obj else 100
+                total_count = dbh["c_disease"].count_documents({}) 
+                res_obj["pagination"] = {
+                    "total_count":total_count,
+                    "limit":limit,
+                    "offset":offset
+                } 
+                res_obj["disease_list"] = []
+                prj_obj = {"recommended_name":1}
+                for doc in dbh["c_disease"].find({}, prj_obj).sort("_id", 1).skip(offset).limit(limit):
+                    if "_id" in doc:
+                        doc.pop("_id")
+                    res_obj["disease_list"].append(doc) 
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc(), log_obj)
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
+
 
 
 
@@ -118,18 +168,18 @@ class Disease(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = {"record_id":record_id}
             req_obj_extra = get_req_obj(request)
             if req_obj_extra != None:
-                if "paginated_tables" in req_obj_extra:
-                    req_obj["paginated_tables"] = req_obj_extra["paginated_tables"]
-            res_obj = log_request(req_obj, "/disease/detail/", request)
-            if "error_list" not in res_obj:
+                for k in req_obj_extra:
+                    req_obj[k] = req_obj_extra[k]
+            log_obj = log_request(req_obj, "/disease/detail/", request)
+            if "error_list" not in log_obj:
                 res_obj = disease_detail(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -147,14 +197,14 @@ class Disease(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/disease/search/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/disease/search/", request)
+            if "error_list" not in log_obj:
                 res_obj = disease_search(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj, http_code
     
@@ -172,11 +222,11 @@ class Disease(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/disease/list/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/disease/list/", request)
+            if "error_list" not in log_obj:
                 api_name = "disease_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
@@ -192,7 +242,7 @@ class Disease(Resource):
                         else:
                             res_obj = retrieve_cached_list_objects(in_dict,req_obj,config_obj,"paginated")
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 

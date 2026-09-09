@@ -21,6 +21,7 @@ def glycan_search_init(config_obj):
     if error_obj != {}:
         return error_obj
 
+
     error_list = get_errors_in_query("glycan_searchinit",{}, config_obj)
     if error_list != []:
         return {"error_list":error_list}
@@ -32,7 +33,8 @@ def glycan_search_init(config_obj):
     if "" in res_obj["glycan"]["id_namespace"]:
         res_obj["glycan"]["id_namespace"].remove("")
 
-    
+
+ 
     collection = "c_aisearch"
     doc =  dbh[collection].find_one({})
     if doc != None:
@@ -150,17 +152,18 @@ def glycan_search(query_obj, config_obj):
     if error_obj != {}:
         return error_obj
 
-
+    
     #Clean query object
-    key_list = list(query_obj.keys())
-    for key in key_list:
-        flag_list = []
-        #flag_list.append(key in ["query_type", "operation"])
-        flag_list.append(str(query_obj[key]).strip() == "")
-        flag_list.append(query_obj[key] == [])
-        flag_list.append(query_obj[key] == {})
-        if True in flag_list:
-            query_obj.pop(key)
+    if type(query_obj) is dict:
+        key_list = list(query_obj.keys())
+        for key in key_list:
+            flag_list = []
+            #flag_list.append(key in ["query_type", "operation"])
+            flag_list.append(str(query_obj[key]).strip() == "")
+            flag_list.append(query_obj[key] == [])
+            flag_list.append(query_obj[key] == {})
+            if True in flag_list:
+                query_obj.pop(key)
 
     #Collect errors 
     error_list = get_errors_in_query("glycan_search", query_obj, config_obj)
@@ -183,12 +186,12 @@ def glycan_search(query_obj, config_obj):
     default_min, default_max = 0, 0
     if "composition" in query_obj:
         for o in query_obj["composition"]:
-            res = o["residue"]
-            seen[res] = True
-            if res == "default":
-                default_min, default_max = o["min"], o["max"]
-                query_obj["composition"].remove(o)
-
+            if "residue" in o:
+                res = o["residue"]
+                seen[res] = True
+                if res == "default":
+                    default_min, default_max = o["min"], o["max"]
+                    query_obj["composition"].remove(o)
         for res in residue_list:
             if res not in seen:
                 o = {"residue":res, "min":default_min, "max":default_max}
@@ -213,7 +216,7 @@ def glycan_search(query_obj, config_obj):
 
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
-            return {"list_id":list_id}
+            return {"list_id":list_id, "result_count":cached_obj["total_count"]}
 
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
@@ -250,7 +253,12 @@ def glycan_search(query_obj, config_obj):
                         sf_dict[f] = query_obj[f]
             else:
                 sf_dict[f] = query_obj[f]
-   
+  
+    if "mass_type" in sf_dict:
+        if sf_dict["mass_type"] == "Permethylated":
+            sf_dict["mass_pme"] = sf_dict["mass"]
+            sf_dict.pop("mass")
+        sf_dict.pop("mass_type")  
     #return sf_dict
  
     #to address join search for biomarkers
@@ -372,7 +380,7 @@ def glycan_search(query_obj, config_obj):
         if unmapped_obj_list != []:
             cache_info["batch_info"] = {"unmapped":unmapped_obj_list}
         cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
-    res_obj = {"list_id":list_id}
+    res_obj = {"list_id":list_id, "result_count":len(record_list)}
 
     ts_list.append("7-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
@@ -458,9 +466,18 @@ def glycan_detail(query_obj, config_obj):
             return sec_tables
         for sec in sec_tables:
             obj[sec] = sec_tables[sec]
-    
-    clean_obj(obj, config_obj["removelist"]["c_glycan"], "c_glycan")
 
+
+    collection = "c_graph"
+    mongo_query = {"record_id":{'$eq': glytoucan_ac}}
+    doc = dbh[collection].find_one(mongo_query)
+    graph_flag = "yes" if doc != None else "no"
+    obj["tool_support"]["graph_view"] = graph_flag
+   
+
+
+ 
+    clean_obj(obj, config_obj["removelist"]["c_glycan"], "c_glycan")
     if "enzyme" in obj:
         for o in obj["enzyme"]:
             if "gene_url" in o:
@@ -607,6 +624,15 @@ def get_mongo_query(query_obj):
         if "max" in query_obj["mass"]:
             cond_objs.append({mass_field:{'$lte': query_obj["mass"]["max"]}})
     
+    if "mass_pme" in query_obj:
+        mass_field = "mass_pme"
+        if "min" in query_obj["mass_pme"]:
+            cond_objs.append({mass_field:{'$gte': query_obj["mass_pme"]["min"]}})
+        if "max" in query_obj["mass_pme"]:
+            cond_objs.append({mass_field:{'$lte': query_obj["mass_pme"]["max"]}})
+    
+
+     
     #number_monosaccharides
     if "number_monosaccharides" in query_obj:
         if "min" in query_obj["number_monosaccharides"]:
@@ -714,7 +740,7 @@ def get_mongo_query(query_obj):
                     obj_list.append(or_query)
 
             if obj_list != []:
-                operation = query_obj["organism"]["operation"]
+                operation = query_obj["organism"]["operation"].lower()
                 q_one = {"$"+operation+"":obj_list}
                 cond_objs.append(q_one)
 
@@ -774,11 +800,23 @@ def get_mongo_query(query_obj):
 
     if "composition" in query_obj:
         for o in query_obj["composition"]:
-            cond_objs.append({"composition.residue": {'$eq': o["residue"]}})
-            #if o["max"] > 0:
-            #    cond_objs.append({"composition.residue": {'$eq': o["residue"]}})
-            #else:
-            #    cond_objs.append({"composition.residue": {'$ne': o["residue"]}})
+            if "residue" in o:
+                cond_objs.append({"composition.residue": {'$eq': o["residue"]}})
+
+    if "composition_single" in query_obj:
+        o = query_obj["composition_single"]
+        if "min" in o and "max" in o and "residue" in o:
+            cond_objs.append(
+                {
+                    "composition": {
+                        "$elemMatch": {
+                            "residue": o["residue"],
+                            "count": {"$gte": o["min"],"$lte": o["max"]}
+                        }
+                    }
+                }
+            )
+
 
     operation = query_obj["operation"].lower() if "operation" in query_obj else "and"
     mongo_query = {}
@@ -802,15 +840,15 @@ def passes_composition_filter(glytoucan_ac, comp_obj, comp_field, query_obj):
     tv = []
     n_cond = 0
     for q in query_obj[comp_field]:
-        q_res, q_min, q_max = q["residue"], q["min"], q["max"]
-        if q_max >= 0:
-            n_cond += 1
-            for o in comp_obj:
-                o_res, o_count = o["residue"], o["count"]
-                if o_res == q_res and o_count >= q_min and o_count <= q_max:
-                    tv.append(True)
-                    break
-   
+        if "min" in q and "max" in q and "residue" in q:
+            q_res, q_min, q_max = q["residue"], q["min"], q["max"]
+            if q_max >= 0:
+                n_cond += 1
+                for o in comp_obj:
+                    o_res, o_count = o["residue"], o["count"]
+                    if o_res == q_res and o_count >= q_min and o_count <= q_max:
+                        tv.append(True)
+                        break
     r_value = len(tv) == n_cond and list(set(tv)) == [True]
 
     return r_value
@@ -859,7 +897,7 @@ def get_hit_dict(dbh, sf_dict, field2sec, api_name, config_obj):
         if cached_obj_single != None:
             hit_dict[f] = []
             for doc in dbh["c_initcache"].find({"list_id":list_id_single}):
-                hit_dict[f] += doc["results"]
+                hit_dict[f] += doc["results"] if "results" in doc else []
             hit_stat[f] = {"n":len(hit_dict[f]), "flag":"1"}
         elif f in field2sec:
             hit_dict[f] = []
@@ -877,7 +915,7 @@ def get_hit_dict(dbh, sf_dict, field2sec, api_name, config_obj):
             res = use_indexed_search(api_name_simple, query_obj_new,config_obj,exact_match_flag)
             if "error_list" not in res:
                 for doc in dbh["c_usercache"].find({"list_id":res["list_id"]}):
-                    hit_dict[f] += doc["results"]
+                    hit_dict[f] += doc["results"] if "results" in doc else []
             hit_stat[f] = {"n":len(hit_dict[f]), "query_obj_new":query_obj_new, "flag":"2"}
         else:
             hit_dict[f] = []

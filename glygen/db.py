@@ -50,36 +50,37 @@ def log_request(req_obj, api_name, request):
     if len(json.dumps(req_obj)) > 20000:
         return {"error_list":[{"error_code": "Too long request, unable to log request!"}]}
 
-
     header_dict = {}
     header_dict["user_agent"] = request.headers.get('User-Agent')
     header_dict["referer"] = request.headers.get('referer')
     header_dict["origin"] = request.headers.get('Origin')
     header_dict["ip"] = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
 
+
+
     header_dict["is_bot"] = False
     user_agent = request.headers.get('User-Agent')
     if type(user_agent) is str:
         ug = parse(user_agent)
         header_dict["is_bot"] = ug.is_bot
-    
- 
     try:
+        request_id = get_random_string(8)
         ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
         ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-        log_obj = {"api":api_name, "req":req_obj, "ts":ts, "headers":header_dict}
+        log_obj = {"request_id":request_id, "api":api_name, "req":req_obj, "ts":ts, "headers":header_dict}
         res = mongo_dbh["c_request"].insert_one(log_obj)
-        return {}
+        return {"request_id":request_id}
     except Exception as e:
-        return {"error_list":[{"error_code": "Unable to log error!"}]}
+        return {"error_list":[{"error_code": "Unable to log error:%s!" % (e)}]}
 
 
 
 
 
 
-def log_error(error_log):
+def log_error(error_log, request_log_obj):
 
+    request_id = request_log_obj["request_id"] if "request_id" in request_log_obj else "unknown_request_id"
     mongo_dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
@@ -87,7 +88,7 @@ def log_error(error_log):
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     try:
         error_id = get_random_string(6)
-        error_obj = {"id":error_id, "log":error_log, "ts":ts}
+        error_obj = {"id":error_id, "request_id":request_id, "log":error_log, "ts":ts}
         res = mongo_dbh["c_log"].insert_one(error_obj)
         return {"error_list":[{"error_code": "exception-error-" + error_id}]}
     except Exception as e:

@@ -79,16 +79,16 @@ class Event(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
-            res_obj = log_request(req_obj, "/event/addnew/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/event/addnew/", request)
+            if "error_list" not in log_obj:
                 res_obj = event_addnew(current_user, req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -104,14 +104,14 @@ class Event(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/event/detail/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/event/detail/", request)
+            if "error_list" not in log_obj:
                 res_obj = event_detail(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -128,14 +128,14 @@ class Event(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/event/list/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/event/list/", request)
+            if "error_list" not in log_obj:
                 res_obj = event_list(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -153,16 +153,16 @@ class Event(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
-            res_obj = log_request(req_obj, "/event/update/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/event/update/", request)
+            if "error_list" not in log_obj:
                 res_obj = event_update(current_user, req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -181,16 +181,16 @@ class Event(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             #current_user, user_info = "rykahsay@gwu.edu", {}
             current_user = get_jwt_identity()
-            res_obj = log_request(req_obj, "/event/delete/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/event/delete/", request)
+            if "error_list" not in log_obj:
                 res_obj = event_delete(current_user, req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 

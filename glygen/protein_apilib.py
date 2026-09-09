@@ -134,7 +134,9 @@ def protein_search(query_obj, config_obj):
 
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
-            return {"list_id":list_id}
+            return {"list_id":list_id, "result_count":cached_obj["total_count"]}
+
+
 
     glygen_name_dict = {}
     for doc in dbh["c_species"].find({}):
@@ -154,7 +156,11 @@ def protein_search(query_obj, config_obj):
     ts_list.append("1a-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     sf_dict = {}
     for f in query_obj:
-        if f not in ["operation", "query_type"]:
+        if f == "glycosylated_aa":
+            sf_dict[f] = {}
+            for ff in query_obj[f]:
+                sf_dict[f][ff] = query_obj[f][ff]
+        elif f not in ["operation", "query_type"]:
             if type(query_obj[f]) is dict:
                 for ff in query_obj[f]:
                     new_f = f + "." + ff
@@ -162,7 +168,8 @@ def protein_search(query_obj, config_obj):
             else:
                 sf_dict[f] = query_obj[f]
 
-
+    if "sequence.type" in sf_dict:
+        sf_dict.pop("sequence.type")
     #return sf_dict
 
     #to address join search for biomarkers
@@ -171,22 +178,23 @@ def protein_search(query_obj, config_obj):
         sf_dict.pop("biomarker.type") 
                
 
-    hit_dict, hit_stat, seen_id = {}, {}, {}
-    hit_dict, hit_stat, seen_id, tmp_ts_list,mquery = get_hit_dict(dbh, sf_dict,field2sec,api_name, glygen_name_dict,config_obj)
-    #xxxx = get_hit_dict(dbh, sf_dict,field2sec,api_name, glygen_name_dict,config_obj)
-    #return xxxx
-    #return hit_stat
-    #return mquery
-
-    sf_list = list(sf_dict.keys())
     record_list = []
-    if sf_list != [] and hit_dict != {}:
-        record_list = hit_dict[sf_list[0]]
-        if len(sf_list) > 1:
-            for i in range(1, len(sf_list)):
-                record_list = list(set(record_list).intersection(set(hit_dict[sf_list[i]])))
-
-    #return record_list
+    if "tissue_id" in query_obj:
+        record_list = get_expressed_proteins(dbh, query_obj)
+        #return {"query":query_obj, "final":len(record_list)}
+    else:
+        hit_dict, hit_stat, seen_id = {}, {}, {}
+        hit_dict, hit_stat, seen_id, tmp_ts_list,mquery = get_hit_dict(dbh, sf_dict,field2sec,api_name, glygen_name_dict,config_obj)
+        #xxxx = get_hit_dict(dbh, sf_dict,field2sec,api_name, glygen_name_dict,config_obj)
+        #return xxxx
+        sf_list = list(sf_dict.keys())
+        if sf_list != [] and hit_dict != {}:
+            record_list = hit_dict[sf_list[0]] if sf_list[0] in hit_dict else []
+            if len(sf_list) > 1:
+                for i in range(1, len(sf_list)):
+                    if sf_list[i] in hit_dict:
+                        record_list = list(set(record_list).intersection(set(hit_dict[sf_list[i]])))
+        #return {"hit_stat":hit_stat, "mquery":mquery, "final":len(record_list)}
 
     unmapped_obj_list = []
     if "uniprot_canonical_ac" in query_obj:
@@ -201,7 +209,7 @@ def protein_search(query_obj, config_obj):
         if unmapped_obj_list != []:
             cache_info["batch_info"] = {"unmapped":unmapped_obj_list}
         cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
-    res_obj = {"list_id":list_id}
+    res_obj = {"list_id":list_id, "result_count":len(record_list)}
 
     ts_list.append("4-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
    
@@ -462,9 +470,17 @@ def protein_detail(query_obj, config_obj):
                         if "synonyms" in oo:
                             oo.pop("synonyms")
 
+
+
+    #xxxxx
+    collection = "c_graph"
+    mongo_query = {"record_id":{'$eq': canon}}
+    doc = dbh[collection].find_one(mongo_query)
+    graph_flag = "yes" if doc != None else "no"
+    obj["tool_support"] = {"graph_view":graph_flag}
+        
  
     clean_obj(obj, config_obj["removelist"]["c_protein"], "c_protein")
-
     ts_list.append("END-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     #return {"tslist":ts_list}
 
@@ -590,13 +606,26 @@ def get_mongo_query(query_obj, glygen_name_dict):
     #refseq_ac
     if "refseq_ac" in query_obj:
         cond_objs.append({"refseq.ac":{'$eq': query_obj["refseq_ac"]}})
+    
+    #poi_type
+    if "poi_type" in query_obj:
+        cond_objs.append({"class_list":query_obj["poi_type"]})
+    
     #mass
     if "mass" in query_obj:
         if "min" in query_obj["mass"]:
             cond_objs.append({"mass.chemical_mass":{'$gte': query_obj["mass"]["min"]}})
         if "max" in query_obj["mass"]:
             cond_objs.append({"mass.chemical_mass":{'$lte': query_obj["mass"]["max"]}})
-    
+
+    if "mass.min" in query_obj:
+        cond_objs.append({"mass.chemical_mass":{'$gte': query_obj["mass.min"]}})
+      
+    if "mass.max" in query_obj:
+        cond_objs.append({"mass.chemical_mass":{'$lte': query_obj["mass.max"]}})
+
+ 
+ 
     #organism
     if "organism" in query_obj:
         if "id" in query_obj["organism"]:
@@ -607,6 +636,10 @@ def get_mongo_query(query_obj, glygen_name_dict):
                  cond_objs.append({"species.glygen_name": {'$eq': query_obj["organism"]["name"]}})
             else:
                 cond_objs.append({"species.glygen_name": {'$regex': query_obj["organism"]["name"], '$options': 'i'}})
+    if "organism.id" in query_obj:
+        if type(query_obj["organism.id"]) is int:
+            cond_objs.append({"species.taxid": {'$eq': query_obj["organism.id"]}})
+
     #biomarker
     if "biomarker" in query_obj:
         if "id" in query_obj["biomarker"]:
@@ -649,7 +682,7 @@ def get_mongo_query(query_obj, glygen_name_dict):
     #pathway_id
     if "pathway_id" in query_obj:
         cond_objs.append({"pathway.id" : {'$eq':query_obj["pathway_id"]}})
-
+    
 
     #pmid
     if "pmid" in query_obj:
@@ -732,7 +765,13 @@ def get_mongo_query(query_obj, glygen_name_dict):
             val = query_obj["sequence"]["aa_sequence"]
             val = val.replace("X", "[A-Z]{1}")
             cond_objs.append({"sequence.sequence": {'$regex':val,'$options': 'i'}})
-    
+
+    if "sequence.aa_sequence" in query_obj:
+        val = query_obj["sequence.aa_sequence"] 
+        val = val.replace("X", "[A-Z]{1}")
+        cond_objs.append({"sequence.sequence": {'$regex':val,'$options': 'i'}})
+
+ 
     operation = query_obj["operation"].lower() if "operation" in query_obj else "and"
     mongo_query = {}
     mongo_query = cond_objs[0] if len(cond_objs) == 1 else mongo_query
@@ -889,6 +928,19 @@ def get_unmapped_obj_list(query_value, seen_id):
 
 
 
+def get_expressed_proteins(dbh, query_obj):
+   
+    seen = {}
+    qry_obj = {"expression_tissue.tissue.id" : {'$eq':query_obj["tissue_id"]}}
+    prj_obj = {"uniprot_canonical_ac":1, "expression_tissue":1}
+    for doc in dbh["c_protein"].find(qry_obj, prj_obj):
+        canon = doc["uniprot_canonical_ac"]
+        for obj in doc["expression_tissue"]:
+            if obj["tissue"]["id"] == query_obj["tissue_id"] and obj["present"] in ["HIGH", "MEDIUM"]:
+                seen[canon] = True
+
+    return list(seen.keys())
+
 
 
 def get_hit_dict(dbh, sf_dict, field2sec, api_name, glygen_name_dict, config_obj):
@@ -909,7 +961,7 @@ def get_hit_dict(dbh, sf_dict, field2sec, api_name, glygen_name_dict, config_obj
         if cached_obj_single != None:
             hit_dict[f] = []
             for doc in dbh["c_initcache"].find({"list_id":list_id_single}):
-                hit_dict[f] += doc["results"]
+                hit_dict[f] += doc["results"] if "results" in doc else []
             hit_stat[f] = {"n":len(hit_dict[f]), "flag":"1"}
         elif f in field2sec:
             hit_dict[f] = []
@@ -927,7 +979,7 @@ def get_hit_dict(dbh, sf_dict, field2sec, api_name, glygen_name_dict, config_obj
             res = use_indexed_search(api_name_simple, query_obj_new,config_obj,exact_match_flag)
             if "error_list" not in res:
                 for doc in dbh["c_usercache"].find({"list_id":res["list_id"]}):
-                    hit_dict[f] += doc["results"]
+                    hit_dict[f] += doc["results"] if "results" in doc else []
             hit_stat[f] = {"n":len(hit_dict[f]), "flag":"2", "query":query_obj_new}
         elif f == "glycosylated_aa":
             aa_list = sf_dict[f]["aa_list"]
@@ -947,15 +999,17 @@ def get_hit_dict(dbh, sf_dict, field2sec, api_name, glygen_name_dict, config_obj
                 seen_id[uniprot_id] = True
                 for o in obj["isoforms"]:
                     seen_id[o["isoform_ac"]] = True
-            hit_stat[f] = {"n":len(hit_dict[f]), "flag":"4", "mquery":mongo_query_single}
+            hit_stat[f] = {"n":len(hit_dict[f]), "flag":"4", "mquery":mongo_query_single, "qobj":query_obj_single}
         else:
-            hit_dict[f] = []
             mongo_query_single = get_mongo_query(query_obj_single, glygen_name_dict)
-            prj_obj = {"uniprot_canonical_ac":1}
-            for obj in dbh[coll].find(mongo_query_single,prj_obj):
-                canon = obj["uniprot_canonical_ac"]
-                hit_dict[f].append(canon)
-            hit_stat[f] = {"n":len(hit_dict[f]), "flag":"5", "mquery":mongo_query_single}
+            #return {"in":query_obj_single,  "out":mongo_query_single}
+            if mongo_query_single != {}:
+                hit_dict[f] = []
+                prj_obj = {"uniprot_canonical_ac":1}
+                for obj in dbh[coll].find(mongo_query_single,prj_obj):
+                    canon = obj["uniprot_canonical_ac"]
+                    hit_dict[f].append(canon)
+                hit_stat[f] = {"f":f, "n":len(hit_dict[f]), "flag":"5", "mquery":mongo_query_single, "qobj":query_obj_single}
         ts_list.append("1y-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
     return hit_dict, hit_stat, seen_id, ts_list, mongo_query_single

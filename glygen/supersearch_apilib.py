@@ -989,10 +989,10 @@ def get_hit_records_two(dbh,record_type,q_obj,coll,initial_hit_dict):
     hit_matrix = []
     for o in q_obj["qlist"]:
         path, sec, value = o["path"], o["sec"],o["value"]
-        word_count = len(value.split(" "))
+        word_count = len(str(value).split(" "))
         prj_obj = {"record_type":1, "record_id":1, "section":1}
         result_dict = {"all":{}}
-        phrase = value.lower().replace("-", " ")
+        phrase = str(value).lower().replace("-", " ")
         qry_obj = {"phraselist":{"$eq":phrase}, "record_type":{"$eq":record_type}}
         tmp_dict = {}
         for doc in dbh["c_index"].find(qry_obj, prj_obj):

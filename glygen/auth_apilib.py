@@ -126,8 +126,6 @@ def auth_contact(query_obj, config_obj):
     }
     
     github_endpoint = "https://api.github.com/repos/glygener/glygen-issues/issues"
-    #github_token = os.environ['GITHUB_TOKEN']
-    #github_assignee = os.environ['GITHUB_ASSIGNEE'] 
     github_token = current_app.config["GITHUB_TOKEN"]
     github_assignee = current_app.config["GITHUB_ASSIGNEE"]
 

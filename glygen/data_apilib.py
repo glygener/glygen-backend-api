@@ -35,7 +35,7 @@ def list_download(query_obj, config_obj, data_path):
     error_list = get_errors_in_query("list_download",query_obj, config_obj)
     if error_list != []:
         if error_list[0]["field"] == "id" and query_obj["download_type"] == "motif_list":
-            x = "xxx" # do nothing
+            error_list = []
         else:
             return {"error_list":error_list}
 
@@ -91,7 +91,8 @@ def list_download(query_obj, config_obj, data_path):
 
     #Now that we have data_buffer, let's worry about compression
     if query_obj["compressed"] == True:
-        fname = "%s.%s" % (query_obj["id"], query_obj["format"])
+        name = "motif_list" if query_obj["download_type"] == "motif_list" else query_obj["id"]
+        fname = "%s.%s" % (name, query_obj["format"])
         c_data_buffer = gzip.compress(bytes(data_buffer, 'utf-8'))
         res_stream = Response(c_data_buffer, mimetype='application/gzip')
         res_stream.headers['Content-Disposition'] = 'attachment; filename=%s.gz' % (fname)
@@ -375,11 +376,11 @@ def section_download(query_obj, config_obj, sec_info, data_path):
                 list_obj["results"].append(o)
 
         #return debug_list
-
+        #return list_obj
+        
         if format_lc in ["csv", "tsv"]:
             data_buffer = get_tabular_buffer(list_obj, query_obj, config_obj)
             #data_buffer = json.dumps(list_obj)
-
 
     
     #Now that we have data_buffer, let's worry about compression
@@ -429,6 +430,8 @@ def get_fasta_sequence(dbh, canon, isoform_ac, seq_type):
 
 def get_tabular_buffer(list_obj, query_obj, config_obj):
 
+    record_type = query_obj["download_type"].split("_")[0]
+    
     data_buffer = ""
     ordr_dict = {}
     format_lc = query_obj["format"].lower() 
@@ -502,6 +505,21 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
         if "columns" in list_obj["query"]:
             col_list = list_obj["query"]["columns"]
 
+
+    #col_ordr_dict = {}
+    #SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    #json_url = os.path.join(SITE_ROOT, "conf/list_init.json")
+    #list_init_conf = json.loads(open(json_url, "r").read())
+    #if record_type in list_init_conf:
+    #   for obj in list_init_conf[record_type]["columns"]:
+    #        p = obj["property_name"]
+    #        col_ordr_dict[p] = obj["order"]    
+    #s_col_ordr_dict = {}
+    #if col_ordr_dict != {}:
+    #    s_col_ordr_dict = dict(sorted(col_ordr_dict.items(), key=lambda item: item[1]))
+
+
+
     if len(list_obj[results_key]) > 0:
         key_list = order_list(list_obj[results_key][0].keys(), ordr_dict)
         #Adjust column list if based on col_list
@@ -512,7 +530,16 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
         for k in key_list:
             if k not in col_list:
                 k_list_two.append(k)
-        key_list = k_list_one + k_list_two
+        tmp_key_list = k_list_one + k_list_two
+        #key_list = []
+        #if s_col_ordr_dict != {}:
+        #    for k in s_col_ordr_dict:
+        #        if k in tmp_key_list:
+        #            key_list.append(k)
+        #else:
+        #    key_list = tmp_key_list
+        key_list = tmp_key_list
+
         header_list = []
         for hh in key_list:
             if hh not in ["hit_score", "score_info", "filter_code"]:
@@ -663,7 +690,7 @@ def get_list_object(query_obj, config_obj):
         return out_json
  
 
-    if "id" not in query_obj:
+    if "id" not in query_obj and query_obj["download_type"] != "motif_list":
         return {"error_list":[{"error_code":"missing-field=id"}]}
     if "download_type" not in query_obj:
         return {"error_list":[{"error_code":"missing-field=download_type"}]}
@@ -671,9 +698,9 @@ def get_list_object(query_obj, config_obj):
     api_name = "list_download" 
     list_query = "" 
     collection = config_obj["downloadtypes"][query_obj["download_type"]]["cache"]
-    mongo_query = {"list_id":query_obj["id"]}
-    if query_obj["download_type"] == "motif_list":
-        mongo_query = {}
+    mongo_query = {}
+    if query_obj["download_type"] != "motif_list":
+        mongo_query = {"list_id":query_obj["id"]}
     list_obj = {}
     if query_obj["download_type"] == "motif_list":
         list_query = {"sort":"glycan_count","order":"desc", "limit":10000000}
@@ -731,6 +758,8 @@ def get_record_object(dbh, query_obj, config_obj):
     mongo_query = {main_id:{"$eq":val}}
     if query_obj["download_type"] == "protein_detail":
         mongo_query = {"$or":[{"uniprot_canonical_ac":{"$eq":val}}, {"uniprot_ac":{"$eq":val}}]}
+    if query_obj["download_type"] == "publication_detail":
+        mongo_query = {"record_id":{"$regex":val.lower(), "$options":"i"}}
     if query_obj["download_type"] == "site_detail":
         parts = val.split(".")
         if parts[0].find("-") == -1 and len(parts) == 3:

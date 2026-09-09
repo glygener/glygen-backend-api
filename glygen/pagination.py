@@ -40,11 +40,11 @@ class Pagination(Resource):
         config_obj = json.load(open(json_url))
         json_url = os.path.join(SITE_ROOT, "conf/filter_init.json")
         config_obj["filter_init"] = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/pagination/page/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/pagination/page/", request)
+            if "error_list" not in log_obj:
                 api_name = "pagination_page"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
@@ -54,6 +54,7 @@ class Pagination(Resource):
                     res_obj = pagination_page(req_obj, config_obj)
                     if "error_list" not in res_obj:
                         res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
+                        #return res
                         if "error_list" in res:
                             res_obj = res
                 if "results" in res_obj:
@@ -68,7 +69,7 @@ class Pagination(Resource):
                     #return debug_list
 
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 

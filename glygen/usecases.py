@@ -67,14 +67,14 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request({}, "/usecases/search_init/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request({}, "/usecases/search_init/", request)
+            if "error_list" not in log_obj:
                 res_obj = search_init(config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -92,15 +92,18 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
+            if tax_id.isdigit() == False:
+                return {"error_list":[{"error_code":"invalid-tax-id"}]}
+            
             req_obj = {"glytoucan_ac":glytoucan_ac, "tax_id":int(tax_id)}
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/glycan_to_biosynthesis_enzymes/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/glycan_to_biosynthesis_enzymes/", request)
+            if "error_list" not in log_obj:
                 res_obj = glycan_to_biosynthesis_enzymes(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -118,15 +121,17 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
+            if tax_id.isdigit() == False:
+                return {"error_list":[{"error_code":"invalid-tax-id"}]}
             req_obj = {"glytoucan_ac":glytoucan_ac, "tax_id":int(tax_id)}
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/glycan_to_glycoproteins/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/glycan_to_glycoproteins/", request)
+            if "error_list" not in log_obj:
                 res_obj = glycan_to_glycoproteins(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
     
@@ -145,15 +150,17 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
+            if tax_id.isdigit() == False:
+                return {"error_list":[{"error_code":"invalid-tax-id"}]}
             req_obj = {"glytoucan_ac":glytoucan_ac, "tax_id":int(tax_id)}
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/glycan_to_enzyme_gene_loci/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/glycan_to_enzyme_gene_loci/", request)
+            if "error_list" not in log_obj:
                 res_obj = glycan_to_enzyme_gene_loci(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -173,15 +180,17 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
+            if tax_id.isdigit() == False:
+                return {"error_list":[{"error_code":"invalid-tax-id"}]}
             req_obj = {"uniprot_canonical_ac":uniprot_canonical_ac, "tax_id":int(tax_id)}
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/biosynthesis_enzyme_to_glycans/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/biosynthesis_enzyme_to_glycans/", request)
+            if "error_list" not in log_obj:
                 res_obj = biosynthesis_enzyme_to_glycans(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -197,15 +206,15 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = {"uniprot_canonical_ac":uniprot_canonical_ac}
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/protein_to_orthologs/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/protein_to_orthologs/", request)
+            if "error_list" not in log_obj:
                 res_obj = protein_to_orthologs(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
@@ -223,15 +232,15 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = {"uniprot_canonical_ac":uniprot_canonical_ac}
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/protein_to_glycosequons/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/protein_to_glycosequons/", request)
+            if "error_list" not in log_obj:
                 res_obj = protein_to_glycosequons(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -248,15 +257,17 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
+            if tax_id.isdigit() == False:
+                return {"error_list":[{"error_code":"invalid-tax-id"}]}
             req_obj = {"tax_id":int(tax_id)}
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/species_to_glycosyltransferases/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/species_to_glycosyltransferases/", request)
+            if "error_list" not in log_obj:
                 res_obj = species_to_glycosyltransferases(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -271,15 +282,17 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
+            if tax_id.isdigit() == False:
+                return {"error_list":[{"error_code":"invalid-tax-id"}]}
             req_obj = {"tax_id":int(tax_id)} 
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/species_to_glycohydrolases/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/species_to_glycohydrolases/", request)
+            if "error_list" not in log_obj:
                 res_obj = species_to_glycohydrolases(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
     
@@ -294,15 +307,17 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
+            if tax_id.isdigit() == False:
+                return {"error_list":[{"error_code":"invalid-tax-id"}]}
             req_obj = {"tax_id":int(tax_id), "evidence_type":evidence_type} 
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/species_to_glycoproteins/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/species_to_glycoproteins/", request)
+            if "error_list" not in log_obj:
                 res_obj = species_to_glycoproteins(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -317,15 +332,15 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/disease_to_glycosyltransferases/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/disease_to_glycosyltransferases/", request)
+            if "error_list" not in log_obj:
                 res_obj = disease_to_glycosyltransferases(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -341,12 +356,12 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/genelocus_list/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/genelocus_list/", request)
+            if "error_list" not in log_obj:
                 api_name = "genelocus_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
@@ -359,7 +374,7 @@ class Usecases(Resource):
                         if "error_list" in res:
                             res_obj = res
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -377,12 +392,12 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/ortholog_list/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/ortholog_list/", request)
+            if "error_list" not in log_obj:
                 api_name = "ortholog_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
@@ -395,7 +410,7 @@ class Usecases(Resource):
                         if "error_list" in res:
                             res_obj = res
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -412,15 +427,15 @@ class Usecases(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/usecases/glycosequon_list/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/usecases/glycosequon_list/", request)
+            if "error_list" not in log_obj:
                 res_obj = glycosequon_list(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
     

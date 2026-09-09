@@ -44,14 +44,14 @@ class Idmapping(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request({}, "/idmapping/search_init/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request({}, "/idmapping/search_init/", request)
+            if "error_list" not in log_obj:
                 res_obj = search_init(config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -67,7 +67,7 @@ class Idmapping(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj_form = request.form
             req_obj_json = request.json
@@ -112,11 +112,11 @@ class Idmapping(Resource):
                     error_list.append({"error_code":"missing-parameter","field":k})
             if error_list != []:
                 return {"error_list":error_list}
-            res_obj = log_request(req_obj, "/idmapping/search/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/idmapping/search/", request)
+            if "error_list" not in log_obj:
                 res_obj = search(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -131,11 +131,11 @@ class Idmapping(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/idmapping/list/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/idmapping/list/", request)
+            if "error_list" not in log_obj:
                 api_name = "idmapping_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
@@ -150,7 +150,7 @@ class Idmapping(Resource):
                 #if "results" in res_obj:
                 #    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 

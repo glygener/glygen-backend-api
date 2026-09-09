@@ -9,7 +9,7 @@ from pytz import timezone
 from bson import json_util, ObjectId
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, order_obj, extract_name, cache_hitlist, get_hash_id
+from glygen.util import get_errors_in_query, order_obj, extract_name, cache_hitlist, get_hash_id
 
 from glygen.protein_apilib import get_protein_list_object
 
@@ -1069,12 +1069,14 @@ def sort_objects(obj_list, field_name, order_type):
     }
     for i in range(0, len(obj_list)):
         obj = obj_list[i]
-        grid_obj[field_name].append({"index":i, field_name:obj[field_name]})
+        if field_name in grid_obj and field_name in obj:
+            grid_obj[field_name].append({"index":i, field_name:obj[field_name]})
 
     reverse_flag = True if order_type == "desc" else False
     key_list = []
-    sorted_obj_list = sorted(grid_obj[field_name], key=lambda x: x[field_name], reverse=reverse_flag)
-    for o in sorted_obj_list:
+    if field_name in grid_obj:
+        sorted_obj_list = sorted(grid_obj[field_name], key=lambda x: x[field_name], reverse=reverse_flag)
+        for o in sorted_obj_list:
             key_list.append(o["index"])
     return key_list
 
