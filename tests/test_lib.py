@@ -208,6 +208,9 @@ def run_from_queries(api_grp, config_obj, server):
                             if "type" in req_obj:
                                 if download_type == req_obj["type"]:
                                     req_obj["id"] = id_dict_two[grp][download_type]
+                    #print (api_url)
+                    #print (req_obj)
+                    #continue
 
                     res = requests.post(api_url, json=req_obj, verify=False)
                     #res = requests.get(api_url, json=req_obj, verify=False)
@@ -252,6 +255,7 @@ def run_from_queries(api_grp, config_obj, server):
                         flags = "success"
                     row = [o["name"], "query-"+str(idx), flags]
                     FW.write("%s\n" % (",".join(row)))
+                    print (api_grp, row, "DEBUG")
                     if flags != "success":
                         out_file = log_dir + "%s_failure_log_%s.%s.json" % (user_name, o["name"], idx)
                         with open(out_file, "w") as FL:

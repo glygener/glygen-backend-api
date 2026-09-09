@@ -34,14 +34,15 @@ class Pages(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request({}, "/pages/home_init/", request)
-            if "error_list" not in res_obj:
+            req_obj = get_req_obj(request)
+            log_obj = log_request(req_obj, "/pages/home_init/", request)
+            if "error_list" not in log_obj:
                 res_obj = home_init(config_obj, data_path)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
@@ -61,14 +62,14 @@ class Pages(Resource):
         config_obj = json.load(open(json_url))
         json_url = os.path.join(SITE_ROOT, "conf/list_init.json")
         config_obj["list_init"] = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/pages/list_init/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/pages/list_init/", request)
+            if "error_list" not in log_obj:
                 res_obj = list_init(config_obj, req_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -86,14 +87,14 @@ class Pages(Resource):
         config_obj = json.load(open(json_url))
         json_url = os.path.join(SITE_ROOT, "conf/filter_init.json")
         config_obj["filter_init"] = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/pages/filter_init/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/pages/filter_init/", request)
+            if "error_list" not in log_obj:
                 res_obj = filter_init(config_obj, req_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 

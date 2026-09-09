@@ -1,2 +1,5 @@
-{"id":"8addc2fae1bd90a9b923eb7c63db34a5","offset":1,"sort":"hit_score","limit":20,"order":"desc","filters":[],"columns":["glytoucan_ac","image_url","hit_score","mass","byonic","publication"]}
-
+{
+	"id":"2a38b72a5b94be114b3811f8a1912b53","offset":1,"sort":"hit_score","limit":150000,"order":"desc",
+	"filters":[],
+	"columns":[]
+}

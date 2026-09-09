@@ -1,6 +1,14 @@
 {
-  "recordtype":"protein",
-  "input_namespace":"UniProtKB",
-  "output_namespace":"RefSeq",
-  "input_idlist":["P18203", "P14210"]
+  "recordtype":"glycan",
+  "input_namespace":"PubChem Compound",
+  "output_namespace":"ChEBI",
+  "input_idlist":[
+		"91852971",
+		"91855242",
+		"91857312",
+		"56836111",
+		"91848553"
+	]
 }
+
+

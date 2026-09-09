@@ -1,41 +1,140 @@
-0.127284 200 protein_search_simple
-0.067872 200 protein_search
-0.04527 200 protein_list
-0.907325 200 protein_detail
-0.684104 200 protein_alignment
-
-0.065884 200 glycan_search_simple
-0.064819 200 glycan_search
-0.043944 200 glycan_list
-0.537208 200 glycan_detail
-
-0.087193 200 biomarker_search_simple
-0.062805 200 biomarker_search
-0.045778 200 biomarker_list
-0.07017 200 biomarker_detail
-
-0.375659 200 motif_detail
-0.797563 200 motif_list
-
-0.754536 200 site_detail
-
-0.793625 200 publication_detail
-
-0.046693 200 supersearch_search
-0.043153 500 supersearch_list
-
-2.483931 200 globalsearch_search
- 
-
-0.072983 200 usecases_biosynthesis_enzyme_to_glycans
-0.06779 200 usecases_glycan_to_biosynthesis_enzymes
-0.068331 200 usecases_glycan_to_glycoproteins
-0.068042 200 usecases_glycan_to_enzyme_gene_loci
-0.067077 200 usecases_protein_to_glycosequons
-0.059678 200 usecases_protein_to_orthologs
-0.065791 200 usecases_species_to_glycohydrolases
-0.066089 200 usecases_species_to_glycosyltransferases
-0.068721 200 usecases_species_to_glycoproteins
-0.061392 200 usecases_disease_to_glycosyltransferases
-  
-  
+protein ['protein_search_init', 'query-1', 'success'] DEBUG
+protein ['protein_search_simple', 'query-1', 'success'] DEBUG
+protein ['protein_search', 'query-1', 'success'] DEBUG
+protein ['protein_list', 'query-1', 'failed:schema_validation_failed'] DEBUG
+protein ['protein_detail', 'query-1', 'failed:schema_validation_failed'] DEBUG
+protein ['protein_alignment', 'query-1', 'success'] DEBUG
+auth ['auth_userid', 'query-1', 'success'] DEBUG
+auth ['auth_contact', 'query-1', 'success'] DEBUG
+auth ['auth_register', 'query-1', 'failed:error_response'] DEBUG
+auth ['auth_userinfo', 'query-1', 'failed:schema_validation_failed'] DEBUG
+auth ['auth_userupdate', 'query-1', 'failed:schema_validation_failed'] DEBUG
+auth ['auth_login', 'query-1', 'failed:error_response'] DEBUG
+auth ['auth_userdelete', 'query-1', 'failed:schema_validation_failed'] DEBUG
+auth ['auth_contactlist', 'query-1', 'failed:schema_validation_failed'] DEBUG
+auth ['auth_contactupdate', 'query-1', 'failed:schema_validation_failed'] DEBUG
+auth ['auth_contactdelete', 'query-1', 'failed:schema_validation_failed'] DEBUG
+data ['protein_list', 'query-1', 'failed:error_response'] DEBUG
+data ['protein_list', 'query-2', 'failed:error_response'] DEBUG
+data ['protein_list', 'query-3', 'failed:error_response'] DEBUG
+data ['protein_list', 'query-4', 'failed:error_response'] DEBUG
+data ['glycan_list', 'query-1', 'failed:error_response'] DEBUG
+data ['glycan_list', 'query-2', 'failed:error_response'] DEBUG
+data ['glycan_list', 'query-3', 'failed:error_response'] DEBUG
+data ['glycan_list', 'query-4', 'failed:error_response'] DEBUG
+data ['glycan_list', 'query-5', 'failed:error_response'] DEBUG
+data ['glycan_list', 'query-6', 'failed:error_response'] DEBUG
+data ['glycan_list', 'query-7', 'failed:error_response'] DEBUG
+data ['glycan_list', 'query-8', 'failed:error_response'] DEBUG
+data ['glycan_list', 'query-9', 'failed:error_response'] DEBUG
+data ['glycan_list', 'query-10', 'failed:error_response'] DEBUG
+data ['motif_list', 'query-1', 'failed:error_response'] DEBUG
+data ['motif_list', 'query-2', 'failed:error_response'] DEBUG
+data ['motif_list', 'query-3', 'failed:error_response'] DEBUG
+data ['motif_list', 'query-4', 'failed:error_response'] DEBUG
+data ['motif_list', 'query-5', 'failed:error_response'] DEBUG
+data ['motif_list', 'query-6', 'failed:error_response'] DEBUG
+data ['motif_list', 'query-7', 'failed:error_response'] DEBUG
+data ['motif_list', 'query-8', 'failed:error_response'] DEBUG
+data ['motif_list', 'query-9', 'failed:error_response'] DEBUG
+data ['motif_list', 'query-10', 'failed:error_response'] DEBUG
+data ['genelocus_list', 'query-1', 'failed:error_response'] DEBUG
+data ['genelocus_list', 'query-2', 'failed:error_response'] DEBUG
+data ['genelocus_list', 'query-3', 'failed:error_response'] DEBUG
+data ['genelocus_list', 'query-4', 'failed:error_response'] DEBUG
+data ['ortholog_list', 'query-1', 'failed:error_response'] DEBUG
+data ['ortholog_list', 'query-2', 'failed:error_response'] DEBUG
+data ['ortholog_list', 'query-3', 'failed:error_response'] DEBUG
+data ['ortholog_list', 'query-4', 'failed:error_response'] DEBUG
+data ['site_list', 'query-1', 'failed:error_response'] DEBUG
+data ['site_list', 'query-2', 'failed:error_response'] DEBUG
+data ['site_list', 'query-3', 'failed:error_response'] DEBUG
+data ['protein_detail', 'query-1', 'success'] DEBUG
+data ['protein_detail', 'query-2', 'success'] DEBUG
+data ['glycan_detail', 'query-1', 'success'] DEBUG
+data ['glycan_detail', 'query-2', 'success'] DEBUG
+data ['glycan_detail', 'query-3', 'success'] DEBUG
+data ['glycan_detail', 'query-4', 'success'] DEBUG
+data ['glycan_detail', 'query-5', 'success'] DEBUG
+data ['glycan_detail', 'query-6', 'success'] DEBUG
+data ['glycan_detail', 'query-7', 'success'] DEBUG
+data ['glycan_detail', 'query-8', 'success'] DEBUG
+data ['motif_detail', 'query-1', 'success'] DEBUG
+data ['motif_detail', 'query-2', 'success'] DEBUG
+data ['motif_detail', 'query-3', 'failed:error_response'] DEBUG
+data ['motif_detail', 'query-4', 'success'] DEBUG
+data ['site_detail', 'query-1', 'success'] DEBUG
+data ['publication_detail', 'query-1', 'success'] DEBUG
+data ['protein_detail_isoformset', 'query-1', 'success'] DEBUG
+data ['protein_detail_homologset', 'query-1', 'success'] DEBUG
+data ['glycan_image', 'query-1', 'success'] DEBUG
+data ['idmapping_list_mapped', 'query-1', 'failed:error_response'] DEBUG
+data ['idmapping_list_mapped', 'query-2', 'failed:error_response'] DEBUG
+data ['idmapping_list_unmapped', 'query-1', 'failed:error_response'] DEBUG
+data ['idmapping_list_unmapped', 'query-2', 'failed:error_response'] DEBUG
+data ['idmapping_list_all', 'query-1', 'failed:error_response'] DEBUG
+data ['idmapping_list_all', 'query-2', 'failed:error_response'] DEBUG
+data ['idmapping_list_all_collapsed', 'query-1', 'failed:error_response'] DEBUG
+data ['idmapping_list_all_collapsed', 'query-2', 'failed:error_response'] DEBUG
+data ['protein_section', 'query-1', 'failed:error_response'] DEBUG
+data ['protein_section', 'query-2', 'failed:error_response'] DEBUG
+data ['site_section', 'query-1', 'failed:error_response'] DEBUG
+data ['site_section', 'query-2', 'failed:error_response'] DEBUG
+data ['glycan_section', 'query-1', 'failed:error_response'] DEBUG
+data ['glycan_section', 'query-2', 'failed:error_response'] DEBUG
+data ['motif_section', 'query-1', 'failed:error_response'] DEBUG
+data ['motif_section', 'query-2', 'failed:error_response'] DEBUG
+data ['publication_section', 'query-1', 'failed:error_response'] DEBUG
+data ['publication_section', 'query-2', 'failed:error_response'] DEBUG
+event ['event_addnew', 'query-1', 'failed:schema_validation_failed'] DEBUG
+event ['event_list', 'query-1', 'failed:schema_validation_failed'] DEBUG
+event ['event_update', 'query-1', 'failed:schema_validation_failed'] DEBUG
+event ['event_detail', 'query-1', 'failed:schema_validation_failed'] DEBUG
+event ['event_delete', 'query-1', 'failed:schema_validation_failed'] DEBUG
+glycan ['glycan_search_init', 'query-1', 'success'] DEBUG
+glycan ['glycan_search_simple', 'query-1', 'success'] DEBUG
+glycan ['glycan_search', 'query-1', 'success'] DEBUG
+glycan ['glycan_search', 'query-2', 'success'] DEBUG
+glycan ['glycan_list', 'query-1', 'success'] DEBUG
+glycan ['glycan_list', 'query-2', 'success'] DEBUG
+glycan ['glycan_detail', 'query-1', 'success'] DEBUG
+glycan ['glycan_image', 'query-1', 'success'] DEBUG
+graphdata ['graph_getdata', 'query-1', 'failed:schema_validation_failed'] DEBUG
+job ['job_clean', 'query-1', 'success'] DEBUG
+job ['job_init', 'query-1', 'success'] DEBUG
+job ['job_addnew', 'query-1', 'success'] DEBUG
+job ['job_results', 'query-1', 'failed:schema_validation_failed'] DEBUG
+job ['job_queue', 'query-1', 'success'] DEBUG
+job ['job_status', 'query-1', 'success'] DEBUG
+job ['job_detail', 'query-1', 'success'] DEBUG
+job ['job_list', 'query-1', 'success'] DEBUG
+log ['log_init', 'query-1', 'success'] DEBUG
+log ['log_logging', 'query-1', 'success'] DEBUG
+log ['log_access', 'query-1', 'success'] DEBUG
+log ['log_grouped', 'query-1', 'success'] DEBUG
+motif ['motif_detail', 'query-1', 'failed:schema_validation_failed'] DEBUG
+motif ['motif_list', 'query-1', 'failed:error_response'] DEBUG
+pages ['pages_home_init', 'query-1', 'success'] DEBUG
+publication ['publication_detail', 'query-1', 'failed:schema_validation_failed'] DEBUG
+publication ['publication_detail', 'query-2', 'failed:schema_validation_failed'] DEBUG
+publication ['publication_detail', 'query-3', 'failed:schema_validation_failed'] DEBUG
+publication ['publication_detail', 'query-4', 'failed:schema_validation_failed'] DEBUG
+seqmapping ['seqmapping_search', 'query-1', 'success'] DEBUG
+site ['site_search_init', 'query-1', 'success'] DEBUG
+site ['site_detail', 'query-1', 'failed:schema_validation_failed'] DEBUG
+supersearch ['supersearch_search_init', 'query-1', 'failed:schema_validation_failed'] DEBUG
+supersearch ['supersearch_search', 'query-1', 'failed:schema_validation_failed'] DEBUG
+supersearch ['supersearch_search', 'query-2', 'failed:schema_validation_failed'] DEBUG
+supersearch ['supersearch_search', 'query-3', 'failed:schema_validation_failed'] DEBUG
+supersearch ['supersearch_search', 'query-4', 'failed:schema_validation_failed'] DEBUG
+supersearch ['supersearch_search', 'query-5', 'failed:schema_validation_failed'] DEBUG
+toy ['protein_detail', 'query-1', 'failed:schema_validation_failed'] DEBUG
+typeahead ['typeahead_typeahead', 'query-1', 'success'] DEBUG
+typeahead ['typeahead_categorized_typeahead', 'query-1', 'success'] DEBUG
+typeahead ['typeahead_global_typeahead', 'query-1', 'success'] DEBUG
+typeahead ['typeahead_global_typeahead', 'query-2', 'success'] DEBUG
+typeahead ['typeahead_global_typeahead', 'query-3', 'success'] DEBUG
+video ['video_addnew', 'query-1', 'failed:schema_validation_failed'] DEBUG
+video ['video_detail', 'query-1', 'success'] DEBUG
+video ['video_list', 'query-1', 'success'] DEBUG
+video ['video_delete', 'query-1', 'failed:schema_validation_failed'] DEBUG

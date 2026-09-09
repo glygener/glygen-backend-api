@@ -5,7 +5,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "protein_list",
+                    "download_type": "protein_list",
                     "format": "csv",
                     "compressed": false
                 }
@@ -14,7 +14,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "protein_list",
+                    "download_type": "protein_list",
                     "format": "tsv",
                     "compressed": false
                 }
@@ -23,7 +23,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "protein_list",
+                    "download_type": "protein_list",
                     "format": "json",
                     "compressed": false
                 }
@@ -32,7 +32,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "protein_list",
+                    "download_type": "protein_list",
                     "format": "fasta",
                     "compressed": false
                 }
@@ -46,7 +46,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "glycan_list",
+                    "download_type": "glycan_list",
                     "format": "csv",
                     "compressed": false
                 }
@@ -55,7 +55,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "glycan_list",
+                    "download_type": "glycan_list",
                     "format": "json",
                     "compressed": false
                 }
@@ -64,7 +64,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "glycan_list",
+                    "download_type": "glycan_list",
                     "format": "iupac",
                     "compressed": false
                 }
@@ -73,7 +73,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "glycan_list",
+                    "download_type": "glycan_list",
                     "format": "wurcs",
                     "compressed": false
                 }
@@ -82,7 +82,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "glycan_list",
+                    "download_type": "glycan_list",
                     "format": "glycam",
                     "compressed": false
                 }
@@ -91,7 +91,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "glycan_list",
+                    "download_type": "glycan_list",
                     "format": "smiles_isomeric",
                     "compressed": false
                 }
@@ -100,7 +100,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "glycan_list",
+                    "download_type": "glycan_list",
                     "format": "inchi",
                     "compressed": false
                 }
@@ -109,7 +109,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "glycan_list",
+                    "download_type": "glycan_list",
                     "format": "glycoct",
                     "compressed": false
                 }
@@ -118,7 +118,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "glycan_list",
+                    "download_type": "glycan_list",
                     "format": "byonic",
                     "compressed": false
                 }
@@ -127,7 +127,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "glycan_list",
+                    "download_type": "glycan_list",
                     "format": "grits",
                     "compressed": false
                 }
@@ -141,7 +141,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "motif_list",
+                    "download_type": "motif_list",
                     "format": "csv",
                     "compressed": false
                 }
@@ -150,7 +150,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "motif_list",
+                    "download_type": "motif_list",
                     "format": "tsv",
                     "compressed": false
                 }
@@ -159,7 +159,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "motif_list",
+                    "download_type": "motif_list",
                     "format": "json",
                     "compressed": false
                 }
@@ -168,7 +168,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "motif_list",
+                    "download_type": "motif_list",
                     "format": "iupac",
                     "compressed": false
                 }
@@ -177,7 +177,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "motif_list",
+                    "download_type": "motif_list",
                     "format": "wurcs",
                     "compressed": false
                 }
@@ -186,7 +186,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "motif_list",
+                    "download_type": "motif_list",
                     "format": "glycam",
                     "compressed": false
                 }
@@ -195,7 +195,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "motif_list",
+                    "download_type": "motif_list",
                     "format": "smiles_isomeric",
                     "compressed": false
                 }
@@ -204,7 +204,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "motif_list",
+                    "download_type": "motif_list",
                     "format": "inchi",
                     "compressed": false
                 }
@@ -213,7 +213,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "motif_list",
+                    "download_type": "motif_list",
                     "format": "glycoct",
                     "compressed": false
                 }
@@ -222,7 +222,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "motif_list",
+                    "download_type": "motif_list",
                     "format": "byonic",
                     "compressed": false
                 }
@@ -236,7 +236,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "genelocus_list",
+                    "download_type": "genelocus_list",
                     "format": "csv",
                     "compressed": false
                 }
@@ -245,7 +245,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "genelocus_list",
+                    "download_type": "genelocus_list",
                     "format": "tsv",
                     "compressed": false
                 }
@@ -254,7 +254,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "genelocus_list",
+                    "download_type": "genelocus_list",
                     "format": "json",
                     "compressed": false
                 }
@@ -263,7 +263,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "genelocus_list",
+                    "download_type": "genelocus_list",
                     "format": "fasta",
                     "compressed": false
                 }
@@ -277,7 +277,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "ortholog_list",
+                    "download_type": "ortholog_list",
                     "format": "csv",
                     "compressed": false
                 }
@@ -286,7 +286,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "ortholog_list",
+                    "download_type": "ortholog_list",
                     "format": "tsv",
                     "compressed": false
                 }
@@ -295,7 +295,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "ortholog_list",
+                    "download_type": "ortholog_list",
                     "format": "json",
                     "compressed": false
                 }
@@ -304,7 +304,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "ortholog_list",
+                    "download_type": "ortholog_list",
                     "format": "fasta",
                     "compressed": false
                 }
@@ -318,7 +318,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "site_list",
+                    "download_type": "site_list",
                     "format": "csv",
                     "compressed": false
                 }
@@ -327,7 +327,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "site_list",
+                    "download_type": "site_list",
                     "format": "tsv",
                     "compressed": false
                 }
@@ -336,7 +336,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "site_list",
+                    "download_type": "site_list",
                     "format": "json",
                     "compressed": false
                 }
@@ -350,7 +350,7 @@
                 "label": "",
                 "query": {
                     "id": "P14210-1",
-                    "type": "protein_detail",
+                    "download_type": "protein_detail",
                     "format": "json",
                     "compressed": false
                 }
@@ -359,7 +359,7 @@
                 "label": "",
                 "query": {
                     "id": "P14210-1",
-                    "type": "protein_detail",
+                    "download_type": "protein_detail",
                     "format": "fasta",
                     "compressed": false
                 }
@@ -373,7 +373,7 @@
                 "label": "",
                 "query": {
                     "id": "G17689DH",
-                    "type": "glycan_detail",
+                    "download_type": "glycan_detail",
                     "format": "json",
                     "compressed": false
                 }
@@ -382,7 +382,7 @@
                 "label": "",
                 "query": {
                     "id": "G17689DH",
-                    "type": "glycan_detail",
+                    "download_type": "glycan_detail",
                     "format": "iupac",
                     "compressed": false
                 }
@@ -391,7 +391,7 @@
                 "label": "",
                 "query": {
                     "id": "G17689DH",
-                    "type": "glycan_detail",
+                    "download_type": "glycan_detail",
                     "format": "wurcs",
                     "compressed": false
                 }
@@ -400,7 +400,7 @@
                 "label": "",
                 "query": {
                     "id": "G17689DH",
-                    "type": "glycan_detail",
+                    "download_type": "glycan_detail",
                     "format": "glycam",
                     "compressed": false
                 }
@@ -409,7 +409,7 @@
                 "label": "",
                 "query": {
                     "id": "G17689DH",
-                    "type": "glycan_detail",
+                    "download_type": "glycan_detail",
                     "format": "smiles_isomeric",
                     "compressed": false
                 }
@@ -418,7 +418,7 @@
                 "label": "",
                 "query": {
                     "id": "G17689DH",
-                    "type": "glycan_detail",
+                    "download_type": "glycan_detail",
                     "format": "inchi",
                     "compressed": false
                 }
@@ -427,7 +427,7 @@
                 "label": "",
                 "query": {
                     "id": "G17689DH",
-                    "type": "glycan_detail",
+                    "download_type": "glycan_detail",
                     "format": "glycoct",
                     "compressed": false
                 }
@@ -436,7 +436,7 @@
                 "label": "",
                 "query": {
                     "id": "G17689DH",
-                    "type": "glycan_detail",
+                    "download_type": "glycan_detail",
                     "format": "byonic",
                     "compressed": false
                 }
@@ -450,7 +450,7 @@
                 "label": "",
                 "query": {
                     "id": "GGM.000001",
-                    "type": "motif_detail",
+                    "download_type": "motif_detail",
                     "format": "json",
                     "compressed": false
                 }
@@ -459,7 +459,7 @@
                 "label": "",
                 "query": {
                     "id": "GGM.000001",
-                    "type": "motif_detail",
+                    "download_type": "motif_detail",
                     "format": "csv",
                     "compressed": false
                 }
@@ -468,7 +468,7 @@
                 "label": "",
                 "query": {
                     "id": "GGM.000001",
-                    "type": "motif_detail",
+                    "download_type": "motif_detail",
                     "format": "tsv",
                     "compressed": false
                 }
@@ -477,7 +477,7 @@
                 "label": "",
                 "query": {
                     "id": "GGM.000001",
-                    "type": "motif_detail",
+                    "download_type": "motif_detail",
                     "format": "png",
                     "compressed": false
                 }
@@ -491,7 +491,7 @@
                 "label": "",
                 "query": {
                     "id": "P14210-1.294.294",
-                    "type": "site_detail",
+                    "download_type": "site_detail",
                     "format": "json",
                     "compressed": false
                 }
@@ -505,7 +505,7 @@
                 "label": "",
                 "query": {
                     "id": "8407880",
-                    "type": "publication_detail",
+                    "download_type": "publication_detail",
                     "format": "json",
                     "compressed": false
                 }
@@ -519,7 +519,7 @@
                 "label": "",
                 "query": {
                     "id": "P14210-1",
-                    "type": "protein_detail_isoformset",
+                    "download_type": "protein_detail_isoformset",
                     "format": "fasta",
                     "compressed": false
                 }
@@ -533,7 +533,7 @@
                 "label": "",
                 "query": {
                     "id": "P14210-1",
-                    "type": "protein_detail_homologset",
+                    "download_type": "protein_detail_homologset",
                     "format": "fasta",
                     "compressed": false
                 }
@@ -547,7 +547,7 @@
                 "label": "",
                 "query": {
                     "id": "G17689DH",
-                    "type": "glycan_image",
+                    "download_type": "glycan_image",
                     "format": "png",
                     "compressed": false
                 }
@@ -561,7 +561,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "idmapping_list_mapped",
+                    "download_type": "idmapping_list_mapped",
                     "format": "csv",
                     "compressed": false
                 }
@@ -570,7 +570,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "idmapping_list_mapped",
+                    "download_type": "idmapping_list_mapped",
                     "format": "tsv",
                     "compressed": false
                 }
@@ -584,7 +584,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "idmapping_list_unmapped",
+                    "download_type": "idmapping_list_unmapped",
                     "format": "csv",
                     "compressed": false
                 }
@@ -593,7 +593,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "idmapping_list_unmapped",
+                    "download_type": "idmapping_list_unmapped",
                     "format": "tsv",
                     "compressed": false
                 }
@@ -607,7 +607,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "idmapping_list_all",
+                    "download_type": "idmapping_list_all",
                     "format": "csv",
                     "compressed": false
                 }
@@ -616,7 +616,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "idmapping_list_all",
+                    "download_type": "idmapping_list_all",
                     "format": "tsv",
                     "compressed": false
                 }
@@ -630,7 +630,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "idmapping_list_all_collapsed",
+                    "download_type": "idmapping_list_all_collapsed",
                     "format": "csv",
                     "compressed": false
                 }
@@ -639,7 +639,7 @@
                 "label": "",
                 "query": {
                     "id": "",
-                    "type": "idmapping_list_all_collapsed",
+                    "download_type": "idmapping_list_all_collapsed",
                     "format": "tsv",
                     "compressed": false
                 }
@@ -653,7 +653,7 @@
                 "label": "",
                 "query": {
                     "id": "P14210-1",
-                    "type": "protein_section",
+                    "download_type": "protein_section",
                     "format": "csv",
                     "compressed": false,
                     "section": "glycosylation",
@@ -664,7 +664,7 @@
                 "label": "",
                 "query": {
                     "id": "P14210-1",
-                    "type": "protein_section",
+                    "download_type": "protein_section",
                     "format": "tsv",
                     "compressed": false,
                     "section": "glycosylation",
@@ -680,7 +680,7 @@
                 "label": "",
                 "query": {
                     "id": "P14210-1.294.294",
-                    "type": "site_section",
+                    "download_type": "site_section",
                     "format": "csv",
                     "compressed": false,
                     "section": "glycosylation",
@@ -691,7 +691,7 @@
                 "label": "",
                 "query": {
                     "id": "P14210-1.294.294",
-                    "type": "site_section",
+                    "download_type": "site_section",
                     "format": "tsv",
                     "compressed": false,
                     "section": "glycosylation",
@@ -707,7 +707,7 @@
                 "label": "",
                 "query": {
                     "id": "G17689DH",
-                    "type": "glycan_section",
+                    "download_type": "glycan_section",
                     "format": "csv",
                     "compressed": false,
                     "section": "glycoprotein",
@@ -718,7 +718,7 @@
                 "label": "",
                 "query": {
                     "id": "G17689DH",
-                    "type": "glycan_section",
+                    "download_type": "glycan_section",
                     "format": "tsv",
                     "compressed": false,
                     "section": "glycoprotein",
@@ -734,7 +734,7 @@
                 "label": "",
                 "query": {
                     "id": "GGM.000001",
-                    "type": "motif_section",
+                    "download_type": "motif_section",
                     "format": "csv",
                     "compressed": false,
                     "section": "glycans",
@@ -745,7 +745,7 @@
                 "label": "",
                 "query": {
                     "id": "GGM.000001",
-                    "type": "motif_section",
+                    "download_type": "motif_section",
                     "format": "tsv",
                     "compressed": false,
                     "section": "glycans",
@@ -761,7 +761,7 @@
                 "label": "",
                 "query": {
                     "id": "8407880",
-                    "type": "publication_section",
+                    "download_type": "publication_section",
                     "format": "csv",
                     "compressed": false,
                     "section": "glycosylation",
@@ -772,7 +772,7 @@
                 "label": "",
                 "query": {
                     "id": "8407880",
-                    "type": "publication_section",
+                    "download_type": "publication_section",
                     "format": "tsv",
                     "compressed": false,
                     "section": "glycosylation",

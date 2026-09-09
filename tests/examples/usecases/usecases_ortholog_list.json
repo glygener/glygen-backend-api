@@ -1,4 +1,2 @@
-{
-  "id":"cc0c716189afd5553b1ed327e4de9bfe",
-  "sort": "uniprot_canonical_ac"
-}
+{"id":"cc0c716189afd5553b1ed327e4de9bfe","offset":1,"sort":"uniprot_canonical_ac","limit":20,"order":"desc"}
+

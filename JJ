@@ -1,9 +1,0 @@
-python3 clear-cache.py  -s tst -c c_cache
-python3 clear-cache.py  -s tst -c c_listcache
-
-http POST :8082/protein/search/ < tests/examples/protein/protein_search.1.json 
-http POST :8082/protein/search/ < tests/examples/protein/protein_search.2.json
-
-http POST :8082/protein/list/ < tests/examples/protein/protein_list.1.json 
-http POST :8082/protein/list/ < tests/examples/protein/protein_list.2.json 
- 

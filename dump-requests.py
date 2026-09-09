@@ -31,8 +31,7 @@ def main():
     server = options.server
     coll = "c_request"
 
-
-    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_name = "glydb"
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     #mongo_port = config_obj["dbinfo"]["port"][server]
@@ -53,17 +52,17 @@ def main():
         client.server_info()
         dbh = client[glydb_name]
         q = {}
-        doc_list = list(dbh[coll].find(q))
-        for doc in doc_list[-100:]:
+        limit = 10000
+        for doc in dbh[coll].find(q, sort=[('_id', pymongo.DESCENDING)]).limit(int(limit)):
             if "_id" in doc:
                 doc.pop("_id")
-            if doc["api"].find("detail") == -1:
+            if "mcp_tool" not in doc["req"]:
                 continue
+            mcp_tool, ip = doc["req"]["mcp_tool"], doc["headers"]["ip"]
+            print (mcp_tool, ip)
             #print (json.dumps(doc, indent=4))
             #print ("//")
-            print (doc["api"])
-            print (json.dumps(doc["req"], indent=4))
-            print ("//")
+            #exit()
 
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)

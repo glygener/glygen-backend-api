@@ -1,0 +1,11 @@
+{"concept_query_list":[{"concept":"site","query":{"aggregator":"$and",
+	"unaggregated_list":[
+		{"path":"glycoeffect","order":0,"operator":"$eq","string_value":"o-glyco-site-loss"},
+		{"path":"tax_id","order":1,"operator":"$eq","numeric_value":9606},
+		{"path":"disease_name","order":2,"operator":"$eq","string_value":"breast cancer"}
+	],
+	"aggregated_list":[]}}]}
+
+
+
+

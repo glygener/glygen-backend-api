@@ -12,7 +12,8 @@ import bcrypt
 
 from glygen.indexlib import search_one
 from glygen.protein_apilib import protein_search_init, protein_search, protein_detail, protein_alignment, search_simple
-from glygen.util import make_list_objects_indirect, get_req_obj, cache_list_objects, get_hash_id, retrieve_cached_list_objects, apply_pagination
+from glygen.util import make_list_objects_indirect, get_req_obj, cache_list_objects, get_hash_id, retrieve_cached_list_objects, apply_pagination, get_errors_in_query
+from glygen.graphlib import get_graph_record
 import traceback
 
 
@@ -37,6 +38,9 @@ detail_query_model = api.model("Protein Detail Query",
         "uniprot_canonical_ac": fields.String(required=True, default="P14210-1")
     }
 )
+graph_query_model = api.model("Protein Graph Query",
+    { "record_id": fields.String(required=True, default="P14210-1")}
+)
 list_query_model = api.model("Protein List Query",{ "id": fields.String(required=True, default="")})
 
 alignment_query_model = api.model("Protein Alignment Query",
@@ -57,13 +61,14 @@ class Protein(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
-            res_obj = log_request({}, "/protein/search_init/", request)
-            if "error_list" not in res_obj:
+            req_obj = get_req_obj(request)
+            log_obj = log_request(req_obj, "/protein/search_init/", request)
+            if "error_list" not in log_obj:
                 res_obj = protein_search_init(config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj, http_code
 
@@ -79,14 +84,14 @@ class Protein(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/protein/search/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/protein/search/", request)
+            if "error_list" not in log_obj:
                 res_obj = protein_search(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj, http_code
     
@@ -105,15 +110,15 @@ class Protein(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/protein/search_simple/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/protein/search_simple/", request)
+            if "error_list" not in log_obj:
                 cache_flag, exact_match_flag = True, True
                 res_obj = search_one("protein_search_simple",req_obj,config_obj,cache_flag,exact_match_flag)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -130,24 +135,25 @@ class Protein(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/protein/list/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/protein/list/", request)
+            if "error_list" not in log_obj:
                 api_name = "protein_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
                 in_dict = {"cache_id":cache_id,"listcache_id":listcache_id,"api_name":api_name}
+                
                 res_obj = retrieve_cached_list_objects(in_dict,req_obj,config_obj,"paginated")
                 #return {"n":len(res_obj["results"]), "obj":res_obj["results"][0]}
-                #return {"aa":res_obj, "apiname":api_name, "reqobj":req_obj, "listcacheid":listcache_id}
+                #return {"apiname":api_name, "reqobj":req_obj, "listcacheid":listcache_id}
                 #return {"listcacheid":listcache_id, "cache_coll":res_obj["cache_coll"]}
+                #return res_obj
+
                 if res_obj == None:
                     res_obj = make_list_objects_indirect(req_obj, config_obj, False)
-                    #return res_obj
                     if "error_list" not in res_obj:
-                        list_size = res_obj["pagination"]["total_length"]
                         res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
                         if "error_list" in res:
                             res_obj = res
@@ -157,7 +163,7 @@ class Protein(Resource):
                     #    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
 
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -180,18 +186,18 @@ class Protein(Resource):
         config_obj = json.load(open(json_url))
         json_url = os.path.join(SITE_ROOT, "conf/filter_init.json")
         config_obj["filter_init"] = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = {"uniprot_canonical_ac":uniprot_canonical_ac}
             req_obj_extra = get_req_obj(request)
             if req_obj_extra != None:
                 for k in req_obj_extra:
                     req_obj[k] = req_obj_extra[k]
-            res_obj = log_request(req_obj, "/protein/detail/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/protein/detail/", request)
+            if "error_list" not in log_obj:
                 res_obj = protein_detail(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -201,6 +207,36 @@ class Protein(Resource):
         return self.post(uniprot_canonical_ac)
         #return self.post()
 
+
+@api.route('/graph/<record_id>/')
+@api.doc(params={"record_id": {"in": "query", "default": "P14210-1"}})
+class Glycan(Resource):
+    @api.doc('detail')
+    @api.expect(graph_query_model)
+    def post(self, record_id):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj, log_obj = {}, {}
+        try:
+            req_obj = {"record_id":record_id}
+            log_obj = log_request(req_obj, "/protein/graph/", request)
+            if "error_list" not in log_obj:
+                error_list = get_errors_in_query("protein_graph",req_obj, config_obj)
+                if error_list != []:
+                    return {"error_list":error_list}
+                res_obj = get_graph_record(req_obj, config_obj)
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc(), log_obj)
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+    @api.doc(False)
+    def get(self, record_id):
+        return self.post(record_id)
+
+
+
+
 @api.route('/alignment/')
 class Protein(Resource):
     @api.doc('alignment')
@@ -209,14 +245,14 @@ class Protein(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/protein/alignment/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/protein/alignment/", request)
+            if "error_list" not in log_obj:
                 res_obj = protein_alignment(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 

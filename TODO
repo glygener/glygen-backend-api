@@ -1,0 +1,6 @@
+1|3197|Exception error supersearch - KeyError: 'species'
+0|3196|Exception error data - pymongo.errors.DocumentTooLarge: BSON document too large
+1|3195|Exception error supersearch - TypeError: 'NoneType' object is not iterable
+1|3186|Exception errors misc(?) - KeyError: 'recordtype'
+0|2795|Exception error - pymongo.errors.NotMasterError: interrupted at shutdown
+0|2784|Exception errors batch retrieval - KeyError: 'jobtype'

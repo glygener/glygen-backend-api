@@ -1,5 +1,5 @@
 {
-        "biomarker_id":"AN6709",
+			"biomarker_id":"AN6709",
         "biomarker_type":"prognostic",
         "disease_id":"DOID:1612",
         "disease_name": "breast cancer",

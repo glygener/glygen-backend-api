@@ -21,7 +21,15 @@
             "mutagenesis_flag":{"targetlist":["mutagenesis"]},
             "phosphorylation_flag":{"targetlist":["phosphorylation"]},
             "glycation_flag":{"targetlist":["glycation"]},
-            "list_fields":["glycosylation", "snv", "mutagenesis", "phosphorylation", "glycation"]
+            "glycoeffect":{"targetlist":["snv.glycoeffect"]},
+				"uniprot_ac":{"targetlist":["uniprot_canonical_ac"]},
+				"uniprot_canonical_ac":{"targetlist":["uniprot_canonical_ac"]},
+				"disease_id":{"targetlist":["snv.disease.recommended_name.id","snv.disease.synonyms.id"]},
+				"disease_name":{"targetlist":["snv.disease.recommended_name.name","snv.disease.synonyms.name"]},
+				"snv_keywords":{"targetlist":["snv.keywords"]},
+				"tax_id":{"targetlist":["species.taxid"]},
+				"tax_name":{"targetlist":["species.name","species.common_name"]},
+				"list_fields":["glycosylation", "snv", "mutagenesis", "phosphorylation", "glycation"]
         },
         "glycan":{
         },
@@ -532,17 +540,12 @@
             "snv.chr_id",
             "snv.chr_pos",
             "snv.disease.recommended_name.description",
-            "snv.disease.recommended_name.id",
-            "snv.disease.recommended_name.name",
             "snv.disease.recommended_name.resource",
             "snv.disease.synonyms.description",
-            "snv.disease.synonyms.id",
-            "snv.disease.synonyms.name",
             "snv.disease.synonyms.resource",
             "snv.evidence.database",
             "snv.evidence.id",
             "snv.frequency",
-            "snv.glycoeffect",
             "snv.keywords",
             "snv.minor_allelic_frequency",
             "snv.ref_nt",
@@ -550,13 +553,9 @@
             "snv.sequence_org",
             "snv.subjects_positive",
             "snv.subjects_tested",
-            "species.common_name",
             "species.evidence.database",
             "species.evidence.id",
-            "species.name",
-            "species.taxid",
-            "snv.annotation",
-            "uniprot_canonical_ac"
+            "snv.annotation"
         ]
     }
 }

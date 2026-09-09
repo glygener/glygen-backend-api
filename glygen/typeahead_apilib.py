@@ -126,11 +126,14 @@ def glycan_typeahead(query_obj, config_obj):
                     if len(res_obj) >= query_obj["limit"]:
                         return sorted(res_obj)
     elif query_obj["field_list"] == ["enzyme"]:
+        query_string = query_obj["value"]
+        #query_string = "^" + query_obj["value"]
         cond_list = [
-            {"enzyme.uniprot_canonical_ac": {'$regex': query_obj["value"], '$options': 'i'}},
-            {"enzyme.gene": {'$regex': query_obj["value"], '$options': 'i'}},
+            {"enzyme.uniprot_canonical_ac": {'$regex': query_string, '$options': 'i'}},
+            {"enzyme.gene": {'$regex': query_string, '$options': 'i'}},
         ]
         mongo_query = { "$or":cond_list}
+        #return mongo_query
         prj_obj = {"enzyme":1}
         for obj in dbh[collection].find(mongo_query, prj_obj):
             for o in obj["enzyme"]:
@@ -152,13 +155,19 @@ def glycan_typeahead(query_obj, config_obj):
     elif query_obj["field_list"] == ["motif_name"]:
         mongo_query = {"motifs.name": {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"motifs":1}
+        tmp_list_one, tmp_list_two = [],[]
         for obj in dbh[collection].find(mongo_query, prj_obj):
             for o in obj["motifs"]:
                 val = o["name"]
-                if val.lower().find(query_obj["value"].lower()) != -1 and val not in res_obj:
-                    res_obj.append(val)
-                    if len(res_obj) >= query_obj["limit"]:
-                        return sorted(res_obj)
+                match_idx = val.lower().find(query_obj["value"].lower())
+                if match_idx == 0:
+                    tmp_list_one.append(val)
+                elif match_idx != -1:
+                    tmp_list_two.append(val)
+        tmp_list = sorted(list(set(tmp_list_one))) + sorted(list(set(tmp_list_two)))
+        if len(tmp_list) > query_obj["limit"]:
+            tmp_list = tmp_list[:query_obj["limit"]]
+        return tmp_list
     elif query_obj["field_list"] == ["glycan_pmid"]:
         mongo_query = {"publication.reference.id": {'$regex': query_obj["value"], '$options': 'i'}}
         prj_obj = {"publication":1}

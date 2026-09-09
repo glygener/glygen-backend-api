@@ -23,8 +23,7 @@ glygen/globalsearch.py
 glygen/globalsearch_apilib.py
 glygen/glycan.py
 glygen/glycan_apilib.py
-glygen/graph.py
-glygen/graph_apilib.py
+glygen/graphlib.py
 glygen/html.py
 glygen/idmapping.py
 glygen/idmapping_apilib.py
@@ -34,6 +33,8 @@ glygen/job_apilib.py
 glygen/libgly.py
 glygen/log.py
 glygen/log_apilib.py
+glygen/mcp.py
+glygen/mcp_apilib.py
 glygen/misc.py
 glygen/misc_apilib.py
 glygen/motif.py
@@ -52,6 +53,7 @@ glygen/seqmapping.py
 glygen/seqmapping_apilib.py
 glygen/site.py
 glygen/site_apilib.py
+glygen/species.py
 glygen/supersearch.py
 glygen/supersearch_apilib.py
 glygen/typeahead.py

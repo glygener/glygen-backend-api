@@ -1,13 +1,9 @@
 {
-  "record_type": "protein",
-  "record_id": "P14210",
-  "table_id": "glycosylation_reported_with_glycan",
-  "sort": "start_pos",
-  "order": "asc",
-  "offset": 1,
-  "limit": 10
+    "record_type": "protein",
+    "table_id": "snv_disease",
+    "record_id": "P04637",
+    "offset": 1,
+    "limit": 20,
+    "order": "asc",
+    "sort": "start_pos"
 }
-
-
-
-

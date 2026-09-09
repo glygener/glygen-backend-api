@@ -373,20 +373,11 @@ def get_hit_score(doc, cache_info, score_dict, selected_p_list, score_info):
     for cond_group in score_dict[record_type]:
         for cond in score_dict[record_type][cond_group]:
             freq = cond_match_freq[cond] if cond in cond_match_freq else 0
-            #weight = 0.0
-            #if cond in cond_match_freq:
-            weight = score_dict[record_type][cond_group][cond]["weight"]
-            score += weight + round(float(freq)/100.00,3)
-            #o = {"c":cond, "w":weight, "f":float(freq)}
-            #score_info["contributions"].append(o)
             if freq > 0:
+                weight = score_dict[record_type][cond_group][cond]["weight"]
+                score += weight + round(float(freq)/100.00,3)
                 score_info["freqdict"][cond] = freq
 
-    #if doc["record_id"] == "doid.9970":
-    #    print (json.dumps(cond_match_freq, indent=4))
-    #    print (json.dumps(score_info, indent=4))
-    #    print (score)
-    #    exit()
 
     return round(float(score), 2), cond_match_freq
 
@@ -980,12 +971,14 @@ def make_list_objects_indirect(dbh, query_obj, config_obj, limit_flag):
     
     #return code_dict
 
+
     if "filters" not in cached_obj:
         cached_obj["filters"] = {"applied":[]}
     cached_obj["filters"]["available"] = []
     update_res = update_filters(record_type, cached_obj["results"], cached_obj["filters"], 1, code_dict, filter_conf)
     if "error_list" in update_res:
         return update_res
+            
     #return {"error_list":filter_conf}
     #return {"error_list":code_dict, "av":cached_obj["filters"]["available"], "conf":filter_conf[record_type]}
 
@@ -1197,7 +1190,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
 
     #grp_id_list = sorted(code_dict.keys())
     grp_id_list = get_grp_id_list(record_type, filter_conf)
-   
+  
  
     n_11 = len(grp_id_list)
     seen_filter_code = {}
@@ -1237,7 +1230,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
     #return {"error_list":debug_list}
     #return {"a":code_dict, "b":count_dict, "c":seen_filter_code, "d":debug_list}
     #print (count_dict)
-    
+
 
     tmp_seen = {}
     for grp in filter_conf[record_type]:
@@ -1263,7 +1256,6 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
         #xxxxx
 
     #return {"error_list":debug_list}
-
 
     seen = {}
     non_empty_grp_obj_list = []
@@ -1792,7 +1784,8 @@ def get_list_objects(dbh,cache_id, cache_info, cache_collection, final_fields, s
     for doc in dbh[cache_collection].find(qry_obj):
         id_list += doc["results"]
 
- 
+
+    seen_record_id = {} 
     batch_size = config_obj["supersearch_batch_size"]
     record_count = len(id_list)
     nparts = int(float(record_count)/float(batch_size)) + 1
@@ -1804,12 +1797,13 @@ def get_list_objects(dbh,cache_id, cache_info, cache_collection, final_fields, s
         for obj in dbh["c_list"].find(mongo_query, prj_obj):
             if "_id" in obj:
                 obj.pop("_id")
+            if obj["record_id"] in seen_record_id:
+                continue
+            seen_record_id[obj["record_id"]] = True
             score_info = {"freqdict":{}}
             if True:
-            #if is_empty_query == False:
                 obj["hit_score"], cond_match_freq = get_hit_score(obj, cache_info, score_dict, final_fields, score_info)
             obj["score_info"] = score_info
-            
             tmp_obj_list.append(obj)
 
     return tmp_obj_list

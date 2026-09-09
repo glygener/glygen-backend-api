@@ -89,15 +89,14 @@ class Job(Resource):
         config_obj["server"] = os.environ["SERVER"]
         json_url = os.path.join(SITE_ROOT, "conf/job_init.json")
         config_obj["job_init"] = json.load(open(json_url))
-
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/job/init/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/job/init/", request)
+            if "error_list" not in log_obj:
                 res_obj = job_init(config_obj, os.environ["DATA_PATH"])
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -199,13 +198,13 @@ class Job(Resource):
             #return qry
             data_path, server = os.environ["DATA_PATH"],os.environ["SERVER"]
             tmp_req_obj = json.loads(json.dumps(req_obj))
-            res_obj = {}
+            res_obj, log_obj = {}, {}
             if log_request_flag:
-                res_obj = log_request(tmp_req_obj, "/job/addnew/", request)
-            if "error_list" not in res_obj:
+                log_obj = log_request(tmp_req_obj, "/job/addnew/", request)
+            if "error_list" not in log_obj:
                 res_obj = job_addnew(qry, config_obj, data_path, server)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         http_code = 200
         http_code = 500 if "error_list" in res_obj and "result_count" not in res_obj else http_code
@@ -223,14 +222,15 @@ class Job(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         config_obj["server"] = os.environ["SERVER"]
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/job/detail/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/job/detail/", request)
+            if "error_list" not in log_obj:
                 res_obj = job_detail(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
+
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -246,14 +246,14 @@ class Job(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         config_obj["server"] = os.environ["SERVER"]
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/job/list/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/job/list/", request)
+            if "error_list" not in log_obj:
                 res_obj = job_list(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
@@ -271,14 +271,14 @@ class Job(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         config_obj["server"] = os.environ["SERVER"]
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/job/update/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/job/update/", request)
+            if "error_list" not in log_obj:
                 res_obj = job_update(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -295,14 +295,14 @@ class Job(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         config_obj["server"] = os.environ["SERVER"]
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/job/delete/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/job/delete/", request)
+            if "error_list" not in log_obj:
                 res_obj = job_delete(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -319,14 +319,14 @@ class Job(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         config_obj["server"] = os.environ["SERVER"]
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/job/results/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/job/results/", request)
+            if "error_list" not in log_obj:
                 res_obj = job_results(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
@@ -343,14 +343,14 @@ class Job(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         config_obj["server"] = os.environ["SERVER"]
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/job/status/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/job/status/", request)
+            if "error_list" not in log_obj:
                 res_obj = job_status(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
@@ -367,14 +367,14 @@ class Job(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         config_obj["server"] = os.environ["SERVER"]
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/job/status_many/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/job/status_many/", request)
+            if "error_list" not in log_obj:
                 res_obj = job_status_many(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
 
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
@@ -393,14 +393,14 @@ class Job(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         config_obj["server"] = os.environ["SERVER"]
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/job/queue/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/job/queue/", request)
+            if "error_list" not in log_obj:
                 res_obj = job_queue(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
@@ -419,14 +419,14 @@ class Job(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
         config_obj["server"] = os.environ["SERVER"]
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             data_path, server = os.environ["DATA_PATH"],os.environ["SERVER"]
-            res_obj = log_request({}, "/job/clean/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request({}, "/job/clean/", request)
+            if "error_list" not in log_obj:
                 res_obj = job_clean(data_path, server)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code

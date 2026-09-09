@@ -38,6 +38,8 @@ def get_query_filter_code(query_filters, record_type, filter_conf):
     for tax_id in taxid2name:
         sp_dict[taxid2name[tax_id]] = tax_id
 
+    record_type = "protein" if record_type == "ortholog" else record_type
+
     code_dict = {}
     for grp in sorted(filter_conf[record_type]):
         code_dict[grp] = []
@@ -211,7 +213,7 @@ def isint(value):
   except ValueError:
     return False
 
-def get_hit_score(doc, cache_info, score_dict, selected_p_list, hit_info):
+def get_hit_score(doc, cache_info, score_dict, selected_p_list, hit_info, debug_flag):
 
     ms_max, scale = 10000, 400.0
     search_query = cache_info["query"]
@@ -223,8 +225,11 @@ def get_hit_score(doc, cache_info, score_dict, selected_p_list, hit_info):
     cond_match_freq = {}
     if record_type == "glycan":
         glytoucan_ac = doc["glytoucan_ac"]
+        byonic = ""
+        if "byonic" in doc:
+            byonic = doc["byonic"].split(" ")[0]
         cond_group, cond = "misc", "glycan_exact_match"
-        val_list, qval_list = [glytoucan_ac.lower()], []
+        val_list, qval_list = [glytoucan_ac.lower(), byonic.lower()], []
         if search_type.find("_search_simple") != -1:
             qval_list.append(search_query["term"].lower())
         elif search_type.find("_search") != -1:
@@ -290,8 +295,9 @@ def get_hit_score(doc, cache_info, score_dict, selected_p_list, hit_info):
                 if cond not in cond_match_freq:
                     cond_match_freq[cond] = 0
                 cond_match_freq[cond] += 1
-     
-        #return {"val_list":val_list, "qval_list":qval_list, "cond_match_freq":cond_match_freq}
+    
+        if debug_flag:
+            return {"val_list":val_list, "qval_list":qval_list, "cond_match_freq":cond_match_freq}
   
         cond_group, cond = "misc", "protein_top_glycan_definition_score"
         p_list = score_dict[record_type][cond_group][cond]["fieldlist"]
@@ -414,15 +420,10 @@ def get_hit_score(doc, cache_info, score_dict, selected_p_list, hit_info):
         for cond in score_dict[record_type][cond_group]:
             freq = cond_match_freq[cond] if cond in cond_match_freq else 0
             weight = score_dict[record_type][cond_group][cond]["weight"]
-            #weight = 0.0
-            #if cond in cond_match_freq:
-            #    weight = score_dict[record_type][cond_group][cond]["weight"]
-            score += weight + round(float(freq)/100.00,3)
-            debug_list.append({"c":cond, "w":weight, "f":float(freq)})
-            #o = {"c":cond, "w":weight, "f":float(freq)}
-            #hit_info["contributions"].append(o)
             if freq > 0:
+                score += weight + round(float(freq)/100.00,3)
                 hit_info["freqdict"][cond] = freq
+            debug_list.append({"c":cond, "w":weight, "f":float(freq), "score":score})
 
     return round(float(score), 2), cond_match_freq, debug_list
 
@@ -512,8 +513,9 @@ def sort_objects(obj_list, return_fields, field_name, order_type):
             grid_obj[field_name].append({"index":i, field_name:int(obj[field_name])})
     reverse_flag = True if order_type == "desc" else False
     key_list = []
-    sorted_obj_list = sorted(grid_obj[field_name], key=lambda x: x[field_name], reverse=reverse_flag)
-    for o in sorted_obj_list:
+    if field_name in grid_obj:
+        sorted_obj_list = sorted(grid_obj[field_name], key=lambda x: x[field_name], reverse=reverse_flag)
+        for o in sorted_obj_list:
             key_list.append(o["index"])
     return key_list
 
@@ -576,8 +578,8 @@ def sort_objects_new(obj_list, field_name, order_type):
                 grid_obj[field_name] = []
             if field_name not in obj:
                 obj[field_name] = ""
-            grid_obj[field_name].append({"index":i, field_name:obj[field_name]})
-   
+            if isinstance(obj[field_name], (str, int, float)):
+                grid_obj[field_name].append({"index": i, field_name: obj[field_name]})
  
     reverse_flag = True if order_type == "desc" else False
     key_list = []
@@ -588,22 +590,36 @@ def sort_objects_new(obj_list, field_name, order_type):
     return key_list
 
 
+
 def extract_name(obj_list, name_type, resource):
+
+    if obj_list == []:
+        return ""
+    name_list_dict = {"recommended":[], "synonym":[]}
+    for obj in obj_list:
+        for o in obj["evidence"]:
+            if o["database"] == resource:
+                name_list_dict[obj["type"]].append(obj["name"])
+
+
+    if name_type == "recommended" and name_list_dict["recommended"] == []:
+        name_list_dict["recommended"] += name_list_dict["synonym"]
+    if name_type == "all":
+        return "; ".join(name_list_dict["recommended"] + name_list_dict["synonym"])
+    else:
+        return "; ".join(name_list_dict[name_type])
+
+
+def extract_name_old(obj_list, name_type, resource):
    
     if obj_list == []:
         return ""
-    
     name_list_dict = {"recommended":[], "synonym":[]}
     for obj in obj_list:
         if obj["resource"] == resource:
             name_list_dict[obj["type"]].append(obj["name"])
-
-
-    
     if name_type == "recommended" and name_list_dict["recommended"] == []:
         name_list_dict["recommended"] += name_list_dict["synonym"]
-
-
     if name_type == "all":
         return "; ".join(name_list_dict["recommended"] + name_list_dict["synonym"])
     else:
@@ -878,20 +894,22 @@ def get_list_objects(dbh, cache_id, record_type, filter_conf, cached_query, prj_
 
         
     # first get listcahce_id from cache_id
-    qry_obj = {"glbl.cache_info.cache_id":cache_id}
+    #qry_obj = {"glbl.cache_info.cache_id":cache_id}
+    qry_obj = {"glbl.cache_info.cache_id":cache_id, "glbl.cache_info.record_type":record_type}
     listcache_coll = "c_initlistcache"
     doc = dbh[listcache_coll].find_one(qry_obj)
     if doc == None:
         listcache_coll = "c_userlistcache"
         doc = dbh[listcache_coll].find_one(qry_obj)
-    
+
     # this means there are no cached list objects in c_initlistcache/c_userlistcache
     if doc == None:
         return []   
  
     cache_info = doc["glbl"]["cache_info"]
     listcache_id = cache_info["listcache_id"]
-        
+
+ 
     grp_id_list = get_grp_id_list(record_type, filter_conf)
     
     #ts_list.append("B-1 "+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
@@ -900,24 +918,28 @@ def get_list_objects(dbh, cache_id, record_type, filter_conf, cached_query, prj_
     hit_score_dict = {}
     qry_obj = {"list_id":listcache_id}
     local_prj_obj = {"results.record_id":1, "results.hit_score":1, "results.filter_code":1}
+    debug_list = []
+    total_count, match_count = 0, 0
     for doc in dbh[listcache_coll].find(qry_obj, local_prj_obj):
         for obj in doc["results"]:
+            total_count += 1
             record_id = obj["record_id"]
             record_filter_code = obj["filter_code"]
             flag = compare_filter_codes(record_filter_code, query_filter_code, query_filters, code_dict, grp_id_list)
+            debug_list.append({"record_id":record_id, "flag":flag, "r_code":record_filter_code, "q_code":query_filter_code})
             if flag:
+                match_count += 1
                 cached_obj_list.append(record_id)
+                debug_list.append({"record_id":record_id, "record_type":record_type})
                 hit_score_dict[record_id] = obj["hit_score"]
     #ts_list.append("B-2 "+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     #return cached_obj_list
-
+    #return debug_list[0:10] + debug_list[-10:]
+    #return {"total_count":total_count, "match_count":match_count}
+    #return debug_list
+    #return {"coll":listcache_coll, "cache_id":cache_id, "listcache_id":listcache_id}
     tmp_obj_list = []
     hit_info = {"freqdict":{}}
-    #hit_info = {
-    #    "contributions":[], 
-    #     "formula":"sum(w + 0.01*f)", 
-    #    "variables":{"c":"condition name","w":"condition weight","f":"condition match frequency"}
-    #}
     
     batch_size = config_obj["supersearch_batch_size"]
     record_count = len(cached_obj_list)
@@ -952,9 +974,11 @@ def create_list_objects(dbh,cache_id, cache_info, cache_collection, final_fields
     qry_obj = {"list_id":cache_id}
     for doc in dbh[cache_collection].find(qry_obj):
         id_list += doc["results"]
+    id_list = list(set(id_list))
     batch_size = config_obj["supersearch_batch_size"]
     record_count = len(id_list)
     nparts = int(float(record_count)/float(batch_size)) + 1
+    seen_record_id = {}
     for i in range(0, nparts):
         start = i*batch_size
         end = (i+1)*batch_size
@@ -963,23 +987,20 @@ def create_list_objects(dbh,cache_id, cache_info, cache_collection, final_fields
         for obj in dbh["c_list"].find(mongo_query, prj_obj):
             if "_id" in obj:
                 obj.pop("_id")
+            if obj["record_id"] in seen_record_id:
+                continue
+            seen_record_id[obj["record_id"]] = True
             hit_info = {"freqdict":{}}
-            #hit_info = {
-            #    "contributions":[], 
-            #    "formula":"sum(w + 0.01*f)", 
-            #    "variables":{"c":"condition name","w":"condition weight","f":"condition match frequency"}
-            #}
             hit_score = obj["hit_score"] if "hit_score" in obj else -1.0
             if is_empty_query == False:
-                hit_score, cond_match_freq,d_list = get_hit_score(obj, cache_info, score_dict, final_fields, hit_info)
-                #if hit_score == 89.65:
-                #    debug_list.append(d_list)
- 
+                hit_score, cond_match_freq,d_list = get_hit_score(obj, cache_info, score_dict, final_fields, hit_info, False)
+                
+                #debug_list.append({"conts":d_list, "hit_score":hit_score})
+                 
             obj["hit_score"] = hit_score
             obj["hit_info"] = hit_info
             tmp_obj_list.append(obj)
-
-    #return debug_list
+    
     return tmp_obj_list
 
 
@@ -1035,6 +1056,7 @@ def make_list_objects_indirect(query_obj, config_obj, limit_flag):
     cache_info = cached_obj["cache_info"]
     record_type = cache_info["record_type"]
 
+
  
     ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
@@ -1063,7 +1085,9 @@ def make_list_objects_indirect(query_obj, config_obj, limit_flag):
   
     # try to get cached list objects from c_initlistcache/c_userlistcache
     cached_obj["results"] = get_list_objects(dbh,cache_id,record_type,filter_conf,query_obj, prj_obj, config_obj)
-   
+
+    #return cached_obj["results"]
+
     ts_list.append("2b-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
  
     # if empty, create list objects from hitlist 
@@ -1072,7 +1096,7 @@ def make_list_objects_indirect(query_obj, config_obj, limit_flag):
             final_fields,score_dict, prj_obj, config_obj)
         #return cached_obj["results"]
 
- 
+
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
     ts_list.append("3-%s (record_count=%s)" % (ts, len(cached_obj["results"])))
     #ts_list.append(cached_obj["results"][0])
@@ -1085,6 +1109,7 @@ def make_list_objects_indirect(query_obj, config_obj, limit_flag):
     update_res = update_filters(record_type, cached_obj["results"], cached_obj["filters"], 1, code_dict, filter_conf)
     if "error_list" in update_res:
         return update_res
+
     #return {"error_list":filter_conf}
     #return {"error_list":code_dict, "av":cached_obj["filters"]["available"], "conf":filter_conf[record_type]}
 
@@ -1326,7 +1351,14 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
     seen_filter_code = {}
     count_dict = {}
     debug_list = []
+    seen_record_id = {}
     for record_obj in obj_list:
+        if "record_id" not in record_obj:
+            continue
+        record_id = record_obj["record_id"]
+        if record_id in seen_record_id:
+            continue
+        seen_record_id[record_id] = True
         if "filter_code" not in record_obj:
             return {"error_list":[{"error_code": "list_obj_without_filter_code","record":record_obj}]}
         seen_filter_code[record_obj["filter_code"].replace(".", "_")] = True
@@ -1334,7 +1366,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
         debug_list.append(record_code_parts)
         n_12 = len(record_code_parts)
         if n_11 != n_12:
-            return {"error_list":[{"error_code": "filter_grp_count mismatch %s!=%s" % (n_11, n_12)}]}
+            return {"error_list":[{"error_code": "filter_grp_count mismatch %s!=%s, record_type=%s, record_id=%s" % (n_11, n_12,record_type,record_id)}]}
         for grp_idx in range(0, len(grp_id_list)):
             grp = grp_id_list[grp_idx]
             n_21 = len(code_dict[grp])
@@ -1342,8 +1374,8 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
             if grp == "by_sequence_details":
                 debug_list.append([code_dict[grp], record_code_parts[grp_idx]])
             if n_21 != n_22:
-                return {"error_list":[{"grp_id_list":grp_id_list, "grp":grp, "grp_idx":grp_idx, "code_dict":code_dict, "record_code_parts":record_code_parts}]}
-                return {"error_list":[{"error_code": "filter_value_count mismatch %s!=%s"%(n_21,n_22)}]}
+                #return {"error_list":[{"grp_id_list":grp_id_list, "grp":grp, "grp_idx":grp_idx, "record_code_parts":record_code_parts, "error":err}]}
+                return {"error_list":[{"error_code": "filter_value_count mismatch %s!=%s, grp=%s"%(n_21,n_22, grp)}]}
             for j in range(0, n_22):
                 # bug in this is caused by incomplete glygen/conf/list_filters.json
                 label = code_dict[grp][j]["value"]
@@ -1358,7 +1390,10 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
                         count_dict[grp][label] = 0
                     count_dict[grp][label] += 1
     #return {"error_list":debug_list}
-    #return {"a":code_dict, "b":count_dict, "c":seen_filter_code, "d":debug_list}
+    #return {"error_list":code_dict}
+    #return {"error_list":count_dict}
+    #return {"error_list":seen_filter_code}
+    #return {"error_list":debug_list}
 
 
     tmp_seen = {}
@@ -1368,7 +1403,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
         group_ordr = filter_conf[record_type][grp]["group_order"]
         obj = {"id":grp, "label":group_label, "order":group_ordr, "tooltip":"", "tmp_options":{}}
         for option_id in filter_conf[record_type][grp]["order_dict"]:
-            #debug_list.append(grp + "|" + option_id + "|" + str(grp in count_dict))
+            debug_list.append(grp + "|" + option_id + "|" + str(grp in count_dict))
             label = option_id
             option_ordr = filter_conf[record_type][grp]["order_dict"][option_id]
             if grp not in tmp_seen:
@@ -1439,14 +1474,15 @@ def get_errors_in_query(svc_name, query_obj, config_obj):
 
     if query_obj == None:
         return {"error_list":[{"error_code": "missing query object"}]}
+    if type(query_obj) is dict:
+        for key1 in query_obj:
+            if type(query_obj[key1]) in [str]:
+                query_obj[key1] = query_obj[key1].strip()
+            elif type(query_obj[key1]) is dict:
+                for key2 in query_obj[key1]:
+                    if type(query_obj[key1][key2]) in [str]:
+                        query_obj[key1][key2] = query_obj[key1][key2].strip()
 
-    for key1 in query_obj:
-        if type(query_obj[key1]) in [str]:
-            query_obj[key1] = query_obj[key1].strip()
-        elif type(query_obj[key1]) is dict:
-            for key2 in query_obj[key1]:
-                if type(query_obj[key1][key2]) in [str]:
-                    query_obj[key1][key2] = query_obj[key1][key2].strip()
 
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
@@ -1743,7 +1779,10 @@ def cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj):
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
 
-    batch_size = 1000
+    #return {"total":total_count, "sample":result_obj_list[:10]}
+
+
+    batch_size = 100
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
@@ -1754,6 +1793,7 @@ def cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj):
         cached_obj = dbh[cache_coll].find_one({"list_id":listcache_id})
     
 
+    debug_list = []
     if cached_obj == None:
         cache_info = res_obj["cache_info"] if "cache_info" in res_obj else {}
         cache_info["cache_id"] = cache_id
@@ -1772,12 +1812,15 @@ def cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj):
                 oo = {"list_id":listcache_id,"cache_info":cache_info, "total_count":total_count,
                     "results":tmp_obj_list,"glbl":tmp_glbl_obj,"start":s,"end":e}
                 res = dbh[cache_coll].insert_one(oo)
+                #debug_list.append("A=%s" % (len(json.dumps(oo))))
         else:
             s, e = 0, total_count
             oo = {"list_id":listcache_id,"cache_info":cache_info, "results":result_obj_list,
                     "glbl":glbl_obj,"start":s, "end":e, "total_count":total_count}
             res = dbh[cache_coll].insert_one(oo)
- 
+            #debug_list.append("B=%s" % (len(result_obj_list)))
+
+    #return debug_list
     return {}
 
 
@@ -1815,16 +1858,19 @@ def get_final_fields(query_obj, record_type):
         else:
             final_fields +=  sorted(set(f_dict[record_type]["required"] + query_fields))
 
-    extra_fields = []
-    for cat in score_dict[record_type]:
-        for f in score_dict[record_type][cat]:
-            if "fieldlist" not in score_dict[record_type][cat][f]:
-                continue
-            ll = score_dict[record_type][cat][f]["fieldlist"]
-            for ff in score_dict[record_type][cat][f]["fieldlist"]:
-                if ff not in final_fields:
-                    extra_fields.append(ff)
-    final_fields += extra_fields
+    
+    record_type = "protein" if record_type == "ortholog" else record_type
+    if record_type in score_dict:
+        extra_fields = []
+        for cat in score_dict[record_type]:
+            for f in score_dict[record_type][cat]:
+                if "fieldlist" not in score_dict[record_type][cat][f]:
+                    continue
+                ll = score_dict[record_type][cat][f]["fieldlist"]
+                for ff in score_dict[record_type][cat][f]["fieldlist"]:
+                    if ff not in final_fields:
+                        extra_fields.append(ff)
+        final_fields += extra_fields
 
     return final_fields, extra_fields
 
@@ -1858,8 +1904,13 @@ def retrieve_cached_list_objects(in_dict,req_obj,config_obj, page_flag):
         #return cache_doc["cache_info"]
         record_type = cache_doc["cache_info"]["record_type"]
         res_obj, full_obj_list = get_combined_cached_result_list(dbh, record_type, req_obj)
-        res_obj["results"] = full_obj_list
-        res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
+        if res_obj == None:
+            return None
+        obj_to_be_cached = {}
+        for k in res_obj:
+            obj_to_be_cached[k] = res_obj[k]
+        obj_to_be_cached["results"] = full_obj_list
+        res = cache_list_objects(api_name, cache_id, listcache_id, obj_to_be_cached, config_obj)
         if "error_list" in res:
             return res
         res_obj["cache_coll"] = "c_userlistcache"
@@ -1977,10 +2028,13 @@ def retrieve_cached_list_objects(in_dict,req_obj,config_obj, page_flag):
         hit_info["contributions"] = []
         for cond_group in score_dict[record_type]:
             for cond in score_dict[record_type][cond_group]:
-                freq = hit_info["freqdict"][cond] if cond in hit_info["freqdict"] else 0
+                freq = 0
+                if "freqdict" in hit_info:
+                    freq = hit_info["freqdict"][cond] if cond in hit_info["freqdict"] else 0
                 weight = score_dict[record_type][cond_group][cond]["weight"]
-                o = {"c":cond, "w":weight, "f":float(freq)}
-                hit_info["contributions"].append(o)
+                if freq > 0:
+                    o = {"c":cond, "w":weight, "f":float(freq)}
+                    hit_info["contributions"].append(o)
         if "freqdict" in hit_info:
             hit_info.pop("freqdict")
         obj["hit_info"], obj["hit_score"] = hit_info, hit_score
@@ -2025,14 +2079,16 @@ def get_hash_id(api_name , record_type, obj):
     
     new_obj = {}
     for k in sorted(obj):
-        if k not in ["offset", "limit", "sort", "order", "columns", "ai_query"]:
+        if k not in ["mcp_tool", "offset", "limit", "sort", "order", "columns", "ai_query"]:
             new_obj[k] = obj[k]
             if k == "filters":
                 oo_list = []
                 for o in new_obj[k]:
                     # default to OR for single selected options
-                    if len(o["selected"]) == 1:
-                        o["operator"] = "OR"
+                    if "selected" in o:
+                        if type(o["selected"]) is list:
+                            if len(o["selected"]) == 1:
+                                o["operator"] = "OR"
                     oo = {}
                     for kk in sorted(o):
                         oo[kk] = o[kk]
@@ -2132,6 +2188,7 @@ def get_combined_cached_result_list(dbh, record_type, req_obj):
     parent_listcache_id = get_hash_id(api_name, "", query_obj)
      
 
+
     debug_list = [] 
     prj_obj = {"results.record_id"}
     record_dict = {}
@@ -2162,8 +2219,8 @@ def get_combined_cached_result_list(dbh, record_type, req_obj):
                     new_list = tmp_dict[opt_id]
                     record_dict[grp_id] = list(set(new_list).intersection(set(record_dict[grp_id])))
 
+
     grp_id_list = list(record_dict.keys())
-    #return {"error_list":grp_id_list}
 
     final_list = record_dict[grp_id_list[0]]
     if len(grp_id_list) > 1:
@@ -2173,6 +2230,7 @@ def get_combined_cached_result_list(dbh, record_type, req_obj):
     final_dict = {}
     for record_id in final_list:
         final_dict[record_id] = True   
+
  
     ts_list.append("2- "+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     first_doc = {} 
@@ -2192,8 +2250,9 @@ def get_combined_cached_result_list(dbh, record_type, req_obj):
                         break
     ts_list.append("3- "+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
 
+
     if first_doc == {}:
-        return None
+        return None, []
 
     api_name = "%s_list" % (record_type)
     query_obj["filters"] = f_obj_list
@@ -2202,7 +2261,8 @@ def get_combined_cached_result_list(dbh, record_type, req_obj):
     res_obj = {"filters":{"applied":[], "available":[]}}
     for k in first_doc["glbl"]:
         res_obj[k] = first_doc["glbl"][k]
-   
+  
+ 
     full_obj_list = [] 
     for record_id in obj_dict:
         full_obj_list.append(obj_dict[record_id])
@@ -2214,7 +2274,7 @@ def get_combined_cached_result_list(dbh, record_type, req_obj):
     query_filter_code, code_dict = res["code"], res["dict"]
     update_res = update_filters(record_type, full_obj_list, res_obj["filters"], 2, code_dict, filter_conf)
     if "error_list" in update_res:
-        return update_res
+        return update_res, []
 
 
     sort_field = req_obj["sort"] if "sort" in req_obj else "hit_score"
@@ -2280,7 +2340,8 @@ def get_combined_cached_result_list(dbh, record_type, req_obj):
 
 
     if len(res_obj["results"]) == 0:
-        return None
+        return None, []
+
     if "cache_info" not in res_obj:
         res_obj["cache_info"] = {}
     res_obj["query"] = req_obj

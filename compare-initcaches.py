@@ -37,7 +37,7 @@ def main():
     config_obj = json.loads(open("./conf/config.json", "r").read())
     mongo_port = "27017"
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
-    db_name = "glydb_beta" if server == "beta" else db_name
+    db_name = "glydb"
     db_obj = config_obj["dbinfo"][db_name]
     db_user, db_pass =  db_obj["user"], db_obj["password"]
 

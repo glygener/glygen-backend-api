@@ -1,0 +1,9 @@
+{"concept_query_list":[{"concept":"site","query":{"aggregator":"$and",
+	"unaggregated_list":[
+		{"path":"uniprot_canonical_ac","order":0,"operator":"$regex","string_value":"P14210"}
+	],
+	"aggregated_list":[]}}]}
+
+
+
+

@@ -1,0 +1,22 @@
+$ sudo vi /usr/lib/systemd/system/docker-glygen-mongo-beta.service 
+
+===========
+[Unit]
+Description=Glygen MONGO Container (beta)
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker start -a running_glygen_mongo_beta
+ExecStop=/usr/bin/docker stop -t 2 running_glygen_mongo_beta
+
+[Install]
+WantedBy=default.target
+============
+
+$ sudo systemctl daemon-reload 
+$ sudo systemctl enable docker-glygen-mongo-beta.service
+$ sudo systemctl start docker-glygen-mongo-beta.service
+$ sudo systemctl stop docker-glygen-mongo-beta.service
+

@@ -17,9 +17,9 @@ __status__ = "Dev"
 ###############################
 def main():
 
-    doc = json.load(open("glygen/conf/job_init.json"))
-    print (json.dumps(doc, indent=4))
-
+    doc = json.load(open("tmp/junk.json"))
+    for obj in doc["results"]:
+        print (obj["glytoucan_ac"])
     return
 
 

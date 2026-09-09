@@ -166,6 +166,11 @@ def job_addnew(query_obj, config_obj, data_path, server):
             if "outcmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
                 out_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["outcmdflag"]
                 query_obj["cmd"] += " %s%s%s" % (out_cmdflag,gap, out_file)
+            
+            if "relcmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
+                rel_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["relcmdflag"]
+                query_obj["cmd"] += " %s%s%s" % (rel_cmdflag,gap, init_obj["dataversion"])
+
  
             job_lbl = "%s_%s" % (query_obj["jobtype"], query_obj["jobid"])
             cmd = "%s -E -L %s %s" % (config_obj["jobinfo"]["tspath"],job_lbl, query_obj["cmd"])

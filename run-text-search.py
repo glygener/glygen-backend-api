@@ -57,8 +57,7 @@ def main():
 
     server = options.server
 
-
-    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_name = "glydb"
     config_obj = json.loads(open("./conf/config.json", "r").read())
     #mongo_port = config_obj["dbinfo"]["port"][server]
     mongo_port = "27017"

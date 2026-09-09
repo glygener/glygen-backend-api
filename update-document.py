@@ -43,8 +43,7 @@ def main():
     doc = json.loads(open(in_file, "r").read()) 
 
 
-
-    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_name = "glydb"
     config_obj = json.loads(open("./conf/config.json", "r").read())
     mongo_port = "27017"
     host = "mongodb://127.0.0.1:%s" % (mongo_port)

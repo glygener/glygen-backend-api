@@ -37,7 +37,7 @@ def main():
 
     rel_dir = "/data/shared/glygen/releases/data/v-%s/" % (ver)
 
-    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_name = "glydb"
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     #mongo_port = config_obj["dbinfo"]["port"][server]

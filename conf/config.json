@@ -1,10 +1,10 @@
 {
     "server":"tst",
     "host_ip":{
-	"prd":"10.10.0.6",
-	"beta":"10.10.0.6",
-	"tst":"172.17.0.1",
-	"dev":"172.17.0.1"
+		"prd":"10.10.0.6",
+		"beta":"172.17.0.1",
+		"tst":"172.17.0.1",
+		"dev":"172.17.0.1"
     },
     "api_port":{
         "prd":"4042",
@@ -25,7 +25,7 @@
         "dev":"http://localhost:8082"
     },
     "data_path":"/data/shared/glygen/",
-    "downloads_path":"/data/shared/glyds/downloads/",
+    "downloads_path":"/data/shared/glygen/downloads/",
 	 "mail":{
         "server":"172.17.0.1", 
         "port":"25",
@@ -49,18 +49,16 @@
             "user":"glydbadmin",
             "password":"glydbpass"
         },
-		  "glydb_beta":{
-            "db":"glydb_beta",
-            "user":"glydb_betaadmin",
-            "password":"glydb_betapass"
-        },
         "tmpdb":{
             "db":"tmpdb",
             "user":"glydbadmin",
             "password":"glydbpass"
         }
     },
-    "downloads":{
+    "batched_colls":[
+	 	"c_list","c_cluster", "c_graph", "c_protein","c_glycan","c_site", "c_alignment","c_publication"
+	 ],
+	 "downloads":{
         "jsondb":[
             "initdb"
             ,"searchinitdb"
@@ -76,7 +74,8 @@
 	    		,"glytoucandb"
             ,"idtrackdb"
 	    		,"networkdb"
-	    		,"batchdb"
+				,"graphdb"
+				,"batchdb"
             ,"glycandb" 
             ,"alignmentdb"
             ,"clusterdb"

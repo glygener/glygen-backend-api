@@ -41,7 +41,7 @@ def main():
     mongo_port = "27017"
     host = "mongodb://127.0.0.1:%s" % (mongo_port)
 
-    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_name = "glydb"
     glydb_user, glydb_pass = config_obj["dbinfo"][db_name]["user"], config_obj["dbinfo"][db_name]["password"]
     glydb_db =  config_obj["dbinfo"][db_name]["db"]
 

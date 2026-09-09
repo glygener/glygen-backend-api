@@ -115,6 +115,7 @@
             ]
         	},
 		  	"batch_retrieval":{
+				"relcmdflag":"-r",
 				"incmdflag": "-i",
             "outcmdflag": "-o",
             "max_input_records": 100,
@@ -382,7 +383,8 @@
     },
     "cached_list": {
         "field_info": {
-            "id": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"id": {
                 "type": "string"
             },
             "sort": {
@@ -506,7 +508,8 @@
     },
     "glycan_search": {
         "field_info": {
-            "query_type": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"query_type": {
                 "type": "string"
             },
             "operation": {
@@ -597,7 +600,18 @@
                     "type": "number"
                 }
             },
-            "composition_expanded": {
+            "composition_single": {
+                "residue": {
+                    "type": "string"
+                },
+                "min": {
+                    "type": "number"
+                },
+                "max": {
+                    "type": "number"
+                }
+            },
+				"composition_expanded": {
                 "residue": {
                     "type": "string"
                 },
@@ -720,7 +734,8 @@
     },
     "glycan_list": {
         "field_info": {
-            "id": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"id": {
                 "type": "string"
             },
             "sort": {
@@ -767,7 +782,8 @@
                 "type": "string",
                 "maxlen": 20
             },
-            "paginated_tables": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"paginated_tables": {
                 "type": "string",
                 "maxlen": 10000
             }
@@ -779,7 +795,21 @@
             "c_glycan"
         ]
     },
-    "pagination_page": {
+    "glycan_graph": {
+        "field_info": {
+            "record_id": {
+                "type": "string",
+                "maxlen": 20
+            }
+        },
+        "requiredfields": [
+            "record_id"
+        ],
+        "collectionlist": [
+            "c_graph"
+        ]
+    },
+	 "pagination_page": {
         "field_info": {
             "record_type": {
                 "type": "string",
@@ -828,7 +858,8 @@
                 "type": "string",
                 "maxlen": 20
             },
-            "paginated_tables": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"paginated_tables": {
                 "type": "string",
                 "maxlen": 10000
             }
@@ -866,7 +897,8 @@
                 "type": "string",
                 "maxlen": 200
             },
-            "paginated_tables": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"paginated_tables": {
                 "type": "string",
                 "maxlen": 10000
             }
@@ -911,7 +943,8 @@
     },
     "biomarker_search": {
         "field_info": {
-            "biomarker_id": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"biomarker_id": {
                 "type": "string",
                 "maxlen": 200
             },
@@ -972,7 +1005,8 @@
     },
     "biomarker_list": {
         "field_info": {
-            "id": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"id": {
                 "type": "string"
             },
             "sort": {
@@ -1009,7 +1043,8 @@
                 "type": "string",
                 "maxlen": 200
             },
-            "paginated_tables": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"paginated_tables": {
                 "type": "string",
                 "maxlen": 10000
             }
@@ -1028,7 +1063,21 @@
             "c_searchinit"
         ]
     },
-    "disease_search_simple": {
+    "disease_get_all": {
+        "field_info": {
+				"limit": {
+                "type": "number"
+            },
+            "offset": {
+                "type": "number"
+            }
+			},
+        "requiredfields": ["limit","offset"],
+        "collectionlist": [
+            "c_searchinit"
+        ]
+    },
+	 "disease_search_simple": {
         "field_info": {
             "query_type": {
                 "type": "string"
@@ -1054,7 +1103,8 @@
     },
     "disease_search": {
         "field_info": {
-            "query_type": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"query_type": {
                 "type": "string"
             },
             "operation": {
@@ -1120,7 +1170,8 @@
     },
     "disease_list": {
         "field_info": {
-            "id": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"id": {
                 "type": "string"
             },
             "sort": {
@@ -1173,7 +1224,8 @@
             "offset": {
                 "type": "number"
             },
-            "paginated_tables": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"paginated_tables": {
                 "type": "string",
                 "maxlen": 10000
             }
@@ -1247,7 +1299,8 @@
     },
     "protein_search": {
         "field_info": {
-            "query_type": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"query_type": {
                 "type": "string"
             },
             "operation": {
@@ -1280,7 +1333,10 @@
             "pathway_id": {
                 "type": "string"
             },
-            "pmid": {
+            "tissue_id": {
+                "type": "string"
+            },
+				"pmid": {
                 "type": "string"
             },
             "glycosylation_evidence": {
@@ -1352,7 +1408,10 @@
             },
 				"ai_query": {
                 "type": "string"
-            }
+            },
+				"poi_type":{
+					"type": "string"
+				}
         },
         "requiredfields": [],
         "collectionlist": [
@@ -1642,7 +1701,8 @@
     },
     "protein_list": {
         "field_info": {
-            "id": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"id": {
                 "type": "string"
             },
             "sort": {
@@ -1691,7 +1751,8 @@
                 "type": "string",
                 "maxlen": 10000
             },
-            "filtering": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"filtering": {
                 "table_id": {
                     "type": "string"
                 },
@@ -1707,7 +1768,21 @@
             "c_protein"
         ]
     },
-    "protein_alignment": {
+    "protein_graph": {
+        "field_info": {
+            "record_id": {
+                "type": "string",
+                "maxlen": 20
+            }
+        },
+        "requiredfields": [
+            "record_id"
+        ],
+        "collectionlist": [
+            "c_graph"
+        ]
+    },
+	 "protein_alignment": {
         "field_info": {
             "uniprot_canonical_ac": {
                 "type": "string"
@@ -1724,17 +1799,84 @@
             "c_alignment"
         ]
     },
-    "site_search_init": {
+    "species_search_init": {
         "field_info": {},
         "requiredfields": [],
         "collectionlist": []
     },
-    "site_detail": {
+	 "site_search_init": {
+        "field_info": {},
+        "requiredfields": [],
+        "collectionlist": []
+    },
+    "mcp_site_search": {
+        "field_info": {
+				"tax_id":{
+					"type": "number"
+				},
+				"tissue_id": {
+                "type": "string"
+            }
+        },
+        "requiredfields": [
+        		"tax_id", "tissue_id"
+		  ],
+        "collectionlist": [
+            "c_site"
+        ]
+    },
+	 "mcp_variant_search": {
+        "field_info": {
+            "tax_id":{
+               "type": "number"
+            },
+            "tissue_id": {
+                "type": "string"
+            }
+        },
+        "requiredfields": [
+        		"tax_id", "tissue_id"
+		  ],
+        "collectionlist": [
+            "c_site"
+        ]
+    },
+	 "mcp_map_variants": {
+        "field_info": {
+            "site_result_id":{
+               "type": "string"
+            },
+            "variant_result_id": {
+                "type": "string"
+            }
+        },
+        "requiredfields": [
+        		"site_result_id", "variant_result_id"
+		  ],
+        "collectionlist": [
+            "c_site"
+        ]
+    },
+	"mcp_get_cached": {
+        "field_info": {
+            "list_id":{
+               "type": "string"
+            }
+        },
+        "requiredfields": [
+        		"list_id"
+		  ],
+        "collectionlist": [
+            "c_usercache"
+        ]
+    },
+	"site_detail": {
         "field_info": {
             "site_id": {
                 "type": "string"
             },
-            "paginated_tables": {
+            "mcp_tool":{"type": "string", "maxlen": 100},
+				"paginated_tables": {
                 "type": "string",
                 "maxlen": 10000
             }

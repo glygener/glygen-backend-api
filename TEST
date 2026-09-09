@@ -4,6 +4,7 @@ http POST :8082/protein/search/ < tests/examples/protein/protein_search.json
 http POST :8082/protein/list/ < tests/examples/protein/protein_list.1.json
 http POST :8082/protein/list/ < tests/examples/protein/protein_list.2.json
 http POST :8082/protein/detail/P14210-1/  
+http POST :8082/protein/graph/P14210-1/
 http POST :8082/protein/detail/Q8IWL2-1/ < tests/examples/protein/protein_detail_paginated.json
 http POST :8082/protein/alignment/ < tests/examples/protein/protein_alignment.json
 http POST :8082/glycan/search_init/  
@@ -12,6 +13,7 @@ http POST :8082/glycan/search/ < tests/examples/glycan/glycan_search.json
 http POST :8082/glycan/list/ < tests/examples/glycan/glycan_list.1.json
 http POST :8082/glycan/list/ < tests/examples/glycan/glycan_list.2.json
 http POST :8082/glycan/detail/G17689DH/  
+http POST :8082/glycan/graph/G17689DH/
 http POST :8082/glycan/image/G17689DH/  
 http POST :8082/glycan/image_svg/G17689DH/  
 http POST :8082/glycan/image_metadata/G17689DH/  
@@ -49,7 +51,9 @@ http POST :8082/publication/detail/ < tests/examples/publication/publication_det
 http POST :8082/motif/detail/ < tests/examples/motif/motif_detail.json
 http POST :8082/motif/list/ < tests/examples/motif/motif_list.json
 http POST :8082/site/search_init/  
+http POST :8082/site/search/ < tests/examples/site/site_search.json
 http POST :8082/site/detail/P02724-1.52.52/  
+
 http POST :8082/idmapping/search_init/  
 http POST :8082/idmapping/search/ < tests/examples/idmapping/idmapping_search.json
 http POST :8082/idmapping/list/ < tests/examples/idmapping/idmapping_list.json
@@ -135,3 +139,11 @@ http POST :8082/data/section_download < tests/examples/data/section_download.mot
 http POST :8082/data/section_download < tests/examples/data/section_download.publication.glycosylation.json
 http POST :8082/data/section_download < tests/examples/data/section_download.biomarker.biomarker_component.json
 http POST :8082/cart/list/ < tests/examples/cart/list.json
+
+
+http POST :4442/mcp/site_search/ < tests/examples/mcp/site_search.1.json 
+http POST :4442/mcp/variant_search/ < tests/examples/mcp/variant_search.json 
+http POST :4442/mcp/map_variants/ < tests/examples/mcp/map_variants.json                                  
+http POST :4442/mcp/get_cached/ < tests/examples/mcp/get_cached.json
+
+

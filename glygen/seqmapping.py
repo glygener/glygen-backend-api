@@ -39,14 +39,14 @@ class Seqmapping(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/seqmapping/search/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/seqmapping/search/", request)
+            if "error_list" not in log_obj:
                 res_obj = search(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code

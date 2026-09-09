@@ -6,7 +6,6 @@ from genson import SchemaBuilder
 from optparse import OptionParser
 
 
-
 def main():
 
     usage = "\n%prog  [options]"

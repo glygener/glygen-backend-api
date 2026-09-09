@@ -24,7 +24,8 @@
                 "T":17,
                 "W":18,
                 "Y":19,
-                "V":20
+                "V":20,
+					 "?":21
             },
             "label_dict":{
                 "A":"Ala",
@@ -46,7 +47,8 @@
                 "T":"Thr",
                 "W":"Trp",
                 "Y":"Tyr",
-                "V":"Val"
+                "V":"Val",
+					 "?":"Fuzzy"
             }
         },
 	"by_biomarker_type":{
@@ -217,7 +219,8 @@
                 "T":17,
                 "W":18,
                 "Y":19,
-                "V":20
+                "V":20,
+					 "?":21
             },
             "label_dict":{
                 "A":"Ala",
@@ -239,7 +242,8 @@
                 "T":"Thr",
                 "W":"Trp",
                 "Y":"Tyr",
-                "V":"Val"
+                "V":"Val",
+					 "?":"Fuzzy"
             }
         },
 	     "by_glycosylation_type":{
@@ -337,7 +341,8 @@
                 "T":17,
                 "W":18,
                 "Y":19,
-                "V":20
+                "V":20,
+					 "?":21
             },
             "label_dict":{
                 "A":"Ala",
@@ -359,7 +364,8 @@
                 "T":"Thr",
                 "W":"Trp",
                 "Y":"Tyr",
-                "V":"Val"
+                "V":"Val",
+					 "?":"Fuzzy"
             }
         },
 	     "by_glycosylation_type":{
@@ -455,7 +461,8 @@
                 "T":17,
                 "W":18,
                 "Y":19,
-                "V":20
+                "V":20,
+					 "?":21
             },
             "label_dict":{
                 "A":"Ala",
@@ -477,7 +484,8 @@
                 "T":"Thr",
                 "W":"Trp",
                 "Y":"Tyr",
-                "V":"Val"
+                "V":"Val",
+					 "?":"Fuzzy"
             }
         },
 	     "by_glycosylation_type":{

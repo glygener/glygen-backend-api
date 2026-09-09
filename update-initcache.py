@@ -80,8 +80,7 @@ def main():
     global seen_child
 
 
-
-    db_name = "glydb_beta" if server == "beta" else "glydb"
+    db_name = "glydb"
     config_obj = json.loads(open("./conf/config.json", "r").read())
     db_obj = config_obj["dbinfo"][db_name]
     glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
@@ -95,8 +94,13 @@ def main():
         print (error_obj)
         exit()
 
+
+
+    #clear c_initcache for cache_name
+    res = dbh["c_initcache"].delete_many({"cache_info.cache_name":cache_name})
+
+
     pulldown_dict = get_pulldown_dict(dbh, config_obj)
-        
     if record_type == "supersearch":
         supersearch_config_obj = json.load(open("glygen/conf/supersearch.json"))
         config_obj["ignored_path_list"] = supersearch_config_obj["ignored_path_list"]
