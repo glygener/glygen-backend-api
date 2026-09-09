@@ -202,14 +202,18 @@
                "group_order":7,
                "group_label":"By Protein of Interest",
                "order_dict":{
-						"glycosyltransferase":1,
-						"glycosylhydrolase":2,
-						"others":3
+						"glycogene":1,
+						"glycosyltransferase":2,
+						"glycosylhydrolase":3,
+						"glycan-modifying enzyme":4,
+						"immunoglobin":5
 					},
                "label_dict":{
+						"glycogene":"Glycogenes",
                   "glycosyltransferase":"Glycosyltransferases",
                   "glycosylhydrolase":"Glycosylhydrolases",
-                  "others":"Others"
+                  "glycan-modifying enzyme":"Glycan-modifying Enzymes",
+						"immunoglobin":"Immunoglobins"
                }
          }
     	},
