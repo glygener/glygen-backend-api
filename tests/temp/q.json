@@ -1,4 +1,5 @@
-{"id":"c67a1191dfd6b6b2ff73544415125fe0","type":"glycan"}
+{"id":"e5e9e8999a3451a947eb2f05508b4a29","offset":1,"sort":"hit_score","limit":15000,"order":"desc","filters":[{"id":"by_organism","operator":"OR","selected":["Human"]},{"id":"by_evidence_type","operator":"OR","selected":["Literature mined"]}],"columns":["uniprot_canonical_ac","protein_name","organism","hit_score","start_pos","end_pos","gene_name"]}
+
 
 
 

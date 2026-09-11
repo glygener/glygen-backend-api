@@ -110,10 +110,18 @@
             "order_dict":{
                 "N-Glycosylation reported":1,
                 "O-Glycosylation reported":2,
-                "N-Glycosylation predicted":3,
-                "O-Glycosylation predicted":4,
-                "Phosphorylation reported":5
-            }
+					 "C-Glycosylation reported":3,
+                "S-Glycosylation reported":4,
+                "N-Glycosylation mined":5,
+                "O-Glycosylation mined":6,
+                "C-Glycosylation mined":7,
+                "S-Glycosylation mined":8,
+					 "N-Glycosylation predicted":9,
+                "O-Glycosylation predicted":10,
+                "C-Glycosylation predicted":11,
+                "S-Glycosylation predicted":12,
+					 "Phosphorylation reported":13
+				}
         	},
 			"by_evidence_type":{
 			   "grp_idx": 5,
@@ -188,7 +196,26 @@
 						"response":"Response",
                 	"safety":"Safety"
             	}
-        	}
+        	},
+			"by_protein_of_interest":{
+               "grp_idx": 6,
+               "group_order":7,
+               "group_label":"By Protein of Interest",
+               "order_dict":{
+						"glycogene":1,
+						"glycosyltransferase":2,
+						"glycosylhydrolase":3,
+						"glycan-modifying enzyme":4,
+						"immunoglobin":5
+					},
+               "label_dict":{
+						"glycogene":"Glycogenes",
+                  "glycosyltransferase":"Glycosyltransferases",
+                  "glycosylhydrolase":"Glycosylhydrolases",
+                  "glycan-modifying enzyme":"Glycan-modifying Enzymes",
+						"immunoglobin":"Immunoglobins"
+               }
+         }
     	},
     	"biomarker":{
         "by_assessed_entity_type":{
@@ -331,7 +358,8 @@
                 "T":17,
                 "W":18,
                 "Y":19,
-                "V":20
+                "V":20,
+					 "?":21
             },
             "label_dict":{
                 "A":"Ala",
@@ -353,7 +381,8 @@
                 "T":"Thr",
                 "W":"Trp",
                 "Y":"Tyr",
-                "V":"Val"
+                "V":"Val",
+					 "?":"Xaa"
             }
         },
         "by_site_type":{

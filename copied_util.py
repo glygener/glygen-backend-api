@@ -1209,6 +1209,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
             grp = grp_id_list[grp_idx]
             n_21 = len(code_dict[grp])
             n_22 = len(record_code_parts[grp_idx])
+            #print (grp, n_21, n_22, n_21 == n_22)
             if grp == "by_sequence_details":
                 debug_list.append([code_dict[grp], record_code_parts[grp_idx]])
             if n_21 != n_22:
@@ -1227,6 +1228,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
                     if label not in count_dict[grp]:
                         count_dict[grp][label] = 0
                     count_dict[grp][label] += 1
+
     #return {"error_list":debug_list}
     #return {"a":code_dict, "b":count_dict, "c":seen_filter_code, "d":debug_list}
     #print (count_dict)
@@ -1252,9 +1254,12 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
            
             label = label_dict[option_id] if option_id in label_dict else label
             obj["tmp_options"][option_id] = {"id":option_id, "label":label, "count":count,"order":option_ordr}
+            #print (grp, option_id)
         filters["available"].append(obj)
         #xxxxx
 
+    #print (json.dumps(filters["available"], indent=4))
+    #exit()
     #return {"error_list":debug_list}
 
     seen = {}
