@@ -1,3 +1,2 @@
-{"operation":"AND","query_type":"search_protein","biomarker":{"type":"diagnostic"}}
-
+{"operation":"AND","query_type":"search_protein","biomarker":{"type":"diagnostic"}, "mcp_tool":"search_proteins"}
 
