@@ -69,6 +69,12 @@ def main():
 
         for coll in coll_list:
 
+
+            n_two = len(list(dbh[coll].find({},{"_id":1})))
+            #n_two = dbh[coll].count_documents({})
+            print (n_two)
+            exit()
+
             db = coll[2:] + "db"
             file_list = glob.glob(jsondb_dir + db + "/*.json")
             n_one = len(file_list)
@@ -77,12 +83,6 @@ def main():
                 for in_file in file_list:
                     n_one += len(json.load(open(in_file)))
                 
-            #if coll in ["c_index"]:
-            #    n_one = 0
-            #    for in_file in file_list:
-            #        n_one += len(json.load(open(in_file)))
-            n_two = len(list(dbh[coll].find({},{"_id":1})))
-            #n_two = dbh[coll].count_documents({})
             print (n_one == n_two, coll, "in_file_sys=%s" %(n_one), "in_mongodb=%s" %(n_two))
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)

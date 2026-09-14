@@ -56,7 +56,9 @@ def main():
         dbh = client[glydb_name]
         #q = {"glytoucan_ac": "G17689DH"}
         #q = { "phraselist": {"$eq": "diagnostic"},"record_type": {"$eq": "protein"}}
-        q = {}
+        q = {"uniprot_canonical_ac":"P14210-1"}
+        #q = {}
+        
         doc_list = list(dbh[coll].find(q, sort=[('_id', pymongo.DESCENDING)]))
         if limit != None:
             doc_list = list(dbh[coll].find(q, sort=[('_id', pymongo.DESCENDING)]).limit(int(limit)))
