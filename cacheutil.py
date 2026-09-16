@@ -195,22 +195,79 @@ def get_pulldown_dict(dbh, config_obj):
     }
 
 
-    tmp_dict = {}
+    aaone2three, aathree2one = get_aa_dict()
 
+    tmp_dict = {}
+    ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
+    ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
+    print ("flag-1", datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     taxid2name = get_taxid2name(dbh, default=False)
-    field = "protein_taxid2name"
-    tmp_dict[field] = {}
-    count_dict = {}
-    for doc in dbh["c_protein"].find({},{"species.taxid":1}):
+    field_one, field_two = "protein_taxid2name", "glycotype"
+    field_three, field_four = "glycoevdn", "glycoaa"
+
+    tmp_dict[field_one], tmp_dict[field_two], tmp_dict[field_three], tmp_dict[field_four] = {}, [], {}, {}
+
+    count_dict = {field_one:{}, field_two:{}, field_three:{},field_four:{}}
+    prj_obj = {
+        "species.taxid": 1, "glycosylation.type":1, "glycosylation.residue":1, "glycosylation.site_category_dict":1
+    }
+    idx = 0
+    for doc in dbh["c_protein"].find({}, prj_obj):
+        idx += 1
+        if idx%1000 == 0:
+            print (idx)
         doc_id = str(doc["_id"])
         val = doc["species"][0]["taxid"]
-        if val not in count_dict:
-            count_dict[val] = {} 
-        count_dict[val][doc_id] = True 
-    for val in count_dict:
-        if len(count_dict[val].keys()) > config_obj["min_list_size_to_cache"]:
-            tmp_dict[field][val] = taxid2name[str(val)]
+        if val not in count_dict[field_one]:
+            count_dict[field_one][val] = {}
+        count_dict[field_one][val][doc_id] = True
+        for obj in doc["glycosylation"]:
+            if "type" in obj:
+                val = obj["type"]
+                if val != "":
+                    if val not in count_dict[field_two]:
+                        count_dict[field_two][val] = {}
+                    count_dict[field_two][val][doc_id] = True
+            if "site_category_dict" in obj:
+                o = obj["site_category_dict"]
+                val_list = []
+                for k in o:
+                    if o[k] == True and k == "reported_with_glycan":
+                        val_list.append("sites_reported_with_glycans")
+                    if o[k] == True and k == "reported":
+                        val_list.append("sites_reported_without_glycans")
+                    if o[k] == True and k == "automatic_literature_mining":
+                        val_list.append("sites_detected_by_literature_mining")
+                    if o[k] == True and k == "predicted":
+                        val_list.append("predicted_sites")
+                for val in val_list:
+                    if val not in count_dict[field_three]:
+                        count_dict[field_three][val] = {}
+                    count_dict[field_three][val][doc_id] = True
+            if "residue" in obj:
+                val = obj["residue"]
+                if val == "" or val not in aathree2one:
+                    continue
+                val = aathree2one[val]
+                if val not in count_dict[field_four]:
+                    count_dict[field_four][val] = {}
+                count_dict[field_four][val][doc_id] = True
 
+
+    for val in count_dict[field_one]:
+        if len(count_dict[field_one][val].keys()) > config_obj["min_list_size_to_cache"]:
+            tmp_dict[field_one][val] = taxid2name[str(val)]
+    for val in count_dict[field_two]:
+        if len(count_dict[field_two][val].keys()) > config_obj["min_list_size_to_cache"]:
+            tmp_dict[field_two].append(val)
+    for val in count_dict[field_three]:
+        if len(count_dict[field_three][val].keys()) > config_obj["min_list_size_to_cache"]:
+            tmp_dict[field_three][val] = mq_dict[val]
+    for val in count_dict[field_four]:
+        if len(count_dict[field_four][val].keys()) > config_obj["min_list_size_to_cache"]:
+            tmp_dict[field_four].append(val)
+
+    print ("flag-2", datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     field = "glycan_taxid2name"
     tmp_dict[field] = {}
     count_dict = {}
@@ -225,53 +282,8 @@ def get_pulldown_dict(dbh, config_obj):
         if len(count_dict[val].keys()) > config_obj["min_list_size_to_cache"]:
             tmp_dict[field][val] = taxid2name[str(val)]
   
-     
-    field = "glycotype"
-    tmp_dict[field] = []
-    count_dict = {}
-    for doc in dbh["c_protein"].find({},{"glycosylation.type":1}):
-        doc_id = str(doc["_id"])
-        for obj in doc["glycosylation"]:
-            if "type" not in obj:
-                continue
-            val = obj["type"]
-            if val == "":
-                continue
-            if val not in count_dict:
-                count_dict[val] = {}
-            count_dict[val][doc_id] = True
-    for val in count_dict:
-        if len(count_dict[val].keys()) > config_obj["min_list_size_to_cache"]:
-            tmp_dict[field].append(val)
-
-    field = "glycoevdn"
-    tmp_dict[field] = {}
-    count_dict = {}
-    for doc in dbh["c_protein"].find({},{"glycosylation.site_category_dict":1}):
-        doc_id = str(doc["_id"])
-        for obj in doc["glycosylation"]:
-            if "site_category_dict" not in obj:
-                continue
-            o = obj["site_category_dict"]
-            val_list = []
-            for k in o:
-                if o[k] == True and k == "reported_with_glycan":
-                    val_list.append("sites_reported_with_glycans")
-                if o[k] == True and k == "reported":
-                    val_list.append("sites_reported_without_glycans") 
-                if o[k] == True and k == "automatic_literature_mining":
-                    val_list.append("sites_detected_by_literature_mining")
-                if o[k] == True and k == "predicted":
-                    val_list.append("predicted_sites")
-            for val in val_list:
-                if val not in count_dict:
-                    count_dict[val] = {}
-                count_dict[val][doc_id] = True
-    for val in count_dict:
-        if len(count_dict[val].keys()) > config_obj["min_list_size_to_cache"]:
-            tmp_dict[field][val] = mq_dict[val]
- 
-                
+    
+    print ("flag-5")
     field = "glycantype"
     tmp_dict[field] = []
     count_dict = {}
@@ -291,27 +303,7 @@ def get_pulldown_dict(dbh, config_obj):
     for val in count_dict:
         if len(count_dict[val].keys()) > config_obj["min_list_size_to_cache"]:
             tmp_dict[field].append(val) 
- 
 
-    aaone2three, aathree2one = get_aa_dict()
-    field = "glycoaa"
-    tmp_dict[field] = []
-    count_dict = {}
-    for doc in dbh["c_protein"].find({},{"glycosylation.residue":1}):
-        doc_id = str(doc["_id"])
-        for obj in doc["glycosylation"]:
-            if "residue" not in obj:
-                continue
-            val = obj["residue"]
-            if val == "" or val not in aathree2one:
-                continue
-            val = aathree2one[val]
-            if val not in count_dict:
-                count_dict[val] = {}
-            count_dict[val][doc_id] = True
-    for val in count_dict:
-        if len(count_dict[val].keys()) > config_obj["min_list_size_to_cache"]:
-            tmp_dict[field].append(val)
 
     field = "glycan_namespace"
     tmp_dict[field] = []
