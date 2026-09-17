@@ -1,5 +1,4 @@
 
-{"id":"e5e9e8999a3451a947eb2f05508b4a29","offset":1,"sort":"hit_score","limit":50000,"order":"desc","filters":[{"id":"by_organism","operator":"OR","selected":["Human"]},{"id":"by_evidence_type","operator":"OR","selected":["Reported"]}],"columns":["uniprot_canonical_ac","protein_name","organism","hit_score","start_pos","end_pos","gene_name"]}
-
+{"id":"df1bb42f89aa8a4fe7ee36fc29c83e56","offset":1,"limit":20,"order":"desc","sort":"hit_score","filters":[{"id":"by_ptm","operator":"OR","selected":["N-Glycosylation reported","O-Glycosylation reported"]}],"columns":["uniprot_canonical_ac","tax_id","organism","protein_name","hit_score","length","refseq_name","refseq_ac","uniprot_id","ec_number_list","total_n_glycosites"]}
 
 

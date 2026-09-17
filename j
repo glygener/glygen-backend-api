@@ -1,11 +1,33 @@
--rw-r--r--. 1 rykahsay glygen   52 Sep 15 08:27 logs/c_initcache.glycan_mouse.tst.log
--rw-r--r--. 1 rykahsay glygen   63 Sep 15 08:32 logs/c_initcache.glycan_glycantype_other.tst.log
--rw-r--r--. 1 rykahsay glygen   66 Sep 15 08:38 logs/c_initcache.glycan_glycantype_n_linked.tst.log
--rw-r--r--. 1 rykahsay glygen   66 Sep 15 08:43 logs/c_initcache.glycan_glycantype_o_linked.tst.log
-
-
-
--rw-r--r--. 1 rykahsay glygen   66 May  5 18:17 logs/c_initcache.glycan_glycantype_n_linked.prd.log
--rw-r--r--. 1 rykahsay glygen   63 May  5 18:18 logs/c_initcache.glycan_glycantype_other.prd.log
--rw-r--r--. 1 rykahsay glygen   66 May  5 18:18 logs/c_initcache.glycan_glycantype_o_linked.prd.log
-
+biomarker_all
+disease_all
+glycan_all
+glycan_glycantype_n_linked
+glycan_glycantype_o_linked
+glycan_glycantype_other
+glycan_human
+glycan_mouse
+glycan_namespace_glycosmos
+glycan_namespace_glytoucan
+glycan_namespace_gnome
+glycan_namespace_pubchem_compound
+glycan_namespace_pubchem_refchem
+glycan_namespace_pubchem_substance
+glycan_namespace_sandbox
+protein_all
+protein_arabidopsis
+protein_bovine
+protein_cellular_slime_mold
+protein_chicken
+protein_fruit_fly
+protein_glycoaa_n
+protein_glycoaa_t
+protein_glycoevdn_predicted_sites
+protein_glycoevdn_sites_reported_with_glycans
+protein_glycotype_n_linked
+protein_glycotype_o_linked
+protein_hamster
+protein_human
+protein_mouse
+protein_pig
+protein_rat
+protein_zebrafish

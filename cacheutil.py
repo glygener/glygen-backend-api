@@ -196,17 +196,35 @@ def get_pulldown_dict(dbh, config_obj):
 
 
     aaone2three, aathree2one = get_aa_dict()
-
     tmp_dict = {}
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
-    ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format)
-    print ("flag-1", datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    
+    #print ("flag-5", datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+
+    field = "supersearch_startaa"
+    tmp_dict[field] = []
+    count_dict = {}
+    idx = 0
+    for doc in dbh["c_site"].find({},{"start_aa":1}):
+        idx += 1
+        if "start_aa" in doc:
+            val = doc["start_aa"]
+            if val != "":
+                if val not in count_dict:
+                    count_dict[val] = 0
+                count_dict[val] += 1
+    for val in count_dict:
+        if count_dict[val] > config_obj["min_list_size_to_cache"]:
+            tmp_dict[field].append(val)
+
+
+    #print ("flag-1", datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     taxid2name = get_taxid2name(dbh, default=False)
     field_one, field_two = "protein_taxid2name", "glycotype"
     field_three, field_four = "glycoevdn", "glycoaa"
 
-    tmp_dict[field_one], tmp_dict[field_two], tmp_dict[field_three], tmp_dict[field_four] = {}, [], {}, {}
-
+    tmp_dict[field_one], tmp_dict[field_three] = {}, {}
+    tmp_dict[field_two], tmp_dict[field_four] = [], []
     count_dict = {field_one:{}, field_two:{}, field_three:{},field_four:{}}
     prj_obj = {
         "species.taxid": 1, "glycosylation.type":1, "glycosylation.residue":1, "glycosylation.site_category_dict":1
@@ -214,8 +232,6 @@ def get_pulldown_dict(dbh, config_obj):
     idx = 0
     for doc in dbh["c_protein"].find({}, prj_obj):
         idx += 1
-        if idx%1000 == 0:
-            print (idx)
         doc_id = str(doc["_id"])
         val = doc["species"][0]["taxid"]
         if val not in count_dict[field_one]:
@@ -267,7 +283,7 @@ def get_pulldown_dict(dbh, config_obj):
         if len(count_dict[field_four][val].keys()) > config_obj["min_list_size_to_cache"]:
             tmp_dict[field_four].append(val)
 
-    print ("flag-2", datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+    #print ("flag-2", datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     field = "glycan_taxid2name"
     tmp_dict[field] = {}
     count_dict = {}
@@ -282,8 +298,9 @@ def get_pulldown_dict(dbh, config_obj):
         if len(count_dict[val].keys()) > config_obj["min_list_size_to_cache"]:
             tmp_dict[field][val] = taxid2name[str(val)]
   
+   
+    #print ("flag-3", datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     
-    print ("flag-5")
     field = "glycantype"
     tmp_dict[field] = []
     count_dict = {}
@@ -304,7 +321,7 @@ def get_pulldown_dict(dbh, config_obj):
         if len(count_dict[val].keys()) > config_obj["min_list_size_to_cache"]:
             tmp_dict[field].append(val) 
 
-
+    #print ("flag-4", datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     field = "glycan_namespace"
     tmp_dict[field] = []
     count_dict = {}
@@ -315,24 +332,6 @@ def get_pulldown_dict(dbh, config_obj):
             if val not in count_dict:
                 count_dict[val] = {}
             count_dict[val][doc_id] = True
-    for val in count_dict:
-        if len(count_dict[val].keys()) > config_obj["min_list_size_to_cache"]:
-            tmp_dict[field].append(val)
-
-    
-    field = "supersearch_startaa"
-    tmp_dict[field] = []
-    count_dict = {}
-    for doc in dbh["c_site"].find({},{"start_aa":1}):
-        doc_id = str(doc["_id"])
-        if "start_aa" not in doc:
-            continue
-        val = doc["start_aa"]
-        if val == "":
-            continue
-        if val not in count_dict:
-            count_dict[val] = {}
-        count_dict[val][doc_id] = True
     for val in count_dict:
         if len(count_dict[val].keys()) > config_obj["min_list_size_to_cache"]:
             tmp_dict[field].append(val)
