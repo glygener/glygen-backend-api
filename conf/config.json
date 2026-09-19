@@ -75,6 +75,7 @@
             ,"idtrackdb"
 	    		,"networkdb"
 				,"graphdb"
+				,"structuredb"
 				,"batchdb"
             ,"glycandb" 
             ,"alignmentdb"

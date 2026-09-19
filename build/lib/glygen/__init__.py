@@ -8,6 +8,8 @@ from flask_restx import Api, Resource, fields
 
 from glygen.db import load_network_docs
 
+from .structure import api as structure_api
+from .mcp import api as mcp_api
 from .html import api as html_api
 from .protein import api as protein_api
 from .glycan import api as glycan_api
@@ -21,6 +23,7 @@ from .motif import api as motif_api
 from .publication import api as publication_api
 from .cart import api as cart_api
 from .site import api as site_api
+from .species import api as species_api
 from .idmapping import api as idmapping_api
 from .typeahead import api as typeahead_api
 from .log import api as log_api
@@ -30,7 +33,7 @@ from .event import api as event_api
 from .misc import api as misc_api
 from .job import api as job_api
 from .usecases import api as usecases_api
-from .graph import api as graph_api
+#from .graph import api as graph_api
 from .biomarker import api as biomarker_api
 from .disease import api as disease_api
 from .pagination import api as pagination_api
@@ -57,12 +60,15 @@ def create_app():
 
 
         
-
+    api.add_namespace(structure_api)
+    
+    api.add_namespace(mcp_api)
     api.add_namespace(html_api)
     api.add_namespace(glycan_api)
     api.add_namespace(motif_api)
     api.add_namespace(protein_api)
     api.add_namespace(site_api)
+    api.add_namespace(species_api)
     api.add_namespace(publication_api)
     api.add_namespace(usecases_api)
     api.add_namespace(idmapping_api)

@@ -36,6 +36,9 @@ def pagination_page(query_obj, config_obj):
     }
 
     record_type, record_id = query_obj["record_type"], query_obj["record_id"]
+    if record_type not in main_id_dict:
+        return {"error_list":[{"error_code":"record-type-not-mapped", "record_type":record_type}]}
+
     main_id_field = main_id_dict[record_type]
     mongo_query = {main_id_field:{"$regex":record_id, "$options":"i"}}
     #return mongo_query
@@ -82,8 +85,7 @@ def pagination_page(query_obj, config_obj):
         doc["filters"] = filters_obj
         doc["glycosylation"] = passed_obj_list + other_table_obj_list
         #return {"all":len(table_obj_list), "passed":len(passed_obj_list)}
-
- 
+        #return filters_obj
 
  
     if "_id" in doc:

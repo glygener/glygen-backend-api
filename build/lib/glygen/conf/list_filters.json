@@ -428,9 +428,24 @@
                 "germline":"Germline"
             }
         },
-        "by_organism":{
+        "by_glycoeffect":{
+            "grp_idx": 6,
+            "group_order":6,
+            "group_label":"By Glycosylation Effect",
+            "order_dict":{
+					 "n-glyco-sequon-gain":1, 
+					 "n-glyco-sequon-loss":2,
+					 "o-glyco-site-loss":3
+            },
+            "label_dict":{
+                "n-glyco-sequon-gain":"N-glyco-sequoun gain",
+                "n-glyco-sequon-loss":"N-glyco-sequoun loss",
+                "o-glyco-site-loss":"O-glyco-site loss"
+            }
+        },
+		  "by_organism":{
             "grp_idx": 2,
-				"group_order":6,
+				"group_order":7,
             "group_label":"By Organism",
             "order_dict":{
             },

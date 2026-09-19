@@ -1,4 +1,20 @@
-
-{"id":"df1bb42f89aa8a4fe7ee36fc29c83e56","offset":1,"limit":20,"order":"desc","sort":"hit_score","filters":[{"id":"by_ptm","operator":"OR","selected":["N-Glycosylation reported","O-Glycosylation reported"]}],"columns":["uniprot_canonical_ac","tax_id","organism","protein_name","hit_score","length","refseq_name","refseq_ac","uniprot_id","ec_number_list","total_n_glycosites"]}
+{
+    "record_type": "protein",
+    "table_id": "glycosylation_reported_with_glycan",
+    "record_id": "P14210-1",
+    "offset": 1,
+    "limit": 20,
+    "order": "desc",
+    "sort": "hit_score",
+    "filters": [
+        {
+            "id": "by_glycosylation_type",
+            "operator": "OR",
+            "selected": [
+                "n-linked|other"
+            ]
+        }
+    ]
+}
 
 

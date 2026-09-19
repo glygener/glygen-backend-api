@@ -1,25 +1,32 @@
 {
   "concept_query_list": [
     {
-      "concept": "protein",
+      "concept": "site",
       "query": {
         "aggregator": "$and",
         "aggregated_list": [],
         "unaggregated_list": [
           {
-            "path": "gene.name",
-            "order": 1,
-            "operator": "$regex",
-            "string_value": "HGF"
+            "path": "snv_flag",
+            "order": 2,
+            "operator": "$eq",
+            "string_value": "true"
           },
           {
-            "path": "protein.name",
+            "path": "phosphorylation_flag",
+            "order": 1,
+            "operator": "$eq",
+            "string_value": "true"
+          },
+          {
+            "path": "glycosylation_flag",
             "order": 0,
-            "operator": "$regex",
-            "string_value": "Hepatocyte growth factor"
+            "operator": "$eq",
+            "string_value": "true"
           }
         ]
       }
     }
   ]
 }
+

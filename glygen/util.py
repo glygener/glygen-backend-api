@@ -1352,10 +1352,16 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
     count_dict = {}
     debug_list = []
     seen_record_id = {}
+    debug_list.append(obj_list[0])
     for record_obj in obj_list:
-        if "record_id" not in record_obj:
+        record_id = ""
+        if "record_id" in record_obj:
+            record_id = record_obj["record_id"]
+        if "start_pos" in record_obj and "glytoucan_ac" in record_obj:
+            record_id = "%s|%s" % (record_obj["start_pos"], record_obj["glytoucan_ac"])
+        if record_id == "":
             continue
-        record_id = record_obj["record_id"]
+        debug_list.append(record_id)
         if record_id in seen_record_id:
             continue
         seen_record_id[record_id] = True
@@ -1363,7 +1369,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
             return {"error_list":[{"error_code": "list_obj_without_filter_code","record":record_obj}]}
         seen_filter_code[record_obj["filter_code"].replace(".", "_")] = True
         record_code_parts = record_obj["filter_code"].split(".")
-        debug_list.append(record_code_parts)
+        #debug_list.append(record_code_parts)
         n_12 = len(record_code_parts)
         if n_11 != n_12:
             return {"error_list":[{"error_code": "filter_grp_count mismatch %s!=%s, record_type=%s, record_id=%s" % (n_11, n_12,record_type,record_id)}]}
@@ -1371,11 +1377,12 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
             grp = grp_id_list[grp_idx]
             n_21 = len(code_dict[grp])
             n_22 = len(record_code_parts[grp_idx])
-            if grp == "by_sequence_details":
-                debug_list.append([code_dict[grp], record_code_parts[grp_idx]])
+            #debug_list.append({"grp":grp, "record":record_code_parts[grp_idx], "query":code_dict[grp]})
+            #if grp == "by_sequence_details":
+            #    debug_list.append([code_dict[grp], record_code_parts[grp_idx]])
             if n_21 != n_22:
                 #return {"error_list":[{"grp_id_list":grp_id_list, "grp":grp, "grp_idx":grp_idx, "record_code_parts":record_code_parts, "error":err}]}
-                return {"error_list":[{"error_code": "filter_value_count mismatch %s!=%s, grp=%s"%(n_21,n_22, grp)}]}
+                return {"error_list":[{"error_code": "filter_value_count mismatch conf=%s!=%s=record, grp=%s"%(n_21,n_22, grp)}]}
             for j in range(0, n_22):
                 # bug in this is caused by incomplete glygen/conf/list_filters.json
                 label = code_dict[grp][j]["value"]
@@ -1383,7 +1390,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
                 if record_code_parts[grp_idx][j] == "1":
                     #s = "%s|%s|%s|%s" % (grp,record_code_parts[grp_idx], label, j)
                     s = "%s|%s|%s" % (grp,record_code_parts[grp_idx], code_dict[grp])
-                    debug_list.append(s)
+                    #debug_list.append(s)
                     if grp not in count_dict:
                         count_dict[grp] = {}
                     if label not in count_dict[grp]:
@@ -1418,7 +1425,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
             obj["tmp_options"][option_id] = {"id":option_id, "label":label, "count":count,"order":option_ordr}
         filters["available"].append(obj)
 
-    #return {"error_list":debug_list}
+    return {"error_list":filters}
 
 
     seen = {}
@@ -1440,7 +1447,9 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
         grp_obj.pop("tmp_options")
         if grp_obj["options"] != []:
             non_empty_grp_obj_list.append(grp_obj)
-    
+   
+    #return {"error_list":non_empty_grp_obj_list}
+ 
     filters["available"] = non_empty_grp_obj_list
 
 

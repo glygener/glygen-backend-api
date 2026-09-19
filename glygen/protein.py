@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.indexlib import search_one
-from glygen.protein_apilib import protein_search_init, protein_search, protein_detail, protein_alignment, search_simple
+from glygen.protein_apilib import protein_search_init, protein_search, protein_detail, protein_alignment, protein_section, search_simple
 from glygen.util import make_list_objects_indirect, get_req_obj, cache_list_objects, get_hash_id, retrieve_cached_list_objects, apply_pagination, get_errors_in_query
 from glygen.graphlib import get_graph_record
 import traceback
@@ -50,6 +50,12 @@ alignment_query_model = api.model("Protein Alignment Query",
     }
 ) 
 
+section_query_model = api.model("Protein Section Query",
+    {
+        "uniprot_canonical_ac": fields.String(required=True, default="P14210-1"),
+        "section": fields.String(required=True, default="glycosylation")
+    }
+)
 
 
 
@@ -259,6 +265,32 @@ class Protein(Resource):
     @api.doc(False)
     def get(self):
         return self.post()
+
+
+
+@api.route('/section/')
+class Protein(Resource):
+    @api.doc('section')
+    @api.expect(section_query_model)
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj, log_obj = {}, {}
+        try:
+            req_obj = get_req_obj(request)
+            log_obj = log_request(req_obj, "/protein/section/", request)
+            if "error_list" not in log_obj:
+                res_obj = protein_section(req_obj, config_obj)
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc(), log_obj)
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
+    @api.doc(False)
+    def get(self):
+        return self.post()
+
 
 
 

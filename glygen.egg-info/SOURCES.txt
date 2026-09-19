@@ -56,6 +56,8 @@ glygen/seqmapping_apilib.py
 glygen/site.py
 glygen/site_apilib.py
 glygen/species.py
+glygen/structure.py
+glygen/structure_apilib.py
 glygen/supersearch.py
 glygen/supersearch_apilib.py
 glygen/typeahead.py

@@ -776,7 +776,21 @@
             "c_usercache"
         ]
     },
-    "glycan_detail": {
+    "structure_detail": {
+        "field_info": {
+            "structure_id": {
+                "type": "string",
+                "maxlen": 20
+            }
+        },
+        "requiredfields": [
+            "structure_id"
+        ],
+        "collectionlist": [
+            "c_structure"
+        ]
+    },
+	 "glycan_detail": {
         "field_info": {
             "glytoucan_ac": {
                 "type": "string",
@@ -795,7 +809,19 @@
             "c_glycan"
         ]
     },
-    "glycan_graph": {
+    "glycan_section": {
+        "field_info": {
+            "glytoucan_ac": {"type": "string", "maxlen": 20},
+				"section":{"type": "string", "maxlen": 100}
+        },
+        "requiredfields": [
+            "glytoucan_ac", "section"
+        ],
+        "collectionlist": [
+            "c_glycan"
+        ]
+    },
+	 "glycan_graph": {
         "field_info": {
             "record_id": {
                 "type": "string",
@@ -1797,6 +1823,23 @@
         ],
         "collectionlist": [
             "c_alignment"
+        ]
+    },
+	 "protein_section": {
+        "field_info": {
+            "uniprot_canonical_ac": {
+                "type": "string"
+            },
+            "section": {
+                "type": "string"
+            }
+        },
+        "requiredfields": [
+            "uniprot_canonical_ac",
+            "section"
+        ],
+        "collectionlist": [
+            "c_protein"
         ]
     },
     "species_search_init": {

@@ -8,6 +8,7 @@ from flask_restx import Api, Resource, fields
 
 from glygen.db import load_network_docs
 
+from .structure import api as structure_api
 from .mcp import api as mcp_api
 from .html import api as html_api
 from .protein import api as protein_api
@@ -59,7 +60,8 @@ def create_app():
 
 
         
-
+    api.add_namespace(structure_api)
+    
     api.add_namespace(mcp_api)
     api.add_namespace(html_api)
     api.add_namespace(glycan_api)
@@ -111,8 +113,8 @@ def create_app():
     app.config['JSON_SORT_KEYS'] = False
 
     
-    #app.config['NETWORK_DOCLIST'] = load_network_docs()
-    app.config['NETWORK_DOCLIST'] = {}
+    app.config['NETWORK_DOCLIST'] = load_network_docs()
+    #app.config['NETWORK_DOCLIST'] = {}
  
     jwt = JWTManager(app)
 

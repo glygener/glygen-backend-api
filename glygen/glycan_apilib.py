@@ -487,6 +487,30 @@ def glycan_detail(query_obj, config_obj):
     return order_obj(obj, config_obj["objectorder"]["glycan"])
 
 
+
+def glycan_section(query_obj, config_obj):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    #Collect errors 
+    error_list = get_errors_in_query("glycan_section", query_obj, config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+    collection = "c_glycan"
+    glytoucan_ac = query_obj["glytoucan_ac"].upper()
+    mongo_query = {"glytoucan_ac":{'$eq': glytoucan_ac}}
+    doc = dbh[collection].find_one(mongo_query)
+
+    sec = query_obj["section"]
+    if sec not in doc:
+        return {"error_list":[{"error":"section-%s not found" % (sec)}]}
+
+    return doc[sec]
+
+
+
 def glycan_image(query_obj, data_path):
   
     dbh, error_obj = get_mongodb()

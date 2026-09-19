@@ -317,25 +317,18 @@ def protein_detail(query_obj, config_obj):
     if error_list != []:
         return {"error_list":error_list}
 
-
     collection = "c_protein"
-
     mongo_query = {
         "$or":[
             {"uniprot_canonical_ac":{'$eq': query_obj["uniprot_canonical_ac"].upper()}},
             {"uniprot_ac":{'$eq': query_obj["uniprot_canonical_ac"].upper()}}
         ]
     }
-    #mongo_query = {"uniprot_canonical_ac":{'$eq': query_obj["uniprot_canonical_ac"].upper()}}
-    
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
     ts_list = []
     ts_list.append("0-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
-
     obj = dbh[collection].find_one(mongo_query)
-    
     ts_list.append("1-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
- 
     c_a = {"recordtype":{"$eq": "protein"}}
     c_b = {"record_id":{'$eq':query_obj["uniprot_canonical_ac"].upper()}}
     c_c = {"accessions":{'$regex':","+query_obj["uniprot_canonical_ac"].upper() + ",","$options":"i"}}
@@ -486,6 +479,37 @@ def protein_detail(query_obj, config_obj):
 
 
     return obj
+
+
+def protein_section(query_obj, config_obj):
+
+    dbh, error_obj = get_mongodb()
+    if error_obj != {}:
+        return error_obj
+
+    #Collect errors 
+    error_list = get_errors_in_query("protein_section", query_obj, config_obj)
+    if error_list != []:
+        return {"error_list":error_list}
+
+    collection = "c_protein"
+    mongo_query = {
+        "$or":[
+            {"uniprot_canonical_ac":{'$eq': query_obj["uniprot_canonical_ac"].upper()}},
+            {"uniprot_ac":{'$eq': query_obj["uniprot_canonical_ac"].upper()}}
+        ]
+    }
+    doc = dbh[collection].find_one(mongo_query)
+    
+    sec = query_obj["section"]
+    if sec not in doc:
+        return {"error_list":[{"error":"section-%s not found" % (sec)}]}
+
+    return doc[sec] 
+
+    
+
+
 
 
 

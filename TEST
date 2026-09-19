@@ -4,6 +4,8 @@ http POST :8082/protein/search/ < tests/examples/protein/protein_search.json
 http POST :8082/protein/list/ < tests/examples/protein/protein_list.1.json
 http POST :8082/protein/list/ < tests/examples/protein/protein_list.2.json
 http POST :8082/protein/detail/P14210-1/  
+http POST :8082/protein/section/ < tests/examples/protein/protein_section.json
+
 http POST :8082/protein/detail/Q8IWL2-1/ < tests/examples/protein/protein_detail_paginated.json
 http POST :8082/protein/alignment/ < tests/examples/protein/protein_alignment.json
 http POST :8082/glycan/search_init/  
@@ -12,12 +14,17 @@ http POST :8082/glycan/search/ < tests/examples/glycan/glycan_search.json
 http POST :8082/glycan/list/ < tests/examples/glycan/glycan_list.1.json
 http POST :8082/glycan/list/ < tests/examples/glycan/glycan_list.2.json
 http POST :8082/glycan/detail/G17689DH/  
+http POST :8082/glycan/section/ < tests/examples/glycan/glycan_section.json
+
 http POST :8082/glycan/image/G17689DH/  
 http POST :8082/glycan/image_svg/G17689DH/  
 http POST :8082/glycan/image_metadata/G17689DH/  
 http POST :8082/glycan/pdb/G17689DH/  
 
 http POST :8082/glycan/sequence2ac/ < tests/examples/glycan/glycan_sequence2ac.json
+
+http POST :8082/structure/detail/2qj2
+http POST :8082/structure/detail/AF-P14210-F1
 
 
 http POST :8082/auth/userdelete/ < tests/examples/auth/auth_userdelete.json

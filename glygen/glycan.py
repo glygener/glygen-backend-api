@@ -11,7 +11,7 @@ import json
 import bcrypt
 
 from glygen.indexlib import search_one
-from glygen.glycan_apilib import glycan_search_init, glycan_search, search_simple, glycan_detail, glycan_image, glycan_image_svg, glycan_image_metadata, glycan_sequence2ac
+from glygen.glycan_apilib import glycan_search_init, glycan_search, search_simple, glycan_detail, glycan_section,glycan_image, glycan_image_svg, glycan_image_metadata, glycan_sequence2ac
 
 from glygen.util import make_list_objects_indirect, get_req_obj, get_hash_id, retrieve_cached_list_objects, cache_list_objects, apply_pagination, get_errors_in_query
 from glygen.graphlib import get_graph_record
@@ -47,6 +47,13 @@ graph_query_model = api.model("Glycan Graph Query",
 list_query_model = api.model("Glycan List Query",{ "id": fields.String(required=True, default="")})
 
 
+
+section_query_model = api.model("Glycan Section Query",
+    {
+        "glytoucan_ac": fields.String(required=True, default="G17689DH"),
+        "section": fields.String(required=True, default="species")
+    }
+)
 
 
 
@@ -347,6 +354,31 @@ class Glycan(Resource):
     def get(self, glytoucan_ac):
         return self.post(glytoucan_ac)
 
+
+
+
+@api.route('/section/')
+class Protein(Resource):
+    @api.doc('section')
+    @api.expect(section_query_model)
+    def post(self):
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "conf/config.json")
+        config_obj = json.load(open(json_url))
+        res_obj, log_obj = {}, {}
+        try:
+            req_obj = get_req_obj(request)
+            log_obj = log_request(req_obj, "/glycan/section/", request)
+            if "error_list" not in log_obj:
+                res_obj = glycan_section(req_obj, config_obj)
+        except Exception as e:
+            res_obj = log_error(traceback.format_exc(), log_obj)
+        http_code = 500 if "error_list" in res_obj else 200
+        return res_obj, http_code
+
+    @api.doc(False)
+    def get(self):
+        return self.post()
 
 
 

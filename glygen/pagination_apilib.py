@@ -85,8 +85,7 @@ def pagination_page(query_obj, config_obj):
         doc["filters"] = filters_obj
         doc["glycosylation"] = passed_obj_list + other_table_obj_list
         #return {"all":len(table_obj_list), "passed":len(passed_obj_list)}
-
- 
+        #return filters_obj
 
  
     if "_id" in doc:
