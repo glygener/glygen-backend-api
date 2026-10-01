@@ -83,5 +83,9 @@
 		"glycation_flag": "category",
 		"snv_flag": "category",
 		"mutagenesis_flag": "category"
+	},
+	"species":{
+		"taxid":"taxid",
+		"glygen_name":"name"
 	}
 }

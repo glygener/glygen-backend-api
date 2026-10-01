@@ -1684,10 +1684,16 @@
             "tax_id": {
                 "type": "number"
             },
-            "evidence_type": {
+            "glycosylation_evidence": {
                 "type": "string"
             },
-            "limit": {
+            "query_type": {
+                "type": "string"
+            },
+            "operation": {
+                "type": "string"
+            },
+			   "limit": {
                 "type": "number"
             },
             "offset": {
@@ -1696,7 +1702,7 @@
         },
         "requiredfields": [
             "tax_id",
-            "evidence_type"
+            "glycosylation_evidence"
         ],
         "collectionlist": [
             "c_protein"
@@ -2018,13 +2024,19 @@
             "tax_id": {
                 "type": "number"
             },
-            "evidence_type": {
+            "glycosylation_evidence": {
+                "type": "string"
+            },
+				"query_type": {
+                "type": "string"
+            },
+            "operation": {
                 "type": "string"
             }
         },
         "requiredfields": [
             "tax_id",
-            "evidence_type"
+            "glycosylation_evidence"
         ],
         "collectionlist": [
             "c_protein",

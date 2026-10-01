@@ -55,12 +55,14 @@ def main():
         dbh = client[glydb_name]
         #q = {"glytoucan_ac": "G17689DH"}
         #q = { "phraselist": {"$eq": "diagnostic"},"record_type": {"$eq": "protein"}}
-        q = {}
+        q = {"phraselist": {"$eq": "fully determined"},"record_type": {"$eq": "glycan"}}
+        #q = {}
         for doc in dbh[coll].find(q):
-            for p in ["_id", "start_date", "end_date", "createdts", "updatedts", "creation_time", "update_time"]:
-                if p in doc:
-                    doc[p] = str(doc[p])
-            print (json.dumps(doc, indent=4))
+            print (doc["section"], doc["record_type"], doc["record_id"]) 
+            #for p in ["_id", "start_date", "end_date", "createdts", "updatedts", "creation_time", "update_time"]:
+            #    if p in doc:
+            #        doc[p] = str(doc[p])
+            #print (json.dumps(doc, indent=4))
     except pymongo.errors.ServerSelectionTimeoutError as err:
         print (err)
     except pymongo.errors.OperationFailure as err:

@@ -1,33 +1,26 @@
-biomarker_all
-disease_all
-glycan_all
-glycan_glycantype_n_linked
-glycan_glycantype_o_linked
-glycan_glycantype_other
-glycan_human
-glycan_mouse
-glycan_namespace_glycosmos
-glycan_namespace_glytoucan
-glycan_namespace_gnome
-glycan_namespace_pubchem_compound
-glycan_namespace_pubchem_refchem
-glycan_namespace_pubchem_substance
-glycan_namespace_sandbox
-protein_all
-protein_arabidopsis
-protein_bovine
-protein_cellular_slime_mold
-protein_chicken
-protein_fruit_fly
-protein_glycoaa_n
-protein_glycoaa_t
-protein_glycoevdn_predicted_sites
-protein_glycoevdn_sites_reported_with_glycans
-protein_glycotype_n_linked
-protein_glycotype_o_linked
-protein_hamster
-protein_human
-protein_mouse
-protein_pig
-protein_rat
-protein_zebrafish
+def get_hash_id(api_name , record_type, obj):
+
+    new_obj = {}
+    for k in sorted(obj):
+        if k not in ["offset", "limit", "sort", "order", "columns"]:
+            new_obj[k] = obj[k]
+            if k == "filters":
+                oo_list = []
+                for o in new_obj["filters"]:
+                    # default to OR for single selected options
+                    if len(o["selected"]) == 1:
+                        o["operator"] = "OR"
+                    oo = {}
+                    for kk in sorted(o):
+                        oo[kk] = o[kk]
+                    oo["selected"] = sorted(oo["selected"])
+                    oo_list.append(oo)
+                new_obj["filters"] = oo_list
+
+
+    hash_str = api_name + record_type + json.dumps(new_obj)
+    hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+
+
+    return hash_obj.hexdigest()
+

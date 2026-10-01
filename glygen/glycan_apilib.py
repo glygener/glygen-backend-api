@@ -267,20 +267,28 @@ def glycan_search(query_obj, config_obj):
         sf_dict.pop("biomarker.type")
 
 
-    hit_dict, hit_stat = {}, {}
-    hit_dict, hit_stat, tmp_ts_list = get_hit_dict(dbh, sf_dict,field2sec,api_name, config_obj)
-    ts_list += tmp_ts_list
-    #xxxx = get_hit_dict(dbh, sf_dict,field2sec,api_name, config_obj)
-    #return ts_list
-    #return hit_stat
-    #return xxxx
-
-
-    sf_list = list(sf_dict.keys())
-    hit_record_list = hit_dict[sf_list[0]] if sf_list != [] else []
-    if len(sf_list) > 1:
-        for i in range(1, len(sf_list)):
-            hit_record_list = list(set(hit_record_list).intersection(set(hit_dict[sf_list[i]])))
+    hit_record_list = []
+    if "mass" in query_obj:
+        qry_obj = get_mongo_query(query_obj)
+        prj_obj = {"glytoucan_ac":1}
+        tmp_hit_dict = {}
+        for doc in dbh["c_glycan"].find(qry_obj, prj_obj):
+            gtc = doc["glytoucan_ac"]
+            tmp_hit_dict[gtc] = True
+        hit_record_list = list(tmp_hit_dict.keys())
+    else:
+        hit_dict, hit_stat = {}, {}
+        hit_dict, hit_stat, tmp_ts_list = get_hit_dict(dbh, sf_dict,field2sec,api_name, config_obj)
+        ts_list += tmp_ts_list
+        #xxxx = get_hit_dict(dbh, sf_dict,field2sec,api_name, config_obj)
+        #return ts_list
+        #return hit_stat
+        #return xxxx
+        sf_list = list(sf_dict.keys())
+        hit_record_list = hit_dict[sf_list[0]] if sf_list != [] else []
+        if len(sf_list) > 1:
+            for i in range(1, len(sf_list)):
+                hit_record_list = list(set(hit_record_list).intersection(set(hit_dict[sf_list[i]])))
 
     #return hit_record_list
 
@@ -468,11 +476,11 @@ def glycan_detail(query_obj, config_obj):
             obj[sec] = sec_tables[sec]
 
 
-    collection = "c_graph"
-    mongo_query = {"record_id":{'$eq': glytoucan_ac}}
-    doc = dbh[collection].find_one(mongo_query)
-    graph_flag = "yes" if doc != None else "no"
-    obj["tool_support"]["graph_view"] = graph_flag
+    #collection = "c_graph"
+    #mongo_query = {"record_id":{'$eq': glytoucan_ac}}
+    #doc = dbh[collection].find_one(mongo_query)
+    #graph_flag = "yes" if doc != None else "no"
+    #obj["tool_support"]["graph_view"] = graph_flag
    
 
 

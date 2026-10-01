@@ -78,13 +78,13 @@ class Supersearch(Resource):
         config_obj["node_order"] = json.load(open(json_url))
 
 
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
-            res_obj = log_request({}, "/supersearch/init/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request({}, "/supersearch/init/", request)
+            if "error_list" not in log_obj:
                 res_obj = search_init(config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -112,15 +112,15 @@ class Supersearch(Resource):
 
 
         
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             empty_search_flag = True if "empty_search_flag" in req_obj else False
-            res_obj = log_request(req_obj, "/supersearch/search/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/supersearch/search/", request)
+            if "error_list" not in log_obj:
                 res_obj = search(req_obj, config_obj, False, empty_search_flag)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -144,14 +144,14 @@ class Supersearch(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/node_order.json")
         config_obj["node_order"] = json.load(open(json_url))
 
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/supersearch/reason/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/supersearch/reason/", request)
+            if "error_list" not in log_obj:
                 res_obj = search(req_obj, config_obj, True, False)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -176,11 +176,11 @@ class Supersearch(Resource):
         json_url = os.path.join(SITE_ROOT, "conf/node_order.json")
         config_obj["node_order"] = json.load(open(json_url))
 
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/supersearch/list/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/supersearch/list/", request)
+            if "error_list" not in log_obj:
                 api_name = "supersearch_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
@@ -192,14 +192,13 @@ class Supersearch(Resource):
                     res_obj = make_list_objects_indirect(req_obj, config_obj, False)
                     #return res_obj, 200
                     if "error_list" not in res_obj:
-                        list_size = res_obj["pagination"]["total_length"]
                         res = cache_list_objects(api_name, cache_id, listcache_id, res_obj, config_obj)
                         if "error_list" in res:
                             res_obj = res
                 #if "results" in res_obj:
                 #    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 

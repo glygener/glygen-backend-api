@@ -11,7 +11,7 @@ import collections
 from flask import current_app
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_superquery, get_errors_in_query, sort_objects, cache_hitlist, get_hash_id
+from glygen.util import get_errors_in_superquery, get_errors_in_query, sort_objects, cache_hitlist, get_hash_id, get_hash_id_debug
 
 from glygen.indexlib import get_result_dict_one
 
@@ -212,6 +212,9 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     record_type = "supersearch"
     api_name = "superearch_search"
     initial_list_id = get_hash_id(api_name, record_type, query_obj)
+    #initial_list_id, hashed_str = get_hash_id_debug(api_name, record_type, query_obj)
+    #return {"initial_list_id":initial_list_id, "hashed_str":hashed_str}
+    
 
     cached_obj = dbh["c_initcache"].find_one({"list_id":initial_list_id})
     if cached_obj != None:
@@ -307,7 +310,6 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
         return {"error_list":error_list}
 
     #return {"m":mqry_obj_list, "i":iqry_obj_list}
-
 
     DEBUG_FLAG = False
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
@@ -841,6 +843,8 @@ def get_indexed_qry(in_obj, concept):
             if path in ["glycosylation_flag","phosphorylation_flag","mutagenesis_flag",
                 "glycation_flag","snv_flag"]:
                 val = path.split("_")[0]
+            if path == "fully_determined" and val == "yes":
+                val = "fully determined" 
             tmp_list.append({"path":path, "value":val, "sec":sec})
         else:
             status = False
@@ -989,20 +993,21 @@ def get_hit_records_two(dbh,record_type,q_obj,coll,initial_hit_dict):
     hit_matrix = []
     for o in q_obj["qlist"]:
         path, sec, value = o["path"], o["sec"],o["value"]
-        word_count = len(value.split(" "))
+        word_count = len(str(value).split(" "))
         prj_obj = {"record_type":1, "record_id":1, "section":1}
         result_dict = {"all":{}}
-        phrase = value.lower().replace("-", " ")
+        phrase = str(value).lower().replace("-", " ")
         qry_obj = {"phraselist":{"$eq":phrase}, "record_type":{"$eq":record_type}}
         tmp_dict = {}
         for doc in dbh["c_index"].find(qry_obj, prj_obj):
+            #debug_list.append({"s1":sec, "s2":doc["section"], "id":doc["record_id"]}) 
             if doc["section"] == sec:
                 record_id = doc["record_id"]
                 if record_type in ["enzyme", "gene"]:
                     record_id = "%s.%s" % (record_type, record_id)
                 tmp_dict[record_id] = True
         hit_matrix.append(list(tmp_dict.keys()))
-        debug_list.append(qry_obj)
+        #debug_list.append(qry_obj)
     #return {"n":len(hit_matrix), "debuglist":debug_list}, 0
  
     final_hit_list = []

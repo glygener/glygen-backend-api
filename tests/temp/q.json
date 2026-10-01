@@ -1,20 +1,2 @@
-{
-    "record_type": "protein",
-    "table_id": "glycosylation_reported_with_glycan",
-    "record_id": "P14210-1",
-    "offset": 1,
-    "limit": 20,
-    "order": "desc",
-    "sort": "hit_score",
-    "filters": [
-        {
-            "id": "by_glycosylation_type",
-            "operator": "OR",
-            "selected": [
-                "n-linked|other"
-            ]
-        }
-    ]
-}
-
+{"id":"f3da238e7ac37cc5058f73be99cb434d","offset":1,"limit":20,"order":"desc","sort":"reported_snv","filters":[],"columns":["uniprot_canonical_ac","gene_name","protein_name","hit_score","kg_view_protein","organism","length","mass","refseq_name","refseq_ac","uniprot_id","reported_snv"]}
 

@@ -300,10 +300,13 @@ class Usecases(Resource):
     def get(self, tax_id):
         return self.post(tax_id)
 
-@api.route('/species_to_glycoproteins/<tax_id>/<evidence_type>/')
-@api.doc(params={"tax_id": {"in": "query", "default": 9606}, "evidence_type":{"in": "query", "default": "reported"}})
+
+
+
+@api.route('/species_to_glycoproteins/<tax_id>/<glycosylation_evidence>/')
+@api.doc(params={"tax_id": {"in": "query", "default": 9606}, "glycosylation_evidence":{"in": "query", "default": "all_reported_sites_with_without_glycans"}})
 class Usecases(Resource):
-    def post(self, tax_id, evidence_type):
+    def post(self, tax_id, glycosylation_evidence):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
@@ -311,7 +314,10 @@ class Usecases(Resource):
         try:
             if tax_id.isdigit() == False:
                 return {"error_list":[{"error_code":"invalid-tax-id"}]}
-            req_obj = {"tax_id":int(tax_id), "evidence_type":evidence_type} 
+            req_obj = {
+                "tax_id":int(tax_id), "glycosylation_evidence":glycosylation_evidence,
+                "operation": "AND", "query_type": "search_protein"
+            }
             data_path = os.environ["DATA_PATH"]
             log_obj = log_request(req_obj, "/usecases/species_to_glycoproteins/", request)
             if "error_list" not in log_obj:
@@ -322,8 +328,8 @@ class Usecases(Resource):
         return res_obj, http_code
 
     @api.doc(False)
-    def get(self, tax_id, evidence_type):
-        return self.post(tax_id, evidence_type)
+    def get(self, tax_id, glycosylation_evidence):
+        return self.post(tax_id, glycosylation_evidence)
 
 @api.route('/disease_to_glycosyltransferases/')
 class Usecases(Resource):

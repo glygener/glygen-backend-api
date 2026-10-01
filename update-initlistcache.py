@@ -161,7 +161,6 @@ def main():
         in_dict["query_obj"] = query_doc[record_type][cache_name]["query"]
         in_dict["query_obj"]["id"] = cache_id
         in_dict["query_obj"]["columns"] = column_dict[rt] if rt != "site" else column_dict["supersearch"]
-
         count_dict, listcache_id, list_size = update_c_initlistcache(dbh, in_dict)
         output_dict[cache_id] = {"countdict":count_dict, "indict":in_dict, 
             "listcacheid":listcache_id, "listsize":list_size} 

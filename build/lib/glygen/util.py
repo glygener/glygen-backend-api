@@ -975,6 +975,9 @@ def create_list_objects(dbh,cache_id, cache_info, cache_collection, final_fields
     for doc in dbh[cache_collection].find(qry_obj):
         id_list += doc["results"]
     id_list = list(set(id_list))
+    
+    #return {"cache":cache_collection, "list":id_list}
+
     batch_size = config_obj["supersearch_batch_size"]
     record_count = len(id_list)
     nparts = int(float(record_count)/float(batch_size)) + 1
@@ -1352,7 +1355,6 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
     count_dict = {}
     debug_list = []
     seen_record_id = {}
-    debug_list.append(obj_list[0])
     for record_obj in obj_list:
         record_id = ""
         if "record_id" in record_obj:
@@ -1425,7 +1427,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
             obj["tmp_options"][option_id] = {"id":option_id, "label":label, "count":count,"order":option_ordr}
         filters["available"].append(obj)
 
-    return {"error_list":filters}
+    #return {"error_list":filters}
 
 
     seen = {}
@@ -2109,6 +2111,30 @@ def get_hash_id(api_name , record_type, obj):
 
     return hash_obj.hexdigest()
     
+def get_hash_id_debug(api_name , record_type, obj):
+
+    new_obj = {}
+    for k in sorted(obj):
+        if k not in ["mcp_tool", "offset", "limit", "sort", "order", "columns", "ai_query"]:
+            new_obj[k] = obj[k]
+            if k == "filters":
+                oo_list = []
+                for o in new_obj[k]:
+                    # default to OR for single selected options
+                    if "selected" in o:
+                        if type(o["selected"]) is list:
+                            if len(o["selected"]) == 1:
+                                o["operator"] = "OR"
+                    oo = {}
+                    for kk in sorted(o):
+                        oo[kk] = o[kk]
+                    oo["selected"] = sorted(oo["selected"])
+                    oo_list.append(oo)
+                new_obj[k] = oo_list
+    hash_str = api_name + record_type + json.dumps(new_obj)
+    hash_obj = hashlib.md5(hash_str.encode('utf-8'))
+
+    return hash_obj.hexdigest(), hash_str
 
 
 

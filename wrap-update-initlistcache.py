@@ -13,9 +13,11 @@ from cacheutil import get_c_initlistcache_queries
 
 def main():
 
+    
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
+    parser.add_option("-r","--recordtype",action="store",dest="recordtype",help="protein/gycan/...")
     
     
     (options,args) = parser.parse_args()
@@ -25,6 +27,7 @@ def main():
             sys.exit(0)
                                          
     server = options.server
+    record_type = options.recordtype
 
     db_name = "glydb"
     config_obj = json.loads(open("./conf/config.json", "r").read())
@@ -42,13 +45,14 @@ def main():
 
 
     query_doc = get_c_initlistcache_queries(dbh, config_obj)
-    for record_type in query_doc:
-        for cache_name in query_doc[record_type]:
+    for r_type in query_doc:
+        for cache_name in query_doc[r_type]:
+            if record_type != None and cache_name.find(record_type) == -1:
+                continue
             cmd = "python3 update-initlistcache.py -s %s -n %s" % (server, cache_name)
             x = subprocess.getoutput(cmd)
             #print ("finished ...", cmd)
 
- 
 
     return
 

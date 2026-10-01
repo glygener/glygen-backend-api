@@ -218,6 +218,8 @@ def get_result_dict_one(dbh, phrase_dict, selected_sections, quote_flag, record_
             hit_count += 1
             n1 += 1
             record_type, record_id, sec = doc["record_type"], doc["record_id"], doc["section"]
+            if record_type == "disease":
+                record_id = record_id.lower().replace(":",".")
             #if we are doing term_category != "any"
             if selected_sections != [] and sec not in selected_sections:
                 ignored_sec_list.append(sec)
@@ -319,7 +321,10 @@ def search_one(api_name, query_obj, config_obj, cache_flag, exact_match_flag):
         s_tmp_dict = sorted(tmp_dict.items(), key=lambda item: item[1], reverse=True)
         record_list += [s[0] for s in s_tmp_dict]
     record_list = list(set(record_list))
-   
+  
+    #return {"n":len(record_list)}
+
+ 
     res = dbh[cache_collection].delete_many({"list_id":list_id})
     result_count = len(record_list)
     query_obj["term"] = query_obj["term"].replace("\\(", "(").replace("\\)",")")

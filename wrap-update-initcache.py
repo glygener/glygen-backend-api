@@ -16,6 +16,7 @@ def main():
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
     parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
+    parser.add_option("-r","--recordtype",action="store",dest="recordtype",help="protein/gycan/...")
     
     
     (options,args) = parser.parse_args()
@@ -25,6 +26,7 @@ def main():
             sys.exit(0)
                                          
     server = options.server
+    record_type = options.recordtype
 
     db_name = "glydb"
     config_obj = json.loads(open("./conf/config.json", "r").read())
@@ -43,20 +45,23 @@ def main():
     pulldown_dict = get_pulldown_dict(dbh, config_obj)
     
     query_doc = get_c_initcache_queries(dbh, config_obj, pulldown_dict)
-    for record_type in query_doc:
-        for cache_name in query_doc[record_type]:
+    for r_type in query_doc:
+        if record_type != None and r_type != record_type:
+            continue
+        for cache_name in query_doc[r_type]:
             # update initcache
             cmd = "python3 update-initcache.py -s %s -n %s" % (server, cache_name)
             x = subprocess.getoutput(cmd)
             #print (cache_name)
 
-    query_doc = get_supersearch_init_query(dbh, config_obj, pulldown_dict)
-    #print (json.dumps(query_doc, indent=4))
-    for record_type in query_doc:
-        for cache_name in query_doc[record_type]:
-            cmd = "python3 update-initcache.py -s %s -n %s" % (server, cache_name)
-            x = subprocess.getoutput(cmd)
-            #print (cache_name)
+    if record_type == None or record_type == "supersearch":
+        query_doc = get_supersearch_init_query(dbh, config_obj, pulldown_dict)
+        #print (json.dumps(query_doc, indent=4))
+        for r_type in query_doc:
+            for cache_name in query_doc[r_type]:
+                cmd = "python3 update-initcache.py -s %s -n %s" % (server, cache_name)
+                x = subprocess.getoutput(cmd)
+                #print (cache_name)
     
  
 

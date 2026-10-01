@@ -182,6 +182,14 @@ def protein_search(query_obj, config_obj):
     if "tissue_id" in query_obj:
         record_list = get_expressed_proteins(dbh, query_obj)
         #return {"query":query_obj, "final":len(record_list)}
+    elif "mass" in query_obj:
+        qry_obj = get_mongo_query(query_obj, {})
+        prj_obj = {"uniprot_canonical_ac":1}
+        tmp_hit_dict = {}
+        for doc in dbh["c_protein"].find(qry_obj, prj_obj):
+            canon = doc["uniprot_canonical_ac"]
+            tmp_hit_dict[canon] = True
+        record_list = list(tmp_hit_dict.keys())
     else:
         hit_dict, hit_stat, seen_id = {}, {}, {}
         hit_dict, hit_stat, seen_id, tmp_ts_list,mquery = get_hit_dict(dbh, sf_dict,field2sec,api_name, glygen_name_dict,config_obj)
@@ -964,6 +972,7 @@ def get_expressed_proteins(dbh, query_obj):
                 seen[canon] = True
 
     return list(seen.keys())
+
 
 
 

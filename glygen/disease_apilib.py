@@ -85,6 +85,7 @@ def search_simple(query_obj, config_obj):
     res_obj = {"list_id":list_id}
     res_obj["query"] = query_obj
     res_obj["resultcount"] = len(record_list)
+    #res_obj["record_list"] = record_list
 
     return res_obj
 

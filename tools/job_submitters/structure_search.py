@@ -113,8 +113,9 @@ if __name__ == '__main__':
     cmd = "docker inspect %s" % (container_name)
     x = subprocess.getoutput(cmd)
     doc_list = json.loads(x)
-    ip_addr = doc_list[-1]["NetworkSettings"]["IPAddress"] 
+    #print (json.dumps(doc_list[-1]["NetworkSettings"]["Networks"], indent=4))
     host_port = doc_list[-1]["NetworkSettings"]["Ports"]["80/tcp"][0]["HostPort"]
+    ip_addr = doc_list[-1]["NetworkSettings"]["Networks"]["bridge"]["IPAddress"] 
     api_url = "http://%s:%s" % (ip_addr, host_port)
  
     task = json.loads(open(in_file).read())

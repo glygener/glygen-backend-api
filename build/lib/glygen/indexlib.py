@@ -113,6 +113,7 @@ def get_termcat2sec_dict(record_type):
             "protein":["glycoprotein"],
             "glycan":["glycan_id", "byonic","glycoct", "iupac", "inchi"],
             "enzyme":["enzyme"],
+            "motifs":["motifs"],
             "biomarker":["biomarkers"],
             "organism":["species"]
         },
@@ -217,6 +218,8 @@ def get_result_dict_one(dbh, phrase_dict, selected_sections, quote_flag, record_
             hit_count += 1
             n1 += 1
             record_type, record_id, sec = doc["record_type"], doc["record_id"], doc["section"]
+            if record_type == "disease":
+                record_id = record_id.lower().replace(":",".")
             #if we are doing term_category != "any"
             if selected_sections != [] and sec not in selected_sections:
                 ignored_sec_list.append(sec)
@@ -311,25 +314,32 @@ def search_one(api_name, query_obj, config_obj, cache_flag, exact_match_flag):
     debug_list = []
     cache_collection = "c_usercache"
     ts = datetime.datetime.now(pytz.timezone("US/Eastern")).strftime("%Y-%m-%d %H:%M:%S %Z%z")
+    
+    record_list = []
     for sec in section_list:
         tmp_dict = result_dict[sec] if sec in result_dict else {}
         s_tmp_dict = sorted(tmp_dict.items(), key=lambda item: item[1], reverse=True)
-        record_list = [s[0] for s in s_tmp_dict]
-        res = dbh[cache_collection].delete_many({"list_id":list_id})
-        result_count = len(record_list)
-        query_obj["term"] = query_obj["term"].replace("\\(", "(").replace("\\)",")")
-        query_obj["term"] = query_obj["term"].replace("\\[", "[").replace("\\]","]")
-        cache_info = {
-            "query":query_obj,
-            "ts":ts,
-            "record_type":record_type,
-            "search_type":api_name,
-            "total":result_count
-        }
-        cache_hitlist(dbh,list_id,record_list,cache_info,cache_collection,config_obj)
-        debug_list.append("%s|%s" % (list_id,result_count))
-        res_obj["list_id"] = list_id if result_count > 0 else ""
-        res_obj["resultcount"] = result_count
+        record_list += [s[0] for s in s_tmp_dict]
+    record_list = list(set(record_list))
+  
+    #return {"n":len(record_list)}
+
+ 
+    res = dbh[cache_collection].delete_many({"list_id":list_id})
+    result_count = len(record_list)
+    query_obj["term"] = query_obj["term"].replace("\\(", "(").replace("\\)",")")
+    query_obj["term"] = query_obj["term"].replace("\\[", "[").replace("\\]","]")
+    cache_info = {
+        "query":query_obj,
+        "ts":ts,
+        "record_type":record_type,
+        "search_type":api_name,
+        "total":result_count
+    }
+    cache_hitlist(dbh,list_id,record_list,cache_info,cache_collection,config_obj)
+    debug_list.append("%s|%s" % (list_id,result_count))
+    res_obj["list_id"] = list_id if result_count > 0 else ""
+    res_obj["resultcount"] = result_count
 
     #res_obj["debug"] = debug_list
 
