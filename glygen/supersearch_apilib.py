@@ -273,6 +273,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
         else:
             for i in range(0, len(query_obj["concept_query_list"])):
                 concept = query_obj["concept_query_list"][i]["concept"]
+                concept = "protein" if concept in ["glycoprotein"] else concept
                 edge_rules += config_obj["ignored_edges"][concept]
 
         for o in edge_rules:
@@ -305,7 +306,7 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
             mqry_obj = {"query": t_query,"concept":concept}
             mqry_obj_list.append(mqry_obj)
             error_list += e_list
-    
+ 
     if error_list != []:
         return {"error_list":error_list}
 
@@ -331,21 +332,29 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
         if record_type not in initial_hit_dict:
             initial_hit_dict[record_type] = {}
         if coll not in config_obj["projectedfields"]:
+            ts_list.append("flag-prj")
             continue
         ts_list.append(coll + "|" + json.dumps(q_obj["query"]))
         record_id_field = config_obj["record_type_info"][record_type]["field"]
         qry_obj = q_obj["query"]
         nhits = get_hit_records_one(dbh,record_id_field,record_type,qry_obj,coll,initial_hit_dict,reason_dict)
         initial_hit_count += nhits
+        ts_list.append("record_type, %s" % (nhits))
 
 
     coll = "c_index"
+    iqry_idx = 0
     for q_obj in iqry_obj_list:
+        iqry_idx += 1
         record_type = q_obj["concept"]
+        ts_list.append("%s|iqry-start|"%(iqry_idx)+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
         debug_obj, nhits = get_hit_records_two(dbh,record_type,q_obj,coll,initial_hit_dict)
+        ts_list.append("%s|iqry-end|"%(iqry_idx)+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
+        ts_list.append("record_type, %s" % (nhits))
         initial_hit_count += nhits
         #return debug_obj
-    
+   
+ 
     #return initial_hit_dict
 
 
@@ -356,17 +365,21 @@ def search(query_obj, config_obj, reason_flag, empty_search_flag):
     #doc_list = list(dbh["c_network"].find({}))
     doc_list = current_app.config["NETWORK_DOCLIST"]
     
-    ts_list.append(len(doc_list))
+    ts_list.append("initial_hit_count=%s" % (initial_hit_count))
+    ts_list.append("n_docs=%s" % (len(doc_list)))
     final_hit_dict,final_hit_dict_split, conn_dict = {}, {}, {}
     if initial_hit_count > 0:
         ts_list.append("2-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
         final_hit_dict,final_hit_dict_split, conn_dict = load_network(doc_list, 
                 initial_hit_dict, empty_search_flag, ignore_dict, reason_dict, config_obj)
+        #return final_hit_dict
         #tt_list = load_network(doc_list, initial_hit_dict, empty_search_flag, ignore_dict, reason_dict, config_obj)
         #ts_list += tt_list
         ts_list.append("3-"+datetime.datetime.now(pytz.timezone('US/Eastern')).strftime(ts_format))
     else:
         conn_dict = load_conn_dict(doc_list)
+
+    #return ts_list
 
 
     if False:
@@ -897,7 +910,7 @@ def transform_query(in_obj, concept, seen_path, path_map):
                                 #"^[A-Z]{8}C"
                 val_obj = {obj["operator"]:val}
                 if obj["operator"] == "$eq" and "string_value" in obj:
-                    if obj["path"] in ["start_aa", "site_seq"]:
+                    if obj["path"] in ["start_aa", "site_seq"] or val.find(")") != -1:
                         val_obj = {"$eq":val}
                     else:
                         val = "^%s$" % (val)
@@ -976,6 +989,8 @@ def get_hit_records_one(dbh,record_id_field,record_type, mongo_query, coll,initi
         if record_id_field not in doc:
             continue
         record_id = doc[record_id_field]
+        if record_type in ["disease"]:
+            record_id = record_id.lower().replace(":",".")
         if record_type in ["enzyme", "gene"]:
             record_id = "%s.%s" % (record_type, record_id)
         initial_hit_dict[record_type][record_id] = True
@@ -1003,6 +1018,8 @@ def get_hit_records_two(dbh,record_type,q_obj,coll,initial_hit_dict):
             #debug_list.append({"s1":sec, "s2":doc["section"], "id":doc["record_id"]}) 
             if doc["section"] == sec:
                 record_id = doc["record_id"]
+                if record_type in ["disease"]:
+                    record_id = record_id.lower().replace(":",".")
                 if record_type in ["enzyme", "gene"]:
                     record_id = "%s.%s" % (record_type, record_id)
                 tmp_dict[record_id] = True

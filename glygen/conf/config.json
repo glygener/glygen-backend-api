@@ -25,16 +25,17 @@
 	 "jobinfo": {
         "tspath": "/usr/local/bin/ts",
         "maxjobs": 5,
+		  "submitters":[
+		 		"/app/job_submitters/structure_search.py",
+				"/app/job_submitters/blastp.py",
+		  		"/app/job_submitters/batch_retrieval.py",
+		  		"/app/job_submitters/clustalw.py",
+				"/app/job_submitters/isoform_mapper.py"
+		  ],
         "structure_search": {
-            "sercmdflag": "-s",
 				"incmdflag": "-i",
             "outcmdflag": "-o",
-            "path": {
-                "prd": "python /app/job_submitters/structure_search.py",
-                "beta": "python /app/job_submitters/structure_search.py",
-                "tst": "python /app/job_submitters/structure_search.py",
-                "dev": "python /app/job_submitters/structure_search.py"
-            },
+				"submitter_path": "python /app/job_submitters/structure_search.py",
             "input_files": [
                 {
                     "name": "input.json",
@@ -66,12 +67,7 @@
             "incmdflag": "-query",
             "outcmdflag": "-out",
             "max_input_records": 10,
-            "path": {
-                "prd": "python /app/job_submitters/blastp.py",
-                "beta": "python /app/job_submitters/blastp.py",
-                "tst": "python /app/job_submitters/blastp.py",
-                "dev": "python /app/job_submitters/blastp.py"
-            },
+				"submitter_path": "python /app/job_submitters/blastp.py",
             "input_files": [
                 {
                     "name": "input.fasta",
@@ -119,12 +115,7 @@
 				"incmdflag": "-i",
             "outcmdflag": "-o",
             "max_input_records": 100,
-            "path": {
-                "prd": "python /app/job_submitters/batch_retrieval.py",
-                "beta": "python /app/job_submitters/batch_retrieval.py",
-                "tst": "python /app/job_submitters/batch_retrieval.py",
-                "dev": "python /app/job_submitters/batch_retrieval.py"
-            },
+				"submitter_path": "python /app/job_submitters/batch_retrieval.py",
             "input_files": [
                 {
                     "name": "input.json",
@@ -144,12 +135,7 @@
             "incmdflag": "-infile",
             "outcmdflag": "-outfile",
             "max_input_records": 100,
-            "path": {
-                "prd": "python /app/job_submitters/clustalw.py",
-                "beta": "python /app/job_submitters/clustalw.py",
-                "tst": "python /app/job_submitters/clustalw.py",
-                "dev": "python /app/job_submitters/clustalw.py"
-            },
+				"submitter_path": "python /app/job_submitters/clustalw.py",
             "input_files": [
                 {
                     "name": "input.fasta",
@@ -189,12 +175,7 @@
         "isoform_mapper": {
             "incmdflag": "-i",
             "max_input_records": 10,
-            "path": {
-                "prd": "python /app/job_submitters/isoform_mapper.py",
-                "beta": "python /app/job_submitters/isoform_mapper.py",
-                "tst": "python /app/job_submitters/isoform_mapper.py",
-                "dev": "python /app/job_submitters/isoform_mapper.py"
-            },
+            "submitter_path": "python /app/job_submitters/isoform_mapper.py",
             "input_files": [
                 {
                     "name": "input.csv",
@@ -2137,7 +2118,6 @@
         },
         "requiredfields": [
             "fname",
-            "lname",
             "email",
             "subject",
             "message"

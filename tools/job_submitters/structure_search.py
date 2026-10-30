@@ -44,16 +44,16 @@ class APIFrameworkClient:
             try:
                 res = self.retrieve_once(task_id, api_url)
                 return res
-            except APIFrameworkClient.APIUnfinishedError:
+            except APIFrameworkClient.APIUnfinishedError as e:
+                #print (i, task_id, "ERROR", e)
                 continue
         raise APIFrameworkClient.APIUnfinishedError("The task %s is not finished yet" % task_id)
 
     def get(self, **kwargs):
         api_url = kwargs["api_url"]
         task_id = self.submit(kwargs, api_url)
-        #if task_id == -1:
-        #    return {"error":["container is not running!"], "status":-1}
-
+        if task_id == -1:
+            return {"error":["container is not running!"], "status":-1}
         resjson = self.retrieve(task_id, api_url)
         return resjson
 
@@ -65,6 +65,7 @@ class APIFrameworkClient:
         if res1 == None:
             return -1
         submit_result = res1.json()
+        #print ("SUBMIT_RESULT:", submit_result)
         try:
             task_id = submit_result[0][u"id"]
             return task_id
@@ -86,7 +87,7 @@ class APIFrameworkClient:
 class SubstructureSearch(APIFrameworkClient):
     developer_email='rykahsay@gwu.edu'
     nocache = False
-    max_retrieve_wait = 120 # wait up to 2 minutes for result
+    max_retrieve_wait = 360 # wait up to 2 minutes for result
 
 
 
@@ -94,29 +95,21 @@ if __name__ == '__main__':
 
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
-    parser.add_option("-s","--server",action="store",dest="server",help="tst/beta/prd")
-    parser.add_option("-i","--infile",action="store",dest="infile",help="Input file")
-    parser.add_option("-o","--outfile",action="store",dest="outfile",help="Output file")
+    parser.add_option("-a","--afile",action="store",dest="afile",help="")
      
     (options,args) = parser.parse_args()
-    for key in ([options.server, options.infile, options.outfile]):
+    for key in ([options.afile]):
         if not (key):
             parser.print_help()
             sys.exit(0)
     
-    server = options.server
-    in_file = options.infile
-    out_file = options.outfile
+    a_file = options.afile
+    doc = json.load(open(a_file))
     
-    container_name = "running_substructure_beta" if server == "beta" else "running_substructure"
-
-    cmd = "docker inspect %s" % (container_name)
-    x = subprocess.getoutput(cmd)
-    doc_list = json.loads(x)
-    #print (json.dumps(doc_list[-1]["NetworkSettings"]["Networks"], indent=4))
-    host_port = doc_list[-1]["NetworkSettings"]["Ports"]["80/tcp"][0]["HostPort"]
-    ip_addr = doc_list[-1]["NetworkSettings"]["Networks"]["bridge"]["IPAddress"] 
-    api_url = "http://%s:%s" % (ip_addr, host_port)
+    in_file = doc[0]["-i"]    
+    out_file = doc[1]["-o"]
+    
+    api_url = "http://running_glygen_substructure:10983"
  
     task = json.loads(open(in_file).read())
     task["api_url"] = api_url
@@ -124,13 +117,16 @@ if __name__ == '__main__':
     align = task.get('align','substructure')
     substr = SubstructureSearch()
 
-
     res = {}
     try:
         res = substr.get(**task)
     except SubstructureSearch.APIUnfinishedError:
         res["error"] = "Did not complete"
 
+    if "error" in res:
+        if res["error"] != []:
+            print(res["error"])
+            sys.exit(1)
 
     for key in ("finished","stat","id"):
         if key in res:
@@ -143,14 +139,9 @@ if __name__ == '__main__':
         if "result" in res:
             del res["result"]  
 
-
     with open(out_file, "w") as FW:
         FW.write("%s\n" % (json.dumps(res, indent=4, sort_keys=True)))
         #print(json.dumps(res[align], indent=4, sort_keys=True))
     
-    if "error" in res:
-        print(res["error"][0])
-        sys.exit(1)
-
 
 

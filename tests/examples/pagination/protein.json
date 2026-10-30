@@ -5,7 +5,16 @@
   "sort": "start_pos",
   "order": "asc",
   "offset": 1,
-  "limit": 10
+  "limit": 10,
+	"filters": [
+    {
+      "id": "by_glycosylation_type",
+      "operator": "OR",
+      "selected": [
+        "n-linked|other"
+      ]
+    }
+  ]
 }
 
 

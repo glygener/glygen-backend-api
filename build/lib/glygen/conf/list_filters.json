@@ -438,8 +438,8 @@
 					 "o-glyco-site-loss":3
             },
             "label_dict":{
-                "n-glyco-sequon-gain":"N-glyco-sequoun gain",
-                "n-glyco-sequon-loss":"N-glyco-sequoun loss",
+                "n-glyco-sequon-gain":"N-glyco-sequon gain",
+                "n-glyco-sequon-loss":"N-glyco-sequon loss",
                 "o-glyco-site-loss":"O-glyco-site loss"
             }
         },

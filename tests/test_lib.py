@@ -3,7 +3,6 @@ import json
 import string
 import traceback
 from optparse import OptionParser
-from bson import json_util, ObjectId
 import requests
 import glob
 import urllib3

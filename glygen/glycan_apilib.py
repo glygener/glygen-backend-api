@@ -152,7 +152,6 @@ def glycan_search(query_obj, config_obj):
     if error_obj != {}:
         return error_obj
 
-    
     #Clean query object
     if type(query_obj) is dict:
         key_list = list(query_obj.keys())
@@ -186,7 +185,7 @@ def glycan_search(query_obj, config_obj):
     default_min, default_max = 0, 0
     if "composition" in query_obj:
         for o in query_obj["composition"]:
-            if "residue" in o:
+            if "residue" in o and type(o) is dict:
                 res = o["residue"]
                 seen[res] = True
                 if res == "default":

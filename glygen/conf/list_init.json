@@ -637,7 +637,7 @@
                 "order": 38,
                 "tooltip": "",
                 "immutable": false,
-                "default": false,
+                "default": true,
                 "categories": [
                     {
                         "id": "Annotation",

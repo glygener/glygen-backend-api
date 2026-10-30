@@ -926,6 +926,9 @@ def get_list_objects(dbh, cache_id, record_type, filter_conf, cached_query, prj_
             record_id = obj["record_id"]
             record_filter_code = obj["filter_code"]
             flag = compare_filter_codes(record_filter_code, query_filter_code, query_filters, code_dict, grp_id_list)
+            if type(flag) is dict:
+                if "error_list" in flag:
+                    return flag
             debug_list.append({"record_id":record_id, "flag":flag, "r_code":record_filter_code, "q_code":query_filter_code})
             if flag:
                 match_count += 1
@@ -1281,6 +1284,9 @@ def compare_filter_codes(record_filter_code, query_filter_code, filter_obj_list,
             continue
         op = op_dict[grp]
         row = []
+        if  len(query_code_parts[grp_idx]) != len(record_code_parts[grp_idx]):
+            return {"error_list":[{"error":"code-parts-length-mismatch"}]}
+
         for j in range(0, len(query_code_parts[grp_idx])):
             if query_code_parts[grp_idx][j] != "*":
                 row.append(query_code_parts[grp_idx][j] == record_code_parts[grp_idx][j])
@@ -1361,9 +1367,15 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
             record_id = record_obj["record_id"]
         if "start_pos" in record_obj and "glytoucan_ac" in record_obj:
             record_id = "%s|%s" % (record_obj["start_pos"], record_obj["glytoucan_ac"])
+        if "start_pos" in record_obj and "sequence_org" in record_obj and "sequence_mut" in record_obj:
+            record_id = "%s|%s|%s" % (record_obj["start_pos"], record_obj["sequence_org"], record_obj["sequence_mut"])
+        if "uniprot_canonical_ac" in record_obj:
+            record_id = record_obj["uniprot_canonical_ac"] + "|" + record_id
+            
+        debug_list.append(record_id)
+
         if record_id == "":
             continue
-        debug_list.append(record_id)
         if record_id in seen_record_id:
             continue
         seen_record_id[record_id] = True
@@ -1427,7 +1439,7 @@ def update_filters(record_type, obj_list, filters, step, code_dict, filter_conf)
             obj["tmp_options"][option_id] = {"id":option_id, "label":label, "count":count,"order":option_ordr}
         filters["available"].append(obj)
 
-    #return {"error_list":filters}
+    #return {"error_list":debug_list}
 
 
     seen = {}
@@ -1656,6 +1668,8 @@ def get_paginated_sections(obj, query_obj, section_list, limit_flag):
         if sec_new not in obj:
             continue
         for o in obj[sec_new]:
+            if type(o) is not dict:
+                continue
             #table_id = sec
             tmp_table_id_list = [sec]
             if sec.find("glycosylation_") != -1:
@@ -1869,10 +1883,10 @@ def get_final_fields(query_obj, record_type):
         else:
             final_fields +=  sorted(set(f_dict[record_type]["required"] + query_fields))
 
-    
+   
+    extra_fields = []
     record_type = "protein" if record_type == "ortholog" else record_type
     if record_type in score_dict:
-        extra_fields = []
         for cat in score_dict[record_type]:
             for f in score_dict[record_type][cat]:
                 if "fieldlist" not in score_dict[record_type][cat][f]:
@@ -2100,11 +2114,12 @@ def get_hash_id(api_name , record_type, obj):
                         if type(o["selected"]) is list:
                             if len(o["selected"]) == 1:
                                 o["operator"] = "OR"
-                    oo = {}
-                    for kk in sorted(o):
-                        oo[kk] = o[kk]
-                    oo["selected"] = sorted(oo["selected"])
-                    oo_list.append(oo)
+                    if type(o) is dict:
+                        oo = {}
+                        for kk in sorted(o):
+                            oo[kk] = o[kk]
+                        oo["selected"] = sorted(oo["selected"])
+                        oo_list.append(oo)
                 new_obj[k] = oo_list
     hash_str = api_name + record_type + json.dumps(new_obj)
     hash_obj = hashlib.md5(hash_str.encode('utf-8'))
@@ -2156,9 +2171,6 @@ def filter_glyco_obj_list(table_id, obj_list, query_filters , config_obj):
     if "error_list" in update_res:
         return update_res
  
-
-    
- 
     grp_id_list = get_grp_id_list(table_id, filter_init)
     passed_obj_list = []
     for gly_obj in table_obj_list:
@@ -2171,6 +2183,44 @@ def filter_glyco_obj_list(table_id, obj_list, query_filters , config_obj):
     res = {"a":table_obj_list,"b":passed_obj_list, "c":other_table_obj_list, "d":filters_obj}
     return res
 
+
+def filter_snv_obj_list(table_id, obj_list, query_filters , config_obj):
+
+    filter_init = config_obj["filter_init"]
+    filters_obj = {"applied":query_filters, "available":[]}
+
+    #query_site_category = table_id.replace("glycosylation_", "")
+    table_obj_list, other_table_obj_list = [], []
+    for snv_obj in obj_list:
+        if table_id == "snv_disease" and "disease" not in snv_obj["keywords"]:
+            continue
+        if table_id == "snv_non_disease" and "disease" in snv_obj["keywords"]:
+            continue
+        table_obj_list.append(snv_obj)
+        #other_table_obj_list.append(snv_obj)
+    
+    res = get_query_filter_code(query_filters, table_id, filter_init)
+    query_filter_code, code_dict = res["code"], res["dict"]
+    update_res = update_filters(table_id, table_obj_list, filters_obj, 1, code_dict, filter_init)
+    if "error_list" in update_res:
+        return update_res
+
+    grp_id_list = get_grp_id_list(table_id, filter_init)
+    passed_obj_list = []
+    debug_list = []
+    for snv_obj in table_obj_list:
+        flag = compare_filter_codes(snv_obj["filter_code"], query_filter_code, query_filters, code_dict, grp_id_list)
+        o = {"flag":flag, "filter_code":snv_obj["filter_code"], "query_filter_code":query_filter_code}
+        debug_list.append(o)
+        if type(flag) is dict:
+            if "error_list" in flag:
+                return flag
+        if flag:
+            passed_obj_list.append(snv_obj)
+    res = {"a":table_obj_list,"b":passed_obj_list, "c":other_table_obj_list, "d":filters_obj}
+    #return debug_list
+
+    return res
 
 
 

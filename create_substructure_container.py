@@ -4,65 +4,80 @@ from optparse import OptionParser
 import glob
 import json
 import subprocess
+import socket
 
 __version__="1.0"
 __status__ = "Dev"
 
+
+def make_files(host_vm):
+
+    out_file = "./substructure-local.ini"
+    line_list = ["[basic]", "port = 10983","max_cpu_core = 3","[Substructure]","max_motif_size = 10","glycan_set = glygen"]
+    with open(out_file, "w") as FW:
+        for line in line_list:
+            FW.write("%s\n" % (line))
+    out_file = "./docker-compose.yml"
+    line_list = [
+        "services:"
+        ,"  substructure:"
+        ,"    container_name: running_glygen_substructure"
+        ,"    restart: unless-stopped"
+        ,"    image: glyomics/substructure:latest"
+        ,"    ports:"
+        ,"      - 10983:10983"
+        ,"    volumes:"
+        ,"      - ./substructure-local.ini:/code/substructure-local.ini"
+        ,"      - /data/shared/glygen/substrcture/%s/cache/" % (host_vm)
+        ,"    networks:"
+        ,"      - glygen_backend"
+        ,""
+        ,"networks:"
+        ,"  glygen_backend:"
+        ,"    external: true"
+    ]
+    with open(out_file, "w") as FW:
+        for line in line_list:
+            FW.write("%s\n" % (line))
+    
+
+    return
 
 
 ###############################
 def main():
 
 
-    usage = "\n%prog  [options]"
-    parser = OptionParser(usage,version="%prog version___")
-    parser.add_option("-s","--server",action="store",dest="server",help="dev/tst/beta/prd")
-    (options,args) = parser.parse_args()
+        
+    host_name = socket.gethostname()
+    host_vm = host_name.split("-")[-1]
 
-    for key in ([options.server]):
-        if not (key):
-            parser.print_help()
-            sys.exit(0)
 
-    server = options.server
 
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
     image = "glyomics/substructure"
-    port = config_obj["ss_port"][server]
-    container_name = "running_substructure"
-    if server == "beta":
-        container_name = "running_substructure_%s" % (server)
-
-    #network = config_obj["dbinfo"]["bridge_network"]
-    #if server in ["prd", "beta"]:
-    #    network = config_obj["dbinfo"]["bridge_network"] + "_" + server
+    port = config_obj["ss_port"]
+    container_name = "running_glygen_substructure"
     network = "host"
 
+    make_files(host_vm)
+
     cmd_list = []
-    cmd_list.append("sudo systemctl stop docker-glygen-substructure-%s.service" % (server)) 
-    
+    cmd_list.append("sudo systemctl stop docker-glygen-substructure.service")
 
     cmd = "docker ps --all |grep %s" % (container_name)
     container_id = subprocess.getoutput(cmd).split(" ")[0].strip()
     if container_id.strip() != "":
         cmd_list.append("docker rm -f %s " % (container_id))
 
-
-    #cmd = "docker create --name %s --network %s -p %s:%s" % (container_name, network, port, port)
-    #cmd = "docker create --name %s --net=%s " % (container_name, network)
-    
-    # get into the container and use "ip addr" to find the actual port
-    cmd = "docker create --name %s -p 0.0.0.0:%s:%s" % (container_name, port, "80")
-    cmd += " -e WEBSERVICE_BASIC_PORT=%s -e WEBSERVICE_BASIC_MAX_CPU_CORE=3 %s " % (port, image)
-    cmd_list.append(cmd)
-
-    cmd_list.append("sudo systemctl start docker-glygen-substructure-%s.service" % (server))
-    
+    cmd_list.append("docker compose up -d")
+ 
+    cmd_list.append("sudo systemctl start docker-glygen-substructure.service")
 
     for cmd in cmd_list:
-        x = subprocess.getoutput(cmd)
-        print (x)
+        subprocess.run(cmd, shell=True)
+        print (cmd)
 
 
 

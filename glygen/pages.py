@@ -39,8 +39,9 @@ class Pages(Resource):
             data_path = os.environ["DATA_PATH"]
             req_obj = get_req_obj(request)
             log_obj = log_request(req_obj, "/pages/home_init/", request)
-            if "error_list" not in log_obj:
-                res_obj = home_init(config_obj, data_path)
+            if "error_list" in log_obj: 
+                return log_obj
+            res_obj = home_init(config_obj, data_path)
         except Exception as e:
             res_obj = log_error(traceback.format_exc(), log_obj)
         

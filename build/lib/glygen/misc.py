@@ -51,7 +51,8 @@ class Misc(Resource):
             #ip_addr = request.environ['REMOTE_ADDR']
             #ip_addr = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
             #return {"ip":ip_addr}
-            for k in ["GITHUB_TOKEN", "GITHUB_ASSIGNEE", "SERVER", "DATA_PATH", "DB_NAME", "MAIL_SERVER", "MAIL_PORT", "MAIL_SENDER"]:
+            for k in ["SERVER"]:
+            #for k in ["SERVER", "MONGODB_CONNSTRING", "DATA_PATH", "DB_NAME", "MAIL_SERVER", "MAIL_PORT", "MAIL_SENDER"]:
                 if k in os.environ:
                     res_obj["config"][k] = os.environ[k]
                 if k in current_app.config:
@@ -60,19 +61,19 @@ class Misc(Resource):
  
             mongo_dbh, error_obj = get_mongodb()
             res_obj["connection_status"] = "success" if error_obj == {} else error_obj
-            #return res_obj
+            return res_obj
     
             res_obj["user_agent"] = request.headers.get('User-Agent')
             res_obj["referer"] = request.headers.get('referer')
             res_obj["origin"] = request.headers.get('Origin')
-            return res_obj
+            #return res_obj
             
             init_obj = mongo_dbh["c_init"].find_one({})
             if "_id" in init_obj:
                 init_obj.pop("_id")
             res_obj["initobj"] = init_obj
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), {})
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 

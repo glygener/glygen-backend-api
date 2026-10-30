@@ -18,22 +18,33 @@ from cacheutil import cache_exists, delete_cache, get_c_initcache_queries,get_su
 
 
 
+from copied_indexlib import parse_sent, get_result_dict_one
 
 
-def update_c_initcache(dbh, cache_name, list_id, record_type, query_info, config_obj):
+
+
+
+def update_c_initcache(dbh, cache_name, list_id, record_type, api_name,  query_info, config_obj):
 
     query_obj, main_field = query_info["query"], query_info["mainfield"]
     mongo_query = query_info["mongoquery"]
 
-    search_type = "%s_search" % (record_type)
+
     coll = "c_" + record_type
     cache_coll = "c_initcache"
     record_list = []
-    prj_obj = {main_field:1}
-    for obj in dbh[coll].find(mongo_query,prj_obj):
-        record_list.append(obj[main_field])
-    #print (mongo_query)
-    #print (len(record_list))
+    if api_name.find("simple") != -1:
+        phrase_dict = parse_sent(query_obj["term"], 6, 1)
+        max_p = len(phrase_dict.keys())
+        quote_flag = False
+        selected_sections = []
+        result_dict, used_phrase_list = get_result_dict_one(dbh,phrase_dict,selected_sections,quote_flag,record_type,max_p,False)
+        record_list = list(result_dict["all"].keys())
+    else:
+        prj_obj = {main_field:1}
+        for obj in dbh[coll].find(mongo_query,prj_obj):
+            record_list.append(obj[main_field])
+
  
     res_obj = {}
     if cache_name.find("_all") != -1 or len(record_list) > config_obj["min_list_size_to_cache"]:
@@ -47,13 +58,14 @@ def update_c_initcache(dbh, cache_name, list_id, record_type, query_info, config
             "query":query_obj,
             "ts":ts,
             "record_type":record_type,
-            "search_type":search_type
+            "search_type":api_name
         }
         cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
         res_obj = {"list_id":list_id, "recordcount":len(record_list)}
     else:
         res_obj = {"list_id":list_id, "recordcount":len(record_list), "flag":"not_large"}
     return res_obj
+
 
 
 
@@ -84,7 +96,7 @@ def main():
     config_obj = json.loads(open("./conf/config.json", "r").read())
     db_obj = config_obj["dbinfo"][db_name]
     glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
-    host_ip = config_obj["host_ip"][server]
+    host_ip = "127.0.0.1"
     config_obj = json.load(open("glygen/conf/config.json"))
     config_obj["db_info"] = {"user":db_user, "password":db_pass, "host_ip":host_ip, "db_name":db_name}
            
@@ -93,7 +105,6 @@ def main():
     if error_obj != {}:
         print (error_obj)
         exit()
-
 
 
     #clear c_initcache for cache_name
@@ -123,11 +134,13 @@ def main():
         qry_dict = query_doc[record_type]
         qry_obj = query_doc[record_type][cache_name]
         api_name = "%s_search" % (record_type)
+        if cache_name.find("simple") != -1:
+            api_name = "%s_search_simple" % (record_type)
         list_id = get_hash_id(api_name, record_type, qry_obj["query"])
         #print (list_id, api_name, record_type, qry_obj["query"])
         if cache_exists(dbh, list_id,  "c_initcache"):
             delete_cache(dbh, list_id, "c_initcache")
-        res_obj = update_c_initcache(dbh, cache_name, list_id, record_type, qry_obj, config_obj)
+        res_obj = update_c_initcache(dbh, cache_name, list_id, record_type, api_name, qry_obj, config_obj)
         if "flag" not in res_obj:
             log_file = "logs/c_initcache.%s.%s.log" % (cache_name, server)
             with open(log_file, "w") as FL:

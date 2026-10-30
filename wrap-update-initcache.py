@@ -32,7 +32,7 @@ def main():
     config_obj = json.loads(open("./conf/config.json", "r").read())
     db_obj = config_obj["dbinfo"][db_name]
     glydb_name, db_user, db_pass =  db_obj["db"], db_obj["user"], db_obj["password"]
-    host_ip = config_obj["host_ip"][server]
+    host_ip = "127.0.0.1"
     config_obj = json.load(open("glygen/conf/config.json"))
     config_obj["db_info"] = {"user":db_user, "password":db_pass, "host_ip":host_ip, "db_name":db_name}
            

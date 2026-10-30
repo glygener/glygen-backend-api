@@ -3,7 +3,6 @@ import string
 from optparse import OptionParser
 import glob
 import json
-from bson import json_util
 import pymongo
 from pymongo import MongoClient
 import datetime
@@ -55,6 +54,8 @@ def main():
         )
         client.server_info()
         dbh = client[glydb_name]
+        #res = dbh[coll].delete_many({})
+        #exit()
         q = {"jobid":job_id}
         doc = dbh[coll].find_one(q)
         if doc != None:

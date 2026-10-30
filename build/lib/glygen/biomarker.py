@@ -69,15 +69,15 @@ class Biomarker(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/biomarker/search_simple/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/biomarker/search_simple/", request)
+            if "error_list" not in log_obj:
                 cache_flag, exact_match_flag = True, True
                 res_obj = search_one("biomarker_search_simple",req_obj,config_obj,cache_flag, exact_match_flag)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -96,13 +96,14 @@ class Biomarker(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
-            res_obj = log_request({}, "/biomarker/search_init/", request)
-            if "error_list" not in res_obj:
+            req_obj = get_req_obj(request)
+            log_obj = log_request(req_obj, "/biomarker/search_init/", request)
+            if "error_list" not in log_obj:
                 res_obj = biomarker_search_init(config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj, http_code
 
@@ -121,18 +122,18 @@ class Biomarker(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = {"biomarker_id":biomarker_id}
             req_obj_extra = get_req_obj(request)
             if req_obj_extra != None:
-                if "paginated_tables" in req_obj_extra:
-                    req_obj["paginated_tables"] = req_obj_extra["paginated_tables"]
-            res_obj = log_request(req_obj, "/biomarker/detail/", request)
-            if "error_list" not in res_obj:
+                for k in req_obj_extra:
+                    req_obj[k] = req_obj_extra[k]
+            log_obj = log_request(req_obj, "/biomarker/detail/", request)
+            if "error_list" not in log_obj:
                 res_obj = biomarker_detail(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -150,14 +151,14 @@ class Biomarker(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/biomarker/search/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/biomarker/search/", request)
+            if "error_list" not in log_obj:
                 res_obj = biomarker_search(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200 
         return res_obj, http_code
     
@@ -175,11 +176,11 @@ class Biomarker(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/biomarker/list/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/biomarker/list/", request)
+            if "error_list" not in log_obj:
                 api_name = "biomarker_list"
                 cache_id = req_obj["id"] if "id" in req_obj else ""
                 listcache_id = get_hash_id(api_name, "", req_obj)
@@ -197,7 +198,7 @@ class Biomarker(Resource):
                     #if "results" in res_obj:
                     #    res_obj["results"] = apply_pagination(res_obj["results"], req_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 

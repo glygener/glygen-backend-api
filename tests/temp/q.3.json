@@ -1,5 +1,4 @@
-{"id":"P14210.294.294","download_type":"site_section","section":"glycosylation","format":"csv","compressed":false}
-
+{"id":"245b1ec0e54031a8cc230dbc0d7fcf54","offset":1,"limit":20,"order":"desc","sort":"hit_score","filters":[],"columns":["protein_name","reported_snv","gene_name","ec_number_list","uniprot_canonical_ac","hit_score","organism","length","mass","refseq_name","refseq_ac","uniprot_id","gene_names_refseq","publication_id_list"]}
 
 
 

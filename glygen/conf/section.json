@@ -731,7 +731,38 @@
             ],
             "sectionfield": "disease"
         },
-		  "biomarkers": {
+			"binding_sites":{
+				"filterinfo": {
+					"field": "",
+                "valuelist": []
+				},
+				"fieldmap": [
+               {"path": "start_pos", "label": "Start Position"}
+               ,{"path": "start_aa", "label": "Start Amino Acid"}
+               ,{"path": "end_pos", "label": "End Position"}
+               ,{"path": "end_aa", "label": "End Amino Acid"}    
+               ,{"path": "ligand", "label": "Ligand"}
+               ,{"path": "uniprotkb_ligand_comment", "label": "Notes"}
+				],
+				"sectionfield":"binding_sites"
+		  	},
+			"domain_list":{
+				"filterinfo": {
+               "field": "",
+                "valuelist": []
+            },
+				"fieldmap": [
+					{"path": "ann_type", "label": "Type"}
+					,{"path": "start_pos", "label": "Start Position"}
+					,{"path": "start_aa", "label": "Start Amino Acid"}
+					,{"path": "end_pos", "label": "End Position"}
+               ,{"path": "end_aa", "label": "End Amino Acid"}	
+					,{"path": "uniprotkb_annotation", "label": "Annotation Comment"}
+					,{"path": "glycosite_overlap", "label": "Overlapping Glycosites"}
+				],
+				"sectionfield":"domain_list"
+			},
+		  	"biomarkers": {
             "filterinfo": {
                 "field": "",
                 "valuelist": []

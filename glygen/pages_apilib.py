@@ -32,11 +32,13 @@ def home_init(config_obj, data_path):
     ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
   
     res_obj = {"version":[], "statistics":[]}
+
     for doc in dbh["c_version"].find({}):
         doc.pop("_id")
         if doc != {}:
             res_obj["version"].append(doc)
 
+    
     species_obj = {}
     init_obj = dbh["c_init"].find_one({})
     in_file = data_path + "/releases/data/v-%s/misc/species_info.csv" % (init_obj["dataversion"])
@@ -171,6 +173,27 @@ def filter_init(config_obj, query_obj):
     sec = sec_map[table_id] 
     res_obj = {}
 
+    if "_id" in doc:
+        doc.pop("_id")
+
+
+    debug_obj = {"before":{}, "after":{}}
+    for s in doc:
+        debug_obj["before"][s] = len(doc[s])
+
+    # Get section objects if this record was batched
+    #q = {"recordid": record_id, "recordtype": "publication"}
+    q = {"recordid":{"$regex":record_id, "$options":"i"}, "recordtype": record_type}
+    batch_doc = dbh["c_batch"].find_one(q)
+    if batch_doc != None:
+        for sec in batch_doc["sections"]:
+            if sec in doc:
+                doc[sec] += batch_doc["sections"][sec]
+
+    for s in doc:
+        debug_obj["after"][s] = len(doc[s])
+    #return {"error_list":debug_obj}
+
     if table_id not in config_obj["filter_init"]:
         return {"error_list":[{"error_code":"no filter_init found for table_id=%s" % (table_id)}]}
     filter_conf = config_obj["filter_init"][table_id] 
@@ -182,36 +205,52 @@ def filter_init(config_obj, query_obj):
         sp_dict[taxid2name[tax_id]] = tax_id
 
     code_dict = {}
-    for grp in sorted(filter_conf):
+    grp_order_dict = {}
+    for grp in filter_conf:
         code_dict[grp] = []
         sorted_dict = dict(sorted(filter_conf[grp]["order_dict"].items(), key=lambda item: item[1]))
         sorted_dict = sp_dict if grp == "by_organism" else sorted_dict
         for val in sorted_dict:
             if val != "":
                 code_dict[grp].append({"value":val, "ptrn":"*"})
+        grp_idx = filter_conf[grp]["grp_idx"]
+        grp_order_dict[grp_idx] = grp
+    
+    grp_id_list = []
+    for grp_idx in sorted(grp_order_dict):
+        grp_id_list.append(grp_order_dict[grp_idx])
+    #return grp_id_list
 
-    #return code_dict
-
-    grp_id_list = sorted(code_dict.keys())
-   
     filter_code_list = [] 
     count_dict = {}
     query_site_cat = table_id.replace("glycosylation_", "")
+    debug_dict = {}
     for obj in doc[sec]:
         #this fill filter out objects that are coming from tables that are not glycosylation
         #later this should be relaxed to include other tables
-        if "site_category_dict" not in obj:
+        if sec.find("glycosylation") != -1 and "site_category_dict" not in obj:
             continue
-        if query_site_cat not in obj["site_category_dict"]:
-            continue 
+        if sec.find("glycosylation") != -1 and query_site_cat not in obj["site_category_dict"]:
+            continue
+    
+        if table_id == "snv_disease" and "disease" not in obj["keywords"]:
+            continue
+        if table_id == "snv_non_disease" and "disease" in obj["keywords"]:
+            continue    
+    
         if "filter_code" not in obj:
-            continue
+            return {"error_list":[{"error_code":"missing-value-for-filter-code"}]}
         code_parts = obj["filter_code"].split(".")
+        debug_dict["code_parts"] = code_parts
         filter_code_list.append(obj["filter_code"])
         for grp_idx in range(0, len(grp_id_list)):
             grp = grp_id_list[grp_idx]
+            #c = "%s|%s|%s|%s" % (grp, grp_idx,len(code_parts), len(grp_id_list))
+            #debug_dict[c] = True
             filter_code_list.append("%s-%s-%s" % (grp,len(code_dict[grp]), code_parts[grp_idx]))
             for j in range(0, len(code_parts[grp_idx])):
+                c = "%s|%s|%s|%s" % (grp_idx, grp, j, len(code_dict[grp]))
+                debug_dict[c] = True
                 label = code_dict[grp][j]["value"]
                 if code_parts[grp_idx][j] == "1":
                     if grp not in count_dict:
@@ -219,7 +258,8 @@ def filter_init(config_obj, query_obj):
                     if label not in count_dict[grp]:
                         count_dict[grp][label] = 0
                     count_dict[grp][label] += 1
-    
+   
+    #return debug_dict
     #return filter_code_list
     #return count_dict
 

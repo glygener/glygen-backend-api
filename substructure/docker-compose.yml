@@ -1,0 +1,11 @@
+services:
+  substructure:
+    container_name: running_glygen_substructure_prd
+    restart: unless-stopped
+    image: glyomics/substructure:latest
+    ports:
+      - 10980:10980
+    volumes:
+      - ./substructure-local.ini:/code/substructure-local.ini
+      - ./cache:/code/cache
+

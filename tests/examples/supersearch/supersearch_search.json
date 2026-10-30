@@ -1,32 +1,19 @@
 {
-  "concept_query_list": [
-    {
-      "concept": "site",
-      "query": {
-        "aggregator": "$and",
-        "aggregated_list": [],
-        "unaggregated_list": [
-          {
-            "path": "snv_flag",
-            "order": 2,
-            "operator": "$eq",
-            "string_value": "true"
-          },
-          {
-            "path": "phosphorylation_flag",
-            "order": 1,
-            "operator": "$eq",
-            "string_value": "true"
-          },
-          {
-            "path": "glycosylation_flag",
-            "order": 0,
-            "operator": "$eq",
-            "string_value": "true"
-          }
-        ]
-      }
-    }
-  ]
-}
-
+            "concept_query_list": [
+                {
+                    "concept": "glycan",
+                    "query": {
+                        "aggregator": "$and",
+                        "unaggregated_list": [
+                            {
+                                "path": "classification.subtype.name",
+                                "operator": "$regex",
+                                "order": 0,
+                                "string_value": "Core-fucosylated"
+                            }
+                        ],
+                        "aggregated_list": []
+                    }
+                }
+            ]
+        }

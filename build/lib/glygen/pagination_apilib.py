@@ -10,8 +10,7 @@ from bson import json_util, ObjectId
 
 
 from glygen.db import get_mongodb
-from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections, filter_glyco_obj_list
-
+from glygen.util import get_errors_in_query, sort_objects, order_obj, clean_obj, get_paginated_sections, filter_glyco_obj_list, filter_snv_obj_list
 
 
 
@@ -76,8 +75,11 @@ def pagination_page(query_obj, config_obj):
 
     # apply filters for glycosylation tables 
 
+
+   
+    #return {"t":table_id, "r":record_type, "q":query_obj} 
     filters_obj = {}    
-    if record_type in ["protein"] and "filters" in query_obj and table_id.find("glycosylation_") != -1:
+    if record_type in ["protein", "publication"] and "filters" in query_obj and table_id.find("glycosylation_") != -1:
         r = filter_glyco_obj_list(table_id, doc["glycosylation"],query_obj["filters"],config_obj)
         if "error_list" in r:
             return r
@@ -86,6 +88,17 @@ def pagination_page(query_obj, config_obj):
         doc["glycosylation"] = passed_obj_list + other_table_obj_list
         #return {"all":len(table_obj_list), "passed":len(passed_obj_list)}
         #return filters_obj
+    elif record_type in ["protein", "publication"] and "filters" in query_obj and table_id.find("snv_") != -1:
+        r = filter_snv_obj_list(table_id, doc["snv"],query_obj["filters"],config_obj)
+        if "error_list" in r:
+            return r
+        table_obj_list, passed_obj_list, other_table_obj_list, filters_obj = r["a"], r["b"],r["c"],r["d"]
+        doc["filters"] = filters_obj
+        doc["snv"] = passed_obj_list + other_table_obj_list
+        #return {"all":len(table_obj_list), "passed":len(passed_obj_list)}
+        #return filters_obj
+
+
 
  
     if "_id" in doc:

@@ -1,22 +1,25 @@
 import sys
 import subprocess
 from optparse import OptionParser
-
+import json
 
 
 def main():
 
     usage = "\n%prog  [options]"
     parser = OptionParser(usage,version="%prog version___")
-    parser.add_option("-i","--infile",action="store",dest="infile",help="Input file")
+    parser.add_option("-a","--afile",action="store",dest="afile",help="")
 
     (options,args) = parser.parse_args()
-    for key in ([options.infile]):
+    for key in ([options.afile]):
         if not (key):
             parser.print_help()
             sys.exit(0)
-    
-    in_file = options.infile
+   
+    a_file = options.afile
+    doc = json.load(open(a_file))
+  
+    in_file = doc[0]["-i"]
     in_dir = in_file.replace("/input.csv", "")
     
     try:

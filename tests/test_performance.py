@@ -6,7 +6,7 @@ from optparse import OptionParser
 import requests
 import glob
 import subprocess
-import test_lib
+import lib_perf
 
 
 
@@ -30,7 +30,7 @@ def main():
 
 
     config_obj = json.loads(open("../conf/config.json", "r").read())
-    test_lib.run_performance_test("", api_grp, config_obj, server)
+    lib_perf.run_performance_test("", api_grp, config_obj, server)
 
     return
 

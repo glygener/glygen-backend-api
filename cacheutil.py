@@ -69,6 +69,10 @@ def get_comb_list(my_list):
 
 
 def get_c_initcache_queries(dbh, config_obj, pulldown_dict):
+    
+    taxid2name = get_taxid2name(dbh, default=False)
+
+
     aaone2three, aathree2one = get_aa_dict()
     main_field_dict = {
         "protein":"uniprot_canonical_ac",
@@ -99,6 +103,18 @@ def get_c_initcache_queries(dbh, config_obj, pulldown_dict):
                 query_doc[record_type][cache_name] = {
                     "mainfield":main_field_dict[record_type], "query":query, "mongoquery":mongoquery
                 }
+            query_type = "%s_search_simple" % (record_type)
+            for tax_id in taxid2name:
+                tax_name = taxid2name[tax_id]
+                tax_name_lc = tax_name.replace(" ","_").replace("-", "_").lower()
+                tax_name_lc = tax_name_lc.replace("(","").replace(")", "")
+                cache_name = record_type + "_simple_" + tax_name_lc
+                query = {"operation":"AND","query_type":query_type,"term":tax_name.lower(),"term_category":"any"}
+                mongoquery = {}
+                query_doc[record_type][cache_name] = {
+                    "mainfield":main_field_dict[record_type], "query":query, "mongoquery":mongoquery
+                }
+
         if record_type in ["glycan"]:
             for glycan_type in pulldown_dict["glycantype"]:
                 cache_name = record_type

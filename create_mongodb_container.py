@@ -27,22 +27,20 @@ def main():
 
 
     config_obj = json.loads(open("./conf/config.json", "r").read())
-    api_image = "glygen_api_%s" % (server)
+    api_image = "glygen_api"
     api_container = "running_" + api_image
     substructure_container = "running_substructure"
 
-    mongo_container = "running_glygen_mongo_%s" % (server)
+    mongo_container = "running_glygen_mongo"
     mongo_port = config_obj["dbinfo"]["port"][server] 
 
     mongo_network = config_obj["dbinfo"]["bridge_network"]
-    if server in ["prd", "beta"]:
-        mongo_network = config_obj["dbinfo"]["bridge_network"] + "_" + server
 
     u, p = config_obj["dbinfo"]["admin"]["user"], config_obj["dbinfo"]["admin"]["password"]
     e_params = "-e MONGO_INITDB_ROOT_USERNAME=%s -e MONGO_INITDB_ROOT_PASSWORD=%s" % (u, p)
 
     cmd_list = []
-    cmd_list.append("sudo systemctl stop docker-glygen-mongo-%s.service" % (server))
+    cmd_list.append("sudo systemctl stop docker-glygen-mongo.service"
     for c in [mongo_container, api_container, substructure_container]:
         cmd = "docker ps --all |grep %s" % (c)
         container_id = subprocess.getoutput(cmd).split(" ")[0].strip()

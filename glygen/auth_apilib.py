@@ -80,6 +80,7 @@ def auth_contact(query_obj, config_obj):
     if query_obj["email"] in black_list_emails:
         return {"error_list":[{"error_code": "black-listed-email"}]}
 
+
     collection = "c_message"
     sender = config_obj[config_obj["server"]]["contactemailreceivers"][0]
     receivers = [query_obj["email"]] + config_obj[config_obj["server"]]["contactemailreceivers"]
@@ -97,6 +98,17 @@ def auth_contact(query_obj, config_obj):
         if param in query_obj:
             if query_obj[param].strip() != "":
                 msg_text += "%s: %s\n" % (param_dict[param], query_obj[param].strip())
+
+
+    last_name_val = query_obj["lname"].strip() if "lname" in query_obj else ""
+    message_val = query_obj["message"].strip() if "message" in query_obj else ""
+    processing_flag = "feedback"
+    processing_flag = "junk" if last_name_val != "" else processing_flag
+    processing_flag = "junk" if message_val.find(" ") == -1 else processing_flag
+
+    if processing_flag == "junk":
+        msg_text += " -- possibly junk!"
+
     
 
     page_url = query_obj["page"] if "page" in query_obj else ""
@@ -129,22 +141,28 @@ def auth_contact(query_obj, config_obj):
     github_token = current_app.config["GITHUB_TOKEN"]
     github_assignee = current_app.config["GITHUB_ASSIGNEE"]
 
-    issue_obj = {
-        "title":query_obj["subject"],
-        "body":msg_text,
-        "assignees":[github_assignee],
-        "labels":["frontend_user_issue"]
-    } 
+
+
+    ticket_label_list = ["frontend_user_issue","junk"] if processing_flag == "junk" else ["frontend_user_issue"]
+    issue_obj = { "title":query_obj["subject"],"body":msg_text,"assignees":[github_assignee],"labels":ticket_label_list}
+ 
     try:
-        if config_obj["server"] != "dev":
+        #condition for sending email
+        if config_obj["server"] != "dev" and processing_flag != "junk":
             s = smtplib.SMTP('localhost')
             s.sendmail(sender, receivers, msg.as_string())
             s.quit()
-        res = create_github_issue(github_endpoint, github_token, issue_obj)
-        if "error_list" in res:
-            return res
-        store_json["github"] = res
+        create_res_obj = create_github_issue(github_endpoint, github_token, issue_obj)
+        if "error_list" in create_res_obj:
+            return create_res_obj
+        store_json["github"] = create_res_obj
         store_json["message_status"] = "success"
+
+        #condition of closing ticket
+        if processing_flag == "junk" and "url" in create_res_obj:
+            update_res_obj = update_github_issue(create_res_obj["url"],github_token,{"state": "closed"})
+            if "error_list" in update_res_obj:
+                return update_res_obj
     except Exception as e:
         res_json = {"error_list":[{"error_code":str(e)}]}
         store_json["message_status"] = "failed"
@@ -276,6 +294,31 @@ def create_github_issue(url, github_token, issue_obj):
 
 
     return res_obj
+
+
+def update_github_issue(url, github_token, issue_obj):
+
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": "Bearer " + github_token,
+        "X-GitHub-Api-Version": "2022-11-28"
+    }
+
+    res_obj = {}
+    try:
+        response = requests.patch(url,data=json.dumps(issue_obj), headers=headers)
+        code = response.status_code
+        if code == 200:
+            res = response.json()
+            res_obj = {"number": res["number"],"url": res["url"]}
+        else:
+            res_obj = {"error_list": [{"error_code": "Bad response status code: %s!" % (code)}]}
+    except Exception as e:
+        res_obj = {"error_list": [{"error_code": str(e)}]}
+    return res_obj
+
+
+
 
 
 

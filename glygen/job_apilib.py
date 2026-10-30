@@ -73,30 +73,27 @@ def job_init(config_obj, data_path):
 
 def job_addnew(query_obj, config_obj, data_path, server):
 
-
     dbh, error_obj = get_mongodb()
     if error_obj != {}:
         return error_obj
     init_obj = dbh["c_init"].find_one({})
     release_dir = data_path + "/releases/data/v-%s/" % (init_obj["dataversion"])
 
-    validation_obj, error_list = validate_input(dbh, query_obj, config_obj, release_dir, server)
+    job_obj = {}
+    for p in ["jobtype", "parameters", "intable","sequence"]:
+        if p in query_obj:
+            job_obj[p] = query_obj[p]
+    validation_obj, cmd_parts_list, error_list = validate_input(dbh, job_obj, config_obj, release_dir, server)
     if error_list != []:
         return {"error_list":error_list, "result_count":0}
 
-    #return {"v":validation_obj, "q":query_obj}
 
-    #if "intable" in query_obj:
-    #    query_obj.pop("intable")
 
+
+    job_type = job_obj["jobtype"]
     rel_parts_one = int(init_obj["dataversion"].split(".")[0])
     rel_parts_two = int(init_obj["dataversion"].split(".")[1])
     job_id_offset = (rel_parts_one*10 + rel_parts_two) * 100000
-    
-    #return {"rel":init_obj["dataversion"], "offset":job_id_offset}
-    #return query_obj
-    #return validation_obj
-
     res_obj = {}
     try:
         max_job_id = -10000
@@ -107,15 +104,15 @@ def job_addnew(query_obj, config_obj, data_path, server):
             dd = d.split("/")[-1]
             max_job_id = int(dd) if int(dd) > max_job_id else max_job_id
  
-        query_obj["jobid"] = job_id_offset + 1
+        job_obj["jobid"] = job_id_offset + 1
         if max_job_id > job_id_offset:
-            query_obj["jobid"] =  max_job_id + 1
+            job_obj["jobid"] =  max_job_id + 1
     
 
         q_obj = {}
-        for p in query_obj:
+        for p in job_obj:
             if p not in ["cmd", "status", "jobid"]:
-                q_obj[p] = query_obj[p]
+                q_obj[p] = job_obj[p]
 
         old_doc_flag = False
         for old_doc in dbh["c_job"].find(q_obj):
@@ -136,58 +133,62 @@ def job_addnew(query_obj, config_obj, data_path, server):
 
         if old_doc_flag == False:
             in_dir = data_path + "/userdata/" + server + "/jobs/"
-            in_dir += str(query_obj["jobid"]) + "/"
+            in_dir += str(job_obj["jobid"]) + "/"
             if os.path.isdir(in_dir) == True:
                 cmd = "rm -rf " + in_dir
                 x = subprocess.getoutput(cmd)
             cmd = "mkdir -p " + in_dir
             x = subprocess.getoutput(cmd)
             in_filename, out_filename = "", ""
-            if "input_files" in config_obj["jobinfo"][query_obj["jobtype"]]:
-                in_filename = config_obj["jobinfo"][query_obj["jobtype"]]["input_files"][0]["name"]
-            if "output_files" in config_obj["jobinfo"][query_obj["jobtype"]]:
-                out_filename = config_obj["jobinfo"][query_obj["jobtype"]]["output_files"][0]["name"]
+            if "input_files" in config_obj["jobinfo"][job_type]:
+                in_filename = config_obj["jobinfo"][job_type]["input_files"][0]["name"]
+            if "output_files" in config_obj["jobinfo"][job_type]:
+                out_filename = config_obj["jobinfo"][job_type]["output_files"][0]["name"]
             in_file = in_dir + in_filename
             out_file = in_dir + out_filename
-            
             with open(in_file, "w") as FW:
-                if query_obj["jobtype"] in ["structure_search"]:
+                if job_type in ["structure_search"]:
                     FW.write("%s\n" % (json.dumps(json.loads(validation_obj["buffer"]))))
                 else:
                     FW.write("%s\n" % (validation_obj["buffer"]))
-            gap = "=" if query_obj["jobtype"] in ["clustalw"] else " "
-
-            if "sercmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
-                ser_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["sercmdflag"]
-                query_obj["cmd"] += " %s %s" % (ser_cmdflag, server)
-            if "incmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
-                in_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["incmdflag"]
-                query_obj["cmd"] += " %s%s%s" % (in_cmdflag,gap, in_file)
-            if "outcmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
-                out_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["outcmdflag"]
-                query_obj["cmd"] += " %s%s%s" % (out_cmdflag,gap, out_file)
+            gap = "=" if job_type in ["clustalw"] else " "
+            if "sercmdflag" in config_obj["jobinfo"][job_type]:
+                ser_cmdflag = config_obj["jobinfo"][job_type]["sercmdflag"]
+                cmd_parts_list.append({ser_cmdflag:server})
+            if "incmdflag" in config_obj["jobinfo"][job_type]:
+                in_cmdflag = config_obj["jobinfo"][job_type]["incmdflag"]
+                cmd_parts_list.append({in_cmdflag:in_file})
+            if "outcmdflag" in config_obj["jobinfo"][job_type]:
+                out_cmdflag = config_obj["jobinfo"][job_type]["outcmdflag"]
+                cmd_parts_list.append({out_cmdflag: out_file})
+            if "relcmdflag" in config_obj["jobinfo"][job_type]:
+                rel_cmdflag = config_obj["jobinfo"][job_type]["relcmdflag"]
+                cmd_parts_list.append({rel_cmdflag:init_obj["dataversion"]})
             
-            if "relcmdflag" in config_obj["jobinfo"][query_obj["jobtype"]]:
-                rel_cmdflag = config_obj["jobinfo"][query_obj["jobtype"]]["relcmdflag"]
-                query_obj["cmd"] += " %s%s%s" % (rel_cmdflag,gap, init_obj["dataversion"])
+            cmd_parts_file = in_dir + "command_parts.json"
+            with open(cmd_parts_file, "w") as FW:
+                FW.write("%s\n" % (json.dumps(cmd_parts_list, indent=4))) 
 
- 
-            job_lbl = "%s_%s" % (query_obj["jobtype"], query_obj["jobid"])
-            cmd = "%s -E -L %s %s" % (config_obj["jobinfo"]["tspath"],job_lbl, query_obj["cmd"])
-           
-            query_obj["cmdin"] = cmd
+            submitter_path = config_obj["jobinfo"][job_type]["submitter_path"]
+            job_lbl = "%s_%s" % (job_type, job_obj["jobid"])
+            cmd = "%s -E -L %s %s -a %s" % (config_obj["jobinfo"]["tspath"],job_lbl, submitter_path, cmd_parts_file)
+          
+            job_obj["cmdin"] = cmd
             cmdout = subprocess.getoutput(cmd)
-            query_obj["cmdout"] = cmdout
-            query_obj["tsid"] = cmdout.split(" ")[0]
-            query_obj["status"] = get_job_status(query_obj["tsid"] , config_obj)
-            inserted_id = dbh["c_job"].insert(query_obj)
+            job_obj["cmdout"] = cmdout
+            job_obj["tsid"] = cmdout.split(" ")[0]
+            job_obj["status"] = get_job_status(job_obj["tsid"] , config_obj)
+            inserted_id = dbh["c_job"].insert(job_obj)
+
+            if "_id" in job_obj:
+                job_obj.pop("_id")
 
             out_file = in_dir + "/jobinfo.json"
             with open(out_file, "w") as FW:
-                if "_id" in query_obj:
-                    query_obj.pop("_id")
-                FW.write("%s\n" % (json.dumps(query_obj, indent=4)))
-            res_obj = {"submission":"new", "status":query_obj["status"], "jobid":query_obj["jobid"]}
+                if "_id" in job_obj:
+                    job_obj.pop("_id")
+                FW.write("%s\n" % (json.dumps(job_obj, indent=4)))
+            res_obj = {"submission":"new", "status":job_obj["status"], "jobid":job_obj["jobid"]}
     except Exception as e:
         res_obj = {"error_list":[{"error_code":str(e)}]}
 
@@ -994,19 +995,19 @@ def load_seq_dict(release_dir):
     return tmp_dict
 
 
-def get_input_seq_dict(dbh, query_obj):
+def get_input_seq_dict(dbh, job_obj):
 
     max_seq_count = 20
     seq_count = 0
     seq_dict = {}
-    if "seq_dict" in query_obj["parameters"]:
-        for seq_id in query_obj["parameters"]["seq_dict"]:
+    if "seq_dict" in job_obj["parameters"]:
+        for seq_id in job_obj["parameters"]["seq_dict"]:
             if seq_count < max_seq_count:
-                seq_dict[seq_id] = query_obj["parameters"]["seq_dict"][seq_id]
+                seq_dict[seq_id] = job_obj["parameters"]["seq_dict"][seq_id]
             seq_count += 1
 
-    if "ac_list" in query_obj["parameters"]:
-        ac_list = query_obj["parameters"]["ac_list"]
+    if "ac_list" in job_obj["parameters"]:
+        ac_list = job_obj["parameters"]["ac_list"]
         mongo_query = {"isoforms.isoform_ac":{"$in": ac_list}}
         for doc in dbh["c_protein"].find(mongo_query,{"isoforms":1}):
             for obj in doc["isoforms"]:
@@ -1019,58 +1020,53 @@ def get_input_seq_dict(dbh, query_obj):
 
 
 
-def validate_input(dbh, query_obj, config_obj, release_dir, server):
+def validate_input(dbh, job_obj, config_obj, release_dir, server):
+   
+    job_type = job_obj["jobtype"] 
     cmd_parts = []
     error_list = []
-    if query_obj["jobtype"] not in config_obj["jobinfo"]:
+    if job_type not in config_obj["jobinfo"]:
         error_list.append({"error_code": "unknown job type"})
-    elif "paramlist" not in config_obj["jobinfo"][query_obj["jobtype"]]:
+    elif "paramlist" not in config_obj["jobinfo"][job_type]:
         error_list.append({"error_code": "no paramters defined for job type"})
     else:
-        for obj in config_obj["jobinfo"][query_obj["jobtype"]]["paramlist"]:
-            if obj["id"] not in query_obj["parameters"]:
+        for obj in config_obj["jobinfo"][job_type]["paramlist"]:
+            if obj["id"] not in job_obj["parameters"]:
                 if "optional" not in obj:
                     error_list.append({"error_code": "missing paramter = %s" % (obj["id"])})
             else:
-                val_type = str(type(query_obj["parameters"][obj["id"]])).split(" ")[-1].replace(">","")
+                val_type = str(type(job_obj["parameters"][obj["id"]])).split(" ")[-1].replace(">","")
                 val_type = val_type.replace("'","")
                 if obj["type"] == "float" and val_type == "int":
-                    query_obj["parameters"][obj["id"]] = float(query_obj["parameters"][obj["id"]])
+                    job_obj["parameters"][obj["id"]] = float(job_obj["parameters"][obj["id"]])
                     val_type = "float"
                 if obj["type"] != val_type:
                     error_list.append({"error_code": "bad value type for paramter=%s" % (obj["id"])})
                 elif "cmdflag" in obj:
-                    val = query_obj["parameters"][obj["id"]]
+                    val = job_obj["parameters"][obj["id"]]
                     cmd_parts.append({"flag":obj["cmdflag"], "value":val, "field":obj["id"]})
 
-    query_obj["cmd"] = ""
-    if query_obj["jobtype"] in config_obj["jobinfo"]:
-        query_obj["cmd"] = config_obj["jobinfo"][query_obj["jobtype"]]["path"][server] 
- 
-
-    gap = "=" if query_obj["jobtype"] in ["clustalw"] else " "
+    cmd_parts_list = []
+    gap = "=" if job_type in ["clustalw"] else " "
     for o in cmd_parts:
-        if query_obj["jobtype"] == "blastp":
+        if job_type == "blastp":
             if o["flag"] == "-db":
                 o["value"] = release_dir + "jsondb/blastdb/" + o["value"]
-        query_obj["cmd"] += " %s%s%s" % (o["flag"], gap, o["value"])
+        cmd_parts_list.append({o["flag"]:o["value"]})
+
 
     res_obj = {"buffer":""}
-    if query_obj["jobtype"] == "blastp":
-        query_obj["seq_id"] = "QUERY"
-        e_list = validate_protein_seq(query_obj["parameters"]["seq"])
+    if job_type == "blastp":
+        job_obj["seq_id"] = "QUERY"
+        e_list = validate_protein_seq(job_obj["parameters"]["seq"])
         if e_list != []:
             return res_obj, e_list
-        res_obj["buffer"] = ">%s\n%s\n" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
-        
-        #cmd = "echo %s %s | /usr/bin/md5sum" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
-        #query_obj["md5sum"] = subprocess.getoutput(cmd).split(" ")[0]
-        hash_str = "%s %s" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
+        res_obj["buffer"] = ">%s\n%s\n" % (job_obj["seq_id"], job_obj["parameters"]["seq"])
+        hash_str = "%s %s" % (job_obj["seq_id"], job_obj["parameters"]["seq"])
         hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-        query_obj["md5sum"] = hash_obj.hexdigest()
-    elif query_obj["jobtype"] == "clustalw":
-        seq_dict = get_input_seq_dict(dbh, query_obj)
-
+        job_obj["md5sum"] = hash_obj.hexdigest()
+    elif job_type == "clustalw":
+        seq_dict = get_input_seq_dict(dbh, job_obj)
         e_list = []
         for seq_id in seq_dict:
             e_list += validate_protein_seq(seq_dict[seq_id])
@@ -1081,24 +1077,24 @@ def validate_input(dbh, query_obj, config_obj, release_dir, server):
             res_obj["buffer"] += ">%s\n%s\n\n" % (seq_id, seq_dict[seq_id])
         hash_str = "%s" % (res_obj["buffer"])
         hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-        query_obj["md5sum"] = hash_obj.hexdigest()
-    elif query_obj["jobtype"] in ["structure_search"]:
-        query_obj["seq_id"] = "QUERY"
-        res_obj["buffer"] = json.dumps(query_obj["parameters"])
-        hash_str = "%s %s" % (query_obj["seq_id"], query_obj["parameters"]["seq"])
+        job_obj["md5sum"] = hash_obj.hexdigest()
+    elif job_type in ["structure_search"]:
+        job_obj["seq_id"] = "QUERY"
+        res_obj["buffer"] = json.dumps(job_obj["parameters"])
+        hash_str = "%s %s" % (job_obj["seq_id"], job_obj["parameters"]["seq"])
         hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-        query_obj["md5sum"] = hash_obj.hexdigest()
-    elif query_obj["jobtype"] in ["batch_retrieval"]:
-        res_obj["buffer"] = json.dumps(query_obj["parameters"])
-        ns = query_obj["parameters"]["inputnamespace"] if "inputnamespace" in query_obj["parameters"] else ""
-        ac_list = query_obj["parameters"]["acclist"] if "acclist" in query_obj["parameters"] else []
+        job_obj["md5sum"] = hash_obj.hexdigest()
+    elif job_type in ["batch_retrieval"]:
+        res_obj["buffer"] = json.dumps(job_obj["parameters"])
+        ns = job_obj["parameters"]["inputnamespace"] if "inputnamespace" in job_obj["parameters"] else ""
+        ac_list = job_obj["parameters"]["acclist"] if "acclist" in job_obj["parameters"] else []
         hash_str = "%s %s" % (ns, " ".join(ac_list))
         hash_obj = hashlib.md5(hash_str.encode('utf-8'))
-        query_obj["md5sum"] = hash_obj.hexdigest()
-    elif query_obj["jobtype"] in ["isoform_mapper"]:
-        if "intable" in query_obj:
-            if "sequence" in query_obj:
-                seq = query_obj["sequence"]
+        job_obj["md5sum"] = hash_obj.hexdigest()
+    elif job_type in ["isoform_mapper"]:
+        if "intable" in job_obj:
+            if "sequence" in job_obj:
+                seq = job_obj["sequence"]
                 seq_dict = load_seq_dict(release_dir)
                 isoform_ac_list = []
                 if seq in seq_dict:
@@ -1108,17 +1104,17 @@ def validate_input(dbh, query_obj, config_obj, release_dir, server):
                     return {}, error_list
                 line_list = []
                 for ac in isoform_ac_list:
-                    for row in query_obj["intable"]:
+                    for row in job_obj["intable"]:
                         line_list.append(",".join([ac] + row))
                 res_obj["buffer"] = "\n".join(line_list) 
             else:
                 line_list = []
-                for row in query_obj["intable"]:
+                for row in job_obj["intable"]:
                     line_list.append(",".join(row))
                 res_obj["buffer"] = "\n".join(line_list)
 
             
-    return res_obj, error_list
+    return res_obj, cmd_parts_list, error_list
 
 
 

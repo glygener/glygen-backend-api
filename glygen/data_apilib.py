@@ -427,6 +427,14 @@ def get_fasta_sequence(dbh, canon, isoform_ac, seq_type):
 
 
 
+def get_parsed_value(p, in_obj):
+
+    val = ""
+    if p in ["ec_number_list", "refseq_ac", "uniprot_id"]:
+        tmp_list = [o["id"] for o in in_obj]
+        val = "; ".join(tmp_list).strip()
+
+    return val
 
 def get_tabular_buffer(list_obj, query_obj, config_obj):
 
@@ -542,7 +550,7 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
 
         header_list = []
         for hh in key_list:
-            if hh not in ["hit_score", "score_info", "filter_code"]:
+            if hh not in ["hit_score", "score_info", "filter_code", "hit_info"]:
                 header_list.append(hh)
         if "GlyTouCan Accession" in header_list:
             header_list.append("Glycan Image Url")
@@ -557,13 +565,15 @@ def get_tabular_buffer(list_obj, query_obj, config_obj):
             obj = list_obj[results_key][j]
             row = []
             for k in key_list:
-                if k in ["hit_score", "score_info", "filter_code"]:
+                if k in ["hit_score", "score_info", "filter_code", "hit_info"]:
                     continue
                 val_k = str(obj[k]) if k in obj else ""
                 if query_obj["download_type"] == "ortholog_list" and k == "sequence":
                     val_k = obj[k]["sequence"]
                 if query_obj["download_type"] == "ortholog_list" and k == "evidence":
                     val_k = obj[k][0]["url"]
+                if k in ["ec_number_list", "refseq_ac", "uniprot_id"]:
+                    val_k = get_parsed_value(k, obj[k])
                 row.append(val_k)
 
             if "GlyTouCan Accession" in key_list:

@@ -259,9 +259,16 @@ def search_one(api_name, query_obj, config_obj, cache_flag, exact_match_flag):
 
     record_type = api_name.split("_")[0]
    
-
-    list_id = get_hash_id(api_name, record_type, query_obj)
+    orig_query_obj = json.loads(json.dumps(query_obj))
     
+    if "term" in query_obj:
+        query_obj["term"] = query_obj["term"].lower()
+                  
+    list_id = get_hash_id(api_name, record_type, query_obj)
+   
+
+    res_obj = {"query":orig_query_obj}
+ 
     #Get cached object
     cache_coll = "c_initcache"
     mongo_query = {"list_id":list_id}
@@ -269,13 +276,16 @@ def search_one(api_name, query_obj, config_obj, cache_flag, exact_match_flag):
     if cached_obj == None:
         cache_coll = "c_usercache"
         cached_obj = dbh[cache_coll].find_one(mongo_query)    
-   
+ 
     if cache_flag and cached_obj != None:
         if len(cached_obj["results"]) > 0:
-            return {"list_id":list_id, "resultcount":cached_obj["cache_info"]["total"], "query":query_obj }
+            n = cached_obj["cache_info"]["total"] if "total" in cached_obj["cache_info"] else -1
+            return {"list_id":list_id, "resultcount":n, "query":orig_query_obj}
 
-    res_obj = {"query":query_obj}
-    query_obj["term"] = query_obj["term"].strip()
+    if type(query_obj["term"]) is not str:
+        return {"error_list":[{"error":"bad-value-for-term-parameter"}]}
+
+    query_obj["term"] = query_obj["term"].strip() 
     quote_flag = False
     for c in ["\"", "\'"]:
         if query_obj["term"][0] == c and query_obj["term"][-1] == c:
@@ -330,7 +340,7 @@ def search_one(api_name, query_obj, config_obj, cache_flag, exact_match_flag):
     query_obj["term"] = query_obj["term"].replace("\\(", "(").replace("\\)",")")
     query_obj["term"] = query_obj["term"].replace("\\[", "[").replace("\\]","]")
     cache_info = {
-        "query":query_obj,
+        "query":orig_query_obj,
         "ts":ts,
         "record_type":record_type,
         "search_type":api_name,
@@ -342,6 +352,7 @@ def search_one(api_name, query_obj, config_obj, cache_flag, exact_match_flag):
     res_obj["resultcount"] = result_count
 
     #res_obj["debug"] = debug_list
+
 
     return res_obj
     

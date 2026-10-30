@@ -54,13 +54,6 @@ def main():
         )
         client.server_info()
         dbh = client[glydb_name]
-        id_list = ["DOID:9743","DOID:0050852"]
-        mongo_query = {"record_id":{"$in": id_list}}
-        for obj in dbh["c_list"].find(mongo_query):
-            print (obj)
-        exit()
-        #q = {"record_id": "doid.0001816"}
-        #q = { "phraselist": {"$eq": "diagnostic"},"record_type": {"$eq": "protein"}}
         q = {}
         doc_list = list(dbh[coll].find(q, sort=[('_id', pymongo.DESCENDING)]))
         if limit != None:

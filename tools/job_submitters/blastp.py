@@ -1,13 +1,29 @@
 import sys
 import subprocess
-
+from optparse import OptionParser
+import json
 
 def main():
 
+    usage = "\n%prog  [options]"
+    parser = OptionParser(usage,version="%prog version___")
+    parser.add_option("-a","--afile",action="store",dest="afile",help="")
+
+    (options,args) = parser.parse_args()
+    for key in ([options.afile]):
+        if not (key):
+            parser.print_help()
+            sys.exit(0)
+
+    a_file = options.afile
+    arg_obj_list = json.load(open(a_file))
+
     try:
         cmd = "/app/ncbi-blast-2.6.0+/bin/blastp"
-        for v in sys.argv[1:]:
-            cmd += " %s" % (v)
+        for obj in arg_obj_list:
+            for k in obj:
+                cmd += " %s %s" % (k, obj[k])
+        print (cmd)
         x,y = subprocess.getstatusoutput(cmd)
         if x != 0:
             err = y.split("\n")[0]
