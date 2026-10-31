@@ -168,7 +168,9 @@ def biomarker_search(query_obj, config_obj):
     
     if cached_obj != None:
         if len(cached_obj["results"]) > 0:
-            return {"list_id":list_id}
+            return {"list_id":list_id, "result_count":cached_obj["total_count"]}
+
+
 
 
     ts_format = "%Y-%m-%d %H:%M:%S %Z%z"
@@ -230,7 +232,8 @@ def biomarker_search(query_obj, config_obj):
             "search_type":"biomarker_search"
         }
         cache_hitlist(dbh,list_id,record_list,cache_info,cache_coll,config_obj)
-    res_obj = {"list_id":list_id}
+    res_obj = {"list_id":list_id, "result_count":len(record_list)}
+
     #return {"tslist":ts_list, "mong":mongo_query}
 
 

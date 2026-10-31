@@ -139,6 +139,8 @@ def job_addnew(query_obj, config_obj, data_path, server):
                 x = subprocess.getoutput(cmd)
             cmd = "mkdir -p " + in_dir
             x = subprocess.getoutput(cmd)
+            line_list = x.split("\n")
+            #return line_list
             in_filename, out_filename = "", ""
             if "input_files" in config_obj["jobinfo"][job_type]:
                 in_filename = config_obj["jobinfo"][job_type]["input_files"][0]["name"]

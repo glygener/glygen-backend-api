@@ -21,6 +21,8 @@ search_init_query_model = api.model(
     {}
 )
 
+
+
 @api.route('/search_init/')
 class Site(Resource):
     @api.expect(search_init_query_model)
@@ -28,13 +30,14 @@ class Site(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
-            res_obj = log_request({}, "/site/search_init/", request)
-            if "error_list" not in res_obj:
+            req_obj = get_req_obj(request)
+            log_obj = log_request(req_obj, "/site/search_init/", request)
+            if "error_list" not in log_obj:
                 res_obj = site_search_init(config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -50,24 +53,29 @@ class Site(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = {"site_id":site_id}
             req_obj_extra = get_req_obj(request)
             if req_obj_extra != None:
-                if "paginated_tables" in req_obj_extra:
-                    req_obj["paginated_tables"] = req_obj_extra["paginated_tables"]
-            res_obj = log_request(req_obj, "/site/detail/", request)
-            if "error_list" not in res_obj:
+                for k in req_obj_extra:
+                    req_obj[k] = req_obj_extra[k]
+            log_obj = log_request(req_obj, "/site/detail/", request)
+            if "error_list" not in log_obj:
                 res_obj = site_detail(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
     @api.doc(False)
     def get(self, site_id):
         return self.post(site_id)
+
+
+
+
+
 
 
 

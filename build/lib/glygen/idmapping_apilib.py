@@ -31,9 +31,10 @@ def search_init(config_obj):
         if "namespace" in res_obj[k]:
             tmp_dict = {}
             for obj in res_obj[k]["namespace"]:
-                tmp_dict[obj["source"]] = {"target_list":obj["targetlist"], "example_id_list":obj["example_id_list"]}
+                tmp_dict[obj["source"]] = {"target_list":obj["targetlist"]}
             res_obj[k]["namespace"] = tmp_dict
-    
+
+ 
     return res_obj
 
 
@@ -60,6 +61,8 @@ def search(query_obj, config_obj):
 
 
 
+    debug_dict = {}
+
     mapping_dict = {}
     for doc in dbh[coll].find(mongo_query,prj_obj):
         in_list, out_list = [], []
@@ -70,6 +73,7 @@ def search(query_obj, config_obj):
                 in_list.append(obj["id"])
             if obj["database"] == query_obj["output_namespace"]:
                 out_list.append(obj["id"])
+        #debug_dict[doc["glytoucan_ac"]] = {"in":in_list, "out":out_list}
         for in_id in in_list:
             if in_id not in mapping_dict:
                 mapping_dict[in_id] = []
@@ -81,7 +85,7 @@ def search(query_obj, config_obj):
                     o = {"anchor":doc[record_id_field], "from":i_id, "to":o_id,"category":"mapped"}
                     mapping_dict[in_id].append(o)
    
-
+ 
 
     all_glytoucan_dict = {}
     #If input_namespace is GlyToucan, check all glytoucan_idlist

@@ -76,15 +76,15 @@ class Log(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/log/logging/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/log/logging/", request)
+            if "error_list" not in log_obj:
                 res_obj = log_logging(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         end_ts = datetime.datetime.now(pytz.timezone('US/Eastern')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
         res_obj["start_ts"] = start_ts
@@ -105,15 +105,15 @@ class Log(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/log/init/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/log/init/", request)
+            if "error_list" not in log_obj:
                 res_obj = log_init(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
@@ -130,15 +130,15 @@ class Log(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/log/access/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/log/access/", request)
+            if "error_list" not in log_obj:
                 res_obj = log_access(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
@@ -156,15 +156,15 @@ class Log(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
-            res_obj = log_request(req_obj, "/log/grouped/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/log/grouped/", request)
+            if "error_list" not in log_obj:
                 res_obj = log_grouped(req_obj, config_obj)
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code

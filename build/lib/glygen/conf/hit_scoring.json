@@ -1,7 +1,7 @@
 {
     "glycan":{
         "misc":{
-            "glycan_exact_match": {"weight":50.0},
+            "glycan_exact_match": {"weight":1000.0},
             "glycan_definition_score": {
                 "weight":1.0,
                 "fieldlist":["missing_score"]
@@ -33,7 +33,7 @@
     "protein":{
         "misc":{
             "protein_exact_match": {
-                "weight":50.0,
+                "weight":1000.0,
                 "fieldlist":[
                     "uniprot_canonical_ac","protein_names_refseq",
                     "refseq_name", "protein_names_uniprotkb","protein_name",
@@ -84,7 +84,7 @@
     },
 	"biomarker":{
     	"misc":{
-            "biomarker_exact_match": {"weight":50.0}
+            "biomarker_exact_match": {"weight":1000.0}
      	},
     	"direct_boolean":{
 		},
@@ -107,7 +107,7 @@
     "disease":{
       "misc":{
         "disease_exact_match": {
-					"weight":50.0,
+					"weight":1000.0,
                 "fieldlist":[
 							"record_id", "disease_id", "recommended_name"
                 ]

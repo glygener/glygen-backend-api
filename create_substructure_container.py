@@ -19,23 +19,43 @@ def make_files(host_vm):
             FW.write("%s\n" % (line))
     out_file = "./docker-compose.yml"
     line_list = [
-        "services:"
+         "services:"
+        ,"  cache-permissions:"
+        ,"    image: alpine:3.20"
+        ,"    user: \"0:0\""
+        ,"    command: [\"sh\", \"-c\", \"chown -R 10001:10001 /cache\"]"
+        ,"    volumes:"
+        ,"      - substructure-cache:/cache"
+        ,"    restart: \"no\""
         ,"  substructure:"
         ,"    container_name: running_glygen_substructure"
         ,"    restart: unless-stopped"
         ,"    image: glyomics/substructure:latest"
+        ,"    user: 10001:10001"
+        ,"    depends_on:"
+        ,"      cache-permissions:"
+        ,"        condition: service_completed_successfully" 
         ,"    ports:"
         ,"      - 10983:10983"
         ,"    volumes:"
         ,"      - ./substructure-local.ini:/code/substructure-local.ini"
-        ,"      - /data/shared/glygen/substrcture/%s/cache/" % (host_vm)
+        ,"      - substructure-cache:/data/shared/glygen/substrcture/%s/cache/" % (host_vm)
         ,"    networks:"
         ,"      - glygen_backend"
+        ,""
+        ,"volumes:"
+        ,"  substructure-cache:"
         ,""
         ,"networks:"
         ,"  glygen_backend:"
         ,"    external: true"
     ]
+
+
+
+
+
+
     with open(out_file, "w") as FW:
         for line in line_list:
             FW.write("%s\n" % (line))

@@ -1,0 +1,16 @@
+services:
+  substructure:
+    container_name: running_glygen_substructure
+    restart: unless-stopped
+    image: glyomics/substructure:latest
+    ports:
+      - 10983:10983
+    volumes:
+      - ./substructure-local.ini:/code/substructure-local.ini
+      - /data/shared/glygen/substrcture/tst/cache/
+    networks:
+      - glygen_backend
+
+networks:
+  glygen_backend:
+    external: true

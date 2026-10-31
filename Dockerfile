@@ -1,40 +1,46 @@
 FROM python:3.6.8
 
-WORKDIR /app
-
 ENV FLASK_APP=glygen
-
 ENV FLASK_ENV=production
 
+WORKDIR /app
+
+# Build and install system tools as root
 COPY ./tools/ts-1.0.2.tar.gz .
 COPY ./tools/ncbi-blast-2.6.0+-x64-linux.tar.gz .
 COPY ./tools/job_submitters.tar.gz .
-RUN /bin/tar xvf ts-1.0.2.tar.gz
-RUN /bin/tar xvf ncbi-blast-2.6.0+-x64-linux.tar.gz
-RUN /bin/tar xvf job_submitters.tar.gz
+RUN tar xvf ts-1.0.2.tar.gz \
+ && tar xvf ncbi-blast-2.6.0+-x64-linux.tar.gz \
+ && tar xvf job_submitters.tar.gz
+
 WORKDIR /app/ts-1.0.2
-RUN make 
-RUN make install
+RUN make && make install
 
 WORKDIR /app
 
+# Install Python packages as root
 COPY ./requirements.txt .
-
 RUN pip3 install -r requirements.txt
-
 COPY ./dist/glygen-1.0-py3-none-any.whl .
-
 RUN pip3 install glygen-1.0-py3-none-any.whl
+RUN chmod -R 755 /app
 
-RUN mkdir -p /data/shared/glygen
-
-RUN mkdir -p /local/glygen/testdb
-
-RUN mkdir -p /usr/local/var/glygen-instance
 
 COPY ./instance/config.py /usr/local/var/glygen-instance/config.py
-
 COPY . .
 
-ENTRYPOINT FLASK_APP=glygen gunicorn -w 8 -b :80 'glygen:create_app()' --timeout 120 --graceful-timeout 60
+# Create the runtime user and prepare image-owned writable paths
+ARG HOST_GLYGEN_GID=1001
+
+RUN groupadd --gid "${HOST_GLYGEN_GID}" appuser \
+ && useradd --system --gid appuser --home-dir /app --no-create-home \
+      --shell /usr/sbin/nologin appuser \
+ && mkdir -p /usr/local/var/glygen-instance /data/shared/glygen \
+ && chown -R appuser:appuser /app /usr/local/var/glygen-instance
+
+
+USER appuser
+
+ENTRYPOINT ["gunicorn", "-w", "8", "-b", "0.0.0.0:8888", "glygen:create_app()", "--timeout", "120", "--graceful-timeout", "60"]
+
 

@@ -58,7 +58,7 @@ class Typeahead(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
             data_path = os.environ["DATA_PATH"]
@@ -90,8 +90,8 @@ class Typeahead(Resource):
                 "condition_name",
                 "publication_id"
             ]
-            res_obj = log_request(req_obj, "/typeahead/typeahead/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/typeahead/typeahead/", request)
+            if "error_list" not in log_obj:
                 #Collect errors 
                 error_list = get_errors_in_query("typeahead_protein",req_obj, config_obj)
                 if error_list != []:
@@ -113,6 +113,7 @@ class Typeahead(Resource):
                     tmp_obj_two = protein_typeahead(req_obj, config_obj)
                 if flag_three:
                     tmp_obj_three = biomarker_typeahead(req_obj, config_obj)
+                #return {"one":tmp_obj_one, "two":tmp_obj_two, "three":tmp_obj_three}
                 if "error_list" in tmp_obj_one:
                     res_obj = tmp_obj_one
                 elif "error_list" in tmp_obj_two: 
@@ -120,9 +121,13 @@ class Typeahead(Resource):
                 elif "error_list" in tmp_obj_three:
                     res_obj = tmp_obj_three
                 else:
-                    res_obj = sorted(list(set(tmp_obj_one + tmp_obj_two + tmp_obj_three)))
+                    final_list = []
+                    for val in tmp_obj_one + tmp_obj_two + tmp_obj_three:
+                        if val not in final_list:
+                            final_list.append(val)
+                    return final_list
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         
         return res_obj, http_code
@@ -142,18 +147,18 @@ class Typeahead(Resource):
         SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
         json_url = os.path.join(SITE_ROOT, "conf/config.json")
         config_obj = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/typeahead/categorized_typeahead/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/typeahead/categorized_typeahead/", request)
+            if "error_list" not in log_obj:
                 tmp_obj = categorized_typeahead(req_obj, config_obj)
                 if "error_list" in tmp_obj:
                     res_obj = tmp_obj
                 else:
                     res_obj = tmp_obj
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 
@@ -171,18 +176,18 @@ class Typeahead(Resource):
         config_obj = json.load(open(json_url))
         json_url = os.path.join(SITE_ROOT, "conf/global_typeahead.json")
         path_dict = json.load(open(json_url))
-        res_obj = {}
+        res_obj, log_obj = {}, {}
         try:
             req_obj = get_req_obj(request)
-            res_obj = log_request(req_obj, "/typeahead/global_typeahead/", request)
-            if "error_list" not in res_obj:
+            log_obj = log_request(req_obj, "/typeahead/global_typeahead/", request)
+            if "error_list" not in log_obj:
                 tmp_obj = global_typeahead(req_obj, config_obj, path_dict)
                 if "error_list" in tmp_obj:
                     res_obj = tmp_obj
                 else:
                     res_obj = tmp_obj
         except Exception as e:
-            res_obj = log_error(traceback.format_exc())
+            res_obj = log_error(traceback.format_exc(), log_obj)
         http_code = 500 if "error_list" in res_obj else 200
         return res_obj, http_code
 

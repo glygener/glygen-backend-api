@@ -104,8 +104,7 @@ def main():
     token_doc = json.load(open(aiseach_token_file))
     aisearch_token = token_doc[host_vm]["AI_SEARCH_STATIC_BEARER_TOKEN"]
    
-    cmd = "docker create --name %s --network %s -p 127.0.0.1:%s:80" % (api_container, network, port)
-    #cmd = "docker create --name %s -p 127.0.0.1:%s:80" % (api_container, port)
+    cmd = "docker create --name %s --network %s -p 127.0.0.1:%s:8888" % (api_container, network, port)
     cmd += " -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker"
     cmd += " -v %s:%s -v %s:%s -v %s:%s -e MONGODB_CONNSTRING=%s -e DB_NAME=%s" % (downloads_path, downloads_path, data_path, data_path, testdb_path, testdb_path, conn_str, mongo_db)
     cmd += " -e MAIL_SERVER=%s -e MAIL_PORT=%s -e MAIL_SENDER=%s -e DATA_PATH=%s -e DOWNLOADS_PATH=%s -e SERVER=%s -e AISEARCH_TOKEN=%s  %s" % (mail_server, mail_port, mail_sender, data_path, downloads_path, host_vm, aisearch_token, image)  
@@ -114,7 +113,6 @@ def main():
 
     for cmd in cmd_list:
         print (cmd)
-        #x = subprocess.getoutput(cmd)
         subprocess.run(cmd, shell=True)
     
 
