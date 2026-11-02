@@ -80,7 +80,7 @@ def main():
     mail_sender = config_obj["mail"]["sender"]
 
     mongodb_ip = get_host_mongodb_ip(network)
-    
+   
 
     conn_str = "mongodb://%s:%s@%s:27017/?authSource=%s" % (mongo_user, mongo_password, mongodb_ip, mongo_db)
 

@@ -1,4 +1,3 @@
-
 sudo systemctl stop docker-glygen-api.service
 python3 create_api_container.py 
 sudo systemctl start docker-glygen-api.service
